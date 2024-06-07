@@ -6,22 +6,32 @@
 }
 
 .header {
+	display: grid;
+	text-align: center;
+	gap: 2rem;
+}
+.header_info {
 	display: flex;
-	justify-content: space-between;
-
-	padding: 4rem 0;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
-
-/* Mobile */
-@media (max-width: 700px) {
-	.content {
-		padding: 4rem;
-	}
+.title {
+	font-size: 64px;
+	font-weight: 500;
+	margin: 2rem;
 }
-
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-	.grid {
-		grid-template-columns: repeat(2, 50%);
-	}
+.description {
+	font-size: 32px;
+	font-weight: 400;
+	margin: 1.5rem;
+}
+.storeLinks {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin: 2rem;
+}
+.button {
+	margin: 1rem;
 }
