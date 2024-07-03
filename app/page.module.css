@@ -1,7 +1,6 @@
 .main {
 	display: flex;
 	flex-direction: column;
-	padding: 6rem;
 	min-height: 100vh;
 }
 
@@ -15,23 +14,94 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	padding: 2rem;
+	background-color: #D8F5FF;
+}
+.logo {
+	width: 164px;
+	height: 164px;
+}
+.storeLogo {
+	width: 200px;
+	height: 64px;
 }
 .title {
-	font-size: 64px;
+	font-size: 36px;
 	font-weight: 500;
-	margin: 2rem;
+	margin: 1.3rem 1.3rem 0 1.3rem;
 }
 .description {
-	font-size: 32px;
+	font-size: 20px;
 	font-weight: 400;
-	margin: 1.5rem;
+	margin: 1rem 0 2rem 0;
 }
 .storeLinks {
 	display: flex;
+	flex-direction: row;
 	justify-content: space-around;
 	align-items: center;
 	margin: 2rem;
 }
 .button {
 	margin: 1rem;
+}
+.phones {
+    display: flex;
+	margin: auto;
+	align-content: center;
+}
+.footer {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: #D8F5FF;
+	padding: 1rem;
+	position: sticky;
+	width: 100%;
+	bottom: 0;
+	margin-top: auto;
+}
+.socialLinks {
+    margin-left: 1rem;
+}
+
+.socialLinks a {
+    color: #000; /* Change this as needed */
+    text-decoration: none;
+    margin: 0 0.5rem;
+}
+
+.socialLinks a:hover {
+    color: #007bff; /* Change this to match your theme or preference */
+}
+
+@media screen and (max-width: 768px) {
+	.main {
+		padding: 0;
+	}
+	.logo {
+		width: 100px;
+		height: 100px;
+	}
+	.storeLogo {
+		width: 150px;
+		height: 48px;
+	}
+	.title {
+		font-size: 24px;
+	}
+	.description {
+		font-size: 16px;
+	}
+	.storeLinks {
+		flex-direction: column;
+		margin: 1rem;
+	}
+	.button {
+		margin: 0.5rem;
+	}
+    .phones {
+        flex-direction: column;
+    }
 }
