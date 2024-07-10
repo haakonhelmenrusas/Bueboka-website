@@ -32,7 +32,7 @@ export default function Home() {
               />
             </a>
             <a
-              href="/"
+              href="https://apps.apple.com/no/app/bueboka/id6448108838?l=nb"
               aria-label="Link to Apple App Store"
               className={styles.button}
             >
