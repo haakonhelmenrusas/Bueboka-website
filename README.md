@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/967e4407-40fe-4f0f-b941-0822b4a26adb/deploy-status)](https://app.netlify.com/sites/bueboka/deploys)
+
 # Bueboka - En app for bueskyttere
 
 Bueboka er en app for bueskyttere som ønsker å holde oversikt over sine skyteøkter og resultater. Appen er laget for å være enkel og rask å bruke
