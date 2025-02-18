@@ -1,4 +1,6 @@
 import Image from "next/image";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faFacebook, faInstagram} from '@fortawesome/free-brands-svg-icons'
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -48,31 +50,31 @@ export default function Home() {
           </div>
         </div>
         <div className={styles.phones}>
-          <Image src="/assets/iOS.png" alt="Phone" width={300} height={600} />
+          <Image src="/assets/iOS.png" alt="Phone" width={320} height={600}/>
           <Image
             src="/assets/Android.png"
             alt="Mobile"
-            width={300}
+            width={320}
             height={600}
           />
         </div>
       </section>
       <footer className={styles.footer}>
-        <p>Rusås Design</p>
+        <a className={styles.socialLinks} href="https://rusåsdesign.no">Rusås Design</a>
         <div className={styles.socialLinks}>
           <a
             href="https://www.facebook.com/profile.php?id=61560373960234"
             target="_blank"
             aria-label="Facebook"
           >
-            <i className="fab fa-facebook-f"></i>
+            <FontAwesomeIcon icon={faFacebook} size="xl"/>
           </a>
           <a
             href="https://www.instagram.com/bueboka/"
             target="_blank"
             aria-label="Instagram"
           >
-            <i className="fab fa-instagram"></i>
+            <FontAwesomeIcon icon={faInstagram} size="xl"/>
           </a>
         </div>
       </footer>

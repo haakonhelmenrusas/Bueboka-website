@@ -3,6 +3,10 @@ import Head from "next/head";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import {ReactNode} from "react";
+import {config} from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
+
+config.autoAddCss = false
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +34,7 @@ export const metadata: Metadata = {
   publisher: "Rusås Design",
 };
 
-export default function RootLayout({
-  children,
-                                   }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({children}: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="no-nb">
       <Head>
