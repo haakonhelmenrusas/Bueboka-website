@@ -2,19 +2,19 @@
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+	background-color: #063547;
 }
 
 .header {
 	display: grid;
 	text-align: center;
-	gap: 2rem;
 }
 .header_info {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 2rem;
+	padding: 3rem;
 	background-color: #D8F5FF;
 }
 .logo {
@@ -46,8 +46,8 @@
 	margin: 1rem;
 }
 .phones {
-    display: flex;
-	margin: auto;
+	display: flex;
+	margin: 2rem auto 2rem auto;
 	align-content: center;
 }
 .footer {
@@ -56,24 +56,23 @@
 	justify-content: center;
 	align-items: center;
 	background-color: #D8F5FF;
-	padding: 1rem;
+	padding: 3rem;
 	position: sticky;
 	width: 100%;
 	bottom: 0;
-	margin-top: auto;
 }
 .socialLinks {
-    margin-left: 1rem;
+	margin-top: 1rem;
 }
 
 .socialLinks a {
-    color: #000; /* Change this as needed */
+	color: #222;
     text-decoration: none;
     margin: 0 0.5rem;
 }
 
 .socialLinks a:hover {
-    color: #007bff; /* Change this to match your theme or preference */
+	color: #007bff;
 }
 
 @media screen and (max-width: 768px) {
