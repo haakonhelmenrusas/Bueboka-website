@@ -1,6 +1,6 @@
 import Image from "next/image";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faFacebook, faInstagram} from '@fortawesome/free-brands-svg-icons'
+import {faFacebook} from '@fortawesome/free-brands-svg-icons'
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -68,13 +68,6 @@ export default function Home() {
             aria-label="Facebook"
           >
             <FontAwesomeIcon icon={faFacebook} size="xl"/>
-          </a>
-          <a
-            href="https://www.instagram.com/bueboka/"
-            target="_blank"
-            aria-label="Instagram"
-          >
-            <FontAwesomeIcon icon={faInstagram} size="xl"/>
           </a>
         </div>
       </footer>
