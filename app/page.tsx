@@ -1,6 +1,4 @@
 import Image from "next/image";
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faFacebook} from '@fortawesome/free-brands-svg-icons'
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -61,15 +59,6 @@ export default function Home() {
       </section>
       <footer className={styles.footer}>
         <a className={styles.socialLinks} href="https://rusåsdesign.no">Rusås Design</a>
-        <div className={styles.socialLinks}>
-          <a
-            href="https://www.facebook.com/profile.php?id=61560373960234"
-            target="_blank"
-            aria-label="Facebook"
-          >
-            <FontAwesomeIcon icon={faFacebook} size="xl"/>
-          </a>
-        </div>
       </footer>
     </main>
   );
