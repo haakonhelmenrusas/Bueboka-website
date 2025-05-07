@@ -4,6 +4,9 @@
 
 Bueboka er en app for bueskyttere som ønsker å holde oversikt over sine skyteøkter og resultater. Appen er laget for å være enkel og rask å bruke
 
+## Bueboka project
+This project is connected to the Bueboka mobile app [found here](https://github.com/haakonhelmenrusas/Bueboka)
+
 ## Functionality
 
 - Registration of shooting sessions
