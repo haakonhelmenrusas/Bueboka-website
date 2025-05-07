@@ -4,27 +4,47 @@
 
 Bueboka er en app for bueskyttere som ønsker å holde oversikt over sine skyteøkter og resultater. Appen er laget for å være enkel og rask å bruke
 
-## Funksjonalitet
+## Functionality
 
-- Registrering av skytterprofil
-- Registrering av siktemerker
-- Avansert beregning siktemerker
+- Registration of shooting sessions
+- Registration of results
+- Statistics
+- Calculation of sight marks
 
-## Teknologi
+## Techonologi
 
-- React
-- Next.js
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [TypeSript](https://www.typescriptlang.org/)
 - Github Actions
-- Netlify - hosting
+- [Netlify](https://www.netlify.com/)
 
-## Utvikling
+## Development
 
-### Kjøre lokalt
+### Prerequisites
 
-1. Klon repoet
-2. Kjør `npm install`
-3. Kjør `npm run dev`
+- Node.js
+- npm
+- Git
 
-### Deploy
+### Run
 
-Appen deployes automatisk til Netlify ved push til master.
+1. Clone repo
+2. Install dependencies
+   ```bash
+   npm install
+   ```
+3. Start development server
+   ```bash
+    npm start
+    ```
+4. Open browser and go to `http://localhost:3000`
+
+## Copyright
+
+This project is intended for educational purposes only. All rights to the original project and its content are owned by
+the respective copyright holders.
+The project is not intended for commercial use or distribution. The code and content are provided "as is" without any
+warranties or guarantees of any kind.
+By using this project, you agree to these terms.
+Copyright © 2025 Bueboka. All rights reserved.
