@@ -5,6 +5,7 @@
 Bueboka er en app for bueskyttere som ønsker å holde oversikt over sine skyteøkter og resultater. Appen er laget for å være enkel og rask å bruke
 
 ## Bueboka project
+
 This project is connected to the Bueboka mobile app [found here](https://github.com/haakonhelmenrusas/Bueboka)
 
 ## Functionality
@@ -40,7 +41,7 @@ This project is connected to the Bueboka mobile app [found here](https://github.
 3. Start development server
    ```bash
     npm start
-    ```
+   ```
 4. Open browser and go to `http://localhost:3000`
 
 ## Copyright
