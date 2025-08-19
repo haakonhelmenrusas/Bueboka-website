@@ -15,7 +15,7 @@
 	justify-content: center;
 	align-items: center;
 	padding: 3rem;
-	background-color: #D8F5FF;
+	background-color: #d8f5ff;
 }
 .logo {
 	width: 164px;
@@ -55,7 +55,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: #D8F5FF;
+	background-color: #d8f5ff;
 	padding: 3rem;
 	position: sticky;
 	width: 100%;
@@ -67,8 +67,8 @@
 
 .socialLinks a {
 	color: #222;
-    text-decoration: none;
-    margin: 0 0.5rem;
+	text-decoration: none;
+	margin: 0 0.5rem;
 }
 
 .socialLinks a:hover {
@@ -100,7 +100,7 @@
 	.button {
 		margin: 0.5rem;
 	}
-    .phones {
-        flex-direction: column;
-    }
+	.phones {
+		flex-direction: column;
+	}
 }
