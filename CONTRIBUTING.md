@@ -56,6 +56,7 @@ verktøy.
 ### Environment Setup
 
 1. **Copy environment template**:
+
    ```bash
    cp .env.example .env.local
    ```

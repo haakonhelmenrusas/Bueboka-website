@@ -1,0 +1,56 @@
+.link {
+	display: inline-block;
+	text-decoration: none;
+	transform-origin: center;
+	transition: transform 120ms ease;
+}
+
+.link:hover {
+	transform: scale(1.05);
+}
+
+.link:active {
+	transform: scale(0.95);
+}
+
+.badge {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	min-width: 180px;
+	background: #000;
+	color: #fff;
+	padding: 8px 16px;
+	border-radius: 12px;
+}
+
+.icon {
+	width: 32px;
+	height: 32px;
+	flex: 0 0 32px;
+	display: grid;
+	place-items: center;
+}
+
+.iconSvg {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+.content {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.subText {
+	font-size: 0.75rem;
+	line-height: 1rem;
+	opacity: 0.8;
+}
+
+.mainText {
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	font-weight: 500;
+}

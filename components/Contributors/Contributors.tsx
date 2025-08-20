@@ -1,0 +1,56 @@
+import { ExternalLink } from 'lucide-react';
+import React from 'react';
+import styles from './Contributors.module.css';
+
+export function Contributors() {
+	const contributors = [
+		{
+			name: 'Haakon Helmen Rusås',
+			role: 'Prosjektleder | utvikler',
+			website: 'https://rusåsdesign.no',
+			initials: 'HHR',
+		},
+		{
+			name: 'Per Olav Rusås',
+			role: 'Utvikler | bueskytter',
+			initials: 'PR',
+		},
+		{
+			name: 'Fanny Hamran',
+			role: 'UX Designer',
+			website: 'https://www.linkedin.com/in/fannyhamran?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app',
+			initials: 'FH',
+		},
+	];
+
+	return (
+		<section id="team" className={styles.section}>
+			<div className={styles.container}>
+				<div className={`${styles.textCenter} ${styles.mb16} ${styles.reveal}`}>
+					<h2 className={styles.title}>Møt teamet</h2>
+					<p className={styles.subtitle}>
+						De lidenskapelige personene bak Bueboka som er dedikert til å forbedre bueskyting-opplevelsen for alle.
+					</p>
+				</div>
+
+				<div className={styles.grid}>
+					{contributors.map((contributor, index) => (
+						<div key={index} className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: `${index * 100}ms` }}>
+							<div className={styles.avatar}>
+								<span className={styles.avatarText}>{contributor.initials}</span>
+							</div>
+							<h3 className={styles.name}>{contributor.name}</h3>
+							<p className={styles.role}>{contributor.role}</p>
+							{contributor.website && (
+								<a href={contributor.website} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.scaleOnHover}`}>
+									<span>Besøk nettside</span>
+									<ExternalLink className={styles.externalIcon} />
+								</a>
+							)}
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+	);
+}

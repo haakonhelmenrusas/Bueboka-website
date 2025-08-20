@@ -1,0 +1,33 @@
+.wrapper {
+	position: absolute; /* absolute inset-0 overflow-hidden */
+	inset: 0;
+	overflow: hidden;
+}
+
+/* First blob: absolute h-[825px] left-[-356px] top-[416px] w-[799px] opacity-30 */
+.layer1 {
+	position: absolute;
+	top: 416px;
+	left: -356px;
+	width: 799px;
+	height: 825px;
+	opacity: 0.3;
+	will-change: transform;
+}
+
+/* Second blob: absolute bottom-[-10%] right-[-20%] w-[585px] h-[590px] opacity-40 */
+.layer2 {
+	position: absolute;
+	right: -20%;
+	bottom: -10%;
+	width: 585px;
+	height: 590px;
+	opacity: 0.4;
+	will-change: transform;
+}
+
+.svg {
+	display: block; /* block size-full */
+	width: 100%;
+	height: 100%;
+}
