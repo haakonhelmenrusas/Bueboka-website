@@ -7,7 +7,7 @@ export function Sponsors() {
 		{
 			name: 'Arctic bueskyting',
 			logo: './assets/arcticBueLogo.png',
-			website: 'https://www.archeryproshop.com',
+			website: 'https://www.arcticbuesport.no',
 			description: 'Premium utstyr for alle bueskyttere',
 		},
 	];

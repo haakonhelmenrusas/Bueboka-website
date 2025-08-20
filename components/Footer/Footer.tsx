@@ -32,12 +32,16 @@ export function Footer() {
 					</p>
 
 					<div className={styles.ctaRow}>
-						<a href="https://github.com/bueboka" className={`${styles.ctaBtn} ${styles.pressable}`}>
+						<a
+							href="https://github.com/haakonhelmenrusas/Bueboka-website/"
+							target="_blank"
+							className={`${styles.ctaBtn} ${styles.pressable}`}
+						>
 							<Github className={styles.icon} />
 							<span>GitHub</span>
 						</a>
 
-						<a href="mailto:hello@bueboka.app" className={`${styles.ctaBtn} ${styles.pressable}`}>
+						<a href="mailto:kontakt@rusåsdesign.app" className={`${styles.ctaBtn} ${styles.pressable}`}>
 							<Mail className={styles.icon} />
 							<span>E-post</span>
 						</a>
