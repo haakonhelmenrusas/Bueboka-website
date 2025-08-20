@@ -32,7 +32,7 @@ export function HeroSection() {
 					{/* Right: Phone mockups */}
 					<div className={styles.right}>
 						<div className={styles.phoneCard}>
-							<Image src="/assets/iOS.png" alt="iOS app preview" width={320} height={600} className={styles.phoneImg} priority />
+							<Image src="/assets/iOS.png" alt="iOS app preview" width={400} height={680} className={styles.phoneImg} priority />
 						</div>
 						<div className={`${styles.phoneCard} ${styles.phoneOffset}`}>
 							<Image src="/assets/Android.png" alt="Android app preview" width={300} height={560} className={styles.phoneImg} priority />

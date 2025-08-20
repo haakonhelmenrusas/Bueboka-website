@@ -26,7 +26,7 @@ export function ContactForm() {
 				'bot-field': botField, // honeypot value
 			}).toString();
 
-			const res = await fetch('/', {
+			const res = await fetch('/form.html', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body,
