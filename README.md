@@ -72,23 +72,27 @@ Før du starter, sørg for at du har følgende installert:
 ### Installation
 
 1. **Clone repository**
+
    ```bash
    git clone https://github.com/yourusername/bueboka-web.git
    cd bueboka-web
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env.local
    # Edit .env.local with your configuration
    ```
 
 4. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -120,8 +124,7 @@ and [Code of Conduct](CODE_OF_CONDUCT.md) before getting started.
 - **Issues**: Rapporter bugs eller foreslå features via GitHub Issues
 - **Discussions**: Delta i diskusjoner om prosjektets retning
 - **Social Media**: Følg oss for oppdateringer (lenker kommer)
--
-    - **Code of Conduct**: Please read our [Code of Conduct](CODE_OF_CONDUCT.md)
+- - **Code of Conduct**: Please read our [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## 📈 Roadmap
 
@@ -182,5 +185,7 @@ By contributing to this project, you agree to license your contributions under t
 ---
 
 **Made with ❤️ for the archery community**
+
+```
 
 ```

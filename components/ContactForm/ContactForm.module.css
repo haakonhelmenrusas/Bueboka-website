@@ -1,119 +1,124 @@
 /* ContactForm.module.css */
 .card {
-    background: #ffffff;
-    border-radius: 24px; /* rounded-3xl */
-    padding: 32px; /* p-8 */
-    max-width: 28rem; /* max-w-md */
-    margin-left: auto; /* mx-auto */
-    margin-right: auto;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+	background: #ffffff;
+	border-radius: 24px; /* rounded-3xl */
+	padding: 32px; /* p-8 */
+	max-width: 28rem; /* max-w-md */
+	margin-left: auto; /* mx-auto */
+	margin-right: auto;
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
 .heading {
-    font-size: 1.5rem; /* text-2xl */
-    font-weight: 700; /* font-bold */
-    color: #053546;
-    margin-bottom: 24px; /* mb-6 */
-    text-align: center;
+	font-size: 1.5rem; /* text-2xl */
+	font-weight: 700; /* font-bold */
+	color: #053546;
+	margin-bottom: 24px; /* mb-6 */
+	text-align: center;
 }
 
 .form {
-    display: grid;
-    gap: 16px; /* space-y-4 */
+	display: grid;
+	gap: 16px; /* space-y-4 */
 }
 
 .label {
-    display: block;
-    font-size: 0.875rem; /* text-sm */
-    font-weight: 600; /* font-medium */
-    color: #374151; /* gray-700 */
-    margin-bottom: 8px; /* mb-2 */
+	display: block;
+	font-size: 0.875rem; /* text-sm */
+	font-weight: 600; /* font-medium */
+	color: #374151; /* gray-700 */
+	margin-bottom: 8px; /* mb-2 */
 }
 
 .input {
-    width: 100%;
-    padding: 12px 16px; /* py-3 px-4 */
-    border: 1px solid #e5e7eb; /* border-gray-200 */
-    border-radius: 12px; /* rounded-xl */
-    background: #ffffff;
-    color: #111827;
-    outline: none;
-    transition: border-color 150ms ease, box-shadow 150ms ease;
+	width: 100%;
+	padding: 12px 16px; /* py-3 px-4 */
+	border: 1px solid #e5e7eb; /* border-gray-200 */
+	border-radius: 12px; /* rounded-xl */
+	background: #ffffff;
+	color: #111827;
+	outline: none;
+	transition:
+		border-color 150ms ease,
+		box-shadow 150ms ease;
 }
 
 .input:focus {
-    border-color: transparent;
-    box-shadow: 0 0 0 3px rgba(12, 130, 172, 0.35); /* focus:ring-2 color */
+	border-color: transparent;
+	box-shadow: 0 0 0 3px rgba(12, 130, 172, 0.35); /* focus:ring-2 color */
 }
 
 .textarea {
-    resize: none; /* resize-none */
+	resize: none; /* resize-none */
 }
 
 /* Submit button */
 .button {
-    width: 100%;
-    display: inline-flex; /* flex items-center justify-center */
-    align-items: center;
-    justify-content: center;
-    gap: 8px; /* space-x-2 */
-    background-image: linear-gradient(90deg, #053546, #0c82ac); /* from-[#053546] to-[#0c82ac] */
-    color: #ffffff;
-    padding: 12px 24px; /* py-3 px-6 */
-    border-radius: 12px; /* rounded-xl */
-    font-weight: 500; /* font-medium */
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: box-shadow 200ms ease, transform 120ms ease, opacity 150ms ease;
+	width: 100%;
+	display: inline-flex; /* flex items-center justify-center */
+	align-items: center;
+	justify-content: center;
+	gap: 8px; /* space-x-2 */
+	background-image: linear-gradient(90deg, #053546, #0c82ac); /* from-[#053546] to-[#0c82ac] */
+	color: #ffffff;
+	padding: 12px 24px; /* py-3 px-6 */
+	border-radius: 12px; /* rounded-xl */
+	font-weight: 500; /* font-medium */
+	text-decoration: none;
+	border: none;
+	cursor: pointer;
+	transition:
+		box-shadow 200ms ease,
+		transform 120ms ease,
+		opacity 150ms ease;
 }
 
 .button:hover {
-    box-shadow: 0 12px 24px rgba(12, 130, 172, 0.25); /* hover:shadow-lg */
+	box-shadow: 0 12px 24px rgba(12, 130, 172, 0.25); /* hover:shadow-lg */
 }
 
 .buttonIcon {
-    width: 16px; /* w-4 */
-    height: 16px; /* h-4 */
+	width: 16px; /* w-4 */
+	height: 16px; /* h-4 */
 }
 
 /* Replace motion hover/tap scale with CSS */
 .pressable {
-    transform-origin: center;
+	transform-origin: center;
 }
 
 .pressable:hover {
-    transform: scale(1.02);
+	transform: scale(1.02);
 }
 
 .pressable:active {
-    transform: scale(0.98);
+	transform: scale(0.98);
 }
 
 .status {
-    margin-top: 8px;
-    font-size: 0.9rem;
-    color: #053546;
+	margin-top: 8px;
+	font-size: 0.9rem;
+	color: #053546;
 }
 
 /* Honeypot should stay hidden from users and ATs */
 .honeypot {
-    position: absolute !important;
-    height: 0 !important;
-    width: 0 !important;
-    overflow: hidden !important;
-    clip: rect(0 0 0 0) !important;
-    clip-path: inset(50%) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
+	position: absolute !important;
+	height: 0 !important;
+	width: 0 !important;
+	overflow: hidden !important;
+	clip: rect(0 0 0 0) !important;
+	clip-path: inset(50%) !important;
+	white-space: nowrap !important;
+	border: 0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 /* Disabled submit button feedback */
 .button[disabled] {
-    opacity: 0.7;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+	opacity: 0.7;
+	cursor: not-allowed;
+	transform: none;
+	box-shadow: none;
 }
