@@ -1,0 +1,168 @@
+/* HeroSection.module.css */
+.section {
+    position: relative;
+    padding-top: 96px; /* space under fixed header */
+    background: #ffffff;
+    color: #111827; /* gray-900-ish */
+}
+
+.bg {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(5, 53, 70, 0.1), transparent 50%, transparent);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px; /* px-6 */
+}
+
+.grid {
+    display: grid;
+    align-items: center;
+    gap: 48px; /* gap-12 */
+}
+
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Left side */
+.left {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .left {
+        text-align: left;
+    }
+}
+
+.brandPill {
+    margin: 0 auto 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 16px;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: saturate(100%) blur(2px);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+@media (min-width: 768px) {
+    .brandPill {
+        margin-left: 0;
+    }
+}
+
+.pillText {
+    font-size: 0.875rem;
+    color: #374151; /* gray-700 */
+}
+
+.title {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-size: 2.25rem; /* text-4xl */
+    line-height: 1.15;
+    color: #111827;
+}
+
+@media (min-width: 640px) {
+    .title {
+        font-size: 3rem; /* sm:text-5xl */
+    }
+}
+
+@media (min-width: 1024px) {
+    .title {
+        font-size: 3.75rem; /* lg:text-6xl */
+    }
+}
+
+.titleGradient {
+    background: linear-gradient(to right, #053546, #ff5a1f);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.subtitle {
+    margin-top: 16px;
+    max-width: 42rem;
+    font-size: 1rem;
+    color: #4b5563; /* gray-600 */
+}
+
+@media (min-width: 640px) {
+    .subtitle {
+        font-size: 1.125rem; /* sm:text-lg */
+    }
+}
+
+.badges {
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+@media (min-width: 640px) {
+    .badges {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+}
+
+/* Right side */
+.right {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 28rem; /* ~max-w-md */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 24px;
+}
+
+.phoneCard {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb; /* gray-200 */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.06), 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.phoneImg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.phoneOffset {
+    margin-bottom: -32px;
+}
+
+@media (min-width: 768px) {
+    .phoneOffset {
+        margin-bottom: -48px;
+        transform: rotate(2deg);
+    }
+}
+
+.separator {
+    margin-top: 64px;
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+}

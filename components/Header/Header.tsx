@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'motion/react';
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import styles from './Header.module.css';
@@ -8,13 +7,8 @@ import styles from './Header.module.css';
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-	const toggleMobileMenu = () => {
-		setMobileMenuOpen(!mobileMenuOpen);
-	};
-
-	const closeMobileMenu = () => {
-		setMobileMenuOpen(false);
-	};
+	const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
+	const closeMobileMenu = () => setMobileMenuOpen(false);
 
 	const handleLogoClick = (e: React.MouseEvent) => {
 		if (typeof window === 'undefined') return;
@@ -29,20 +23,15 @@ export function Header() {
 	};
 
 	return (
-		<motion.header
-			initial={{ y: -100, opacity: 0 }}
-			animate={{ y: 0, opacity: 1 }}
-			transition={{ duration: 0.6 }}
-			className={styles.header}
-		>
+		<header className={`${styles.header} ${styles.headerEnter}`}>
 			<div className={styles.container}>
 				<div className={styles.row}>
-					<motion.a href="/" onClick={handleLogoClick} className={styles.logoLink} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+					<a href="/" onClick={handleLogoClick} className={styles.logoLink}>
 						<div className={styles.logoBox}>
 							<img src="/assets/logo.png" alt="Bueboka Logo" className={styles.logoImg} />
 						</div>
 						<span className={styles.brand}>Bueboka</span>
-					</motion.a>
+					</a>
 
 					{/* Desktop Navigation */}
 					<nav className={styles.desktopNav} aria-label="Primary">
@@ -73,13 +62,7 @@ export function Header() {
 				</div>
 
 				{/* Mobile Navigation */}
-				<motion.nav
-					id="mobile-menu"
-					initial={false}
-					animate={mobileMenuOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
-					transition={{ duration: 0.3 }}
-					className={styles.mobileNav}
-				>
+				<nav id="mobile-menu" className={`${styles.mobileNav} ${mobileMenuOpen ? styles.mobileNavOpen : ''}`}>
 					<div className={styles.mobileLinks}>
 						<a href="#features" onClick={closeMobileMenu} className={styles.mobileLink}>
 							Funksjoner
@@ -94,8 +77,8 @@ export function Header() {
 							Kontakt
 						</a>
 					</div>
-				</motion.nav>
+				</nav>
 			</div>
-		</motion.header>
+		</header>
 	);
 }
