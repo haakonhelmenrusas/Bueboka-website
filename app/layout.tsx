@@ -1,12 +1,7 @@
-import type { Metadata } from 'next';
-import Head from 'next/head';
-import { Inter } from 'next/font/google';
 import './globals.css';
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-
-config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,9 +22,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
 	return (
 		<html lang="no-nb">
-			<Head>
-				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-			</Head>
 			<body className={inter.className}>{children}</body>
 		</html>
 	);
