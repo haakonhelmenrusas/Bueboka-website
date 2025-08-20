@@ -2,22 +2,28 @@
 .section {
     position: relative;
     padding-top: 96px; /* space under fixed header */
-    background: #ffffff;
+    min-height: 82vh;
+    background: linear-gradient(
+            to bottom,
+            #053546 0%,
+            #053546 75%,
+            #0c82ac 95%
+    );
     color: #111827; /* gray-900-ish */
-}
+    display: flex; /* center the hero container */
+    align-items: center; /* vertical center */
+    justify-content: center;
 
-.bg {
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(to bottom, rgba(5, 53, 70, 0.1), transparent 50%, transparent);
 }
 
 .container {
     max-width: 1200px;
+    width: 100%; /* ensure it can center within the section */
     margin: 0 auto;
     padding: 0 24px; /* px-6 */
+    position: relative; /* ensure it stacks above any background */
+    z-index: 1;
+
 }
 
 .grid {
@@ -64,7 +70,7 @@
 
 .pillText {
     font-size: 0.875rem;
-    color: #374151; /* gray-700 */
+    color: rgba(255, 255, 255, 0.85);
 }
 
 .title {
@@ -72,7 +78,8 @@
     letter-spacing: -0.02em;
     font-size: 2.25rem; /* text-4xl */
     line-height: 1.15;
-    color: #111827;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 @media (min-width: 640px) {
@@ -88,17 +95,17 @@
 }
 
 .titleGradient {
-    background: linear-gradient(to right, #053546, #ff5a1f);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #ffffff;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
 }
 
 .subtitle {
     margin-top: 16px;
     max-width: 42rem;
     font-size: 1rem;
-    color: #4b5563; /* gray-600 */
+    color: #fff; /* gray-600 */
 }
 
 @media (min-width: 640px) {

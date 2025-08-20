@@ -2,7 +2,7 @@ import { Contributors, Features, Footer, Header, HeroSection, Sponsors } from '@
 
 export default function Home() {
 	return (
-		<main className="min-h-screen bg-white text-gray-900">
+		<main>
 			<Header />
 			<HeroSection />
 			<Features />

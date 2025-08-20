@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import React from 'react';
 import styles from './HeroSection.module.css';
-import { AppStoreBadge } from '@/components';
+import { AppStoreBadge, HeroBackground } from '@/components';
 
 export function HeroSection() {
 	return (
 		<section className={styles.section}>
-			<div aria-hidden="true" className={styles.bg} />
+			<HeroBackground />
 
 			<div className={styles.container}>
 				<div className={styles.grid}>
@@ -40,8 +40,6 @@ export function HeroSection() {
 					</div>
 				</div>
 			</div>
-
-			<div className={styles.separator} />
 		</section>
 	);
 }
