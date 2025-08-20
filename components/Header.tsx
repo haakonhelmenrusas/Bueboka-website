@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import styles from './Header.module.css';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -32,35 +33,29 @@ export function Header() {
 			initial={{ y: -100, opacity: 0 }}
 			animate={{ y: 0, opacity: 1 }}
 			transition={{ duration: 0.6 }}
-			className="fixed top-0 right-0 left-0 z-50 border-b border-white/20 bg-[#053546]"
+			className={styles.header}
 		>
-			<div className="container mx-auto px-6 py-4">
-				<div className="flex items-center justify-between">
-					<motion.a
-						href="/"
-						onClick={handleLogoClick}
-						className="flex cursor-pointer items-center space-x-3"
-						whileHover={{ scale: 1.02 }}
-						whileTap={{ scale: 0.98 }}
-					>
-						<div className="rounded-xl bg-white p-2">
-							<img src="/assets/logo.png" alt="Bueboka Logo" className="h-6 w-6 object-contain" />
+			<div className={styles.container}>
+				<div className={styles.row}>
+					<motion.a href="/" onClick={handleLogoClick} className={styles.logoLink} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+						<div className={styles.logoBox}>
+							<img src="/assets/logo.png" alt="Bueboka Logo" className={styles.logoImg} />
 						</div>
-						<span className="text-xl font-bold text-white">Bueboka</span>
+						<span className={styles.brand}>Bueboka</span>
 					</motion.a>
 
 					{/* Desktop Navigation */}
-					<nav className="hidden items-center space-x-8 md:flex">
-						<a href="#features" className="text-white/80 transition-colors hover:text-white">
+					<nav className={styles.desktopNav} aria-label="Primary">
+						<a href="#features" className={styles.navLink}>
 							Funksjoner
 						</a>
-						<a href="#team" className="text-white/80 transition-colors hover:text-white">
+						<a href="#team" className={styles.navLink}>
 							Team
 						</a>
-						<a href="#sponsors" className="text-white/80 transition-colors hover:text-white">
+						<a href="#sponsors" className={styles.navLink}>
 							Sponsorer
 						</a>
-						<a href="#contact" className="text-white/80 transition-colors hover:text-white">
+						<a href="#contact" className={styles.navLink}>
 							Kontakt
 						</a>
 					</nav>
@@ -68,31 +63,34 @@ export function Header() {
 					{/* Mobile Menu Button */}
 					<button
 						onClick={toggleMobileMenu}
-						className="text-white transition-colors hover:text-white/80 md:hidden"
+						className={styles.mobileButton}
 						aria-label="Toggle mobile menu"
+						aria-expanded={mobileMenuOpen}
+						aria-controls="mobile-menu"
 					>
-						{mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+						{mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
 					</button>
 				</div>
 
 				{/* Mobile Navigation */}
 				<motion.nav
+					id="mobile-menu"
 					initial={false}
 					animate={mobileMenuOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
 					transition={{ duration: 0.3 }}
-					className="overflow-hidden md:hidden"
+					className={styles.mobileNav}
 				>
-					<div className="space-y-2 pt-4 pb-2">
-						<a href="#features" onClick={closeMobileMenu} className="block py-2 text-white/80 transition-colors hover:text-white">
+					<div className={styles.mobileLinks}>
+						<a href="#features" onClick={closeMobileMenu} className={styles.mobileLink}>
 							Funksjoner
 						</a>
-						<a href="#team" onClick={closeMobileMenu} className="block py-2 text-white/80 transition-colors hover:text-white">
+						<a href="#team" onClick={closeMobileMenu} className={styles.mobileLink}>
 							Team
 						</a>
-						<a href="#sponsors" onClick={closeMobileMenu} className="block py-2 text-white/80 transition-colors hover:text-white">
+						<a href="#sponsors" onClick={closeMobileMenu} className={styles.mobileLink}>
 							Sponsorer
 						</a>
-						<a href="#contact" onClick={closeMobileMenu} className="block py-2 text-white/80 transition-colors hover:text-white">
+						<a href="#contact" onClick={closeMobileMenu} className={styles.mobileLink}>
 							Kontakt
 						</a>
 					</div>
