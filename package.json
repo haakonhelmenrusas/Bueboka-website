@@ -11,6 +11,7 @@
 		"format:check": "prettier --check ."
 	},
 	"dependencies": {
+		"@microsoft/clarity": "^1.0.0",
 		"@prisma/client": "^6.14.0",
 		"lucide-react": "^0.540.0",
 		"motion": "^12.23.12",
