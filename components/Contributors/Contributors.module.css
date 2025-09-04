@@ -95,7 +95,12 @@
 	align-items: center;
 	justify-content: center;
 }
-
+.profile {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: none;
+}
 .avatarText {
 	color: #ffffff;
 	font-size: 1.25rem; /* text-xl */

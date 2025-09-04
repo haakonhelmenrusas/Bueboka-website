@@ -1,19 +1,28 @@
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
+import Image from 'next/image';
 import styles from './Contributors.module.css';
 
 export function Contributors() {
 	const contributors = [
 		{
 			name: 'Haakon Helmen Rusås',
-			role: 'Prosjektleder | utvikler',
+			role: 'Prosjektleder | Utvikler',
 			website: 'https://rusåsdesign.no',
 			initials: 'HHR',
+			image: '/assets/haakon.jpg',
 		},
 		{
 			name: 'Per Olav Rusås',
-			role: 'Utvikler | bueskytter',
+			role: 'Utvikler | Bueskytter',
 			initials: 'PR',
+			image: '/assets/per_olav.jpeg',
+		},
+		{
+			name: 'Martine Helmen Rusås',
+			role: 'Utvikler | Bueskytter',
+			initials: 'MHR',
+			image: '/assets/martine.jpg',
 		},
 		{
 			name: 'Fanny Hamran',
@@ -36,9 +45,15 @@ export function Contributors() {
 				<div className={styles.grid}>
 					{contributors.map((contributor, index) => (
 						<div key={index} className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: `${index * 100}ms` }}>
-							<div className={styles.avatar}>
-								<span className={styles.avatarText}>{contributor.initials}</span>
-							</div>
+							{contributor.image ? (
+								<div>
+									<Image src={contributor.image} alt="Profile picture" width={100} height={100} className={styles.profile} />
+								</div>
+							) : (
+								<div className={styles.avatar}>
+									<span className={styles.avatarText}>{contributor.initials}</span>
+								</div>
+							)}
 							<h3 className={styles.name}>{contributor.name}</h3>
 							<p className={styles.role}>{contributor.role}</p>
 							{contributor.website && (
