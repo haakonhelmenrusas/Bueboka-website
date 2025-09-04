@@ -3,7 +3,7 @@
     position: relative;
     padding-top: 96px; /* space under fixed header */
     min-height: 82vh;
-    background: linear-gradient(to bottom, #053546 0%, #053546 75%, #0c82ac 95%);
+    background: linear-gradient(to bottom, #053546 0%, #053546 55%, #0c82ac 95%);
     color: #111827; /* gray-900-ish */
     display: flex; /* center the hero container */
     align-items: center; /* vertical center */

@@ -1,22 +1,22 @@
-import { Star, Users, Zap } from 'lucide-react';
+import { Target, ToolCase, ChartBar } from 'lucide-react';
 import styles from './Features.module.css';
 
 export function Features() {
 	const features = [
 		{
-			icon: <Star className={styles.icon} />,
-			title: 'Poengregistrering',
+			icon: <Target className={styles.icon} />,
+			title: 'Registering av trening',
 			description: 'Hold detaljerte oversikter over skytesesjonene dine og følg forbedringen over tid.',
 		},
 		{
-			icon: <Zap className={styles.icon} />,
-			title: 'Prestasjonsanalyse',
-			description: 'Få innsikt i skyttemønstrene dine og identifiser områder for forbedring.',
+			icon: <ChartBar className={styles.icon} />,
+			title: 'Beregning siktemerker',
+			description: 'Skyt, legg inn og få dine siktemerker beregnet.',
 		},
 		{
-			icon: <Users className={styles.icon} />,
-			title: 'Fellesskapsfunksjoner',
-			description: 'Koble deg til andre bueskyttere, del fremgangen din, og lær av fellesskapet.',
+			icon: <ToolCase className={styles.icon} />,
+			title: 'Full kontroll på utstyr',
+			description: 'Lagre din profil med klubb, buer og pilsett.',
 		},
 	];
 
@@ -29,7 +29,6 @@ export function Features() {
 						Bueboka tilbyr omfattende verktøy for å hjelpe deg bli en bedre bueskytter, enten du er nybegynner eller erfaren.
 					</p>
 				</div>
-
 				<div className={styles.grid}>
 					{features.map((feature, index) => (
 						<div key={index} className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: `${index * 120}ms` }}>
@@ -39,37 +38,49 @@ export function Features() {
 						</div>
 					))}
 				</div>
-
 				<div className={`${styles.cta} ${styles.reveal}`} style={{ animationDelay: '600ms' }}>
-					<h3 className={styles.ctaTitle}>Se fremgangen din i sanntid</h3>
-					<p className={styles.ctaText}>
-						Med vårt intuitive dashbord og detaljerte analyser vil du alltid vite nøyaktig hvordan du forbedrer deg og hva du skal fokusere
-						på videre.
-					</p>
-
+					<h3 className={styles.ctaTitle}>Se hva som kommer</h3>
+					<p className={styles.ctaText}>Med tilbakemeldinger fra klubber og skyttere bygger vi en tjeneste for alle.</p>
 					<div className={styles.tiles}>
-						<div
-							className={`${styles.tile} ${styles.tileHover}`}
-							style={{
-								backgroundImage: `url('https://images.unsplash.com/photo-1748609160056-7b95f30041f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdGF0aXN0aWNzJTIwZGFzaGJvYXJkJTIwYW5hbHl0aWNzfGVufDF8fHx8MTc1NTI2MDk0NXww&ixlib=rb-4.1.0&q=80&w=1080')`,
-							}}
-						/>
-						<div
-							className={`${styles.tile} ${styles.tileHover}`}
-							style={{
-								backgroundImage: `url('https://images.unsplash.com/photo-1612198273689-b437f53152ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxncmFwaCUyMGNoYXJ0JTIwZGF0YSUyMHZpc3VhbGl6YXRpb258ZW58MXx8fHwxNzU1MjYwOTQ1fDA&ixlib=rb-4.1.0&q=80&w=1080')`,
-							}}
-						/>
-						<div
-							className={`${styles.tile} ${styles.tileHover}`}
-							style={{
-								backgroundImage: `url('https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGFuYWx5dGljcyUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NTUxNzUxOTF8MA&ixlib=rb-4.1.0&q=80&w=1080')`,
-							}}
-						/>
+						<div>
+							<div className={styles.bulletContainer}>
+								<div className={styles.bullet} />
+								<p>Statistikk</p>
+							</div>
+							<div
+								className={`${styles.tile}`}
+								style={{
+									backgroundImage: `url('https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+								}}
+							/>
+						</div>
+						<div>
+							<div className={styles.bulletContainer}>
+								<div className={styles.bullet} />
+								<p>Registrering av score</p>
+							</div>
+							<div
+								className={`${styles.tile}`}
+								style={{
+									backgroundImage: `url('https://plus.unsplash.com/premium_photo-1718315730752-eb55b9b6afa8?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
+								}}
+							/>
+						</div>
+						<div>
+							<div className={styles.bulletContainer}>
+								<div className={styles.bullet} />
+								<p>Innlogging med Google/Apple</p>
+							</div>
+							<div
+								className={`${styles.tile}`}
+								style={{
+									backgroundImage: `url('https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGFuYWx5dGljcyUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NTUxNzUxOTF8MA&ixlib=rb-4.1.0&q=80&w=1080')`,
+								}}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
 		</section>
 	);
 }
-// ... existing code ...
