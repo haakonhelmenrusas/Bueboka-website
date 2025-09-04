@@ -1,9 +1,12 @@
+'use client';
 import Image from 'next/image';
 import React from 'react';
 import styles from './HeroSection.module.css';
 import { AppStoreBadge, HeroBackground } from '@/components';
 
 export function HeroSection() {
+	// get window width
+	const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
 	return (
 		<section className={styles.section}>
 			<HeroBackground />
@@ -19,14 +22,16 @@ export function HeroSection() {
 							<AppStoreBadge store="ios" href="https://apps.apple.com/no/app/bueboka/id6448108838?l=nb" />
 						</div>
 					</div>
-					<div className={styles.right}>
-						<div className={styles.phoneCard}>
-							<Image src="/assets/training.jpeg" alt="iOS app preview" width={300} height={560} className={styles.phoneImg} priority />
+					{windowWidth > 768 && (
+						<div className={styles.right}>
+							<div className={styles.phoneCard}>
+								<Image src="/assets/training.jpeg" alt="iOS app preview" width={300} height={560} className={styles.phoneImg} priority />
+							</div>
+							<div className={`${styles.phoneCard} ${styles.phoneOffset}`}>
+								<Image src="/assets/profile.jpeg" alt="Android app preview" width={300} height={560} className={styles.phoneImg} priority />
+							</div>
 						</div>
-						<div className={`${styles.phoneCard} ${styles.phoneOffset}`}>
-							<Image src="/assets/profile.jpeg" alt="Android app preview" width={300} height={560} className={styles.phoneImg} priority />
-						</div>
-					</div>
+					)}
 				</div>
 			</div>
 		</section>
