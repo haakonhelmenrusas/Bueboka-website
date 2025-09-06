@@ -1,0 +1,157 @@
+.header {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 50;
+	background: #053546;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.headerEnter {
+		animation: slideFadeIn 0.6s ease both;
+	}
+}
+
+@keyframes slideFadeIn {
+	from {
+		transform: translateY(-100px);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 16px 24px;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.logoLink {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	cursor: pointer;
+	text-decoration: none;
+	transform-origin: center;
+	transition: transform 120ms ease;
+}
+
+.logoLink:hover {
+	transform: scale(1.02);
+}
+
+.logoLink:active {
+	transform: scale(0.98);
+}
+
+.logoBox {
+	background: #ffffff;
+	border-radius: 12px;
+	padding: 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.logoImg {
+	width: 24px;
+	height: 24px;
+	object-fit: contain;
+}
+
+.brand {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: #ffffff;
+}
+
+/* Desktop navigation (hidden on small screens) */
+.desktopNav {
+	display: none;
+	align-items: center;
+	gap: 32px;
+}
+
+.navLink {
+	color: rgba(255, 255, 255, 0.8);
+	text-decoration: none;
+	transition: color 150ms ease-in-out;
+}
+
+.navLink:hover {
+	color: rgba(255, 255, 255, 1);
+}
+
+/* Mobile menu button (hidden on >= md) */
+.mobileButton {
+	background: transparent;
+	border: none;
+	color: #ffffff;
+	cursor: pointer;
+	transition: color 150ms ease-in-out;
+}
+
+.mobileButton:hover {
+	color: rgba(255, 255, 255, 0.8);
+}
+
+/* Mobile nav container: CSS-animated open/close */
+.mobileNav {
+	overflow: hidden;
+	max-height: 0;
+	opacity: 0;
+	transition:
+		max-height 300ms ease,
+		opacity 300ms ease;
+}
+
+.mobileNavOpen {
+	max-height: 320px; /* enough to show all links */
+	opacity: 1;
+}
+
+.mobileLinks {
+	padding-top: 16px;
+	padding-bottom: 8px;
+	display: grid;
+	gap: 8px;
+}
+
+.mobileLink {
+	display: block;
+	padding: 8px 0;
+	color: rgba(255, 255, 255, 0.8);
+	text-decoration: none;
+	transition: color 150ms ease-in-out;
+}
+
+.mobileLink:hover {
+	color: rgba(255, 255, 255, 1);
+}
+
+/* Responsive: md breakpoint ~ 768px */
+@media (min-width: 768px) {
+	.desktopNav {
+		display: inline-flex;
+	}
+
+	.mobileButton {
+		display: none;
+	}
+
+	.mobileNav {
+		display: none !important; /* ensure mobile nav never shows on desktop */
+	}
+}

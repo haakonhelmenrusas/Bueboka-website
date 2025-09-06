@@ -1,0 +1,155 @@
+.section {
+	padding-top: 80px; /* py-20 */
+	padding-bottom: 80px;
+	background: linear-gradient(135deg, #f0f9ff, #ffffff); /* bg-gradient-to-br from-[#f0f9ff] to-white */
+}
+
+.container {
+	max-width: 1200px; /* container mx-auto */
+	margin: 0 auto;
+	padding-left: 24px; /* px-6 */
+	padding-right: 24px;
+}
+
+.textCenter {
+	text-align: center;
+}
+
+.mb16 {
+	margin-bottom: 64px; /* mb-16 */
+}
+
+/* Replace motion initial/whileInView with a reveal animation */
+@media (prefers-reduced-motion: no-preference) {
+	.reveal {
+		opacity: 0;
+		transform: translateY(50px);
+		animation: riseFadeIn 0.6s ease forwards;
+	}
+}
+
+@keyframes riseFadeIn {
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.title {
+	font-size: 2.25rem; /* text-4xl */
+	line-height: 1.2;
+	font-weight: 700; /* font-bold */
+	color: #053546;
+	margin-bottom: 16px; /* mb-4 */
+}
+
+.subtitle {
+	font-size: 1.25rem; /* text-xl */
+	color: #4b5563; /* gray-600 */
+	max-width: 42rem; /* max-w-2xl */
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Grid: md:grid-cols-2 gap-8 max-w-2xl mx-auto */
+.grid {
+	display: grid;
+	gap: 32px; /* gap-8 */
+	max-width: 42rem; /* max-w-2xl */
+	margin-left: auto;
+	margin-right: auto;
+}
+
+@media (min-width: 768px) {
+	.grid {
+		grid-template-columns: repeat(3, minmax(0, 1.5fr));
+		max-width: 56rem;
+	}
+}
+
+/* Card: bg-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition-shadow text-center border */
+.card {
+	background: #ffffff;
+	padding: 32px; /* p-8 */
+	border-radius: 24px; /* rounded-3xl */
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* shadow-lg */
+	transition:
+		box-shadow 200ms ease,
+		transform 150ms ease;
+	text-align: center;
+	border: 1px solid #f3f4f6; /* border-gray-100 */
+}
+
+.card:hover {
+	box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15); /* hover:shadow-xl */
+}
+
+/* Avatar circle: gradient, centered */
+.avatar {
+	width: 80px; /* w-20 */
+	height: 80px; /* h-20 */
+	border-radius: 9999px; /* rounded-full */
+	margin: 0 auto 16px; /* mx-auto mb-4 */
+	background: linear-gradient(135deg, #ffbf00, #c01c24);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.profile {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: none;
+}
+.avatarText {
+	color: #ffffff;
+	font-size: 1.25rem; /* text-xl */
+	font-weight: 700;
+}
+
+/* Name and role */
+.name {
+	font-size: 1.125rem; /* text-lg */
+	font-weight: 700;
+	color: #053546;
+	margin-bottom: 8px; /* mb-2 */
+}
+
+.role {
+	color: #4b5563; /* text-gray-600 */
+	margin-bottom: 16px; /* mb-4 */
+}
+
+/* Website link: inline-flex items-center space-x-2 text-[#053546] hover:text-[#0c82ac] */
+.link {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px; /* space-x-2 */
+	color: #053546;
+	text-decoration: none;
+	transition:
+		color 150ms ease,
+		transform 120ms ease;
+}
+
+.link:hover {
+	color: #0c82ac;
+}
+
+.externalIcon {
+	width: 16px; /* w-4 */
+	height: 16px; /* h-4 */
+}
+
+/* Replace motion hover/tap scale with CSS */
+.scaleOnHover {
+	transform-origin: center;
+}
+
+.scaleOnHover:hover {
+	transform: scale(1.05);
+}
+
+.scaleOnHover:active {
+	transform: scale(0.95);
+}
