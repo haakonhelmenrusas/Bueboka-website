@@ -10,3 +10,5 @@ export const prisma =
     }).$extends(withAccelerate());
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
+export type { User, Bow, Arrows, Practice, End, RoundType } from '@prisma/client';
