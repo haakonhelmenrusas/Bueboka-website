@@ -1,27 +1,46 @@
-import { prisma } from "@/lib/prisma";
-import { NextResponse } from "next/server";
+import {NextRequest, NextResponse} from 'next/server';
+import * as Sentry from '@sentry/nextjs';
+import {auth, Session} from '@/lib/auth';
+import {prisma} from '@/lib/prisma';
 
+async function getCurrentUser(request: NextRequest) {
+    try {
+        const session = await auth.api.getSession({
+            headers: request.headers,
+        });
 
-/**
- * Get all user
- * @returns all users
- */
-export async function GET() {
-    const users = await prisma.user.findMany()
+        return session?.user as Session || null;
+    } catch (error) {
+        Sentry.captureException(error);
+        return null;
+    }
+}
 
-    return NextResponse.json(users)
-};
+export async function GET(request: NextRequest) {
+    try {
+        const user = await getCurrentUser(request);
+        if (!user) {
+            return NextResponse.json(
+                { error: 'Authentication required' },
+                { status: 401 }
+            );
+        }
 
-/**
- * Create new user
- * @param request
- * @returns user
- */
+        const users = await prisma.user.findMany({
+            where: {
+                id: user.user.id,
+            },
+            orderBy: [
+                { createdAt: 'desc' },
+            ],
+        });
 
-export async function POST(request:Request) {
-    const user = await prisma.user.create({
-        data: {
-            request.data
-        },
-    })
+        return NextResponse.json({ users });
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        return NextResponse.json(
+            { error: 'Failed to fetch users' },
+            { status: 500 }
+        );
+    }
 }
