@@ -1,6 +1,6 @@
-import {ExternalLink} from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import styles from './Sponsor.module.css';
-import {ContactForm} from '@/components';
+import { ContactForm } from '@/components';
 import Image from 'next/image';
 
 export function Sponsors() {
