@@ -13,7 +13,7 @@ model User {
   emailVerified Boolean  @default(false)
   name          String?
   club          String?
-  profileImage  String?
+  image         String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -24,40 +24,54 @@ model User {
   Account   Account[]
   Session   Session[]
 
-  @@map("users")
+  @@map("user")
 }
 
 model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
+  id                    String   @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?  @db.Text
+  refreshToken          String?  @db.Text
+  accessTokenExpiresAt  DateTime
+  refreshTokenExpiresAt DateTime
+  scope                 String?
+  idToken               String?  @db.Text
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
 
   // Relation fields
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
+  @@unique([providerId, accountId])
+  @@map("account")
 }
 
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expires   DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime
+  updatedAt DateTime
 
   // Relation fields
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@map("sessions")
+  @@map("session")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime
+  updatedAt  DateTime
 }
 
 model Bow {
