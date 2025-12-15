@@ -15,17 +15,17 @@
 		"@prisma/client": "^6.19.0",
 		"lucide-react": "^0.540.0",
 		"motion": "^12.23.25",
-		"next": "^15.5.7",
+		"next": "^15.5.9",
 		"prisma": "^6.19.0",
-		"react": "^19.2.1",
-		"react-dom": "^19.2.1"
+		"react": "^19.2.3",
+		"react-dom": "^19.2.3"
 	},
 	"devDependencies": {
 		"@types/node": "^24.10.1",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
-		"eslint": "^9.39.1",
-		"eslint-config-next": "^15.5.7",
+		"eslint": "^9.39.2",
+		"eslint-config-next": "^15.5.9",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-prettier": "^5.5.4",
 		"prettier": "^3.7.4",
