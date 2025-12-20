@@ -96,10 +96,10 @@
 	justify-content: center;
 }
 .profile {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background: none;
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	background: none;
 }
 .avatarText {
 	color: #ffffff;

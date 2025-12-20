@@ -1,6 +1,6 @@
 'use client';
 
-import { Github, Mail } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { AppStoreBadge } from '@/components';
 import React from 'react';
 import styles from './Footer.module.css';
@@ -28,11 +28,9 @@ export function Footer() {
 						</div>
 						<span className={styles.brandText}>Bueboka</span>
 					</Link>
-
 					<p className={styles.lead}>
 						Klar til å ta bueskyting-ferdighetene dine til neste nivå? Sjekk ut koden vår på GitHub eller last ned appen i dag.
 					</p>
-
 					<div className={styles.ctaRow}>
 						<a
 							href="https://github.com/haakonhelmenrusas/Bueboka-website/"
@@ -42,18 +40,11 @@ export function Footer() {
 							<Github className={styles.icon} />
 							<span>GitHub</span>
 						</a>
-
-						<a href="mailto:kontakt@rusåsdesign.app" className={`${styles.ctaBtn} ${styles.pressable}`}>
-							<Mail className={styles.icon} />
-							<span>E-post</span>
-						</a>
 					</div>
-
 					<div className={styles.badgesRow}>
 						<AppStoreBadge store="ios" href="https://apps.apple.com/app/bueboka" />
 						<AppStoreBadge store="android" href="https://play.google.com/store/apps/details?id=com.bueboka" />
 					</div>
-
 					<div className={styles.separator}>
 						<p className={styles.finePrint}>
 							© 2025 Bueboka. Alle rettigheter forbeholdt. Laget med ❤️ av{' '}
