@@ -7,5 +7,7 @@ import { Contributors } from './Contributors/Contributors';
 import { Sponsors } from './Sponsor/Sponsor';
 import { ContactForm } from './ContactForm/ContactForm';
 import { HeroBackground } from './HeroBackground/HeroBackground';
+import { Button } from './common/Button/Button';
+import { Input } from './common/Input/Input';
 
-export { Header, AppStoreBadge, HeroSection, Footer, Features, Contributors, Sponsors, ContactForm, HeroBackground };
+export { Header, AppStoreBadge, HeroSection, Footer, Features, Contributors, Sponsors, ContactForm, HeroBackground, Button, Input };
