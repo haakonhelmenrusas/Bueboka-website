@@ -8,27 +8,42 @@
 		"start": "next start",
 		"lint": "next lint",
 		"format": "prettier --write .",
-		"format:check": "prettier --check ."
+		"format:check": "prettier --check .",
+		"prisma:generate": "prisma generate",
+		"prisma:studio": "prisma studio",
+		"prisma:migrate": "prisma migrate dev",
+		"seed": "npx ts-node prisma/seed.ts"
 	},
 	"dependencies": {
 		"@microsoft/clarity": "^1.0.2",
-		"@prisma/client": "^6.19.0",
-		"lucide-react": "^0.540.0",
+		"@prisma/adapter-pg": "^7.2.0",
+		"@prisma/client": "^7.2.0",
+		"@prisma/extension-accelerate": "^3.0.1",
+		"@sentry/nextjs": "^10.32.1",
+		"bcrypt": "^6.0.0",
+		"better-auth": "^1.4.7",
+		"dotenv": "^17.2.3",
+		"lucide-react": "^0.562.0",
 		"motion": "^12.23.25",
-		"next": "^15.5.9",
-		"prisma": "^6.19.0",
+		"next": "^16.1.0",
+		"pg": "^8.16.3",
+		"prisma": "^7.2.0",
 		"react": "^19.2.3",
-		"react-dom": "^19.2.3"
+		"react-dom": "^19.2.3",
+		"zod": "^4.2.1"
 	},
 	"devDependencies": {
+		"@types/bcrypt": "^6.0.0",
 		"@types/node": "^24.10.1",
+		"@types/pg": "^8.16.0",
 		"@types/react": "^19.2.7",
 		"@types/react-dom": "^19.2.3",
 		"eslint": "^9.39.2",
-		"eslint-config-next": "^15.5.9",
+		"eslint-config-next": "^16.1.0",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-prettier": "^5.5.4",
 		"prettier": "^3.7.4",
+		"tsx": "^4.21.0",
 		"typescript": "^5.9.2"
 	}
 }
