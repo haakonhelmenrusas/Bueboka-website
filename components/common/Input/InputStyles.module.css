@@ -1,0 +1,53 @@
+.container {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.labelContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+  justify-content: flex-start;
+}
+
+.label {
+  color: var(--primary);
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.input {
+  background-color: var(--white);
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+  font-size: 14px;
+  border: 1px solid var(--secondary);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.input::placeholder {
+  color: var(--secondary);
+}
+
+.icon {
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.errorMessage {
+  color: var(--error);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
