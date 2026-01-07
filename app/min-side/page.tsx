@@ -5,6 +5,7 @@ import Image from 'next/image';
 import styles from './page.module.css';
 import { ProfileEditModal } from '@/components';
 import { Edit } from 'lucide-react';
+import * as Sentry from '@sentry/nextjs';
 
 interface User {
 	id: string;
@@ -56,6 +57,10 @@ export default function MyPage() {
 			}
 		} catch (err) {
 			setError('En feil oppstod');
+			Sentry.captureException(err, {
+				tags: { page: 'min-side', action: 'fetchUser' },
+				extra: { message: 'Error fetching user data' },
+			});
 			console.error(err);
 		} finally {
 			setLoading(false);

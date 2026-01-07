@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import * as Sentry from '@sentry/nextjs';
 
 const registerSchema = z.object({
 	email: z.email(),
@@ -40,6 +41,10 @@ export async function POST(req: Request) {
 
 		return NextResponse.json({ message: 'User registered', user }, { status: 201 });
 	} catch (err) {
+		Sentry.captureException(err, {
+			tags: { endpoint: 'register', method: 'POST' },
+			extra: { message: 'Error registering user' },
+		});
 		console.error(err);
 		return NextResponse.json({ error: 'Server error' }, { status: 500 });
 	}

@@ -1,14 +1,14 @@
 .section {
-	padding-top: 80px; /* py-20 */
-	padding-bottom: 80px;
-	background: linear-gradient(135deg, #f0f9ff, #ffffff); /* bg-gradient-to-br from-[#f0f9ff] to-white */
+	padding-top: var(--space-20); /* py-20 */
+	padding-bottom: var(--space-20);
+	background: linear-gradient(135deg, var(--bg-light), var(--white));
 }
 
 .container {
 	max-width: 1200px; /* container mx-auto */
 	margin: 0 auto;
-	padding-left: 24px; /* px-6 */
-	padding-right: 24px;
+	padding-left: var(--space-6); /* px-6 */
+	padding-right: var(--space-6);
 }
 
 .textCenter {
@@ -16,7 +16,7 @@
 }
 
 .mb16 {
-	margin-bottom: 64px; /* mb-16 */
+	margin-bottom: var(--space-18); /* mb-16 */
 }
 
 /* Replace motion initial/whileInView with a reveal animation */
@@ -39,13 +39,13 @@
 	font-size: 2.25rem; /* text-4xl */
 	line-height: 1.2;
 	font-weight: 700; /* font-bold */
-	color: #053546;
-	margin-bottom: 16px; /* mb-4 */
+	color: var(--primary);
+	margin-bottom: var(--space-4); /* mb-4 */
 }
 
 .subtitle {
 	font-size: 1.25rem; /* text-xl */
-	color: #4b5563; /* gray-600 */
+	color: var(--text-gray-600); /* gray-600 */
 	max-width: 42rem; /* max-w-2xl */
 	margin-left: auto;
 	margin-right: auto;
@@ -54,7 +54,7 @@
 /* Grid: md:grid-cols-2 gap-8 max-w-2xl mx-auto */
 .grid {
 	display: grid;
-	gap: 32px; /* gap-8 */
+	gap: var(--space-8); /* gap-8 */
 	max-width: 42rem; /* max-w-2xl */
 	margin-left: auto;
 	margin-right: auto;
@@ -69,19 +69,15 @@
 
 /* Card: bg-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition-shadow text-center border */
 .card {
-	background: #ffffff;
-	padding: 32px; /* p-8 */
+	background: var(--white);
+	padding: var(--space-8); /* p-8 */
 	border-radius: 24px; /* rounded-3xl */
-	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* shadow-lg */
+	box-shadow: 0 10px 20px var(--dark-20); /* shadow-lg */
 	transition:
 		box-shadow 200ms ease,
 		transform 150ms ease;
 	text-align: center;
-	border: 1px solid #f3f4f6; /* border-gray-100 */
-}
-
-.card:hover {
-	box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15); /* hover:shadow-xl */
+	border: 1px solid var(--bg-gray-100); /* border-gray-100 */
 }
 
 /* Avatar circle: gradient, centered */

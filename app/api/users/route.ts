@@ -36,6 +36,10 @@ export async function GET() {
 
 		return NextResponse.json({ users });
 	} catch (error) {
+		Sentry.captureException(error, {
+			tags: { endpoint: 'users', method: 'GET' },
+			extra: { message: 'Error fetching users' },
+		});
 		console.error('Error fetching users:', error);
 		return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
 	}
@@ -60,6 +64,10 @@ export async function PATCH(request: NextRequest) {
 
 		return NextResponse.json({ user: updatedUser });
 	} catch (error) {
+		Sentry.captureException(error, {
+			tags: { endpoint: 'users', method: 'PATCH' },
+			extra: { message: 'Error updating user' },
+		});
 		console.error('Error updating user:', error);
 		return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
 	}
