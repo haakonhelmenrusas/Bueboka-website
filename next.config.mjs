@@ -1,7 +1,22 @@
 import { withSentryConfig } from '@sentry/nextjs';
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'lh3.googleusercontent.com',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
+				hostname: '**.apple.com',
+				pathname: '/**',
+			},
+		],
+	},
+};
 
 export default withSentryConfig(nextConfig, {
 	// For all available options, see:
