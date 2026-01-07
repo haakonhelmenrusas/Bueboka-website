@@ -1,0 +1,64 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import { headers } from 'next/headers';
+
+async function getCurrentUser() {
+	try {
+		const reqHeaders = await headers();
+		const headerObj: Record<string, string> = {};
+		for (const [key, value] of reqHeaders) {
+			headerObj[key] = value;
+		}
+		const session = await auth.api.getSession({ headers: headerObj });
+		return session?.user || null;
+	} catch (error) {
+		return null;
+	}
+}
+
+export async function POST(request: NextRequest) {
+	try {
+		const user = await getCurrentUser();
+		if (!user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const { name, material } = await request.json();
+
+		if (!name || !material) {
+			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+		}
+
+		const arrows = await prisma.arrows.create({
+			data: {
+				userId: user.id,
+				name,
+				material,
+			},
+		});
+
+		return NextResponse.json({ arrows }, { status: 201 });
+	} catch (error) {
+		console.error('Error creating arrows:', error);
+		return NextResponse.json({ error: 'Failed to create arrows' }, { status: 500 });
+	}
+}
+
+export async function GET() {
+	try {
+		const user = await getCurrentUser();
+		if (!user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const arrows = await prisma.arrows.findMany({
+			where: { userId: user.id },
+		});
+
+		return NextResponse.json({ arrows });
+	} catch (error) {
+		console.error('Error fetching arrows:', error);
+		return NextResponse.json({ error: 'Failed to fetch arrows' }, { status: 500 });
+	}
+}
