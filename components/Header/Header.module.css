@@ -94,7 +94,15 @@
 	color: rgba(255, 255, 255, 1);
 }
 
-/* Mobile menu button (hidden on >= md) */
+.userAvatar {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	object-fit: cover;
+	display: inline-block;
+}
+
+/* Mobile menu button (hidden on small screens) */
 .mobileButton {
 	background: transparent;
 	border: none;

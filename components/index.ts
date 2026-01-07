@@ -9,5 +9,19 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { HeroBackground } from './HeroBackground/HeroBackground';
 import { Button } from './common/Button/Button';
 import { Input } from './common/Input/Input';
+import { ProfileEditModal } from './ProfileEditModal/ProfileEditModal';
 
-export { Header, AppStoreBadge, HeroSection, Footer, Features, Contributors, Sponsors, ContactForm, HeroBackground, Button, Input };
+export {
+	Header,
+	AppStoreBadge,
+	HeroSection,
+	Footer,
+	Features,
+	Contributors,
+	Sponsors,
+	ContactForm,
+	HeroBackground,
+	Button,
+	Input,
+	ProfileEditModal,
+};

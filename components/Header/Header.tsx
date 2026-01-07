@@ -1,13 +1,15 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { CircleUserRound, LogOut, Menu, X } from 'lucide-react';
 import styles from './Header.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
+import { signOut, useSession } from '@/lib/auth-client';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const { data: session } = useSession();
 
 	const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
 	const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -49,6 +51,25 @@ export function Header() {
 						<Link href="#contact" className={styles.navLink}>
 							Kontakt
 						</Link>
+						{session?.user ? (
+							<Link href="/min-side" className={styles.navLink} aria-label="Go to dashboard">
+								{session.user.image ? (
+									<Image
+										src={session.user.image}
+										alt={session.user.name || 'User avatar'}
+										width={32}
+										height={32}
+										className={styles.userAvatar}
+									/>
+								) : (
+									<CircleUserRound />
+								)}
+							</Link>
+						) : (
+							<Link href="/ny-bruker" className={styles.navLink}>
+								<CircleUserRound />
+							</Link>
+						)}
 					</nav>
 
 					{/* Mobile Menu Button */}
@@ -78,6 +99,28 @@ export function Header() {
 						<Link href="#contact" onClick={closeMobileMenu} className={styles.mobileLink}>
 							Kontakt
 						</Link>
+						{session?.user ? (
+							<>
+								<Link href="/min-side" onClick={closeMobileMenu} className={styles.mobileLink}>
+									Min side
+								</Link>
+								<button
+									onClick={() => {
+										signOut();
+										closeMobileMenu();
+									}}
+									className={styles.mobileLink}
+									style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', textAlign: 'left' }}
+								>
+									<LogOut size={20} />
+									Logg ut
+								</button>
+							</>
+						) : (
+							<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
+								Logg inn
+							</Link>
+						)}
 					</div>
 				</nav>
 			</div>
