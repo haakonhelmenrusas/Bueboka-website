@@ -1,0 +1,161 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, rgba(5,53,70,0.95) 0%, rgba(7,66,86,0.95) 40%, rgba(12,90,115,0.95) 100%);
+  color: white;
+}
+
+.headerBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 32px;
+  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.logoBox {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.main {
+  padding: 48px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 6px 18px rgba(2,8,23,0.45);
+  display: flex;
+  gap: 24px;
+}
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 24px;
+}
+
+.left {
+  min-width: 320px;
+}
+
+.profileCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatarLarge {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255,255,255,0.08);
+}
+
+.profileName {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.profileMeta {
+  color: rgba(255,255,255,0.8);
+  font-size: 0.95rem;
+}
+
+.editButton {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 150ms ease;
+}
+
+.editButton:hover {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.5);
+}
+
+.sectionTitle {
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+}
+
+.item {
+  background: rgba(255,255,255,0.02);
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.itemLeft {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemMeta {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.9rem;
+}
+
+.empty {
+  color: rgba(255,255,255,0.6);
+  padding: 12px 0;
+}
+
+@media (max-width: 900px) {
+  .twoColumn {
+    grid-template-columns: 1fr;
+  }
+
+  .left {
+    order: 2;
+  }
+
+  .right {
+    order: 1;
+  }
+
+  .main {
+    padding: 24px 16px;
+  }
+}
+
