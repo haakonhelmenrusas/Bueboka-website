@@ -10,6 +10,10 @@ import { HeroBackground } from './HeroBackground/HeroBackground';
 import { Button } from './common/Button/Button';
 import { Input } from './common/Input/Input';
 import { ProfileEditModal } from './ProfileEditModal/ProfileEditModal';
+import { PracticeCard } from './Practices/PracticeCard';
+import { PracticesList } from './Practices/PracticesList';
+import { PracticeDetailsModal } from './Practices/PracticeDetailsModal';
+import { PracticeCreateModal } from './Practices/PracticeCreateModal';
 
 export {
 	Header,
@@ -24,4 +28,8 @@ export {
 	Button,
 	Input,
 	ProfileEditModal,
+	PracticeCard,
+	PracticesList,
+	PracticeDetailsModal,
+	PracticeCreateModal,
 };

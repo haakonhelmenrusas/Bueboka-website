@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ProfileEditModal } from './ProfileEditModal';
+import { ProfileEditModal } from '@/components';
 
 // Mock fetch
 global.fetch = jest.fn();

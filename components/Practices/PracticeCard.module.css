@@ -1,0 +1,63 @@
+.card {
+  background: var(--white-02);
+  border: 1px solid var(--white-06);
+  border-radius: 12px;
+  padding: var(--space-5);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+  align-items: center;
+  box-shadow: 0 4px 12px var(--dark-20);
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.card:hover {
+  background: var(--white-04);
+  box-shadow: 0 8px 24px var(--dark-30);
+  transform: translateY(-2px);
+}
+
+.card:active {
+  transform: translateY(0);
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.date {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.subtle {
+  color: var(--white-75);
+  font-size: 0.9rem;
+}
+
+.badge {
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  color: var(--white);
+  padding: var(--space-2) var(--space-3);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.iconCircle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--white-08);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+

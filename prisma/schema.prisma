@@ -128,7 +128,7 @@ model Practice {
   location    String?
   environment Environment
   weather     WeatherCondition[]
-  roundTypeId String             @unique
+  roundTypeId String?
   bowId       String?
   arrowsId    String?
   ends        End[]
@@ -136,10 +136,10 @@ model Practice {
   updatedAt   DateTime           @updatedAt
 
   // Relation fields
-  user      User      @relation(fields: [userId], references: [id])
-  arrows    Arrows?   @relation(fields: [arrowsId], references: [id])
-  bow       Bow?      @relation(fields: [bowId], references: [id])
-  roundType RoundType @relation(fields: [roundTypeId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
+  arrows    Arrows?    @relation(fields: [arrowsId], references: [id])
+  bow       Bow?       @relation(fields: [bowId], references: [id])
+  roundType RoundType? @relation(fields: [roundTypeId], references: [id])
 
   @@map("practices")
 }
@@ -147,7 +147,7 @@ model Practice {
 model RoundType {
   id             String      @id @default(cuid())
   name           String
-  Practice       Practice?
+  Practice       Practice[]
   environment    Environment
   distanceMeters Int?
   targetSizeCm   Int?

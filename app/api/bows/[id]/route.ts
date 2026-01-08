@@ -18,22 +18,32 @@ async function getCurrentUser() {
 	}
 }
 
-export async function POST(request: NextRequest) {
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
 		const user = await getCurrentUser();
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
+		const { id } = await params;
 		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = await request.json();
+
+		// Verify the bow belongs to the user
+		const existingBow = await prisma.bow.findUnique({
+			where: { id },
+		});
+
+		if (!existingBow || existingBow.userId !== user.id) {
+			return NextResponse.json({ error: 'Bow not found or unauthorized' }, { status: 404 });
+		}
 
 		if (!name || !type) {
 			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
 		}
 
-		const bow = await prisma.bow.create({
+		const bow = await prisma.bow.update({
+			where: { id },
 			data: {
-				userId: user.id,
 				name,
 				type,
 				eyeToNock: eyeToNock !== undefined ? eyeToNock : null,
@@ -44,35 +54,46 @@ export async function POST(request: NextRequest) {
 			},
 		});
 
-		return NextResponse.json({ bow }, { status: 201 });
+		return NextResponse.json({ bow }, { status: 200 });
 	} catch (error) {
 		Sentry.captureException(error, {
-			tags: { endpoint: 'bows', method: 'POST' },
-			extra: { message: 'Error creating bow' },
+			tags: { endpoint: 'bows/[id]', method: 'PATCH' },
+			extra: { message: 'Error updating bow' },
 		});
-		console.error('Error creating bow:', error);
-		return NextResponse.json({ error: 'Failed to create bow' }, { status: 500 });
+		console.error('Error updating bow:', error);
+		return NextResponse.json({ error: 'Failed to update bow' }, { status: 500 });
 	}
 }
 
-export async function GET() {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
 		const user = await getCurrentUser();
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const bows = await prisma.bow.findMany({
-			where: { userId: user.id },
+		const { id } = await params;
+
+		// Verify the bow belongs to the user
+		const existingBow = await prisma.bow.findUnique({
+			where: { id },
 		});
 
-		return NextResponse.json({ bows });
+		if (!existingBow || existingBow.userId !== user.id) {
+			return NextResponse.json({ error: 'Bow not found or unauthorized' }, { status: 404 });
+		}
+
+		await prisma.bow.delete({
+			where: { id },
+		});
+
+		return NextResponse.json({ success: true }, { status: 200 });
 	} catch (error) {
 		Sentry.captureException(error, {
-			tags: { endpoint: 'bows', method: 'GET' },
-			extra: { message: 'Error fetching bows' },
+			tags: { endpoint: 'bows/[id]', method: 'DELETE' },
+			extra: { message: 'Error deleting bow' },
 		});
-		console.error('Error fetching bows:', error);
-		return NextResponse.json({ error: 'Failed to fetch bows' }, { status: 500 });
+		console.error('Error deleting bow:', error);
+		return NextResponse.json({ error: 'Failed to delete bow' }, { status: 500 });
 	}
 }

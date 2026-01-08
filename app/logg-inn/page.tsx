@@ -28,25 +28,6 @@ export default function SignInPage() {
 		}
 	}
 
-	function SocialSignInButtons() {
-		const startProvider = (provider: 'google' | 'apple') => {
-			// Typical path expected by better-auth's handler, confirm in runtime logs or docs
-			window.location.href = `/api/auth/authorize/${provider}`;
-		};
-
-		return (
-			<div>
-				<button type="button" onClick={() => signIn.social({ provider: 'google' })} aria-label="Sign in with Google">
-					Sign in with Google
-				</button>
-
-				<button type="button" onClick={() => startProvider('apple')} aria-label="Sign in with Apple">
-					Sign in with Apple
-				</button>
-			</div>
-		);
-	}
-
 	return (
 		<div className={styles.container}>
 			<Header />
@@ -62,7 +43,15 @@ export default function SignInPage() {
 					</div>
 					<Button type="submit" label="Logg inn" />
 				</form>
-				<SocialSignInButtons />
+				<div>
+					<button type="button" onClick={() => signIn.social({ provider: 'google' })} aria-label="Sign in with Google">
+						Logg på med Google
+					</button>
+
+					<button type="button" onClick={() => signIn.social({ provider: 'apple' })} aria-label="Sign in with Apple">
+						Logg på med Apple
+					</button>
+				</div>
 			</div>
 		</div>
 	);

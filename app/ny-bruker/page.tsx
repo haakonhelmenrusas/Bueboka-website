@@ -1,6 +1,6 @@
 'use client';
 
-import { signUp } from '@/lib/auth-client';
+import { signIn, signUp } from '@/lib/auth-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -50,6 +50,15 @@ export default function SignUpPage() {
 					</div>
 					<Button type="submit" label="Opprett bruker" />
 				</form>
+				<div>
+					<button type="button" onClick={() => signIn.social({ provider: 'google' })} aria-label="Sign in with Google">
+						Logg på med Google
+					</button>
+
+					<button type="button" onClick={() => signIn.social({ provider: 'apple' })} aria-label="Sign in with Apple">
+						Logg på med Apple
+					</button>
+				</div>
 			</div>
 		</div>
 	);

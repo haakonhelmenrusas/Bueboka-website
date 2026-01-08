@@ -40,16 +40,16 @@
 .card {
   background: linear-gradient(180deg, var(--white-04), var(--white-02));
   border-radius: 12px;
-  padding: var(--space-6);
+  padding: var(--space-10);
   box-shadow: 0 6px 18px var(--dark-45);
   display: flex;
-  gap: var(--space-6);
+  gap: var(--space-8);
 }
 
 .twoColumn {
   display: grid;
   grid-template-columns: 320px 1fr;
-  gap: var(--space-6);
+  gap: var(--space-12);
 }
 
 .left {
@@ -60,7 +60,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-5);
 }
 
 .avatarLarge {
@@ -82,8 +82,8 @@
 }
 
 .editButton {
-  margin-top: var(--space-4);
-  padding: var(--space-2) var(--space-4);
+  margin-top: var(--space-6);
+  padding: var(--space-3) var(--space-5);
   background: var(--white-15);
   border: 1px solid var(--white-30);
   color: var(--white);
@@ -92,7 +92,7 @@
   font-weight: 600;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   transition: all 150ms ease;
 }
 
@@ -103,37 +103,82 @@
 
 .sectionTitle {
   font-weight: 700;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
+  font-size: 1.1rem;
 }
 
 .right {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-10);
 }
 
 .list {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-5);
 }
 
 .item {
   background: var(--white-02);
-  padding: var(--space-3);
-  border-radius: 8px;
+  padding: var(--space-6);
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-6);
+  box-shadow: 0 4px 12px var(--dark-20);
+  cursor: pointer;
+  transition: all 200ms ease;
+  border: 1px solid var(--white-06);
+  min-height: 80px;
+}
+
+.item:hover {
+  background: var(--white-04);
+  box-shadow: 0 8px 24px var(--dark-30);
+  transform: translateY(-2px);
+}
+
+.item:active {
+  transform: translateY(0);
 }
 
 .itemLeft {
   display: flex;
   flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.itemLeft > div:first-child {
+  font-weight: 600;
+  color: var(--white);
+  font-size: 1.05rem;
 }
 
 .itemMeta {
   color: var(--white-75);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+}
+
+.itemIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--white-08);
+  flex-shrink: 0;
+}
+
+.itemIcon svg {
+  color: var(--white);
+  transition: transform 200ms ease;
+}
+
+.item:hover .itemIcon svg {
+  transform: scale(1.1);
 }
 
 .empty {
@@ -157,4 +202,77 @@
   .main {
     padding: var(--space-6) var(--space-4);
   }
+}
+
+/* Dropdown animation */
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hamburger menu button */
+.menuButton {
+  background: transparent;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  padding: var(--space-2);
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 200ms ease;
+}
+
+.menuButton::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 12px;
+  background: var(--white-10);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.menuButton:hover {
+  transform: scale(1.05);
+}
+
+.menuButton:hover::before {
+  opacity: 1;
+}
+
+.menuButton:active {
+  transform: scale(0.95);
+}
+
+.menuButton svg {
+  position: relative;
+  z-index: 1;
+  transition: transform 200ms ease;
+}
+
+.menuButton:hover svg {
+  transform: rotate(90deg);
+}
+
+/* Skeleton for practice cards */
+.skeletonItem {
+  height: 88px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+  animation: shimmer 1.4s infinite;
+  background-size: 200% 100%;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

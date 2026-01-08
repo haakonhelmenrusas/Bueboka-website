@@ -1,24 +1,22 @@
 import { prisma } from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
-interface Params {
-	params: { id: string };
+interface ParamsContext {
+	params: Promise<{ id: string }>;
 }
 
 /**
  * Get user with given ID
  * @param request
- * @param params
+ * @param context
  * @returns user
  */
-export async function GET(request: Request, { params }: Params) {
-	const { id } = params;
+export async function GET(request: NextRequest, context: ParamsContext) {
+	const { id } = await context.params;
 
 	try {
 		const user = await prisma.user.findUnique({
-			where: {
-				id: id,
-			},
+			where: { id },
 		});
 
 		if (!user) {
@@ -34,17 +32,15 @@ export async function GET(request: Request, { params }: Params) {
 /**
  * Delete user with given ID
  * @param request
- * @param params
+ * @param context
  * @returns status code
  */
-export async function DELETE(request: Request, { params }: Params) {
-	const { id } = params;
+export async function DELETE(request: NextRequest, context: ParamsContext) {
+	const { id } = await context.params;
 
 	try {
 		const deleteUser = await prisma.user.delete({
-			where: {
-				id: id,
-			},
+			where: { id },
 		});
 
 		if (!deleteUser) {
