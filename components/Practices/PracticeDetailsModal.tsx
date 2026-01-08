@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './PracticeDetailsModal.module.css';
 import { X } from 'lucide-react';
 import { Environment, WeatherCondition } from '@prisma/client';
+import { useModalBehavior } from '@/lib/useModalBehavior';
 
 export interface PracticeDetails {
 	id: string;
@@ -40,6 +41,7 @@ interface PracticeDetailsModalProps {
 }
 
 export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose }) => {
+	useModalBehavior({ open, onClose });
 	if (!open || !practice) return null;
 
 	const formattedDate = new Date(practice.date).toLocaleDateString('nb-NO', {

@@ -2,8 +2,10 @@
 
 import React, { useMemo, useState } from 'react';
 import styles from './PracticeCreateModal.module.css';
-import { X } from 'lucide-react';
+import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Home, MapPin, Sun, Target, Trees, Wind, X, Zap } from 'lucide-react';
 import { Environment, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/enums';
+import { DateInput, Input, NumberInput, Select, TextArea } from '@/components';
+import { useModalBehavior } from '@/lib/useModalBehavior';
 
 export interface PracticeCreateInput {
 	date: string; // ISO
@@ -53,6 +55,19 @@ const weatherLabels: Record<WeatherCondition, string> = {
 	[WeatherCondition.OTHER]: 'Annet',
 };
 
+const weatherIcons: Record<WeatherCondition, React.ComponentType<{ size?: number; className?: string }>> = {
+	[WeatherCondition.SUN]: Sun,
+	[WeatherCondition.CLOUDED]: Cloudy,
+	[WeatherCondition.CLEAR]: CloudSun,
+	[WeatherCondition.RAIN]: CloudRain,
+	[WeatherCondition.WIND]: Wind,
+	[WeatherCondition.SNOW]: CloudSnow,
+	[WeatherCondition.FOG]: Cloud,
+	[WeatherCondition.THUNDER]: Zap,
+	[WeatherCondition.CHANGING_CONDITIONS]: CloudSun,
+	[WeatherCondition.OTHER]: HelpCircle,
+};
+
 export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	open,
 	onClose,
@@ -61,6 +76,8 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	arrows = [],
 	roundTypes = [],
 }) => {
+	useModalBehavior({ open, onClose });
+
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [arrowsShot, setArrowsShot] = useState<number>(0);
 	const [location, setLocation] = useState('');
@@ -111,6 +128,17 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 		}
 	};
 
+	const environmentOptions = [
+		{ value: Environment.INDOOR, label: 'Inne', icon: <Home size={16} /> },
+		{ value: Environment.OUTDOOR, label: 'Ute', icon: <Trees size={16} /> },
+	];
+	const roundTypeOptions = roundTypes.map((r) => ({
+		value: r.id,
+		label: `${r.name}${r.distanceMeters ? ` • ${r.distanceMeters}m` : ''}${r.targetSizeCm ? ` • ${r.targetSizeCm}cm` : ''}`,
+	}));
+	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}` }));
+	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}` }));
+
 	if (!open) return null;
 
 	return (
@@ -127,105 +155,90 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<div className={styles.row}>
-						<label className={styles.field}>
-							<span className={styles.label}>Dato</span>
-							<input className={styles.input} type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-						</label>
-						<label className={styles.field}>
-							<span className={styles.label}>Antall skutte piler</span>
-							<input
-								className={styles.input}
-								type="number"
-								min={0}
-								value={arrowsShot}
-								onChange={(e) => setArrowsShot(parseInt(e.target.value || '0', 10))}
-								required
-							/>
-						</label>
+						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
+						<NumberInput
+							label="Antall skutte piler"
+							value={arrowsShot}
+							onChange={setArrowsShot}
+							min={0}
+							step={1}
+							required
+							containerClassName={styles.field}
+						/>
 					</div>
 
 					<div className={styles.row}>
-						<label className={styles.field}>
-							<span className={styles.label}>Sted</span>
-							<input
-								className={styles.input}
-								type="text"
-								value={location}
-								onChange={(e) => setLocation(e.target.value)}
-								placeholder="f.eks. Oslo"
-							/>
-						</label>
-						<label className={styles.field}>
-							<span className={styles.label}>Miljø</span>
-							<select className={styles.select} value={environment} onChange={(e) => setEnvironment(e.target.value as Environment)}>
-								<option value={Environment.INDOOR}>Inne</option>
-								<option value={Environment.OUTDOOR}>Ute</option>
-							</select>
-						</label>
+						<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
+						<Select
+							label="Miljø"
+							value={environment}
+							onChange={(v) => setEnvironment(v as Environment)}
+							options={environmentOptions}
+							containerClassName={styles.field}
+						/>
 					</div>
 
 					<label className={styles.field}>
 						<span className={styles.label}>Vær</span>
 						<div className={styles.weatherGrid}>
-							{weatherOptions.map((w) => (
-								<label key={w} className={styles.checkbox}>
-									<input type="checkbox" checked={weatherSet.has(w)} onChange={() => toggleWeather(w)} />
-									<span>{weatherLabels[w] ?? w}</span>
-								</label>
-							))}
+							{weatherOptions.map((w) => {
+								const Icon = weatherIcons[w];
+								return (
+									<label key={w} className={`${styles.weatherOption} ${weatherSet.has(w) ? styles.weatherOptionSelected : ''}`}>
+										<input
+											type="checkbox"
+											className={styles.weatherCheckbox}
+											checked={weatherSet.has(w)}
+											onChange={() => toggleWeather(w)}
+										/>
+										<span className={styles.weatherBox} aria-hidden="true" />
+										<span className={styles.weatherIcon} aria-hidden="true">
+											<Icon size={16} />
+										</span>
+										<span className={styles.weatherText}>{weatherLabels[w] ?? w}</span>
+									</label>
+								);
+							})}
 						</div>
 					</label>
 
 					<div className={styles.row}>
-						<label className={styles.field}>
-							<span className={styles.label}>Runde</span>
-							<select className={styles.select} value={roundTypeId} onChange={(e) => setRoundTypeId(e.target.value)}>
-								<option value="">Velg runde (valgfritt)</option>
-								{roundTypes.map((r) => (
-									<option key={r.id} value={r.id}>
-										{r.name}
-										{r.distanceMeters ? ` • ${r.distanceMeters}m` : ''}
-										{r.targetSizeCm ? ` • ${r.targetSizeCm}cm` : ''}
-									</option>
-								))}
-							</select>
-						</label>
-						<label className={styles.field}>
-							<span className={styles.label}>Bue</span>
-							<select className={styles.select} value={bowId} onChange={(e) => setBowId(e.target.value)}>
-								<option value="">Velg bue (valgfritt)</option>
-								{bows.map((b) => (
-									<option key={b.id} value={b.id}>
-										{b.name} • {b.type}
-									</option>
-								))}
-							</select>
-						</label>
+						<Select
+							label="Runde"
+							value={roundTypeId}
+							onChange={setRoundTypeId}
+							placeholderLabel="Velg runde (valgfritt)"
+							options={roundTypeOptions.map((o) => ({ ...o, icon: <Target size={16} /> }))}
+							containerClassName={styles.field}
+						/>
+						<Select
+							label="Bue"
+							value={bowId}
+							onChange={setBowId}
+							placeholderLabel="Velg bue (valgfritt)"
+							options={bowOptions.map((o) => ({ ...o, icon: <CloudSun size={16} /> }))}
+							containerClassName={styles.field}
+						/>
 					</div>
 
 					<div className={styles.row}>
-						<label className={styles.field}>
-							<span className={styles.label}>Piler</span>
-							<select className={styles.select} value={arrowsId} onChange={(e) => setArrowsId(e.target.value)}>
-								<option value="">Velg piler (valgfritt)</option>
-								{arrows.map((a) => (
-									<option key={a.id} value={a.id}>
-										{a.name} • {a.material}
-									</option>
-								))}
-							</select>
-						</label>
+						<Select
+							label="Piler"
+							value={arrowsId}
+							onChange={setArrowsId}
+							placeholderLabel="Velg piler (valgfritt)"
+							options={arrowsOptions.map((o) => ({ ...o, icon: <MapPin size={16} /> }))}
+							containerClassName={styles.field}
+						/>
 					</div>
 
-					<label className={styles.field}>
-						<span className={styles.label}>Notater</span>
-						<textarea
-							className={styles.textarea}
-							value={notes}
-							onChange={(e) => setNotes(e.target.value)}
-							placeholder="Hvordan gikk treningen?"
-						/>
-					</label>
+					<TextArea
+						label="Notater"
+						value={notes}
+						onChange={(e) => setNotes(e.target.value)}
+						helpText="Hvordan gikk treningen?"
+						containerClassName={styles.field}
+					/>
 
 					<div className={styles.actions}>
 						<button type="button" className={`${styles.button} ${styles.secondary}`} onClick={onClose}>

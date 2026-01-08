@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
-import { Target } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export interface PracticeCardProps {
 	id: string;
@@ -23,7 +23,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({ id, date, arrowsShot
 			</div>
 			<div className={styles.badge}>
 				<span className={styles.iconCircle}>
-					<Target size={16} />
+					<ArrowUpRight size={16} />
 				</span>
 				{arrowsShot} piler
 			</div>

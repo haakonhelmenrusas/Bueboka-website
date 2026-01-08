@@ -1,0 +1,106 @@
+'use client';
+
+import React from 'react';
+import { X } from 'lucide-react';
+import styles from './BowModal.module.css';
+import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
+import { useModalBehavior } from '@/lib/useModalBehavior';
+
+interface BowModalProps {
+	open: boolean;
+	onClose: () => void;
+	editingBow?: {
+		id: string;
+		name: string;
+		type: BowType;
+		eyeToNock: number | null;
+		aimMeasure: number | null;
+		eyeToSight: number | null;
+		isFavorite: boolean;
+		notes: string | null;
+	};
+	onSaved?: () => void;
+}
+
+export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) {
+	useModalBehavior({ open, onClose });
+
+	const [loading, setLoading] = React.useState(false);
+	const [message, setMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+	const initialValues: BowFormValues = React.useMemo(
+		() => ({
+			name: editingBow?.name || '',
+			type: (editingBow?.type || 'RECURVE') as BowType,
+			eyeToNock: editingBow?.eyeToNock ?? 0,
+			aimMeasure: editingBow?.aimMeasure ?? 0,
+			eyeToSight: editingBow?.eyeToSight ?? 0,
+			isFavorite: editingBow?.isFavorite ?? false,
+			notes: editingBow?.notes || '',
+		}),
+		[editingBow]
+	);
+
+	const handleSubmit = async (values: BowFormValues) => {
+		setLoading(true);
+		setMessage(null);
+		try {
+			const url = editingBow ? `/api/bows/${editingBow.id}` : '/api/bows';
+			const method = editingBow ? 'PATCH' : 'POST';
+
+			const response = await fetch(url, {
+				method,
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					name: values.name,
+					type: values.type,
+					eyeToNock: values.eyeToNock ? values.eyeToNock : undefined,
+					aimMeasure: values.aimMeasure ? values.aimMeasure : undefined,
+					eyeToSight: values.eyeToSight ? values.eyeToSight : undefined,
+					isFavorite: values.isFavorite,
+					notes: values.notes || undefined,
+				}),
+			});
+
+			if (!response.ok) {
+				setMessage({ type: 'error', text: editingBow ? 'Kunne ikke oppdatere bue' : 'Kunne ikke lage bue' });
+				return;
+			}
+
+			setMessage({ type: 'success', text: editingBow ? 'Bue oppdatert' : 'Bue lagt til' });
+			setTimeout(() => {
+				onSaved?.();
+				if (editingBow) onClose();
+			}, 800);
+		} catch (error) {
+			setMessage({ type: 'error', text: error instanceof Error ? error.message : 'En feil oppstod' });
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	if (!open) return null;
+
+	return (
+		<div className={styles.overlay} onClick={onClose} role="presentation">
+			<div
+				className={styles.modal}
+				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				aria-label={editingBow ? 'Rediger bue' : 'Legg til bue'}
+			>
+				<div className={styles.header}>
+					<h2 className={styles.title}>{editingBow ? 'Rediger bue' : 'Legg til bue'}</h2>
+					<button className={styles.closeBtn} onClick={onClose} aria-label="Close modal">
+						<X size={22} />
+					</button>
+				</div>
+
+				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
+
+				<BowForm initialValues={initialValues} mode={editingBow ? 'edit' : 'create'} loading={loading} onSubmit={handleSubmit} />
+			</div>
+		</div>
+	);
+}

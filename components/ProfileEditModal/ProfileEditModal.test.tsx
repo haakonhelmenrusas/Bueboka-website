@@ -55,41 +55,10 @@ describe('ProfileEditModal', () => {
 		});
 	});
 
-	describe('Tab Navigation', () => {
-		it('should render all tabs', () => {
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-			expect(screen.getByText('Profil')).toBeInTheDocument();
-			expect(screen.getByText('Legg til bue')).toBeInTheDocument();
-			expect(screen.getByText('Legg til piler')).toBeInTheDocument();
-		});
-
-		it('should switch to bow tab when clicked', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const bowTab = screen.getByText('Legg til bue');
-			await user.click(bowTab);
-
-			expect(screen.getByLabelText('Navn på bue')).toBeInTheDocument();
-			expect(screen.getByLabelText('Type')).toBeInTheDocument();
-		});
-
-		it('should switch to arrows tab when clicked', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const arrowsTab = screen.getByText('Legg til piler');
-			await user.click(arrowsTab);
-
-			expect(screen.getByLabelText('Navn på piler')).toBeInTheDocument();
-			expect(screen.getByLabelText('Material')).toBeInTheDocument();
-		});
-	});
-
 	describe('Profile Form', () => {
 		it('should render profile form with club input', () => {
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-			const clubInput = screen.getByPlaceholderText('Din klubb') as HTMLInputElement;
+			const clubInput = screen.getByLabelText('Klubb') as HTMLInputElement;
 			expect(clubInput).toBeInTheDocument();
 			expect(clubInput.value).toBe('Test Club');
 		});
@@ -98,7 +67,7 @@ describe('ProfileEditModal', () => {
 			const user = userEvent.setup();
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
 
-			const clubInput = screen.getByPlaceholderText('Din klubb') as HTMLInputElement;
+			const clubInput = screen.getByLabelText('Klubb') as HTMLInputElement;
 			await user.clear(clubInput);
 			await user.type(clubInput, 'New Club');
 
@@ -111,11 +80,11 @@ describe('ProfileEditModal', () => {
 
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} onProfileUpdate={mockOnProfileUpdate} />);
 
-			const clubInput = screen.getByPlaceholderText('Din klubb');
+			const clubInput = screen.getByLabelText('Klubb');
 			await user.clear(clubInput);
 			await user.type(clubInput, 'Updated Club');
 
-			const submitBtn = screen.getByText('Lagre');
+			const submitBtn = screen.getByRole('button', { name: 'Lagre' });
 			await user.click(submitBtn);
 
 			await waitFor(() => {
@@ -129,10 +98,10 @@ describe('ProfileEditModal', () => {
 
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
 
-			const submitBtn = screen.getByText('Lagre') as HTMLButtonElement;
+			const submitBtn = screen.getByRole('button', { name: 'Lagre' });
 			await user.click(submitBtn);
 
-			expect(submitBtn.disabled).toBe(true);
+			expect(submitBtn).toBeDisabled();
 		});
 
 		it('should handle API errors gracefully', async () => {
@@ -144,176 +113,12 @@ describe('ProfileEditModal', () => {
 			const submitBtn = screen.getByText('Lagre');
 			await user.click(submitBtn);
 
-			// Verify form is no longer disabled after error
 			await waitFor(
 				() => {
 					expect(submitBtn).not.toBeDisabled();
 				},
 				{ timeout: 2000 }
 			);
-		});
-	});
-
-	describe('Bow Form', () => {
-		it('should render bow form with name and type inputs', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const bowTabBtn = screen.getAllByText('Legg til bue')[0];
-			await user.click(bowTabBtn);
-
-			expect(screen.getByLabelText('Navn på bue')).toBeInTheDocument();
-			expect(screen.getByLabelText('Type')).toBeInTheDocument();
-		});
-
-		it('should update bow name input', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const bowTabBtn = screen.getAllByText('Legg til bue')[0];
-			await user.click(bowTabBtn);
-
-			const bowNameInput = screen.getByPlaceholderText('f.eks. Min recurve bue') as HTMLInputElement;
-			await user.type(bowNameInput, 'My Bow');
-
-			expect(bowNameInput.value).toBe('My Bow');
-		});
-
-		it('should have correct bow type options', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const bowTabBtn = screen.getAllByText('Legg til bue')[0];
-			await user.click(bowTabBtn);
-
-			const typeSelect = screen.getByLabelText('Type') as HTMLSelectElement;
-			const options = Array.from(typeSelect.options).map((opt) => opt.value);
-
-			expect(options).toContain('RECURVE');
-			expect(options).toContain('COMPOUND');
-			expect(options).toContain('LONGBOW');
-			expect(options).toContain('BAREBOW');
-		});
-
-		it('should submit bow form successfully', async () => {
-			const user = userEvent.setup();
-			(global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true });
-
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} onProfileUpdate={mockOnProfileUpdate} />);
-
-			const bowTabBtn = screen.getAllByText('Legg til bue')[0];
-			await user.click(bowTabBtn);
-
-			const bowNameInput = screen.getByPlaceholderText('f.eks. Min recurve bue');
-			await user.type(bowNameInput, 'Test Bow');
-
-			const submitBtn = screen.getAllByText('Legg til bue')[1];
-			await user.click(submitBtn);
-
-			await waitFor(() => {
-				expect(global.fetch).toHaveBeenCalledWith('/api/bows', expect.any(Object));
-			});
-		});
-
-		it('should show success message after bow is added', async () => {
-			const user = userEvent.setup();
-			(global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true });
-
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const bowTabBtn = screen.getAllByText('Legg til bue')[0];
-			await user.click(bowTabBtn);
-
-			const bowNameInput = screen.getByPlaceholderText('f.eks. Min recurve bue');
-			await user.type(bowNameInput, 'Test Bow');
-
-			const submitBtn = screen.getAllByText('Legg til bue')[1];
-			await user.click(submitBtn);
-
-			await waitFor(() => {
-				expect(screen.getByText('Bue lagt til')).toBeInTheDocument();
-			});
-		});
-	});
-
-	describe('Arrows Form', () => {
-		it('should render arrows form with name and material inputs', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const arrowsTabBtn = screen.getAllByText('Legg til piler')[0];
-			await user.click(arrowsTabBtn);
-
-			expect(screen.getByLabelText('Navn på piler')).toBeInTheDocument();
-			expect(screen.getByLabelText('Material')).toBeInTheDocument();
-		});
-
-		it('should update arrow name input', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const arrowsTabBtn = screen.getAllByText('Legg til piler')[0];
-			await user.click(arrowsTabBtn);
-
-			const arrowNameInput = screen.getByPlaceholderText('f.eks. Mine karbonpiler') as HTMLInputElement;
-			await user.type(arrowNameInput, 'My Arrows');
-
-			expect(arrowNameInput.value).toBe('My Arrows');
-		});
-
-		it('should have correct arrow material options', async () => {
-			const user = userEvent.setup();
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const arrowsTabBtn = screen.getAllByText('Legg til piler')[0];
-			await user.click(arrowsTabBtn);
-
-			const materialSelect = screen.getByLabelText('Material') as HTMLSelectElement;
-			const options = Array.from(materialSelect.options).map((opt) => opt.value);
-
-			expect(options).toContain('KARBON');
-			expect(options).toContain('ALUMINIUM');
-			expect(options).toContain('TREVERK');
-		});
-
-		it('should submit arrows form successfully', async () => {
-			const user = userEvent.setup();
-			(global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true });
-
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} onProfileUpdate={mockOnProfileUpdate} />);
-
-			const arrowsTabBtn = screen.getAllByText('Legg til piler')[0];
-			await user.click(arrowsTabBtn);
-
-			const arrowNameInput = screen.getByPlaceholderText('f.eks. Mine karbonpiler');
-			await user.type(arrowNameInput, 'Test Arrows');
-
-			const submitBtn = screen.getAllByText('Legg til piler')[1];
-			await user.click(submitBtn);
-
-			await waitFor(() => {
-				expect(global.fetch).toHaveBeenCalledWith('/api/arrows', expect.any(Object));
-			});
-		});
-
-		it('should show success message after arrows are added', async () => {
-			const user = userEvent.setup();
-			(global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true });
-
-			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-
-			const arrowsTabBtn = screen.getAllByText('Legg til piler')[0];
-			await user.click(arrowsTabBtn);
-
-			const arrowNameInput = screen.getByPlaceholderText('f.eks. Mine karbonpiler');
-			await user.type(arrowNameInput, 'Test Arrows');
-
-			const submitBtn = screen.getAllByText('Legg til piler')[1];
-			await user.click(submitBtn);
-
-			await waitFor(() => {
-				expect(screen.getByText('Piler lagt til')).toBeInTheDocument();
-			});
 		});
 	});
 

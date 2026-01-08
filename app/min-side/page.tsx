@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
-import { PracticeCreateModal, PracticeDetailsModal, PracticesList, ProfileEditModal } from '@/components';
-import { BowArrow, Edit, LogOut, Menu } from 'lucide-react';
+import { ArrowsModal, BowModal, Button, PracticeCreateModal, PracticeDetailsModal, PracticesList, ProfileEditModal } from '@/components';
+import { BowArrow, Edit, LogOut, Menu, Navigation, Plus } from 'lucide-react';
 import { signOut } from '@/lib/auth-client';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
@@ -66,12 +66,14 @@ export default function MyPage() {
 	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
 	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
 	const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
 	const [createPracticeOpen, setCreatePracticeOpen] = useState(false);
+	const [profileModalOpen, setProfileModalOpen] = useState(false);
+	const [bowModalOpen, setBowModalOpen] = useState(false);
+	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
+	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 	const router = useRouter();
 
@@ -184,7 +186,29 @@ export default function MyPage() {
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(input),
 			});
-			if (!res.ok) throw new Error('Kunne ikke lagre trening');
+
+			if (!res.ok) {
+				let details: any = null;
+				try {
+					details = await res.json();
+				} catch {
+					// ignore
+				}
+
+				let errMsg: string = 'Kunne ikke lagre trening';
+				const fieldErrors = details && typeof details === 'object' ? (details as any).fieldErrors : undefined;
+				if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
+					const msgs = Object.entries(fieldErrors)
+						.map(([field, msg]) => `${field}: ${msg}`)
+						.join('\n');
+					errMsg = `Manglende/ugyldige felt:\n${msgs}`;
+				} else if (details && typeof details === 'object' && (details as any).error) {
+					errMsg = (details as any).error;
+				}
+
+				return Promise.reject(new Error(errMsg));
+			}
+
 			await fetchUser();
 		} catch (err) {
 			Sentry.captureException(err, { tags: { page: 'min-side', action: 'create-practice' } });
@@ -322,7 +346,12 @@ export default function MyPage() {
 								)}
 								<div className={styles.profileName}>{user.name || user.email}</div>
 								<div className={styles.profileMeta}>{user.club || 'Ingen klubb oppgitt'}</div>
-								<button className={styles.editButton} onClick={() => setIsModalOpen(true)} aria-label="Edit profile" title="Edit profile">
+								<button
+									className={styles.editButton}
+									onClick={() => setProfileModalOpen(true)}
+									aria-label="Edit profile"
+									title="Edit profile"
+								>
 									<Edit size={18} />
 									Rediger
 								</button>
@@ -330,6 +359,20 @@ export default function MyPage() {
 						</section>
 
 						<section className={styles.right}>
+							<div className={styles.rightActions}>
+								<Button
+									label="Ny bue"
+									onClick={() => {
+										setSelectedBow(null);
+										setBowModalOpen(true);
+									}}
+									icon={<BowArrow size={18} />}
+									width={180}
+									buttonStyle={{ marginRight: 10 }}
+								/>
+								<Button label="Nye piler" onClick={() => setArrowsModalOpen(true)} icon={<Navigation size={18} />} width={180} />
+							</div>
+
 							<div>
 								<div className={styles.sectionTitle}>Buer</div>
 								<div className={styles.list}>
@@ -340,7 +383,7 @@ export default function MyPage() {
 												className={styles.item}
 												onClick={() => {
 													setSelectedBow(bow);
-													setIsModalOpen(true);
+													setBowModalOpen(true);
 												}}
 											>
 												<div className={styles.itemLeft}>
@@ -357,49 +400,60 @@ export default function MyPage() {
 									)}
 								</div>
 							</div>
-
-							<div>
-								<div className={styles.sectionTitleRow}>
-									<div className={styles.sectionTitle}>Treninger</div>
-									<button className={styles.smallButton} onClick={() => setCreatePracticeOpen(true)}>
-										Ny trening
-									</button>
-								</div>
-								<div className={styles.list}>
-									{loading ? (
-										<div className={styles.list}>
-											{Array.from({ length: 3 }).map((_, i) => (
-												<div key={i} className={styles.skeletonItem} />
-											))}
-										</div>
-									) : (
-										<PracticesList practices={practiceCards} onSelectPractice={handleSelectPractice} />
-									)}
-								</div>
-							</div>
 						</section>
 					</div>
 				</div>
 			</main>
 
+			{/* Practices moved to dedicated section below main card */}
+			<section className={styles.practicesSection}>
+				<div className={styles.practicesHeader}>
+					<h2 className={styles.practicesTitle}>Treninger</h2>
+					<Button
+						label="Ny trening"
+						onClick={() => setCreatePracticeOpen(true)}
+						icon={<Plus size={18} />}
+						width={240}
+						buttonStyle={{ marginLeft: 'auto' }}
+					/>
+				</div>
+				<div className={styles.practicesList}>
+					{loading ? (
+						<div className={styles.list}>
+							{Array.from({ length: 3 }).map((_, i) => (
+								<div key={i} className={styles.skeletonItem} />
+							))}
+						</div>
+					) : (
+						<PracticesList practices={practiceCards} onSelectPractice={handleSelectPractice} />
+					)}
+				</div>
+			</section>
+
 			<ProfileEditModal
-				isOpen={isModalOpen}
-				onClose={() => {
-					setIsModalOpen(false);
-					setSelectedBow(null);
-				}}
+				isOpen={profileModalOpen}
+				onClose={() => setProfileModalOpen(false)}
 				user={{
 					id: user.id,
 					name: user.name,
 					email: user.email,
 					club: user.club,
 				}}
+				onProfileUpdate={fetchUser}
+			/>
+
+			<BowModal
+				open={bowModalOpen}
+				onClose={() => {
+					setBowModalOpen(false);
+					setSelectedBow(null);
+				}}
 				editingBow={
 					selectedBow
 						? {
 								id: selectedBow.id,
 								name: selectedBow.name,
-								type: selectedBow.type as 'RECURVE' | 'COMPOUND' | 'LONGBOW' | 'BAREBOW' | 'HORSEBOW' | 'TRADITIONAL' | 'OTHER',
+								type: selectedBow.type as any,
 								eyeToNock: selectedBow.eyeToNock,
 								aimMeasure: selectedBow.aimMeasure,
 								eyeToSight: selectedBow.eyeToSight,
@@ -408,7 +462,16 @@ export default function MyPage() {
 							}
 						: undefined
 				}
-				onProfileUpdate={fetchUser}
+				onSaved={fetchUser}
+			/>
+
+			<ArrowsModal
+				open={arrowsModalOpen}
+				onClose={() => setArrowsModalOpen(false)}
+				onSaved={() => {
+					setArrowsModalOpen(false);
+					fetchUser();
+				}}
 			/>
 
 			<PracticeDetailsModal

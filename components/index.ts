@@ -9,11 +9,17 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { HeroBackground } from './HeroBackground/HeroBackground';
 import { Button } from './common/Button/Button';
 import { Input } from './common/Input/Input';
+import { NumberInput } from './common/NumberInput/NumberInput';
+import { DateInput } from './common/DateInput/DateInput';
+import { TextArea } from './common/TextArea/TextArea';
 import { ProfileEditModal } from './ProfileEditModal/ProfileEditModal';
 import { PracticeCard } from './Practices/PracticeCard';
 import { PracticesList } from './Practices/PracticesList';
 import { PracticeDetailsModal } from './Practices/PracticeDetailsModal';
 import { PracticeCreateModal } from './Practices/PracticeCreateModal';
+import { Select } from './common/Select/Select';
+import { BowModal } from './BowModal/BowModal';
+import { ArrowsModal } from './ArrowsModal/ArrowsModal';
 
 export {
 	Header,
@@ -27,9 +33,15 @@ export {
 	HeroBackground,
 	Button,
 	Input,
+	NumberInput,
+	DateInput,
+	TextArea,
 	ProfileEditModal,
 	PracticeCard,
 	PracticesList,
 	PracticeDetailsModal,
 	PracticeCreateModal,
+	Select,
+	BowModal,
+	ArrowsModal,
 };
