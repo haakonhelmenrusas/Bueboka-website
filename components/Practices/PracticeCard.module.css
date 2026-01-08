@@ -1,22 +1,22 @@
 .card {
-  background: rgba(255, 255, 255, 0.10);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(12, 130, 172, 0.06);
+  border: 1px solid rgba(12, 130, 172, 0.14);
   border-radius: 18px;
-  padding: var(--space-7);
+  padding: var(--space-6) var(--space-7);
   display: grid;
   grid-template-columns: 1fr auto;
   gap: var(--space-6);
   align-items: center;
-  box-shadow: 0 10px 26px var(--dark-25);
+  box-shadow: 0 8px 18px var(--dark-06);
   cursor: pointer;
   transition: all 180ms ease;
   width: 100%;
-  min-height: 72px;
+  min-height: 60px;
 }
 
 .card:hover {
-  background: rgba(255, 255, 255, 0.14);
-  box-shadow: 0 14px 34px var(--dark-45);
+  background: rgba(12, 130, 172, 0.085);
+  box-shadow: 0 12px 26px var(--dark-08);
   transform: translateY(-2px);
 }
 
@@ -31,36 +31,31 @@
 }
 
 .date {
-  color: var(--white);
-  font-weight: 800;
-  font-size: 1.1rem;
+  color: var(--text-dark);
+  font-weight: 650;
+  font-size: 1.05rem;
 }
 
 .subtle {
-  color: var(--white-75);
-  font-size: 1rem;
+  color: var(--text-gray-700);
+  font-size: 0.95rem;
+  font-weight: 550;
 }
 
 .badge {
   background: linear-gradient(90deg, var(--primary), var(--primary-light));
   color: var(--white);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-3) var(--space-5);
   border-radius: 999px;
   font-weight: 800;
   font-size: 0.95rem;
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  min-width: 180px;
+  min-width: 190px;
   justify-content: center;
 }
 
 .iconCircle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
 }

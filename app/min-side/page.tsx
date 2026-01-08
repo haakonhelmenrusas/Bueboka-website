@@ -4,12 +4,21 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
-import { ArrowsModal, BowModal, Button, PracticeCreateModal, PracticeDetailsModal, PracticesList, ProfileEditModal } from '@/components';
+import {
+	ArrowsModal,
+	BowModal,
+	Button,
+	PracticeCreateModal,
+	PracticeDetailsModal,
+	PracticesList,
+	ProfileEditModal
+} from '@/components';
 import { BowArrow, Edit, LogOut, Menu, Navigation, Plus } from 'lucide-react';
 import { signOut } from '@/lib/auth-client';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
 import { Environment, WeatherCondition } from '@prisma/client';
+import { MyPageSkeleton } from './Skeleton';
 
 interface User {
 	id: string;
@@ -18,6 +27,7 @@ interface User {
 	club: string | null;
 	image: string | null;
 	bows: Bow[];
+	arrows: Arrow[];
 	practices: Practice[];
 }
 
@@ -30,6 +40,12 @@ interface Bow {
 	eyeToSight: number | null;
 	isFavorite: boolean;
 	notes: string | null;
+}
+
+interface Arrow {
+	id: string;
+	name: string;
+	material: string;
 }
 
 interface Practice {
@@ -74,6 +90,7 @@ export default function MyPage() {
 	const [bowModalOpen, setBowModalOpen] = useState(false);
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
 	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
+	const [selectedArrows, setSelectedArrows] = useState<Arrow | null>(null);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 	const router = useRouter();
 
@@ -173,7 +190,6 @@ export default function MyPage() {
 				tags: { page: 'min-side', action: 'fetchUser' },
 				extra: { message: 'Error fetching user data' },
 			});
-			console.error(err);
 		} finally {
 			setLoading(false);
 		}
@@ -217,21 +233,7 @@ export default function MyPage() {
 	};
 
 	if (loading) {
-		return (
-			<div className={styles.page}>
-				<div className={styles.headerBar}>
-					<div className={styles.logoBox}>
-						<Image src="/assets/logo.png" alt="Bueboka Logo" width={28} height={28} />
-					</div>
-					<div className={styles.brand}>Bueboka</div>
-				</div>
-				<main className={styles.main}>
-					<div className={styles.card}>
-						<div className={styles.empty}>Laster inn...</div>
-					</div>
-				</main>
-			</div>
-		);
+		return <MyPageSkeleton />;
 	}
 
 	if (error || !user) {
@@ -359,45 +361,83 @@ export default function MyPage() {
 						</section>
 
 						<section className={styles.right}>
-							<div className={styles.rightActions}>
-								<Button
-									label="Ny bue"
-									onClick={() => {
-										setSelectedBow(null);
-										setBowModalOpen(true);
-									}}
-									icon={<BowArrow size={18} />}
-									width={180}
-									buttonStyle={{ marginRight: 10 }}
-								/>
-								<Button label="Nye piler" onClick={() => setArrowsModalOpen(true)} icon={<Navigation size={18} />} width={180} />
+							<div className={styles.topRightRow}>
+								<div className={styles.rightActions}>
+									<Button
+										label="Ny bue"
+										onClick={() => {
+											setSelectedBow(null);
+											setBowModalOpen(true);
+										}}
+										icon={<BowArrow size={18} />}
+										width={170}
+										size="small"
+									/>
+									<Button
+										label="Nye piler"
+										onClick={() => setArrowsModalOpen(true)}
+										icon={<Navigation size={18} />}
+										width={170}
+										size="small"
+									/>
+								</div>
 							</div>
 
-							<div>
-								<div className={styles.sectionTitle}>Buer</div>
-								<div className={styles.list}>
-									{user.bows && user.bows.length > 0 ? (
-										user.bows.map((bow) => (
-											<div
-												key={bow.id}
-												className={styles.item}
-												onClick={() => {
-													setSelectedBow(bow);
-													setBowModalOpen(true);
-												}}
-											>
-												<div className={styles.itemLeft}>
-													<div>{bow.name}</div>
-													<div className={styles.itemMeta}>{bow.type}</div>
+							<div className={styles.rightContent}>
+								<div>
+									<div className={styles.sectionTitle}>Buer</div>
+									<div className={styles.list}>
+										{user.bows && user.bows.length > 0 ? (
+											user.bows.map((bow) => (
+												<div
+													key={bow.id}
+													className={styles.item}
+													onClick={() => {
+														setSelectedBow(bow);
+														setBowModalOpen(true);
+													}}
+												>
+													<div className={styles.itemLeft}>
+														<div>{bow.name}</div>
+														<div className={styles.itemMeta}>{bow.type}</div>
+													</div>
+													<div className={styles.itemIcon}>
+														<BowArrow size={18} />
+													</div>
 												</div>
-												<div className={styles.itemIcon}>
-													<BowArrow size={18} />
+											))
+										) : (
+											<div className={styles.placeholderCard}>Ingen buer funnet</div>
+										)}
+									</div>
+								</div>
+
+								<div>
+									<div className={styles.sectionTitle}>Piler</div>
+									<div className={styles.list}>
+										{user.arrows && user.arrows.length > 0 ? (
+											user.arrows.map((a) => (
+												<div
+													key={a.id}
+													className={styles.item}
+													onClick={() => {
+														setSelectedArrows(a);
+														setArrowsModalOpen(true);
+													}}
+												>
+													<div className={styles.itemLeft}>
+														<div>{a.name}</div>
+														<div className={styles.itemMeta}>{a.material}</div>
+													</div>
+													<div className={styles.itemIcon}>
+														<Navigation size={18} />
+													</div>
 												</div>
-											</div>
-										))
-									) : (
-										<div className={styles.empty}>Ingen buer funnet</div>
-									)}
+											))
+										) : (
+											<div className={styles.placeholderCard}>Legg til dine første piler</div>
+										)}
+									</div>
 								</div>
 							</div>
 						</section>
@@ -467,9 +507,22 @@ export default function MyPage() {
 
 			<ArrowsModal
 				open={arrowsModalOpen}
-				onClose={() => setArrowsModalOpen(false)}
+				onClose={() => {
+					setArrowsModalOpen(false);
+					setSelectedArrows(null);
+				}}
+				editingArrows={
+					selectedArrows
+						? {
+								id: selectedArrows.id,
+								name: selectedArrows.name,
+								material: selectedArrows.material as any,
+							}
+						: undefined
+				}
 				onSaved={() => {
 					setArrowsModalOpen(false);
+					setSelectedArrows(null);
 					fetchUser();
 				}}
 			/>
@@ -489,7 +542,7 @@ export default function MyPage() {
 				onCreate={handleCreatePractice}
 				bows={user.bows}
 				roundTypes={[]}
-				arrows={[]}
+				arrows={user.arrows}
 			/>
 		</div>
 	);

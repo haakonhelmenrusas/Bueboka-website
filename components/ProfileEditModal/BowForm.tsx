@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button, Input, NumberInput, Select, TextArea } from '@/components';
+import { Input, NumberInput, Select, TextArea } from '@/components';
 import { Check } from 'lucide-react';
 
 export type BowType = 'RECURVE' | 'COMPOUND' | 'LONGBOW' | 'BAREBOW' | 'HORSEBOW' | 'TRADITIONAL' | 'OTHER';
@@ -28,7 +28,7 @@ const bowTypeOptions = [
 	{ value: 'COMPOUND', label: 'Compound' },
 	{ value: 'LONGBOW', label: 'Langbue' },
 	{ value: 'BAREBOW', label: 'Barebow' },
-	{ value: 'HORSEBOW', label: 'Hestebue' },
+	{ value: 'HORSEBOW', label: 'Rytterbue' },
 	{ value: 'TRADITIONAL', label: 'Tradisjonell' },
 	{ value: 'OTHER', label: 'Annet' },
 ] as const;
@@ -54,6 +54,7 @@ export function BowForm({ initialValues, mode, loading, onSubmit }: BowFormProps
 
 	return (
 		<form
+			id="bow-form"
 			onSubmit={async (e) => {
 				e.preventDefault();
 				await onSubmit({ name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes });
@@ -84,13 +85,6 @@ export function BowForm({ initialValues, mode, loading, onSubmit }: BowFormProps
 			/>
 
 			<TextArea label="Notater" value={notes} onChange={(e) => setNotes(e.target.value)} helpText="Tilleggsnotater om buen" />
-
-			<Button
-				label={loading ? (mode === 'edit' ? 'Oppdaterer...' : 'Legger til...') : mode === 'edit' ? 'Oppdater bue' : 'Legg til bue'}
-				type="submit"
-				disabled={loading}
-				width={260}
-			/>
 		</form>
 	);
 }

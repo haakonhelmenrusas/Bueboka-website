@@ -33,6 +33,7 @@ export async function GET() {
 			orderBy: [{ createdAt: 'desc' }],
 			include: {
 				bows: true,
+				arrows: true,
 				practices: {
 					orderBy: { date: 'desc' },
 					take: 8,
@@ -52,7 +53,6 @@ export async function GET() {
 			tags: { endpoint: 'users', method: 'GET' },
 			extra: { message: 'Error fetching users' },
 		});
-		console.error('Error fetching users:', error);
 		return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
 	}
 }
@@ -80,7 +80,6 @@ export async function PATCH(request: NextRequest) {
 			tags: { endpoint: 'users', method: 'PATCH' },
 			extra: { message: 'Error updating user' },
 		});
-		console.error('Error updating user:', error);
 		return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
 	}
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Button, Input, Select } from '@/components';
+import { Input, Select } from '@/components';
 
 export type ArrowMaterial = 'KARBON' | 'ALUMINIUM' | 'TREVERK';
 
@@ -33,6 +33,7 @@ export function ArrowsForm({ initialValues, loading, onSubmit }: ArrowsFormProps
 
 	return (
 		<form
+			id="arrows-form"
 			onSubmit={async (e) => {
 				e.preventDefault();
 				await onSubmit({ name, material });
@@ -51,7 +52,6 @@ export function ArrowsForm({ initialValues, loading, onSubmit }: ArrowsFormProps
 				onChange={(v) => setMaterial(v as ArrowMaterial)}
 				options={materialOptions.map((o) => ({ ...o }))}
 			/>
-			<Button label={loading ? 'Legger til...' : 'Legg til piler'} type="submit" disabled={loading} width={260} />
 		</form>
 	);
 }

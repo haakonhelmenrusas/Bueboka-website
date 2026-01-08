@@ -13,8 +13,8 @@
 
 .title {
   font-size: 1.3rem;
-  font-weight: 800;
-  color: var(--white);
+  font-weight: 900;
+  color: var(--text-gray-800);
 }
 
 .list {
@@ -23,7 +23,6 @@
 }
 
 .empty {
-  color: var(--white-60);
+  color: var(--text-gray-600);
   font-size: 0.95rem;
 }
-

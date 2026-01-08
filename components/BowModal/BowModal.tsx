@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import styles from './BowModal.module.css';
 import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
+import { Button } from '@/components';
 
 interface BowModalProps {
 	open: boolean;
@@ -99,7 +100,22 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 
 				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 
-				<BowForm initialValues={initialValues} mode={editingBow ? 'edit' : 'create'} loading={loading} onSubmit={handleSubmit} />
+				<div className={styles.form}>
+					<BowForm initialValues={initialValues} mode={editingBow ? 'edit' : 'create'} loading={loading} onSubmit={handleSubmit} />
+
+					<div className={styles.actions}>
+						<Button label="Avbryt" onClick={onClose} disabled={loading} buttonType="outline" width={160} />
+						<Button
+							label={loading ? (editingBow ? 'Oppdaterer...' : 'Lagrer...') : editingBow ? 'Oppdater' : 'Lagre'}
+							onClick={() => {
+								const form = document.getElementById('bow-form') as HTMLFormElement | null;
+								form?.requestSubmit();
+							}}
+							loading={loading}
+							width={180}
+						/>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
