@@ -41,17 +41,28 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
 		}
 
-		const bow = await prisma.bow.update({
-			where: { id },
-			data: {
-				name,
-				type,
-				eyeToNock: eyeToNock !== undefined ? eyeToNock : null,
-				aimMeasure: aimMeasure !== undefined ? aimMeasure : null,
-				eyeToSight: eyeToSight !== undefined ? eyeToSight : null,
-				isFavorite: isFavorite || false,
-				notes: notes || null,
-			},
+		const makeFavorite = Boolean(isFavorite);
+
+		const bow = await prisma.$transaction(async (tx) => {
+			if (makeFavorite) {
+				await tx.bow.updateMany({
+					where: { userId: user.id, isFavorite: true, NOT: { id } },
+					data: { isFavorite: false },
+				});
+			}
+
+			return tx.bow.update({
+				where: { id },
+				data: {
+					name,
+					type,
+					eyeToNock: eyeToNock !== undefined ? eyeToNock : null,
+					aimMeasure: aimMeasure !== undefined ? aimMeasure : null,
+					eyeToSight: eyeToSight !== undefined ? eyeToSight : null,
+					isFavorite: makeFavorite,
+					notes: notes || null,
+				},
+			});
 		});
 
 		return NextResponse.json({ bow }, { status: 200 });
@@ -65,7 +76,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 	}
 }
 
-export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
 		const user = await getCurrentUser();
 		if (!user) {
@@ -74,18 +85,18 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
 		const { id } = await params;
 
-		// Verify the bow belongs to the user
-		const existingBow = await prisma.bow.findUnique({
-			where: { id },
-		});
-
+		const existingBow = await prisma.bow.findUnique({ where: { id } });
 		if (!existingBow || existingBow.userId !== user.id) {
 			return NextResponse.json({ error: 'Bow not found or unauthorized' }, { status: 404 });
 		}
 
-		await prisma.bow.delete({
-			where: { id },
+		// Disconnect from practices first to avoid FK constraint errors
+		await prisma.practice.updateMany({
+			where: { bowId: id, userId: user.id },
+			data: { bowId: null },
 		});
+
+		await prisma.bow.delete({ where: { id } });
 
 		return NextResponse.json({ success: true }, { status: 200 });
 	} catch (error) {

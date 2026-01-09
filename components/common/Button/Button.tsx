@@ -5,7 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	buttonStyle?: React.CSSProperties;
 	textStyle?: React.CSSProperties;
 	label: string;
-	width?: string | number;
+	width?: number | string;
 	/**
 	 * FontAwesome icon component to render inside the button (optional)
 	 */
@@ -103,17 +103,16 @@ export const Button: React.FC<ButtonProps> = ({
 		return content;
 	};
 
-	const buttonWidth = typeof width === 'number' ? `${width}px` : width;
-
 	return (
 		<button
+			className={styles.button}
 			style={{
 				backgroundColor: buttonType === 'outline' ? 'var(--transparent)' : buttonColor,
 				color: textColor,
 				border: buttonType === 'outline' ? `1px solid ${buttonColor}` : 'none',
 				padding: sizeStyles.padding,
 				height: sizeStyles.height,
-				width: buttonWidth,
+				width,
 				fontSize: sizeStyles.fontSize,
 				borderRadius: 8,
 				display: 'flex',

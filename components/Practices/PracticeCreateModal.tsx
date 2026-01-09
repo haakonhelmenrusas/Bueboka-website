@@ -93,8 +93,15 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	const weatherSet = useMemo(() => new Set(weather), [weather]);
 
 	const toggleWeather = (w: WeatherCondition) => {
+		if (environment === Environment.INDOOR) return;
 		setWeather((prev) => (prev.includes(w) ? prev.filter((x) => x !== w) : [...prev, w]));
 	};
+
+	React.useEffect(() => {
+		if (environment === Environment.INDOOR) {
+			setWeather([]);
+		}
+	}, [environment]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -180,15 +187,21 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 
 					<label className={styles.field}>
 						<span className={styles.label}>Vær</span>
+						{environment === Environment.INDOOR ? <div className={styles.helpText}>Vær registreres kun for utetrening.</div> : null}
 						<div className={styles.weatherGrid}>
 							{weatherOptions.map((w) => {
 								const Icon = weatherIcons[w];
+								const disabledWeather = environment === Environment.INDOOR;
 								return (
-									<label key={w} className={`${styles.weatherOption} ${weatherSet.has(w) ? styles.weatherOptionSelected : ''}`}>
+									<label
+										key={w}
+										className={`${styles.weatherOption} ${weatherSet.has(w) ? styles.weatherOptionSelected : ''} ${disabledWeather ? styles.weatherOptionDisabled : ''}`}
+									>
 										<input
 											type="checkbox"
 											className={styles.weatherCheckbox}
 											checked={weatherSet.has(w)}
+											disabled={disabledWeather}
 											onChange={() => toggleWeather(w)}
 										/>
 										<span className={styles.weatherBox} aria-hidden="true" />
@@ -204,14 +217,6 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 
 					<div className={styles.row}>
 						<Select
-							label="Runde"
-							value={roundTypeId}
-							onChange={setRoundTypeId}
-							placeholderLabel="Velg runde (valgfritt)"
-							options={roundTypeOptions.map((o) => ({ ...o, icon: <Target size={16} /> }))}
-							containerClassName={styles.field}
-						/>
-						<Select
 							label="Bue"
 							value={bowId}
 							onChange={setBowId}
@@ -219,15 +224,23 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 							options={bowOptions.map((o) => ({ ...o, icon: <CloudSun size={16} /> }))}
 							containerClassName={styles.field}
 						/>
-					</div>
-
-					<div className={styles.row}>
 						<Select
 							label="Piler"
 							value={arrowsId}
 							onChange={setArrowsId}
 							placeholderLabel="Velg piler (valgfritt)"
 							options={arrowsOptions.map((o) => ({ ...o, icon: <MapPin size={16} /> }))}
+							containerClassName={styles.field}
+						/>
+					</div>
+
+					<div className={styles.row}>
+						<Select
+							label="Runde"
+							value={roundTypeId}
+							onChange={setRoundTypeId}
+							placeholderLabel="Velg runde (valgfritt)"
+							options={roundTypeOptions.map((o) => ({ ...o, icon: <Target size={16} /> }))}
 							containerClassName={styles.field}
 						/>
 					</div>

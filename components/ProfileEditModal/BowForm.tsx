@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Input, NumberInput, Select, TextArea } from '@/components';
-import { Check } from 'lucide-react';
+import { Checkbox, Input, NumberInput, Select, TextArea } from '@/components';
+import styles from './BowForm.module.css';
 
 export type BowType = 'RECURVE' | 'COMPOUND' | 'LONGBOW' | 'BAREBOW' | 'HORSEBOW' | 'TRADITIONAL' | 'OTHER';
 
@@ -18,8 +18,6 @@ export interface BowFormValues {
 
 interface BowFormProps {
 	initialValues: BowFormValues;
-	mode: 'create' | 'edit';
-	loading?: boolean;
 	onSubmit: (values: BowFormValues) => Promise<void>;
 }
 
@@ -33,7 +31,7 @@ const bowTypeOptions = [
 	{ value: 'OTHER', label: 'Annet' },
 ] as const;
 
-export function BowForm({ initialValues, mode, loading, onSubmit }: BowFormProps) {
+export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 	const [name, setName] = React.useState(initialValues.name);
 	const [type, setType] = React.useState<BowType>(initialValues.type);
 	const [eyeToNock, setEyeToNock] = React.useState<number>(initialValues.eyeToNock);
@@ -55,34 +53,24 @@ export function BowForm({ initialValues, mode, loading, onSubmit }: BowFormProps
 	return (
 		<form
 			id="bow-form"
+			className={styles.form}
 			onSubmit={async (e) => {
 				e.preventDefault();
 				await onSubmit({ name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes });
 			}}
 		>
-			<Input
-				label="Navn på bue"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-				helpText="Gi buen et lett gjenkjennelig navn"
-				required
-			/>
-			<Select label="Type" value={type} onChange={(v) => setType(v as BowType)} options={bowTypeOptions.map((o) => ({ ...o }))} />
+			<div className={styles.row}>
+				<Input label="Navn på bue" value={name} onChange={(e) => setName(e.target.value)} helpText="Gi buen et navn" required />
+				<Select label="Type" value={type} onChange={(v) => setType(v as BowType)} options={bowTypeOptions.map((o) => ({ ...o }))} />
+			</div>
 
-			<NumberInput label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={1} />
-			<NumberInput label="Aim measure (cm)" value={aimMeasure} onChange={setAimMeasure} min={0} step={1} />
-			<NumberInput label="Øye til sight (cm)" value={eyeToSight} onChange={setEyeToSight} min={0} step={1} />
+			<div className={styles.numberRow}>
+				<NumberInput label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={1} />
+				<NumberInput label="Målt sikte (cm)" value={aimMeasure} onChange={setAimMeasure} min={0} step={1} />
+				<NumberInput label="Øye til sikte (cm)" value={eyeToSight} onChange={setEyeToSight} min={0} step={1} />
+			</div>
 
-			<Select
-				label="Favoritt"
-				value={isFavorite ? 'yes' : 'no'}
-				onChange={(v) => setIsFavorite(v === 'yes')}
-				options={[
-					{ value: 'yes', label: 'Ja', icon: <Check size={16} /> },
-					{ value: 'no', label: 'Nei' },
-				]}
-				helpText="Marker som favorittbue"
-			/>
+			<Checkbox label="Favorittbue" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittbue" />
 
 			<TextArea label="Notater" value={notes} onChange={(e) => setNotes(e.target.value)} helpText="Tilleggsnotater om buen" />
 		</form>

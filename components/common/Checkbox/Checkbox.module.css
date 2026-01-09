@@ -1,0 +1,87 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	width: 100%;
+}
+
+.inline .controlRow {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.label {
+	font-weight: 800;
+	font-size: 0.95rem;
+	color: rgba(5, 53, 70, 0.92);
+}
+
+.required {
+	margin-left: 6px;
+	color: var(--error);
+	font-weight: 900;
+}
+
+.helpText {
+	color: rgba(5, 53, 70, 0.70);
+	font-weight: 650;
+	font-size: 0.9rem;
+}
+
+.controlRow {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.box {
+	width: 20px;
+	height: 20px;
+	border-radius: 6px;
+	border: 1px solid rgba(5, 53, 70, 0.22);
+	background: rgba(255, 255, 255, 0.96);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+	flex: 0 0 auto;
+}
+
+.input:checked + .box {
+	background: rgba(12, 130, 172, 0.14);
+	border-color: rgba(12, 130, 172, 0.52);
+	box-shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+}
+
+.input:checked + .box::after {
+	content: '';
+	width: 10px;
+	height: 6px;
+	border-left: 2px solid rgba(5, 53, 70, 0.92);
+	border-bottom: 2px solid rgba(5, 53, 70, 0.92);
+	transform: rotate(-45deg);
+	margin-top: -1px;
+}
+
+.container:has(.input:focus-visible) .box {
+	outline: 2px solid rgba(12, 130, 172, 0.5);
+	outline-offset: 3px;
+}
+
+.container:has(.input:disabled) {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.container:hover .box {
+	border-color: rgba(5, 53, 70, 0.34);
+}
+

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
@@ -8,81 +8,31 @@ import {
 	ArrowsModal,
 	BowModal,
 	Button,
+	EquipmentSection,
 	PracticeCreateModal,
 	PracticeDetailsModal,
 	PracticesList,
-	ProfileEditModal
+	ProfileCard,
+	ProfileEditModal,
+	ProfileMenu,
+	StatsSummary,
 } from '@/components';
-import { BowArrow, Edit, LogOut, Menu, Navigation, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { signOut } from '@/lib/auth-client';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
-import { Environment, WeatherCondition } from '@prisma/client';
 import { MyPageSkeleton } from './Skeleton';
+import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
 
-interface User {
-	id: string;
-	email: string;
-	name: string | null;
-	club: string | null;
-	image: string | null;
-	bows: Bow[];
-	arrows: Arrow[];
-	practices: Practice[];
-}
-
-interface Bow {
-	id: string;
-	name: string;
-	type: string;
-	eyeToNock: number | null;
-	aimMeasure: number | null;
-	eyeToSight: number | null;
-	isFavorite: boolean;
-	notes: string | null;
-}
-
-interface Arrow {
-	id: string;
-	name: string;
-	material: string;
-}
-
-interface Practice {
-	id: string;
-	date: string;
-	location?: string | null;
-	environment: Environment;
-	weather: WeatherCondition[];
-	notes?: string | null;
-	roundType?: {
-		name: string;
-		distanceMeters?: number | null;
-		targetSizeCm?: number | null;
-	};
-	bow?: {
-		name: string;
-		type: string;
-	};
-	arrows?: {
-		name: string;
-		material: string;
-	};
-	ends?: Array<{
-		id: string;
-		arrows: number;
-		scores: number[];
-		arrowsPerEnd?: number | null;
-		distanceMeters?: number | null;
-		targetSizeCm?: number | null;
-	}>;
-}
+type PracticeCardItem = { id: string; date: string; arrowsShot: number };
 
 export default function MyPage() {
-	const [user, setUser] = useState<User | null>(null);
+	const [profile, setProfile] = useState<User | null>(null);
+	const [bows, setBows] = useState<Bow[]>([]);
+	const [arrows, setArrows] = useState<Arrow[]>([]);
+	const [practiceCards, setPracticeCards] = useState<PracticeCardItem[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
-	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
 	const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
 	const [createPracticeOpen, setCreatePracticeOpen] = useState(false);
@@ -91,16 +41,12 @@ export default function MyPage() {
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
 	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
 	const [selectedArrows, setSelectedArrows] = useState<Arrow | null>(null);
-	const menuRef = useRef<HTMLDivElement | null>(null);
+	const [stats, setStats] = useState<StatsResponse['stats']>({ last7Days: 0, last30Days: 0, overall: 0 });
 	const router = useRouter();
-
-	const toggleProfileMenu = () => setProfileMenuOpen((v) => !v);
-	const closeProfileMenu = () => setProfileMenuOpen(false);
 
 	const handleLogout = async () => {
 		try {
 			await signOut();
-			closeProfileMenu();
 			router.push('/');
 		} catch (err) {
 			Sentry.captureException(err, {
@@ -112,86 +58,84 @@ export default function MyPage() {
 	};
 
 	useEffect(() => {
-		fetchUser();
+		Promise.all([fetchProfile(), fetchBows(), fetchArrows(), fetchPracticeCards(), fetchStats()]).finally(() => setLoading(false));
 	}, []);
 
-	// Close profile menu on Escape and handle click outside
-	useEffect(() => {
-		if (!profileMenuOpen) return;
-
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				closeProfileMenu();
-			}
-
-			if (e.key === 'Tab') {
-				// focus trap
-				const el = menuRef.current;
-				if (!el) return;
-				const focusable = el.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-				if (focusable.length === 0) return;
-				const first = focusable[0];
-				const last = focusable[focusable.length - 1];
-
-				if (e.shiftKey && document.activeElement === first) {
-					e.preventDefault();
-					last.focus();
-				} else if (!e.shiftKey && document.activeElement === last) {
-					e.preventDefault();
-					first.focus();
-				}
-			}
-		};
-
-		const onClickOutside = (ev: MouseEvent) => {
-			const el = menuRef.current;
-			if (!el) return;
-			if (ev.target instanceof Node && !el.contains(ev.target)) {
-				closeProfileMenu();
-			}
-		};
-
-		document.addEventListener('keydown', onKeyDown);
-		document.addEventListener('mousedown', onClickOutside);
-
-		// focus first focusable inside menu after open
-		setTimeout(() => {
-			const el = menuRef.current;
-			if (!el) return;
-			const focusable = el.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-			if (focusable.length) focusable[0].focus();
-		}, 0);
-
-		return () => {
-			document.removeEventListener('keydown', onKeyDown);
-			document.removeEventListener('mousedown', onClickOutside);
-		};
-	}, [profileMenuOpen]);
-
-	const fetchUser = async () => {
+	const fetchProfile = async () => {
 		try {
-			setLoading(true);
-			const response = await fetch('/api/users');
+			const response = await fetch('/api/profile');
 			if (!response.ok) {
-				if (response.status === 401) {
-					setError('Du må være logget inn');
-				} else {
-					setError('Kunne ikke hente brukerdata');
-				}
+				if (response.status === 401) setError('Du må være logget inn');
+				else setError('Kunne ikke hente brukerdata');
 				return;
 			}
 			const data = await response.json();
-			if (data.users && data.users.length > 0) {
-				setUser(data.users[0]);
-			}
+			setProfile(data.profile);
 		} catch (err) {
 			setError('En feil oppstod');
-			Sentry.captureException(err, {
-				tags: { page: 'min-side', action: 'fetchUser' },
-				extra: { message: 'Error fetching user data' },
-			});
-		} finally {
-			setLoading(false);
+			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchProfile' } });
+		}
+	};
+
+	const fetchBows = async () => {
+		try {
+			const res = await fetch('/api/bows');
+			if (!res.ok) return;
+			const data = await res.json();
+			setBows(data.bows ?? []);
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchBows' } });
+		}
+	};
+
+	const fetchArrows = async () => {
+		try {
+			const res = await fetch('/api/arrows');
+			if (!res.ok) return;
+			const data = await res.json();
+			setArrows(data.arrows ?? []);
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchArrows' } });
+		}
+	};
+
+	const fetchPracticeCards = async () => {
+		try {
+			const res = await fetch('/api/practices/cards');
+			if (!res.ok) return;
+			const data = await res.json();
+			setPracticeCards(data.practices ?? []);
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchPracticeCards' } });
+		}
+	};
+
+	const fetchPracticeDetails = async (id: string): Promise<Practice | null> => {
+		try {
+			const res = await fetch(`/api/practices/${id}/details`);
+			if (!res.ok) return null;
+			const data = await res.json();
+			return (data.practice ?? null) as Practice | null;
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchPracticeDetails' } });
+			return null;
+		}
+	};
+
+	const fetchStats = async () => {
+		try {
+			const res = await fetch('/api/stats');
+			if (!res.ok) return;
+			const data = (await res.json()) as StatsResponse;
+			if (data && data.stats) {
+				setStats({
+					last7Days: data.stats.last7Days ?? 0,
+					last30Days: data.stats.last30Days ?? 0,
+					overall: data.stats.overall ?? 0,
+				});
+			}
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchStats' } });
 		}
 	};
 
@@ -225,10 +169,31 @@ export default function MyPage() {
 				return Promise.reject(new Error(errMsg));
 			}
 
-			await fetchUser();
+			await fetchPracticeCards();
+			await fetchStats();
 		} catch (err) {
 			Sentry.captureException(err, { tags: { page: 'min-side', action: 'create-practice' } });
 			throw err;
+		}
+	};
+
+	const handlePracticeDeleted = async (id: string) => {
+		setPracticeCards((prev) => prev.filter((p) => p.id !== id));
+		setSelectedPractice((prev) => {
+			if (prev?.id === id) return null;
+			return prev;
+		});
+		if (selectedPractice?.id === id) {
+			setPracticeModalOpen(false);
+		}
+		await fetchStats();
+	};
+
+	const handleSelectPractice = async (id: string) => {
+		const full = await fetchPracticeDetails(id);
+		if (full) {
+			setSelectedPractice(full);
+			setPracticeModalOpen(true);
 		}
 	};
 
@@ -236,7 +201,7 @@ export default function MyPage() {
 		return <MyPageSkeleton />;
 	}
 
-	if (error || !user) {
+	if (error || !profile) {
 		return (
 			<div className={styles.page}>
 				<div className={styles.headerBar}>
@@ -254,22 +219,9 @@ export default function MyPage() {
 		);
 	}
 
-	const practiceCards = (user.practices || []).map((p) => {
-		const arrowsShot = p.ends?.reduce((sum, end) => sum + (end.arrows ?? end.scores?.length ?? 0), 0) ?? 0;
-		return {
-			id: p.id,
-			date: p.date,
-			arrowsShot,
-		};
-	});
+	const hasPractices = practiceCards.length > 0;
 
-	const handleSelectPractice = (id: string) => {
-		const found = user.practices.find((p) => p.id === id);
-		if (found) {
-			setSelectedPractice(found);
-			setPracticeModalOpen(true);
-		}
-	};
+	const summarySubtitle = `Piler skutt siste 7 dager, siste 30 dager og totalt`;
 
 	return (
 		<div className={styles.page}>
@@ -279,176 +231,54 @@ export default function MyPage() {
 				</div>
 				<div className={styles.brand}>Bueboka</div>
 
-				{/* Profile menu */}
-				<div style={{ marginLeft: 'auto', position: 'relative' }} ref={menuRef}>
-					<button onClick={toggleProfileMenu} className={styles.menuButton} aria-label="Profile menu">
-						<Menu size={24} />
-					</button>
-
-					{profileMenuOpen && (
-						<div
-							style={{
-								position: 'absolute',
-								top: 'calc(100% + 8px)',
-								right: 0,
-								background: 'white',
-								color: '#053546',
-								borderRadius: '10px',
-								boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
-								minWidth: '160px',
-								overflow: 'hidden',
-								zIndex: 60,
-								padding: '6px',
-								animation: 'dropdown-in 160ms cubic-bezier(.2,.9,.2,1) both',
-							}}
-						>
-							<button
-								onClick={handleLogout}
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: '8px',
-									padding: '10px 12px',
-									background: 'transparent',
-									border: 'none',
-									width: '100%',
-									textAlign: 'left',
-									cursor: 'pointer',
-									color: 'inherit',
-									fontWeight: 600,
-									borderRadius: '4px',
-								}}
-								onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(5,53,70,0.06)')}
-								onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-							>
-								<LogOut size={18} />
-								Logg ut
-							</button>
-						</div>
-					)}
-				</div>
+				<ProfileMenu onLogout={handleLogout} />
 			</header>
 
 			<main className={styles.main}>
-				<div className={styles.card}>
-					<div className={styles.twoColumn}>
-						<section className={styles.left}>
-							<div className={styles.profileCard}>
-								{user.image ? (
-									<Image
-										loading="eager"
-										src={user.image}
-										alt={user.name || 'User avatar'}
-										width={128}
-										height={128}
-										className={styles.avatarLarge}
-									/>
-								) : (
-									<div className={styles.avatarLarge} />
-								)}
-								<div className={styles.profileName}>{user.name || user.email}</div>
-								<div className={styles.profileMeta}>{user.club || 'Ingen klubb oppgitt'}</div>
-								<button
-									className={styles.editButton}
-									onClick={() => setProfileModalOpen(true)}
-									aria-label="Edit profile"
-									title="Edit profile"
-								>
-									<Edit size={18} />
-									Rediger
-								</button>
-							</div>
-						</section>
+				<div className={styles.profileContainer}>
+					<div className={styles.profileSummaryGrid}>
+						<div>
+							<ProfileCard
+								name={profile.name}
+								email={profile.email}
+								club={profile.club}
+								image={profile.image}
+								onEdit={() => setProfileModalOpen(true)}
+							/>
+						</div>
 
-						<section className={styles.right}>
-							<div className={styles.topRightRow}>
-								<div className={styles.rightActions}>
-									<Button
-										label="Ny bue"
-										onClick={() => {
-											setSelectedBow(null);
-											setBowModalOpen(true);
-										}}
-										icon={<BowArrow size={18} />}
-										width={170}
-										size="small"
-									/>
-									<Button
-										label="Nye piler"
-										onClick={() => setArrowsModalOpen(true)}
-										icon={<Navigation size={18} />}
-										width={170}
-										size="small"
-									/>
-								</div>
-							</div>
-
-							<div className={styles.rightContent}>
-								<div>
-									<div className={styles.sectionTitle}>Buer</div>
-									<div className={styles.list}>
-										{user.bows && user.bows.length > 0 ? (
-											user.bows.map((bow) => (
-												<div
-													key={bow.id}
-													className={styles.item}
-													onClick={() => {
-														setSelectedBow(bow);
-														setBowModalOpen(true);
-													}}
-												>
-													<div className={styles.itemLeft}>
-														<div>{bow.name}</div>
-														<div className={styles.itemMeta}>{bow.type}</div>
-													</div>
-													<div className={styles.itemIcon}>
-														<BowArrow size={18} />
-													</div>
-												</div>
-											))
-										) : (
-											<div className={styles.placeholderCard}>Ingen buer funnet</div>
-										)}
-									</div>
-								</div>
-
-								<div>
-									<div className={styles.sectionTitle}>Piler</div>
-									<div className={styles.list}>
-										{user.arrows && user.arrows.length > 0 ? (
-											user.arrows.map((a) => (
-												<div
-													key={a.id}
-													className={styles.item}
-													onClick={() => {
-														setSelectedArrows(a);
-														setArrowsModalOpen(true);
-													}}
-												>
-													<div className={styles.itemLeft}>
-														<div>{a.name}</div>
-														<div className={styles.itemMeta}>{a.material}</div>
-													</div>
-													<div className={styles.itemIcon}>
-														<Navigation size={18} />
-													</div>
-												</div>
-											))
-										) : (
-											<div className={styles.placeholderCard}>Legg til dine første piler</div>
-										)}
-									</div>
-								</div>
-							</div>
-						</section>
+						<div className={styles.summaryCard}>
+							<h3 className={styles.summaryTitle}>Oppsummering</h3>
+							<p className={styles.summarySubtitle}>{summarySubtitle}</p>
+							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
+						</div>
 					</div>
 				</div>
 			</main>
 
+			{/* Utstyr section */}
+			<EquipmentSection
+				bows={bows}
+				arrows={arrows}
+				onCreateBow={() => {
+					setSelectedBow(null);
+					setBowModalOpen(true);
+				}}
+				onCreateArrows={() => setArrowsModalOpen(true)}
+				onSelectBow={(bow) => {
+					setSelectedBow(bow);
+					setBowModalOpen(true);
+				}}
+				onSelectArrows={(a) => {
+					setSelectedArrows(a);
+					setArrowsModalOpen(true);
+				}}
+			/>
+
 			{/* Practices moved to dedicated section below main card */}
 			<section className={styles.practicesSection}>
 				<div className={styles.practicesHeader}>
-					<h2 className={styles.practicesTitle}>Treninger</h2>
+					<h2 className={styles.sectionTitleLight}>Treninger</h2>
 					<Button
 						label="Ny trening"
 						onClick={() => setCreatePracticeOpen(true)}
@@ -458,14 +288,10 @@ export default function MyPage() {
 					/>
 				</div>
 				<div className={styles.practicesList}>
-					{loading ? (
-						<div className={styles.list}>
-							{Array.from({ length: 3 }).map((_, i) => (
-								<div key={i} className={styles.skeletonItem} />
-							))}
-						</div>
-					) : (
+					{hasPractices ? (
 						<PracticesList practices={practiceCards} onSelectPractice={handleSelectPractice} />
+					) : (
+						<div className={styles.placeholderCard}>Ingen treninger registrert ennå.</div>
 					)}
 				</div>
 			</section>
@@ -474,12 +300,12 @@ export default function MyPage() {
 				isOpen={profileModalOpen}
 				onClose={() => setProfileModalOpen(false)}
 				user={{
-					id: user.id,
-					name: user.name,
-					email: user.email,
-					club: user.club,
+					id: profile.id,
+					name: profile.name,
+					email: profile.email,
+					club: profile.club,
 				}}
-				onProfileUpdate={fetchUser}
+				onProfileUpdate={fetchProfile}
 			/>
 
 			<BowModal
@@ -502,7 +328,7 @@ export default function MyPage() {
 							}
 						: undefined
 				}
-				onSaved={fetchUser}
+				onSaved={fetchBows}
 			/>
 
 			<ArrowsModal
@@ -523,7 +349,7 @@ export default function MyPage() {
 				onSaved={() => {
 					setArrowsModalOpen(false);
 					setSelectedArrows(null);
-					fetchUser();
+					fetchArrows();
 				}}
 			/>
 
@@ -534,15 +360,16 @@ export default function MyPage() {
 					setPracticeModalOpen(false);
 					setSelectedPractice(null);
 				}}
+				onDeleted={handlePracticeDeleted}
 			/>
 
 			<PracticeCreateModal
 				open={createPracticeOpen}
 				onClose={() => setCreatePracticeOpen(false)}
 				onCreate={handleCreatePractice}
-				bows={user.bows}
+				bows={bows}
 				roundTypes={[]}
-				arrows={user.arrows}
+				arrows={arrows}
 			/>
 		</div>
 	);

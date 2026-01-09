@@ -37,57 +37,36 @@
   width: 100%;
 }
 
+/* Generic white card container (used for error/empty states, etc.) */
 .card {
   background: rgba(255, 255, 255, 0.92);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 18px;
   padding: var(--space-10);
   box-shadow: 0 20px 60px var(--dark-20);
-  display: flex;
-  gap: var(--space-8);
+  display: block;
   color: var(--text-dark);
 }
 
-.twoColumn {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: var(--space-12);
-  padding-right: var(--space-8);
+/* Profile container should be neutral (inner cards handle the visuals) */
+.profileContainer {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
 }
 
-.left {
-  min-width: 320px;
-}
-
-.profileCard {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-5);
-  padding: var(--space-8);
-  background: rgba(12, 130, 172, 0.08);
-  border: 1px solid rgba(12, 130, 172, 0.18);
-  border-radius: 18px;
-}
-
-.avatarLarge {
-  width: 128px;
-  height: 128px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid var(--white-08);
-}
-
-.profileName {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--text-dark);
-}
-
-.profileMeta {
+/* Keep error/empty states readable when using .card */
+.card .empty {
   color: var(--text-gray-700);
-  font-size: 0.95rem;
+}
+
+.profileSummaryGrid {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: var(--space-8);
+  align-items: start;
 }
 
 .editButton {
@@ -119,9 +98,16 @@
 
 .sectionTitle {
   font-weight: 800;
-  margin-bottom: 0;
+  margin-bottom: var(--space-4);
   font-size: 1.1rem;
   color: var(--text-gray-800);
+}
+
+.sectionTitleLight {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--white);
 }
 
 /* Make lists span wider (about ~2x) */
@@ -275,6 +261,29 @@
   text-align: center;
 }
 
+.summaryCard {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px;
+  padding: var(--space-10);
+  box-shadow: 0 20px 60px var(--dark-20);
+  color: var(--text-dark);
+}
+
+.summaryTitle {
+  margin: 0 0 var(--space-5);
+  font-weight: 900;
+  font-size: 1.2rem;
+  color: var(--text-gray-800);
+}
+
+.summarySubtitle {
+  margin: calc(var(--space-1) * -1) 0 var(--space-6);
+  font-size: 0.95rem;
+  font-weight: 650;
+  color: var(--text-gray-700);
+}
+
 @media (max-width: 900px) {
   .twoColumn {
     grid-template-columns: 1fr;
@@ -298,6 +307,9 @@
 	.practicesList {
 		padding: var(--space-6);
 	}
+	.profileSummaryGrid {
+		grid-template-columns: 1fr;
+	}
 }
 
 /* Dropdown animation */
@@ -310,53 +322,6 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-}
-
-/* Hamburger menu button */
-.menuButton {
-  background: transparent;
-  border: none;
-  color: var(--white);
-  cursor: pointer;
-  padding: var(--space-2);
-  border-radius: 8px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: all 200ms ease;
-}
-
-.menuButton::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 12px;
-  background: var(--white-10);
-  opacity: 0;
-  transition: opacity 200ms ease;
-}
-
-.menuButton:hover {
-  transform: scale(1.05);
-}
-
-.menuButton:hover::before {
-  opacity: 1;
-}
-
-.menuButton:active {
-  transform: scale(0.95);
-}
-
-.menuButton svg {
-  position: relative;
-  z-index: 1;
-  transition: transform 200ms ease;
-}
-
-.menuButton:hover svg {
-  transform: rotate(90deg);
 }
 
 /* Skeleton for practice cards */

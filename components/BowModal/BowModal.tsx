@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X } from 'lucide-react';
+import { Trash2, X } from 'lucide-react';
 import styles from './BowModal.module.css';
 import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -28,6 +28,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 
 	const [loading, setLoading] = React.useState(false);
 	const [message, setMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null);
+	const [deleting, setDeleting] = React.useState(false);
 
 	const initialValues: BowFormValues = React.useMemo(
 		() => ({
@@ -41,6 +42,18 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 		}),
 		[editingBow]
 	);
+
+	React.useEffect(() => {
+		if (!open) {
+			setMessage(null);
+			setLoading(false);
+			setDeleting(false);
+			return;
+		}
+
+		// When opening or switching the edited bow, clear transient feedback
+		setMessage(null);
+	}, [open, editingBow]);
 
 	const handleSubmit = async (values: BowFormValues) => {
 		setLoading(true);
@@ -71,12 +84,41 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 			setMessage({ type: 'success', text: editingBow ? 'Bue oppdatert' : 'Bue lagt til' });
 			setTimeout(() => {
 				onSaved?.();
-				if (editingBow) onClose();
+				onClose();
 			}, 800);
 		} catch (error) {
 			setMessage({ type: 'error', text: error instanceof Error ? error.message : 'En feil oppstod' });
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const handleDelete = async () => {
+		if (!editingBow) return;
+		setDeleting(true);
+		setMessage(null);
+		try {
+			const res = await fetch(`/api/bows/${editingBow.id}`, { method: 'DELETE' });
+			if (!res.ok) {
+				let details: any = null;
+				try {
+					details = await res.json();
+				} catch {
+					// ignore
+				}
+				setMessage({ type: 'error', text: details?.error || 'Kunne ikke slette bue' });
+				return;
+			}
+
+			setMessage({ type: 'success', text: 'Bue slettet' });
+			setTimeout(() => {
+				onSaved?.();
+				onClose();
+			}, 500);
+		} catch (e) {
+			setMessage({ type: 'error', text: e instanceof Error ? e.message : 'Kunne ikke slette bue' });
+		} finally {
+			setDeleting(false);
 		}
 	};
 
@@ -101,10 +143,21 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 
 				<div className={styles.form}>
-					<BowForm initialValues={initialValues} mode={editingBow ? 'edit' : 'create'} loading={loading} onSubmit={handleSubmit} />
+					<BowForm initialValues={initialValues} onSubmit={handleSubmit} />
 
 					<div className={styles.actions}>
-						<Button label="Avbryt" onClick={onClose} disabled={loading} buttonType="outline" width={160} />
+						{editingBow ? (
+							<Button
+								label={deleting ? 'Sletter...' : 'Slett bue'}
+								onClick={handleDelete}
+								disabled={loading || deleting}
+								buttonType="outline"
+								variant="warning"
+								width={170}
+								icon={<Trash2 size={18} />}
+							/>
+						) : null}
+						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" width={160} />
 						<Button
 							label={loading ? (editingBow ? 'Oppdaterer...' : 'Lagrer...') : editingBow ? 'Oppdater' : 'Lagre'}
 							onClick={() => {
@@ -112,6 +165,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 								form?.requestSubmit();
 							}}
 							loading={loading}
+							disabled={deleting}
 							width={180}
 						/>
 					</div>

@@ -31,19 +31,12 @@ export async function GET() {
 				id: user.id,
 			},
 			orderBy: [{ createdAt: 'desc' }],
-			include: {
-				bows: true,
-				arrows: true,
-				practices: {
-					orderBy: { date: 'desc' },
-					take: 8,
-					include: {
-						ends: true,
-						bow: true,
-						arrows: true,
-						roundType: true,
-					},
-				},
+			select: {
+				id: true,
+				email: true,
+				name: true,
+				club: true,
+				image: true,
 			},
 		});
 

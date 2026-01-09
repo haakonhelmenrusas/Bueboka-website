@@ -31,17 +31,28 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
 		}
 
-		const bow = await prisma.bow.create({
-			data: {
-				userId: user.id,
-				name,
-				type,
-				eyeToNock: eyeToNock !== undefined ? eyeToNock : null,
-				aimMeasure: aimMeasure !== undefined ? aimMeasure : null,
-				eyeToSight: eyeToSight !== undefined ? eyeToSight : null,
-				isFavorite: isFavorite || false,
-				notes: notes || null,
-			},
+		const makeFavorite = Boolean(isFavorite);
+
+		const bow = await prisma.$transaction(async (tx) => {
+			if (makeFavorite) {
+				await tx.bow.updateMany({
+					where: { userId: user.id, isFavorite: true },
+					data: { isFavorite: false },
+				});
+			}
+
+			return tx.bow.create({
+				data: {
+					userId: user.id,
+					name,
+					type,
+					eyeToNock: eyeToNock !== undefined ? eyeToNock : null,
+					aimMeasure: aimMeasure !== undefined ? aimMeasure : null,
+					eyeToSight: eyeToSight !== undefined ? eyeToSight : null,
+					isFavorite: makeFavorite,
+					notes: notes || null,
+				},
+			});
 		});
 
 		return NextResponse.json({ bow }, { status: 201 });

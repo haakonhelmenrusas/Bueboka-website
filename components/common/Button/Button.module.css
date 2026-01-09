@@ -1,8 +1,32 @@
-.spinner {
-    display: inline-block;
-    border: 2px solid var(--white-20);
-    border-top-color: var(--white-85);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+.button {
+	transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
+
+.button:hover:not(:disabled) {
+	background-color: rgba(0, 0, 0, 0.10) !important;
+	color: var(--white) !important;
+	border-color: rgba(255, 255, 255, 0.35) !important;
+	transform: translateY(-1px);
+}
+
+.button:active:not(:disabled) {
+	transform: translateY(0);
+}
+
+.button:hover:not(:disabled) svg {
+	color: currentColor;
+}
+
+.spinner {
+	display: inline-block;
+	border: 2px solid var(--white-20);
+	border-top-color: var(--white-85);
+	border-radius: 50%;
+	animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}

@@ -27,7 +27,8 @@ describe('PracticeDetailsModal', () => {
 		expect(screen.getByText(/Trening/)).toBeInTheDocument();
 		expect(screen.getByText('Oslo')).toBeInTheDocument();
 		expect(screen.getByText(/Inne/)).toBeInTheDocument();
-		expect(screen.getByText(/SUN/)).toBeInTheDocument();
+		expect(screen.getByText(/Sol/)).toBeInTheDocument();
+		expect(screen.getByText(/Overskyet/)).toBeInTheDocument();
 	});
 
 	it('calls onClose when clicking overlay', () => {

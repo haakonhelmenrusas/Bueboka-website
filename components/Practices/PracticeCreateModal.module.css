@@ -245,3 +245,19 @@
   border-radius: 10px;
   font-size: 0.95rem;
 }
+
+.weatherOptionDisabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.weatherOptionDisabled:hover {
+  border-color: var(--bg-gray-200);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.helpText {
+  color: var(--text-gray-600);
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
