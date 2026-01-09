@@ -17,22 +17,31 @@ async function getCurrentUser() {
 	}
 }
 
-export async function GET() {
+export async function GET(request: Request) {
 	try {
 		const user = await getCurrentUser();
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-		// Minimal payload for list/cards: compute arrowsShot on the server to avoid fetching ends.
-		const practices = await prisma.practice.findMany({
-			where: { userId: user.id },
-			orderBy: { date: 'desc' },
-			take: 12,
-			select: {
-				id: true,
-				date: true,
-				ends: { select: { arrows: true } },
-			},
-		});
+		const url = new URL(request.url);
+		const page = Math.max(1, Number(url.searchParams.get('page') ?? '1') || 1);
+		const pageSizeRaw = Number(url.searchParams.get('pageSize') ?? '10') || 10;
+		const pageSize = Math.min(50, Math.max(1, pageSizeRaw));
+		const skip = (page - 1) * pageSize;
+
+		const [total, practices] = await prisma.$transaction([
+			prisma.practice.count({ where: { userId: user.id } }),
+			prisma.practice.findMany({
+				where: { userId: user.id },
+				orderBy: { date: 'desc' },
+				skip,
+				take: pageSize,
+				select: {
+					id: true,
+					date: true,
+					ends: { select: { arrows: true } },
+				},
+			}),
+		]);
 
 		const cards = practices.map((p) => ({
 			id: p.id,
@@ -40,7 +49,7 @@ export async function GET() {
 			arrowsShot: p.ends.reduce((sum, e) => sum + (e.arrows ?? 0), 0),
 		}));
 
-		return NextResponse.json({ practices: cards });
+		return NextResponse.json({ practices: cards, page, pageSize, total });
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'practices/cards', method: 'GET' },

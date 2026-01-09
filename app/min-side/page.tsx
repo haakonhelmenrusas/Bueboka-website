@@ -7,30 +7,23 @@ import styles from './page.module.css';
 import {
 	ArrowsModal,
 	BowModal,
-	Button,
 	EquipmentSection,
 	PracticeCreateModal,
 	PracticeDetailsModal,
-	PracticesList,
+	PracticesSection,
 	ProfileCard,
 	ProfileEditModal,
 	ProfileMenu,
 	StatsSummary,
+	usePracticeDetails,
 } from '@/components';
-import { Plus } from 'lucide-react';
-import { signOut } from '@/lib/auth-client';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
 import { MyPageSkeleton } from './Skeleton';
 import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
 
-type PracticeCardItem = { id: string; date: string; arrowsShot: number };
-
 export default function MyPage() {
 	const [profile, setProfile] = useState<User | null>(null);
-	const [bows, setBows] = useState<Bow[]>([]);
-	const [arrows, setArrows] = useState<Arrow[]>([]);
-	const [practiceCards, setPracticeCards] = useState<PracticeCardItem[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
@@ -42,31 +35,25 @@ export default function MyPage() {
 	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
 	const [selectedArrows, setSelectedArrows] = useState<Arrow | null>(null);
 	const [stats, setStats] = useState<StatsResponse['stats']>({ last7Days: 0, last30Days: 0, overall: 0 });
+	const [practiceReloadKey, setPracticeReloadKey] = useState(0);
+	const [deletedPracticeId, setDeletedPracticeId] = useState<string | null>(null);
+	const { fetchPracticeDetails } = usePracticeDetails();
 	const router = useRouter();
 
-	const handleLogout = async () => {
-		try {
-			await signOut();
-			router.push('/');
-		} catch (err) {
-			Sentry.captureException(err, {
-				tags: { page: 'min-side', action: 'logout' },
-				extra: { message: 'Logout failed' },
-			});
-			console.error('Logout failed', err);
-		}
-	};
-
 	useEffect(() => {
-		Promise.all([fetchProfile(), fetchBows(), fetchArrows(), fetchPracticeCards(), fetchStats()]).finally(() => setLoading(false));
+		Promise.all([fetchProfile(), fetchStats()]).finally(() => setLoading(false));
 	}, []);
 
 	const fetchProfile = async () => {
 		try {
 			const response = await fetch('/api/profile');
 			if (!response.ok) {
-				if (response.status === 401) setError('Du må være logget inn');
-				else setError('Kunne ikke hente brukerdata');
+				if (response.status === 401) {
+					// Best practice: redirect to login rather than rendering a partially broken page.
+					router.replace('/logg-inn');
+					return;
+				}
+				setError('Kunne ikke hente brukerdata');
 				return;
 			}
 			const data = await response.json();
@@ -74,51 +61,6 @@ export default function MyPage() {
 		} catch (err) {
 			setError('En feil oppstod');
 			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchProfile' } });
-		}
-	};
-
-	const fetchBows = async () => {
-		try {
-			const res = await fetch('/api/bows');
-			if (!res.ok) return;
-			const data = await res.json();
-			setBows(data.bows ?? []);
-		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchBows' } });
-		}
-	};
-
-	const fetchArrows = async () => {
-		try {
-			const res = await fetch('/api/arrows');
-			if (!res.ok) return;
-			const data = await res.json();
-			setArrows(data.arrows ?? []);
-		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchArrows' } });
-		}
-	};
-
-	const fetchPracticeCards = async () => {
-		try {
-			const res = await fetch('/api/practices/cards');
-			if (!res.ok) return;
-			const data = await res.json();
-			setPracticeCards(data.practices ?? []);
-		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchPracticeCards' } });
-		}
-	};
-
-	const fetchPracticeDetails = async (id: string): Promise<Practice | null> => {
-		try {
-			const res = await fetch(`/api/practices/${id}/details`);
-			if (!res.ok) return null;
-			const data = await res.json();
-			return (data.practice ?? null) as Practice | null;
-		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchPracticeDetails' } });
-			return null;
 		}
 	};
 
@@ -169,7 +111,7 @@ export default function MyPage() {
 				return Promise.reject(new Error(errMsg));
 			}
 
-			await fetchPracticeCards();
+			setPracticeReloadKey((k) => k + 1);
 			await fetchStats();
 		} catch (err) {
 			Sentry.captureException(err, { tags: { page: 'min-side', action: 'create-practice' } });
@@ -178,14 +120,9 @@ export default function MyPage() {
 	};
 
 	const handlePracticeDeleted = async (id: string) => {
-		setPracticeCards((prev) => prev.filter((p) => p.id !== id));
-		setSelectedPractice((prev) => {
-			if (prev?.id === id) return null;
-			return prev;
-		});
-		if (selectedPractice?.id === id) {
-			setPracticeModalOpen(false);
-		}
+		setDeletedPracticeId(id);
+		setSelectedPractice((prev) => (prev?.id === id ? null : prev));
+		setPracticeModalOpen(false);
 		await fetchStats();
 	};
 
@@ -219,8 +156,6 @@ export default function MyPage() {
 		);
 	}
 
-	const hasPractices = practiceCards.length > 0;
-
 	const summarySubtitle = `Piler skutt siste 7 dager, siste 30 dager og totalt`;
 
 	return (
@@ -231,7 +166,7 @@ export default function MyPage() {
 				</div>
 				<div className={styles.brand}>Bueboka</div>
 
-				<ProfileMenu onLogout={handleLogout} />
+				<ProfileMenu />
 			</header>
 
 			<main className={styles.main}>
@@ -258,8 +193,6 @@ export default function MyPage() {
 
 			{/* Utstyr section */}
 			<EquipmentSection
-				bows={bows}
-				arrows={arrows}
 				onCreateBow={() => {
 					setSelectedBow(null);
 					setBowModalOpen(true);
@@ -276,25 +209,12 @@ export default function MyPage() {
 			/>
 
 			{/* Practices moved to dedicated section below main card */}
-			<section className={styles.practicesSection}>
-				<div className={styles.practicesHeader}>
-					<h2 className={styles.sectionTitleLight}>Treninger</h2>
-					<Button
-						label="Ny trening"
-						onClick={() => setCreatePracticeOpen(true)}
-						icon={<Plus size={18} />}
-						width={240}
-						buttonStyle={{ marginLeft: 'auto' }}
-					/>
-				</div>
-				<div className={styles.practicesList}>
-					{hasPractices ? (
-						<PracticesList practices={practiceCards} onSelectPractice={handleSelectPractice} />
-					) : (
-						<div className={styles.placeholderCard}>Ingen treninger registrert ennå.</div>
-					)}
-				</div>
-			</section>
+			<PracticesSection
+				onCreate={() => setCreatePracticeOpen(true)}
+				onSelectPractice={handleSelectPractice}
+				reloadKey={practiceReloadKey}
+				deletedPracticeId={deletedPracticeId}
+			/>
 
 			<ProfileEditModal
 				isOpen={profileModalOpen}
@@ -328,7 +248,6 @@ export default function MyPage() {
 							}
 						: undefined
 				}
-				onSaved={fetchBows}
 			/>
 
 			<ArrowsModal
@@ -346,11 +265,6 @@ export default function MyPage() {
 							}
 						: undefined
 				}
-				onSaved={() => {
-					setArrowsModalOpen(false);
-					setSelectedArrows(null);
-					fetchArrows();
-				}}
 			/>
 
 			<PracticeDetailsModal
@@ -367,9 +281,8 @@ export default function MyPage() {
 				open={createPracticeOpen}
 				onClose={() => setCreatePracticeOpen(false)}
 				onCreate={handleCreatePractice}
-				bows={bows}
-				roundTypes={[]}
-				arrows={arrows}
+				bows={[]}
+				arrows={[]}
 			/>
 		</div>
 	);

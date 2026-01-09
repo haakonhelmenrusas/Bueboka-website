@@ -3,12 +3,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { LogOut, Menu } from 'lucide-react';
 import styles from './ProfileMenu.module.css';
+import { signOut } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
 
 export interface ProfileMenuProps {
-	onLogout: () => Promise<void> | void;
+	/** Optional override (useful in tests or special flows). */
+	onLogout?: () => Promise<void> | void;
 }
 
 export const ProfileMenu: React.FC<ProfileMenuProps> = ({ onLogout }) => {
+	const router = useRouter();
 	const [open, setOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -67,7 +71,14 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ onLogout }) => {
 
 	const handleLogout = async () => {
 		try {
-			await onLogout();
+			if (onLogout) {
+				await onLogout();
+				return;
+			}
+
+			await signOut();
+			router.push('/');
+			router.refresh();
 		} finally {
 			close();
 		}

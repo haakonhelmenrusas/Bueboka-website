@@ -6,6 +6,7 @@ import styles from './ArrowsModal.module.css';
 import { ArrowsForm, ArrowsFormValues } from '@/components/ProfileEditModal/ArrowsForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
+import { emitEquipmentChanged } from '@/lib/events';
 
 interface ArrowsModalProps {
 	open: boolean;
@@ -44,6 +45,7 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 
 			setMessage({ type: 'success', text: editingArrows ? 'Piler oppdatert' : 'Piler lagt til' });
 			setTimeout(() => {
+				emitEquipmentChanged();
 				onSaved?.();
 				if (editingArrows) onClose();
 			}, 800);

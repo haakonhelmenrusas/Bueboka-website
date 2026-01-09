@@ -1,0 +1,62 @@
+.practicesSection {
+	max-width: 1200px;
+	margin: 0 auto;
+	width: 100%;
+	padding: 0 var(--space-8) var(--space-14);
+}
+
+.practicesHeader {
+	display: flex;
+	align-items: center;
+	gap: var(--space-6);
+	margin-bottom: var(--space-6);
+}
+
+.sectionTitleLight {
+	margin: 0;
+	font-size: 1.4rem;
+	font-weight: 900;
+	color: var(--white);
+}
+
+.practicesList {
+	width: 100%;
+}
+
+.placeholderCard {
+	background: rgba(12, 130, 172, 0.05);
+	border: 1px dashed rgba(12, 130, 172, 0.26);
+	border-radius: 16px;
+	padding: var(--space-5) var(--space-6);
+	color: var(--text-gray-700);
+	font-weight: 600;
+	min-height: 56px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.pagination {
+	display: flex;
+	justify-content: flex-end;
+	gap: 12px;
+	margin-top: 16px;
+}
+
+.paginationText {
+	align-self: center;
+	color: var(--text-gray-700);
+	font-weight: 650;
+}
+
+@media (max-width: 900px) {
+	.practicesSection {
+		padding: 0 var(--space-4) var(--space-10);
+	}
+
+	.practicesHeader {
+		flex-wrap: wrap;
+	}
+}
+

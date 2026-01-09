@@ -5,24 +5,40 @@ import styles from './EquipmentSection.module.css';
 import { ArrowUpRight, BowArrow, Star } from 'lucide-react';
 import { Button } from '@/components';
 import type { Arrow, Bow } from '@/lib/types';
+import { useEquipmentData } from './useEquipmentData';
 
 export interface EquipmentSectionProps {
-	bows: Bow[];
-	arrows: Arrow[];
+	/** If provided, the component becomes controlled and will not fetch its own data */
+	bows?: Bow[];
+	arrows?: Arrow[];
 	onCreateBow: () => void;
 	onCreateArrows: () => void;
 	onSelectBow: (bow: Bow) => void;
 	onSelectArrows: (arrows: Arrow) => void;
+	/** Optional hook to expose a refresh function to the parent (useful after saving) */
+	onDataReady?: (api: { refresh: () => Promise<void>; refreshBows: () => Promise<void>; refreshArrows: () => Promise<void> }) => void;
 }
 
 export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
-	bows,
-	arrows,
+	bows: bowsProp,
+	arrows: arrowsProp,
 	onCreateBow,
 	onCreateArrows,
 	onSelectBow,
 	onSelectArrows,
+	onDataReady,
 }) => {
+	const managed = bowsProp === undefined || arrowsProp === undefined;
+	const equipment = useEquipmentData();
+
+	React.useEffect(() => {
+		if (!managed) return;
+		onDataReady?.({ refresh: equipment.refresh, refreshBows: equipment.refreshBows, refreshArrows: equipment.refreshArrows });
+	}, [managed, onDataReady, equipment.refresh, equipment.refreshArrows, equipment.refreshBows]);
+
+	const bows = managed ? equipment.bows : (bowsProp ?? []);
+	const arrows = managed ? equipment.arrows : (arrowsProp ?? []);
+
 	return (
 		<section className={styles.section} aria-label="Utstyr">
 			<div className={styles.header}>

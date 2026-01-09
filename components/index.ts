@@ -24,6 +24,7 @@ import { ProfileCard } from './ProfileCard/ProfileCard';
 import { ProfileMenu } from './ProfileMenu/ProfileMenu';
 import { EquipmentSection } from './EquipmentSection/EquipmentSection';
 import { Checkbox } from './common/Checkbox/Checkbox';
+import { PracticesSection } from './PracticesSection/PracticesSection';
 
 export {
 	Header,
@@ -52,6 +53,8 @@ export {
 	ProfileMenu,
 	EquipmentSection,
 	Checkbox,
+	PracticesSection,
 };
 
 export * from './common/StatsSummary/StatsSummary';
+export * from './PracticesSection/usePracticeDetails';

@@ -6,6 +6,7 @@ import styles from './BowModal.module.css';
 import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
+import { emitEquipmentChanged } from '@/lib/events';
 
 interface BowModalProps {
 	open: boolean;
@@ -83,6 +84,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 
 			setMessage({ type: 'success', text: editingBow ? 'Bue oppdatert' : 'Bue lagt til' });
 			setTimeout(() => {
+				emitEquipmentChanged();
 				onSaved?.();
 				onClose();
 			}, 800);
@@ -112,6 +114,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 
 			setMessage({ type: 'success', text: 'Bue slettet' });
 			setTimeout(() => {
+				emitEquipmentChanged();
 				onSaved?.();
 				onClose();
 			}, 500);
