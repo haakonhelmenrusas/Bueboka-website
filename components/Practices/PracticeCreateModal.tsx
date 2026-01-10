@@ -2,7 +2,22 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import styles from './PracticeCreateModal.module.css';
-import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Home, MapPin, Sun, Target, Trees, Wind, X, Zap } from 'lucide-react';
+import {
+	Cloud,
+	CloudRain,
+	CloudSnow,
+	CloudSun,
+	Cloudy,
+	HelpCircle,
+	Home,
+	MapPin,
+	Sun,
+	Target,
+	Trees,
+	Wind,
+	X,
+	Zap
+} from 'lucide-react';
 import { Environment, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/enums';
 import { DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -132,6 +147,7 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 				arrowsId: arrowsId || undefined,
 			});
 			onClose();
+			setDate(new Date().toISOString().slice(0, 10));
 			setArrowsShot(0);
 			setLocation('');
 			setEnvironment(Environment.OUTDOOR);
@@ -156,8 +172,14 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 
 	useEffect(() => {
 		if (!open) return;
+		// Always start with today's date when opening the modal.
+		setDate(new Date().toISOString().slice(0, 10));
+	}, [open]);
 
-		// Prefill favorites when opening (without overriding user choice)
+	// Prefill favorites when opening (without overriding user choice)
+	useEffect(() => {
+		if (!open) return;
+
 		if (!bowId) {
 			const favBow = bows.find((b) => b.isFavorite);
 			if (favBow) setBowId(favBow.id);
