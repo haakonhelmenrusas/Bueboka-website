@@ -57,3 +57,28 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		return NextResponse.json({ error: 'Failed to update arrows' }, { status: 500 });
 	}
 }
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	try {
+		const user = await getCurrentUser();
+		if (!user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		const { id } = await params;
+
+		const existing = await prisma.arrows.findFirst({ where: { id, userId: user.id } });
+		if (!existing) {
+			return NextResponse.json({ error: 'Not found' }, { status: 404 });
+		}
+
+		await prisma.arrows.delete({ where: { id } });
+		return NextResponse.json({ ok: true });
+	} catch (error) {
+		Sentry.captureException(error, {
+			tags: { endpoint: 'arrows', method: 'DELETE' },
+			extra: { message: 'Error deleting arrows' },
+		});
+		return NextResponse.json({ error: 'Failed to delete arrows' }, { status: 500 });
+	}
+}
