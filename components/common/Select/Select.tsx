@@ -6,6 +6,7 @@ import styles from './Select.module.css';
 export type SelectOption = {
 	value: string;
 	label: string;
+	subtitle?: string;
 	disabled?: boolean;
 	icon?: React.ReactNode;
 };
@@ -212,7 +213,10 @@ export const Select: React.FC<SelectProps> = ({
 										onClick={() => commitIndex(idx)}
 									>
 										{opt.icon ? <span className={styles.optionIcon}>{opt.icon}</span> : null}
-										<span className={styles.optionLabel}>{opt.label}</span>
+										<span className={styles.optionText}>
+											<span className={styles.optionLabel}>{opt.label}</span>
+											{opt.subtitle ? <span className={styles.optionSubtitle}>{opt.subtitle}</span> : null}
+										</span>
 									</li>
 								);
 							})

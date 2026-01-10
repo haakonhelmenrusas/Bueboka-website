@@ -102,6 +102,29 @@
 	font-weight: 550;
 }
 
+.optionText {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.optionLabel {
+	min-width: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.optionSubtitle {
+	font-size: 0.86rem;
+	font-weight: 500;
+	color: rgba(5, 53, 70, 0.62);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
 .option:hover {
 	background: rgba(5, 53, 70, 0.06);
 }
@@ -137,13 +160,6 @@
 	height: 18px;
 	color: rgba(5, 53, 70, 0.85);
 	flex: 0 0 auto;
-}
-
-.optionLabel {
-	min-width: 0;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 .help {
