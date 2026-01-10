@@ -1,8 +1,23 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './PracticeCreateModal.module.css';
-import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Home, MapPin, Sun, Target, Trees, Wind, X, Zap } from 'lucide-react';
+import {
+	Cloud,
+	CloudRain,
+	CloudSnow,
+	CloudSun,
+	Cloudy,
+	HelpCircle,
+	Home,
+	MapPin,
+	Sun,
+	Target,
+	Trees,
+	Wind,
+	X,
+	Zap
+} from 'lucide-react';
 import { Environment, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/enums';
 import { DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -97,11 +112,23 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 		setWeather((prev) => (prev.includes(w) ? prev.filter((x) => x !== w) : [...prev, w]));
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (environment === Environment.INDOOR) {
 			setWeather([]);
 		}
 	}, [environment]);
+
+	const roundTypeOptions = roundTypes.map((r) => {
+		const values: string[] = [];
+		if (r.distanceMeters) values.push(`${r.distanceMeters}m`);
+		if (r.targetSizeCm) values.push(`${r.targetSizeCm}cm`);
+		const subtitle = values.length ? values.join(' • ') : undefined;
+		return {
+			value: r.id,
+			label: r.name,
+			subtitle,
+		};
+	});
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -139,10 +166,6 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 		{ value: Environment.INDOOR, label: 'Inne', icon: <Home size={16} /> },
 		{ value: Environment.OUTDOOR, label: 'Ute', icon: <Trees size={16} /> },
 	];
-	const roundTypeOptions = roundTypes.map((r) => ({
-		value: r.id,
-		label: `${r.name}${r.distanceMeters ? ` • ${r.distanceMeters}m` : ''}${r.targetSizeCm ? ` • ${r.targetSizeCm}cm` : ''}`,
-	}));
 	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}` }));
 	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}` }));
 

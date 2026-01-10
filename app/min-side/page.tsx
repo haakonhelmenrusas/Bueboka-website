@@ -16,7 +16,9 @@ import {
 	ProfileMenu,
 	StatsSummary,
 	usePracticeDetails,
+	useRoundTypes,
 } from '@/components';
+import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
 import { MyPageSkeleton } from './Skeleton';
@@ -38,6 +40,8 @@ export default function MyPage() {
 	const [practiceReloadKey, setPracticeReloadKey] = useState(0);
 	const [deletedPracticeId, setDeletedPracticeId] = useState<string | null>(null);
 	const { fetchPracticeDetails } = usePracticeDetails();
+	const { roundTypes } = useRoundTypes();
+	const { bows, arrows } = useEquipmentData();
 	const router = useRouter();
 
 	useEffect(() => {
@@ -281,8 +285,9 @@ export default function MyPage() {
 				open={createPracticeOpen}
 				onClose={() => setCreatePracticeOpen(false)}
 				onCreate={handleCreatePractice}
-				bows={[]}
-				arrows={[]}
+				roundTypes={roundTypes}
+				bows={bows}
+				arrows={arrows}
 			/>
 		</div>
 	);
