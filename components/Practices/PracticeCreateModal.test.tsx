@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { PracticeCreateModal } from './PracticeCreateModal';
+import { PracticeCreateModal } from '@/components';
 
 describe('PracticeCreateModal', () => {
 	test('prefills favorite bow and arrows when opening', async () => {

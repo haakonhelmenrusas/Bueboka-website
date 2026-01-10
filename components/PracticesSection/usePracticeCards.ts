@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as Sentry from '@sentry/nextjs';
 
 export type PracticeCardItem = { id: string; date: string; arrowsShot: number };
@@ -17,13 +17,15 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
 	const [loading, setLoading] = useState(false);
+	const inFlightRef = useRef(false);
 
 	const totalPages = useMemo(() => Math.max(1, Math.ceil(total / pageSize)), [total, pageSize]);
 	const showPagination = total > pageSize;
 
 	const fetchPage = useCallback(
 		async (nextPage: number) => {
-			if (loading) return;
+			if (inFlightRef.current) return;
+			inFlightRef.current = true;
 			setLoading(true);
 			try {
 				const res = await fetch(`/api/practices/cards?page=${nextPage}&pageSize=${pageSize}`);
@@ -35,10 +37,11 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 			} catch (err) {
 				Sentry.captureException(err, { tags: { area: 'PracticesSection', action: 'fetchPracticeCards' } });
 			} finally {
+				inFlightRef.current = false;
 				setLoading(false);
 			}
 		},
-		[loading, pageSize]
+		[pageSize]
 	);
 
 	useEffect(() => {
