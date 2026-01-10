@@ -2,12 +2,20 @@ services:
   db:
     image: postgres:14.15-alpine3.21
     restart: always
-    container_name: Bueboka
-    env_file:
-      - .env
+    container_name: bueboka-postgres
+    environment:
+      POSTGRES_DB: bueboka
+      POSTGRES_USER: bueboka
+      POSTGRES_PASSWORD: bueboka
     ports:
       - '5432:5432'
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - bueboka_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U bueboka -d bueboka']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 volumes:
-  pgdata:
+  bueboka_pgdata:
