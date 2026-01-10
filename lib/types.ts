@@ -26,6 +26,7 @@ export interface Arrow {
 	id: string;
 	name: string;
 	material: string;
+	isFavorite: boolean;
 }
 
 export interface Practice {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useId, useMemo } from 'react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
 import styles from './NumberInput.module.css';
 
 export interface NumberInputProps {
@@ -21,6 +21,8 @@ export interface NumberInputProps {
 	 * Use "ignore" to keep value unchanged when input is cleared.
 	 */
 	emptyBehavior?: 'clamp' | 'ignore';
+	/** If true, the input starts visually empty when the initial value is 0 (better UX for count fields). */
+	startEmpty?: boolean;
 	name?: string;
 	id?: string;
 	containerClassName?: string;
@@ -47,6 +49,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 	errorMessage,
 	unit,
 	emptyBehavior = 'clamp',
+	startEmpty = false,
 	name,
 	id,
 	containerClassName,
@@ -61,19 +64,42 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		return ids.length ? ids.join(' ') : undefined;
 	}, [errorMessage, helpText, inputId]);
 
+	// Keep a separate string state so the field can be empty while the stored value remains numeric.
+	const [displayValue, setDisplayValue] = useState<string>(() => {
+		if (startEmpty && value === 0) return '';
+		return Number.isFinite(value) ? String(value) : '';
+	});
+
+	// Track first sync so we don't immediately overwrite startEmpty with "0".
+	const didInitRef = React.useRef(false);
+
+	useEffect(() => {
+		if (!didInitRef.current) {
+			didInitRef.current = true;
+			if (startEmpty && value === 0) return;
+		}
+		setDisplayValue(Number.isFinite(value) ? String(value) : '');
+	}, [value, startEmpty]);
+
 	const dec = () => {
 		if (disabled) return;
-		onChange(clamp(value - step, min, max));
+		const next = clamp(value - step, min, max);
+		onChange(next);
+		setDisplayValue(String(next));
 	};
 
 	const inc = () => {
 		if (disabled) return;
-		onChange(clamp(value + step, min, max));
+		const next = clamp(value + step, min, max);
+		onChange(next);
+		setDisplayValue(String(next));
 	};
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (disabled) return;
 		const raw = e.target.value;
+		setDisplayValue(raw);
+
 		if (raw === '') {
 			if (emptyBehavior === 'ignore') return;
 			const fallback = typeof min === 'number' ? min : 0;
@@ -83,11 +109,34 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 		const parsed = Number(raw);
 		if (Number.isNaN(parsed)) return;
-		onChange(clamp(parsed, min, max));
+		const next = clamp(parsed, min, max);
+		onChange(next);
+		// If clamping changed the value, reflect it immediately.
+		if (next !== parsed) setDisplayValue(String(next));
 	};
 
-	const atMin = typeof min === 'number' ? value <= min : false;
-	const atMax = typeof max === 'number' ? value >= max : false;
+	const handleBlur = () => {
+		if (disabled) return;
+		if (displayValue === '') {
+			if (emptyBehavior === 'ignore') {
+				// restore last numeric value on blur
+				setDisplayValue(Number.isFinite(value) ? String(value) : '');
+				return;
+			}
+			const fallback = typeof min === 'number' ? min : 0;
+			const next = clamp(fallback, min, max);
+			onChange(next);
+			setDisplayValue(String(next));
+		}
+	};
+
+	const numericForBounds = (() => {
+		const parsed = Number(displayValue);
+		return displayValue === '' || Number.isNaN(parsed) ? value : parsed;
+	})();
+
+	const atMin = typeof min === 'number' ? numericForBounds <= min : false;
+	const atMax = typeof max === 'number' ? numericForBounds >= max : false;
 
 	return (
 		<div className={`${styles.container} ${containerClassName || ''}`}>
@@ -114,8 +163,9 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						type="number"
 						inputMode="numeric"
 						className={`${styles.input} ${inputClassName || ''}`}
-						value={Number.isFinite(value) ? value : 0}
+						value={displayValue}
 						onChange={handleInputChange}
+						onBlur={handleBlur}
 						min={min}
 						max={max}
 						step={step}

@@ -22,6 +22,7 @@ function Harness(props: Partial<React.ComponentProps<typeof NumberInput>>) {
 			errorMessage={props.errorMessage}
 			unit={props.unit}
 			emptyBehavior={props.emptyBehavior}
+			startEmpty={props.startEmpty}
 		/>
 	);
 }
@@ -64,6 +65,18 @@ describe('NumberInput', () => {
 		expect(input).toHaveValue(10);
 	});
 
+	test('can be cleared so the user can type without deleting an initial value', async () => {
+		const user = userEvent.setup();
+		render(<Harness value={0} emptyBehavior="ignore" />);
+
+		const input = screen.getByRole('spinbutton');
+		await user.clear(input);
+		expect(input).toHaveDisplayValue('');
+
+		await user.type(input, '12');
+		expect(input).toHaveValue(12);
+	});
+
 	test('unit renders', () => {
 		render(<Harness value={12} unit="m" />);
 		expect(screen.getByText('m')).toBeInTheDocument();
@@ -84,5 +97,11 @@ describe('NumberInput', () => {
 		expect(described).toBeTruthy();
 		expect(screen.getByText('Hjelpetekst')).toBeInTheDocument();
 		expect(screen.getByText('Feil')).toBeInTheDocument();
+	});
+
+	test('startEmpty renders empty when initial value is 0', () => {
+		render(<Harness value={0} startEmpty emptyBehavior="ignore" />);
+		const input = screen.getByRole('spinbutton');
+		expect(input).toHaveDisplayValue('');
 	});
 });

@@ -286,8 +286,8 @@ export default function MyPage() {
 				onClose={() => setCreatePracticeOpen(false)}
 				onCreate={handleCreatePractice}
 				roundTypes={roundTypes}
-				bows={bows}
-				arrows={arrows}
+				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
+				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
 			/>
 		</div>
 	);

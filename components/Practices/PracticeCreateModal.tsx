@@ -2,22 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import styles from './PracticeCreateModal.module.css';
-import {
-	Cloud,
-	CloudRain,
-	CloudSnow,
-	CloudSun,
-	Cloudy,
-	HelpCircle,
-	Home,
-	MapPin,
-	Sun,
-	Target,
-	Trees,
-	Wind,
-	X,
-	Zap
-} from 'lucide-react';
+import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Home, MapPin, Sun, Target, Trees, Wind, X, Zap } from 'lucide-react';
 import { Environment, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/enums';
 import { DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -38,8 +23,8 @@ interface PracticeCreateModalProps {
 	open: boolean;
 	onClose: () => void;
 	onCreate: (input: PracticeCreateInput) => Promise<void>;
-	bows?: Array<{ id: string; name: string; type: string }>;
-	arrows?: Array<{ id: string; name: string; material: string }>;
+	bows?: Array<{ id: string; name: string; type: string; isFavorite?: boolean }>;
+	arrows?: Array<{ id: string; name: string; material: string; isFavorite?: boolean }>;
 	roundTypes?: Array<{ id: string; name: string; distanceMeters?: number | null; targetSizeCm?: number | null }>;
 }
 
@@ -169,6 +154,20 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}` }));
 	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}` }));
 
+	useEffect(() => {
+		if (!open) return;
+
+		// Prefill favorites when opening (without overriding user choice)
+		if (!bowId) {
+			const favBow = bows.find((b) => b.isFavorite);
+			if (favBow) setBowId(favBow.id);
+		}
+		if (!arrowsId) {
+			const favArrows = arrows.find((a) => a.isFavorite);
+			if (favArrows) setArrowsId(favArrows.id);
+		}
+	}, [open, bows, arrows, bowId, arrowsId]);
+
 	if (!open) return null;
 
 	return (
@@ -193,6 +192,8 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 							min={0}
 							step={1}
 							required
+							startEmpty
+							emptyBehavior="ignore"
 							containerClassName={styles.field}
 						/>
 					</div>

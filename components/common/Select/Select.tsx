@@ -178,6 +178,7 @@ export const Select: React.FC<SelectProps> = ({
 					onClick={toggleMenu}
 					onKeyDown={onButtonKeyDown}
 					disabled={disabled}
+					aria-label={label}
 					aria-haspopup="listbox"
 					aria-expanded={open}
 					aria-controls={listboxId}
