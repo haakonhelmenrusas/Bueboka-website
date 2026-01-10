@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Input, Select } from '@/components';
 
 export type ArrowMaterial = 'KARBON' | 'ALUMINIUM' | 'TREVERK';
@@ -12,7 +12,6 @@ export interface ArrowsFormValues {
 
 interface ArrowsFormProps {
 	initialValues?: Partial<ArrowsFormValues>;
-	loading?: boolean;
 	onSubmit: (values: ArrowsFormValues) => Promise<void>;
 }
 
@@ -22,11 +21,11 @@ const materialOptions = [
 	{ value: 'TREVERK', label: 'Treverk' },
 ] as const;
 
-export function ArrowsForm({ initialValues, loading, onSubmit }: ArrowsFormProps) {
-	const [name, setName] = React.useState(initialValues?.name ?? '');
-	const [material, setMaterial] = React.useState<ArrowMaterial>((initialValues?.material as ArrowMaterial) ?? 'KARBON');
+export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
+	const [name, setName] = useState(initialValues?.name ?? '');
+	const [material, setMaterial] = useState<ArrowMaterial>((initialValues?.material as ArrowMaterial) ?? 'KARBON');
 
-	React.useEffect(() => {
+	useEffect(() => {
 		setName(initialValues?.name ?? '');
 		setMaterial((initialValues?.material as ArrowMaterial) ?? 'KARBON');
 	}, [initialValues?.name, initialValues?.material]);

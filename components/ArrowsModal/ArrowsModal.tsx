@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Trash2, X } from 'lucide-react';
 import styles from './ArrowsModal.module.css';
 import { ArrowsForm, ArrowsFormValues } from '@/components/ProfileEditModal/ArrowsForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -22,10 +22,23 @@ interface ArrowsModalProps {
 export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsModalProps) {
 	useModalBehavior({ open, onClose });
 
-	const [loading, setLoading] = React.useState(false);
-	const [message, setMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+	const [deleting, setDeleting] = useState(false);
+
+	useEffect(() => {
+		if (!open) {
+			setMessage(null);
+			setLoading(false);
+			setDeleting(false);
+			return;
+		}
+		setMessage(null);
+	}, [open, editingArrows?.id]);
 
 	const handleSubmit = async (values: ArrowsFormValues) => {
+		const hasChanges = !editingArrows || values.name !== editingArrows.name || values.material !== editingArrows.material;
+
 		setLoading(true);
 		setMessage(null);
 		try {
@@ -46,13 +59,43 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 			setMessage({ type: 'success', text: editingArrows ? 'Piler oppdatert' : 'Piler lagt til' });
 			setTimeout(() => {
 				emitEquipmentChanged();
-				onSaved?.();
-				if (editingArrows) onClose();
+				if (hasChanges) onSaved?.();
+				onClose();
 			}, 800);
 		} catch (error) {
 			setMessage({ type: 'error', text: error instanceof Error ? error.message : 'En feil oppstod' });
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const handleDelete = async () => {
+		if (!editingArrows) return;
+		setDeleting(true);
+		setMessage(null);
+		try {
+			const res = await fetch(`/api/arrows/${editingArrows.id}`, { method: 'DELETE' });
+			if (!res.ok) {
+				let details: any = null;
+				try {
+					details = await res.json();
+				} catch {
+					// ignore
+				}
+				setMessage({ type: 'error', text: details?.error || 'Kunne ikke slette pilsett' });
+				return;
+			}
+
+			setMessage({ type: 'success', text: 'Pilsett slettet' });
+			setTimeout(() => {
+				emitEquipmentChanged();
+				onSaved?.();
+				onClose();
+			}, 500);
+		} catch (e) {
+			setMessage({ type: 'error', text: e instanceof Error ? e.message : 'Kunne ikke slette pilsett' });
+		} finally {
+			setDeleting(false);
 		}
 	};
 
@@ -73,12 +116,22 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 				<div className={styles.form}>
 					<ArrowsForm
 						initialValues={editingArrows ? { name: editingArrows.name, material: editingArrows.material } : undefined}
-						loading={loading}
 						onSubmit={handleSubmit}
 					/>
 
 					<div className={styles.actions}>
-						<Button label="Avbryt" onClick={onClose} disabled={loading} buttonType="outline" width={160} />
+						{editingArrows ? (
+							<Button
+								label={deleting ? 'Sletter...' : 'Slett pilsett'}
+								onClick={handleDelete}
+								disabled={loading || deleting}
+								buttonType="outline"
+								variant="warning"
+								width={180}
+								icon={<Trash2 size={18} />}
+							/>
+						) : null}
+						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" width={160} />
 						<Button
 							label={loading ? (editingArrows ? 'Oppdaterer...' : 'Lagrer...') : editingArrows ? 'Oppdater' : 'Lagre'}
 							onClick={() => {
@@ -86,6 +139,7 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 								form?.requestSubmit();
 							}}
 							loading={loading}
+							disabled={deleting}
 							width={180}
 						/>
 					</div>
