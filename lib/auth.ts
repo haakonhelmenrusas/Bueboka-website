@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { prisma } from './prisma';
+import { sendEmail } from './email';
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
@@ -9,6 +10,22 @@ export const auth = betterAuth({
 	baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
 	emailAndPassword: {
 		enabled: true,
+		// Password reset (dev): log reset link to the server console instead of sending an email.
+		sendResetPassword: async ({ user, url }) => {
+			await sendEmail({
+				to: user.email,
+				subject: 'Tilbakestill passord',
+				html: `
+					<p>Du ba om å tilbakestille passordet ditt.</p>
+					<p><a href="${url}">Trykk her for å velge nytt passord</a></p>
+					<p>Hvis du ikke ba om dette kan du ignorere denne e-posten.</p>
+				`,
+				text: `Tilbakestill passord: ${url}`,
+			});
+		},
+		resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
+		// You can enable this later if you want to sign out all devices after reset.
+		revokeSessionsOnPasswordReset: false,
 	},
 	redirect: {
 		signIn: '/min-side',
@@ -18,13 +35,17 @@ export const auth = betterAuth({
 	emailVerification: {
 		enabled: true,
 		sendVerificationEmail: async ({ user, token }) => {
-			const url = `http://localhost:3000/verify-email?token=${token}`;
-			await fetch(url, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email: user.email }),
+			const baseURL = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+			const verifyUrl = `${baseURL}/verify-email?token=${token}`;
+
+			await sendEmail({
+				to: user.email,
+				subject: 'Bekreft e-postadressen din',
+				html: `
+					<p>Velkommen! Bekreft e-postadressen din ved å trykke på lenken:</p>
+					<p><a href="${verifyUrl}">Bekreft e-post</a></p>
+				`,
+				text: `Bekreft e-post: ${verifyUrl}`,
 			});
 		},
 		autoSignInAfterVerification: true,

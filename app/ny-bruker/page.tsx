@@ -4,7 +4,7 @@ import { signIn, signUp } from '@/lib/auth-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { Button, Header, Input } from '@/components';
+import { Button, Header, Input, SocialAuthButtons } from '@/components';
 import styles from './page.module.css';
 
 export default function SignUpPage() {
@@ -50,14 +50,9 @@ export default function SignUpPage() {
 					</div>
 					<Button type="submit" label="Opprett bruker" />
 				</form>
-				<div>
-					<button type="button" onClick={() => signIn.social({ provider: 'google' })} aria-label="Sign in with Google">
-						Logg på med Google
-					</button>
-
-					<button type="button" onClick={() => signIn.social({ provider: 'apple' })} aria-label="Sign in with Apple">
-						Logg på med Apple
-					</button>
+				<div className={styles.authActions}>
+					<SocialAuthButtons provider="google" label="Logg på med Google" onClick={() => signIn.social({ provider: 'google' })} />
+					<SocialAuthButtons provider="apple" label="Logg på med Apple" onClick={() => signIn.social({ provider: 'apple' })} />
 				</div>
 			</div>
 		</div>

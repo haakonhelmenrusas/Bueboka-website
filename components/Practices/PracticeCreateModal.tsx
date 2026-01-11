@@ -2,22 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import styles from './PracticeCreateModal.module.css';
-import {
-	Cloud,
-	CloudRain,
-	CloudSnow,
-	CloudSun,
-	Cloudy,
-	HelpCircle,
-	Home,
-	MapPin,
-	Sun,
-	Target,
-	Trees,
-	Wind,
-	X,
-	Zap
-} from 'lucide-react';
+import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Home, MapPin, Sun, Target, Trees, Wind, X, Zap } from 'lucide-react';
 import { Environment, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/enums';
 import { DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';

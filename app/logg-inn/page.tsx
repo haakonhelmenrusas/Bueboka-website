@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { signIn } from '@/lib/auth-client';
-import { Button, Header, Input } from '@/components';
+import { Button, Header, Input, SocialAuthButtons } from '@/components';
 import styles from '@/app/ny-bruker/page.module.css';
 
 export default function SignInPage() {
@@ -41,16 +42,16 @@ export default function SignInPage() {
 						<Input label="E-postadresse" id="email" name="email" type="email" autoComplete="email" />
 						<Input label="Passord" id="password" name="password" type="password" autoComplete="new-password" />
 					</div>
+					<div className="flex items-center justify-between">
+						<Link href="/glemt-passord" className="text-sm underline">
+							Glemt passord?
+						</Link>
+					</div>
 					<Button type="submit" label="Logg inn" />
 				</form>
-				<div>
-					<button type="button" onClick={() => signIn.social({ provider: 'google' })} aria-label="Sign in with Google">
-						Logg på med Google
-					</button>
-
-					<button type="button" onClick={() => signIn.social({ provider: 'apple' })} aria-label="Sign in with Apple">
-						Logg på med Apple
-					</button>
+				<div className={styles.authActions}>
+					<SocialAuthButtons provider="google" label="Logg på med Google" onClick={() => signIn.social({ provider: 'google' })} />
+					<SocialAuthButtons provider="apple" label="Logg på med Apple" onClick={() => signIn.social({ provider: 'apple' })} />
 				</div>
 			</div>
 		</div>
