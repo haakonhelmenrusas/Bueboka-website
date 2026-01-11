@@ -7,6 +7,8 @@ type Props = {
 	provider: Provider;
 	label: string;
 	onClick: () => void;
+	disabled?: boolean;
+	loading?: boolean;
 };
 
 const GoogleIcon = ({ size = 18 }: { size?: number }) => (
@@ -39,7 +41,7 @@ const AppleIcon = ({ size = 18 }: { size?: number }) => (
 	</svg>
 );
 
-export function SocialAuthButtons({ provider, label, onClick }: Props) {
+export function SocialAuthButtons({ provider, label, onClick, disabled, loading }: Props) {
 	const icon = provider === 'google' ? <GoogleIcon /> : <AppleIcon />;
 
 	return (
@@ -50,10 +52,12 @@ export function SocialAuthButtons({ provider, label, onClick }: Props) {
 			buttonType="outline"
 			icon={icon}
 			width="100%"
+			disabled={disabled}
+			loading={loading}
 			buttonStyle={
 				provider === 'google'
 					? { backgroundColor: 'var(--white)', borderColor: 'rgba(0,0,0,0.15)', color: 'var(--black)' }
-					: { backgroundColor: 'var(--black)', borderColor: 'var(--black)', color: 'var(--white)' }
+					: { backgroundColor: 'var(--white)', borderColor: 'rgba(0,0,0,0.15)', color: 'var(--text-dark)' }
 			}
 			textStyle={{ fontWeight: 600 }}
 			className={styles.socialButton}

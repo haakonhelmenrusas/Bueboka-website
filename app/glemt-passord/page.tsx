@@ -51,21 +51,23 @@ export default function ForgotPasswordPage() {
 	}
 
 	return (
-		<div className={styles.container}>
+		<div className={`${styles.container} ${styles.themeBackground}`}>
 			<Header />
-			<div className={styles.formWrapper}>
-				<div className={styles.header}>
-					<h1 className={styles.title}>Glemt passord</h1>
-				</div>
-				{error && <p className="text-red-500">{error}</p>}
-				{success && <p className="text-green-600">{success}</p>}
-
-				<form onSubmit={handleSubmit} className="space-y-4">
-					<div className={styles.inputGroup}>
-						<Input label="E-postadresse" id="email" name="email" type="email" autoComplete="email" />
+			<div className={styles.card}>
+				<div className={styles.formWrapper}>
+					<div className={styles.header}>
+						<h1 className={styles.title}>Glemt passord</h1>
 					</div>
-					<Button type="submit" label={isSubmitting ? 'Sender…' : 'Send lenke'} disabled={isSubmitting} />
-				</form>
+					{error && <p className="text-red-500">{error}</p>}
+					{success && <p className="text-green-600">{success}</p>}
+
+					<form onSubmit={handleSubmit} className={styles.form}>
+						<div className={styles.inputGroup}>
+							<Input label="E-postadresse" id="email" name="email" type="email" autoComplete="email" />
+						</div>
+						<Button type="submit" label={isSubmitting ? 'Sender…' : 'Send lenke'} disabled={isSubmitting} />
+					</form>
+				</div>
 			</div>
 		</div>
 	);

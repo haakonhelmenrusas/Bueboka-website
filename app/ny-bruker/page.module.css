@@ -5,6 +5,22 @@
     padding: var(--space-8);
 }
 
+/* Themed background for auth-like pages */
+.themeBackground {
+	background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+}
+
+/* Card wrapper for forms/content */
+.card {
+	width: 100%;
+	max-width: 32rem;
+	background-color: var(--bg-lighter);
+	border: 1px solid var(--white-15);
+	border-radius: 16px;
+	padding: var(--space-10);
+	box-shadow: 0 10px 30px var(--dark-25);
+}
+
 .formWrapper {
     width: 100%;
     max-width: 28rem;
@@ -60,4 +76,9 @@
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-2);
+}
+
+/* Extra spacing around the 'Glemt passord?' row */
+.forgotLinkRow {
+	padding: var(--space-2) 0;
 }

@@ -266,6 +266,9 @@ export default function MyPage() {
 								id: selectedArrows.id,
 								name: selectedArrows.name,
 								material: selectedArrows.material as any,
+								arrowsCount: (selectedArrows as any).arrowsCount ?? null,
+								length: selectedArrows.length ?? null,
+								weight: (selectedArrows as any).weight ?? null,
 							}
 						: undefined
 				}
