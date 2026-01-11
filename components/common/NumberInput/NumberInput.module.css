@@ -1,15 +1,17 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-3);
+	gap: var(--space-2);
 }
 
 .label {
 	font-weight: 700;
 	color: var(--text-gray-700);
 	display: flex;
-	align-items: baseline;
-	gap: 6px;
+	align-items: center;
+	gap: 8px;
+	line-height: 1.15;
+	min-height: 22px;
 }
 
 .required {
@@ -87,16 +89,25 @@
 
 .unit {
 	position: absolute;
-	right: 12px;
+	right: 40px;
 	color: rgba(5, 53, 70, 0.65);
 	font-weight: 600;
 	pointer-events: none;
 }
 
+.rightAddon {
+	position: absolute;
+	right: 10px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
 .help {
 	color: var(--text-gray-600);
-	font-size: 0.95rem;
-	line-height: 1.25;
+	font-size: 0.9rem;
+	line-height: 1.2;
+	min-height: 18px;
 }
 
 .errorMessage {

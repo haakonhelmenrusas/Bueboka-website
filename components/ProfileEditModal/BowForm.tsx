@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Checkbox, Input, NumberInput, Select, TextArea } from '@/components';
+import { Checkbox, Input, NumberInput, Select, TextArea, Tooltip } from '@/components';
 import styles from './BowForm.module.css';
 
 export type BowType = 'RECURVE' | 'COMPOUND' | 'LONGBOW' | 'BAREBOW' | 'HORSEBOW' | 'TRADITIONAL' | 'OTHER';
@@ -66,7 +66,18 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 
 			<div className={styles.numberRow}>
 				<NumberInput label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={1} />
-				<NumberInput label="Målt sikte (cm)" value={aimMeasure} onChange={setAimMeasure} min={0} step={1} />
+				<NumberInput
+					label={
+						<span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+							Målt sikte (cm)
+							<Tooltip text="Mål hvor langt 5cm er på siktet ditt" label="Hjelp for Målt sikte" />
+						</span>
+					}
+					value={aimMeasure}
+					onChange={setAimMeasure}
+					min={0}
+					step={1}
+				/>
 				<NumberInput label="Øye til sikte (cm)" value={eyeToSight} onChange={setEyeToSight} min={0} step={1} />
 			</div>
 

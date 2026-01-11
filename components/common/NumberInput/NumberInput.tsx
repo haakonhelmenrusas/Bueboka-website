@@ -4,7 +4,7 @@ import React, { useEffect, useId, useMemo, useState } from 'react';
 import styles from './NumberInput.module.css';
 
 export interface NumberInputProps {
-	label: string;
+	label: React.ReactNode;
 	value: number;
 	onChange: (value: number) => void;
 	min?: number;
@@ -12,7 +12,7 @@ export interface NumberInputProps {
 	step?: number;
 	disabled?: boolean;
 	required?: boolean;
-	helpText?: string;
+	helpText?: React.ReactNode;
 	errorMessage?: string;
 	/** Optional unit label, e.g. "m", "kg". */
 	unit?: string;
@@ -27,6 +27,10 @@ export interface NumberInputProps {
 	id?: string;
 	containerClassName?: string;
 	inputClassName?: string;
+	/** Optional right addon, e.g. a tooltip or icon. */
+	rightAddon?: React.ReactNode;
+	/** Called when the input is cleared to empty string. Useful for nullable numeric fields. */
+	onEmpty?: () => void;
 }
 
 const clamp = (n: number, min?: number, max?: number) => {
@@ -54,6 +58,8 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 	id,
 	containerClassName,
 	inputClassName,
+	rightAddon,
+	onEmpty,
 }) => {
 	const autoId = useId();
 	const inputId = id ?? `number-input-${autoId}`;
@@ -101,6 +107,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		setDisplayValue(raw);
 
 		if (raw === '') {
+			onEmpty?.();
 			if (emptyBehavior === 'ignore') return;
 			const fallback = typeof min === 'number' ? min : 0;
 			onChange(clamp(fallback, min, max));
@@ -118,6 +125,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 	const handleBlur = () => {
 		if (disabled) return;
 		if (displayValue === '') {
+			onEmpty?.();
 			if (emptyBehavior === 'ignore') {
 				// restore last numeric value on blur
 				setDisplayValue(Number.isFinite(value) ? String(value) : '');
@@ -175,6 +183,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						aria-describedby={describedById}
 					/>
 					{unit ? <span className={styles.unit}>{unit}</span> : null}
+					{rightAddon ? <span className={styles.rightAddon}>{rightAddon}</span> : null}
 				</div>
 
 				<button type="button" className={styles.stepper} onClick={inc} disabled={disabled || atMax} aria-label={`Increase ${label}`}>

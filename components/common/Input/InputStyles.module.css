@@ -1,14 +1,16 @@
 .container {
-  margin-bottom: 16px;
+  margin-bottom: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .label {
   font-weight: 700;
   color: var(--text-gray-700);
   font-size: 1rem;
+  line-height: 1.15;
+  min-height: 22px;
 }
 
 .control {
@@ -55,8 +57,9 @@
 
 .help {
   color: var(--text-gray-600);
-  font-size: 0.95rem;
-  line-height: 1.25;
+  font-size: 0.9rem;
+  line-height: 1.2;
+  min-height: 18px;
 }
 
 .errorMessage {

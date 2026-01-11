@@ -6,6 +6,7 @@ import { ArrowUpRight, BowArrow, Star } from 'lucide-react';
 import { Button } from '@/components';
 import type { Arrow, Bow } from '@/lib/types';
 import { useEquipmentData } from './useEquipmentData';
+import { formatOneDecimal } from '@/lib/format';
 
 export interface EquipmentSectionProps {
 	/** If provided, the component becomes controlled and will not fetch its own data */
@@ -87,7 +88,11 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 									<div key={a.id} className={styles.item} onClick={() => onSelectArrows(a)}>
 										<div className={styles.itemLeft}>
 											<div className={styles.itemName}>{a.name}</div>
-											<div className={styles.itemMeta}>{a.material}</div>
+											<div className={styles.itemMeta}>
+												{a.material}
+												{typeof a.length === 'number' ? ` • ${formatOneDecimal(a.length)}cm` : ''}
+												{typeof (a as any).weight === 'number' ? ` • ${formatOneDecimal((a as any).weight)}g` : ''}
+											</div>
 										</div>
 										<div className={styles.itemIcon}>
 											<ArrowUpRight size={18} />
