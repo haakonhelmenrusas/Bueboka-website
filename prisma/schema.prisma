@@ -99,6 +99,7 @@ model Arrows {
   userId      String
   name        String
   practice    Practice[]
+  arrowsCount Int?
   diameter    Float?
   weight      Float?
   length      Float?

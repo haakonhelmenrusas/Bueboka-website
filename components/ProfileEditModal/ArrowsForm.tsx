@@ -1,13 +1,16 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Input, Select } from '@/components';
+import { Input, NumberInput, Select } from '@/components';
 
 export type ArrowMaterial = 'KARBON' | 'ALUMINIUM' | 'TREVERK';
 
 export interface ArrowsFormValues {
 	name: string;
 	material: ArrowMaterial;
+	arrowsCount: number | null;
+	length: number | null;
+	weight: number | null;
 }
 
 interface ArrowsFormProps {
@@ -24,33 +27,82 @@ const materialOptions = [
 export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 	const [name, setName] = useState(initialValues?.name ?? '');
 	const [material, setMaterial] = useState<ArrowMaterial>((initialValues?.material as ArrowMaterial) ?? 'KARBON');
+	const [arrowsCount, setArrowsCount] = useState<number | null>(
+		typeof (initialValues as any)?.arrowsCount === 'number' ? (initialValues as any).arrowsCount : null
+	);
+	const [length, setLength] = useState<number | null>(typeof initialValues?.length === 'number' ? initialValues.length : null);
+	const [weight, setWeight] = useState<number | null>(typeof initialValues?.weight === 'number' ? initialValues.weight : null);
 
 	useEffect(() => {
 		setName(initialValues?.name ?? '');
 		setMaterial((initialValues?.material as ArrowMaterial) ?? 'KARBON');
-	}, [initialValues?.name, initialValues?.material]);
+		setArrowsCount(typeof (initialValues as any)?.arrowsCount === 'number' ? (initialValues as any).arrowsCount : null);
+		setLength(typeof initialValues?.length === 'number' ? initialValues.length : null);
+		setWeight(typeof initialValues?.weight === 'number' ? initialValues.weight : null);
+	}, [initialValues?.name, initialValues?.material, (initialValues as any)?.arrowsCount, initialValues?.length, initialValues?.weight]);
 
 	return (
 		<form
 			id="arrows-form"
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await onSubmit({ name, material });
+				await onSubmit({ name, material, arrowsCount, length, weight });
 			}}
 		>
-			<Input
-				label="Navn på piler"
-				value={name}
-				onChange={(e) => setName(e.target.value)}
-				required
-				helpText="Gi pilene et navn du kjenner igjen"
-			/>
-			<Select
-				label="Material"
-				value={material}
-				onChange={(v) => setMaterial(v as ArrowMaterial)}
-				options={materialOptions.map((o) => ({ ...o }))}
-			/>
+			<div style={{ marginTop: 14 }}>
+				<Select
+					label="Material"
+					value={material}
+					onChange={(v) => setMaterial(v as ArrowMaterial)}
+					options={materialOptions.map((o) => ({ ...o }))}
+				/>
+			</div>
+
+			<div style={{ marginTop: 12 }}>
+				<NumberInput
+					label="Antall piler"
+					value={arrowsCount ?? 0}
+					onChange={(v) => setArrowsCount(v)}
+					onEmpty={() => setArrowsCount(null)}
+					min={0}
+					step={1}
+					startEmpty
+					emptyBehavior="ignore"
+				/>
+			</div>
+
+			<div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)', alignItems: 'end' }}>
+				<NumberInput
+					label="Lengde (cm)"
+					value={length ?? 0}
+					onChange={(v) => setLength(v)}
+					onEmpty={() => setLength(null)}
+					min={0}
+					step={0.5}
+					startEmpty
+					emptyBehavior="ignore"
+				/>
+				<NumberInput
+					label="Vekt (gram)"
+					value={weight ?? 0}
+					onChange={(v) => setWeight(v)}
+					onEmpty={() => setWeight(null)}
+					min={0}
+					step={0.1}
+					startEmpty
+					emptyBehavior="ignore"
+				/>
+			</div>
+
+			<div style={{ marginTop: 12 }}>
+				<Input
+					label="Navn på piler"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					required
+					helpText="Gi pilene et navn du kjenner igjen"
+				/>
+			</div>
 		</form>
 	);
 }

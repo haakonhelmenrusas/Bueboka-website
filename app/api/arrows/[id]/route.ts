@@ -26,10 +26,30 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		}
 
 		const { id } = await params;
-		const { name, material } = await request.json();
+		const { name, material, length, weight, arrowsCount } = await request.json();
 
 		if (!name || !material) {
 			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+		}
+
+		const parsedLength = typeof length === 'number' ? length : length === null || typeof length === 'undefined' ? null : Number(length);
+		if (parsedLength !== null && (Number.isNaN(parsedLength) || parsedLength < 0)) {
+			return NextResponse.json({ error: 'Invalid length' }, { status: 400 });
+		}
+
+		const parsedWeight = typeof weight === 'number' ? weight : weight === null || typeof weight === 'undefined' ? null : Number(weight);
+		if (parsedWeight !== null && (Number.isNaN(parsedWeight) || parsedWeight < 0)) {
+			return NextResponse.json({ error: 'Invalid weight' }, { status: 400 });
+		}
+
+		const parsedArrowsCount =
+			typeof arrowsCount === 'number'
+				? arrowsCount
+				: arrowsCount === null || typeof arrowsCount === 'undefined'
+					? null
+					: Number(arrowsCount);
+		if (parsedArrowsCount !== null && (!Number.isInteger(parsedArrowsCount) || parsedArrowsCount < 0)) {
+			return NextResponse.json({ error: 'Invalid arrowsCount' }, { status: 400 });
 		}
 
 		const existing = await prisma.arrows.findFirst({
@@ -44,6 +64,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			data: {
 				name,
 				material,
+				arrowsCount: parsedArrowsCount,
+				length: parsedLength,
+				weight: parsedWeight,
 			},
 		});
 

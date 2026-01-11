@@ -16,6 +16,9 @@ interface ArrowsModalProps {
 		id: string;
 		name: string;
 		material: ArrowsFormValues['material'];
+		arrowsCount?: number | null;
+		length?: number | null;
+		weight?: number | null;
 	};
 }
 
@@ -37,7 +40,13 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 	}, [open, editingArrows?.id]);
 
 	const handleSubmit = async (values: ArrowsFormValues) => {
-		const hasChanges = !editingArrows || values.name !== editingArrows.name || values.material !== editingArrows.material;
+		const hasChanges =
+			!editingArrows ||
+			values.name !== editingArrows.name ||
+			values.material !== editingArrows.material ||
+			(values.arrowsCount ?? null) !== (typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null) ||
+			(values.length ?? null) !== (typeof editingArrows.length === 'number' ? editingArrows.length : null) ||
+			(values.weight ?? null) !== (typeof editingArrows.weight === 'number' ? editingArrows.weight : null);
 
 		setLoading(true);
 		setMessage(null);
@@ -115,7 +124,17 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 
 				<div className={styles.form}>
 					<ArrowsForm
-						initialValues={editingArrows ? { name: editingArrows.name, material: editingArrows.material } : undefined}
+						initialValues={
+							editingArrows
+								? {
+										name: editingArrows.name,
+										material: editingArrows.material,
+										arrowsCount: typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null,
+										length: typeof editingArrows.length === 'number' ? editingArrows.length : null,
+										weight: typeof editingArrows.weight === 'number' ? editingArrows.weight : null,
+									}
+								: undefined
+						}
 						onSubmit={handleSubmit}
 					/>
 

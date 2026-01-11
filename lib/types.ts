@@ -26,6 +26,9 @@ export interface Arrow {
 	id: string;
 	name: string;
 	material: string;
+	arrowsCount?: number | null;
+	length?: number | null;
+	weight?: number | null;
 	isFavorite: boolean;
 }
 
