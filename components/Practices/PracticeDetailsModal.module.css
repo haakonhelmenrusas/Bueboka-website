@@ -37,6 +37,11 @@
   margin: 0;
 }
 
+.titleDate {
+	font-weight: 700;
+	opacity: 0.9;
+}
+
 .closeBtn {
   background: transparent;
   border: none;

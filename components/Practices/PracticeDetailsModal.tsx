@@ -1,6 +1,18 @@
 import React from 'react';
 import styles from './PracticeDetailsModal.module.css';
-import { BowArrow, CloudSun, Hash, Home, MapPin, Navigation, NotebookText, Target, Trash2, Trees, X } from 'lucide-react';
+import {
+	BowArrow,
+	CloudSun,
+	Hash,
+	Home,
+	MapPin,
+	Navigation,
+	NotebookText,
+	Target,
+	Trash2,
+	Trees,
+	X
+} from 'lucide-react';
 import { Environment, WeatherCondition } from '@prisma/client';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
@@ -42,17 +54,17 @@ interface PracticeDetailsModalProps {
 	onDeleted?: (id: string) => void;
 }
 
-const weatherLabels: Record<string, string> = {
-	SUN: 'Sol',
-	CLOUDED: 'Overskyet',
-	CLEAR: 'Klarvær',
-	RAIN: 'Regn',
-	WIND: 'Vind',
-	SNOW: 'Snø',
-	FOG: 'Tåke',
-	THUNDER: 'Torden',
-	CHANGING_CONDITIONS: 'Skiftende',
-	OTHER: 'Annet',
+const weatherLabels: Record<WeatherCondition, string> = {
+	[WeatherCondition.SUN]: 'Sol',
+	[WeatherCondition.CLOUDED]: 'Overskyet',
+	[WeatherCondition.CLEAR]: 'Klarvær',
+	[WeatherCondition.RAIN]: 'Regn',
+	[WeatherCondition.WIND]: 'Vind',
+	[WeatherCondition.SNOW]: 'Snø',
+	[WeatherCondition.FOG]: 'Tåke',
+	[WeatherCondition.THUNDER]: 'Torden',
+	[WeatherCondition.CHANGING_CONDITIONS]: 'Skiftende',
+	[WeatherCondition.OTHER]: 'Annet',
 };
 
 export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose, onDeleted }) => {
@@ -104,7 +116,9 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				aria-label={`Trening ${formattedDate}`}
 			>
 				<div className={styles.header}>
-					<h3 className={styles.title}>Trening {formattedDate}</h3>
+					<h3 className={styles.title}>
+						Trening <span className={styles.titleDate}>{formattedDate}</span>
+					</h3>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
 						<X size={20} />
 					</button>
@@ -143,14 +157,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 								<CloudSun size={18} />
 							</span>
 							<span className={styles.label}>Vær</span>
-							<span className={styles.value}>
-								{practice.weather
-									.map((w) => {
-										const key = String(w);
-										return weatherLabels[key] ?? key;
-									})
-									.join(', ')}
-							</span>
+							<span className={styles.value}>{practice.weather.map((w) => weatherLabels[w] ?? String(w)).join(', ')}</span>
 						</div>
 					) : null}
 

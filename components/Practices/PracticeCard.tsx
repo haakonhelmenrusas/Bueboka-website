@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export interface PracticeCardProps {
 	id: string;
@@ -17,16 +17,16 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({ id, date, arrowsShot
 	});
 
 	return (
-		<div className={styles.card} onClick={() => onClick?.(id)} role="button" tabIndex={0}>
+		<button className={styles.card} onClick={() => onClick?.(id)} type="button">
 			<div className={styles.meta}>
 				<div className={styles.date}>{formattedDate}</div>
 			</div>
 			<div className={styles.badge}>
 				<span className={styles.iconCircle}>
-					<ArrowUpRight size={16} />
+					<ArrowRight size={16} />
 				</span>
 				{arrowsShot} piler
 			</div>
-		</div>
+		</button>
 	);
 };
