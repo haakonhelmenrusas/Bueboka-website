@@ -26,11 +26,13 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		}
 
 		const { id } = await params;
-		const { name, material, length, weight, arrowsCount } = await request.json();
+		const { name, material, length, weight, arrowsCount, isFavorite } = await request.json();
 
 		if (!name || !material) {
 			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
 		}
+
+		const makeFavorite = Boolean(isFavorite);
 
 		const parsedLength = typeof length === 'number' ? length : length === null || typeof length === 'undefined' ? null : Number(length);
 		if (parsedLength !== null && (Number.isNaN(parsedLength) || parsedLength < 0)) {
@@ -59,15 +61,25 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return NextResponse.json({ error: 'Not found' }, { status: 404 });
 		}
 
-		const arrows = await prisma.arrows.update({
-			where: { id },
-			data: {
-				name,
-				material,
-				arrowsCount: parsedArrowsCount,
-				length: parsedLength,
-				weight: parsedWeight,
-			},
+		const arrows = await prisma.$transaction(async (tx) => {
+			if (makeFavorite) {
+				await tx.arrows.updateMany({
+					where: { userId: user.id, isFavorite: true, NOT: { id } },
+					data: { isFavorite: false },
+				});
+			}
+
+			return tx.arrows.update({
+				where: { id },
+				data: {
+					name,
+					material,
+					isFavorite: makeFavorite,
+					arrowsCount: parsedArrowsCount,
+					length: parsedLength,
+					weight: parsedWeight,
+				},
+			});
 		});
 
 		return NextResponse.json({ arrows });

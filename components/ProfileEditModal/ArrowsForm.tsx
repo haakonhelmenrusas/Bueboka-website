@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Input, NumberInput, Select } from '@/components';
+import { Checkbox, Input, NumberInput, Select } from '@/components';
 
 export type ArrowMaterial = 'KARBON' | 'ALUMINIUM' | 'TREVERK';
 
@@ -11,6 +11,7 @@ export interface ArrowsFormValues {
 	arrowsCount: number | null;
 	length: number | null;
 	weight: number | null;
+	isFavorite: boolean;
 }
 
 interface ArrowsFormProps {
@@ -32,6 +33,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 	);
 	const [length, setLength] = useState<number | null>(typeof initialValues?.length === 'number' ? initialValues.length : null);
 	const [weight, setWeight] = useState<number | null>(typeof initialValues?.weight === 'number' ? initialValues.weight : null);
+	const [isFavorite, setIsFavorite] = useState<boolean>(Boolean((initialValues as any)?.isFavorite));
 
 	useEffect(() => {
 		setName(initialValues?.name ?? '');
@@ -39,14 +41,22 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 		setArrowsCount(typeof (initialValues as any)?.arrowsCount === 'number' ? (initialValues as any).arrowsCount : null);
 		setLength(typeof initialValues?.length === 'number' ? initialValues.length : null);
 		setWeight(typeof initialValues?.weight === 'number' ? initialValues.weight : null);
-	}, [initialValues?.name, initialValues?.material, (initialValues as any)?.arrowsCount, initialValues?.length, initialValues?.weight]);
+		setIsFavorite(Boolean((initialValues as any)?.isFavorite));
+	}, [
+		initialValues?.name,
+		initialValues?.material,
+		(initialValues as any)?.arrowsCount,
+		initialValues?.length,
+		initialValues?.weight,
+		(initialValues as any)?.isFavorite,
+	]);
 
 	return (
 		<form
 			id="arrows-form"
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await onSubmit({ name, material, arrowsCount, length, weight });
+				await onSubmit({ name, material, arrowsCount, length, weight, isFavorite });
 			}}
 		>
 			<div style={{ marginTop: 14 }}>
@@ -102,6 +112,10 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					required
 					helpText="Gi pilene et navn du kjenner igjen"
 				/>
+			</div>
+
+			<div style={{ marginTop: 12 }}>
+				<Checkbox label="Favorittpiler" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittpilsett" />
 			</div>
 		</form>
 	);

@@ -19,6 +19,7 @@ interface ArrowsModalProps {
 		arrowsCount?: number | null;
 		length?: number | null;
 		weight?: number | null;
+		isFavorite?: boolean;
 	};
 }
 
@@ -46,7 +47,8 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 			values.material !== editingArrows.material ||
 			(values.arrowsCount ?? null) !== (typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null) ||
 			(values.length ?? null) !== (typeof editingArrows.length === 'number' ? editingArrows.length : null) ||
-			(values.weight ?? null) !== (typeof editingArrows.weight === 'number' ? editingArrows.weight : null);
+			(values.weight ?? null) !== (typeof editingArrows.weight === 'number' ? editingArrows.weight : null) ||
+			values.isFavorite !== Boolean(editingArrows.isFavorite);
 
 		setLoading(true);
 		setMessage(null);
@@ -132,6 +134,7 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 										arrowsCount: typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null,
 										length: typeof editingArrows.length === 'number' ? editingArrows.length : null,
 										weight: typeof editingArrows.weight === 'number' ? editingArrows.weight : null,
+										isFavorite: Boolean(editingArrows.isFavorite),
 									}
 								: undefined
 						}

@@ -87,11 +87,18 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 								arrows.map((a) => (
 									<div key={a.id} className={styles.item} onClick={() => onSelectArrows(a)}>
 										<div className={styles.itemLeft}>
-											<div className={styles.itemName}>{a.name}</div>
+											<div className={styles.itemName}>
+												{a.name}
+												{a.isFavorite ? (
+													<span className={styles.favorite} aria-label="Favorittpilsett">
+														<Star size={14} />
+													</span>
+												) : null}
+											</div>
 											<div className={styles.itemMeta}>
 												{a.material}
 												{typeof a.length === 'number' ? ` • ${formatOneDecimal(a.length)}cm` : ''}
-												{typeof (a as any).weight === 'number' ? ` • ${formatOneDecimal((a as any).weight)}g` : ''}
+												{typeof a.weight === 'number' ? ` • ${formatOneDecimal(a.weight)}g` : ''}
 											</div>
 										</div>
 										<div className={styles.itemIcon}>
