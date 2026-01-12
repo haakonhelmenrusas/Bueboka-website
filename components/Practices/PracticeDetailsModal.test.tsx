@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { PracticeDetailsModal } from './PracticeDetailsModal';
-import { Environment, WeatherCondition } from '@prisma/client';
+import { Environment, WeatherCondition } from '@/lib/prismaEnums';
 
 const practice = {
 	id: '1',

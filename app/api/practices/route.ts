@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Environment, WeatherCondition } from '@prisma/client';
+import { Environment, WeatherCondition } from '@/lib/prismaEnums';
 
 async function getCurrentUser() {
 	try {

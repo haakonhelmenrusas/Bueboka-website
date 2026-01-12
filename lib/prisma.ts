@@ -1,5 +1,5 @@
 import { withAccelerate } from '@prisma/extension-accelerate';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@/prisma/prisma/generated/prisma-client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 const adapter = new PrismaPg({
@@ -18,4 +18,12 @@ export const prisma =
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-export type { User, Bow, Arrows, Practice, End, RoundType } from '@prisma/client';
+// Export model types from the generated client too, so we avoid depending on `@prisma/client` at build time.
+export type {
+	UserModel as User,
+	BowModel as Bow,
+	ArrowsModel as Arrows,
+	PracticeModel as Practice,
+	EndModel as End,
+	RoundTypeModel as RoundType,
+} from '@/prisma/prisma/generated/prisma-client/models';
