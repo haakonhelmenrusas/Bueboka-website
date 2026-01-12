@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Environment, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/enums';
+import { Environment, WeatherCondition } from '@prisma/client';
 
 async function getCurrentUser() {
 	try {
@@ -92,32 +92,35 @@ export async function POST(request: NextRequest) {
 
 		const normalizedLocation = typeof location === 'string' && location.trim() ? location.trim() : null;
 		const normalizedNotes = typeof notes === 'string' && notes.trim() ? notes.trim() : null;
-		const normalizedRoundTypeId = typeof roundTypeId === 'string' && roundTypeId.trim() ? roundTypeId.trim() : undefined;
-		const normalizedBowId = typeof bowId === 'string' && bowId.trim() ? bowId.trim() : undefined;
-		const normalizedArrowsId = typeof arrowsId === 'string' && arrowsId.trim() ? arrowsId.trim() : undefined;
+		const normalizedRoundTypeId = typeof roundTypeId === 'string' && roundTypeId.trim() ? roundTypeId.trim() : null;
+		const normalizedBowId = typeof bowId === 'string' && bowId.trim() ? bowId.trim() : null;
+		const normalizedArrowsId = typeof arrowsId === 'string' && arrowsId.trim() ? arrowsId.trim() : null;
 
 		const normalizedTotalScore = typeof totalScore === 'number' && !Number.isNaN(totalScore) ? totalScore : 0;
 
-		// Create the practice + a first end that stores arrowsShot (so we can show arrowsShot without a second call)
-		const practice = await prisma.practice.create({
-			data: {
-				userId: user.id,
-				date: parsedDate!,
-				totalScore: normalizedTotalScore,
-				location: normalizedLocation,
-				environment: environment as Environment,
-				weather: normalizedWeather,
-				notes: normalizedNotes,
-				roundTypeId: normalizedRoundTypeId,
-				bowId: normalizedBowId,
-				arrowsId: normalizedArrowsId,
-				ends: {
-					create: {
-						arrows: arrowsShot as number,
-						scores: [],
-					},
+		const data: any = {
+			userId: user.id,
+			date: parsedDate!,
+			totalScore: normalizedTotalScore,
+			location: normalizedLocation,
+			environment: environment as Environment,
+			weather: normalizedWeather,
+			notes: normalizedNotes,
+			ends: {
+				create: {
+					arrows: arrowsShot as number,
+					scores: [],
 				},
 			},
+		};
+
+		if (normalizedRoundTypeId) data.roundTypeId = normalizedRoundTypeId;
+		if (normalizedBowId) data.bowId = normalizedBowId;
+		if (normalizedArrowsId) data.arrowsId = normalizedArrowsId;
+
+		// Create the practice + a first end that stores arrowsShot (so we can show arrowsShot without a second call)
+		const practice = await prisma.practice.create({
+			data,
 			include: {
 				ends: true,
 			},

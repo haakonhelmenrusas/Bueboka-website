@@ -1,5 +1,5 @@
 import { withAccelerate } from '@prisma/extension-accelerate';
-import { PrismaClient } from '@/prisma/prisma/generated/prisma-client/client';
+import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 const adapter = new PrismaPg({
