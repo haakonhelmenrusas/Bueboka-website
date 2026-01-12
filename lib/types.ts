@@ -1,4 +1,4 @@
-import { Environment, WeatherCondition } from '@prisma/client';
+import type { Environment, WeatherCondition } from '@/lib/prismaEnums';
 
 export interface User {
 	id: string;
