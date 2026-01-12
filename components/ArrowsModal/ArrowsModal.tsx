@@ -17,8 +17,10 @@ interface ArrowsModalProps {
 		name: string;
 		material: ArrowsFormValues['material'];
 		arrowsCount?: number | null;
+		diameter?: number | null;
 		length?: number | null;
 		weight?: number | null;
+		spine?: string | null;
 		isFavorite?: boolean;
 	};
 }
@@ -46,8 +48,10 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 			values.name !== editingArrows.name ||
 			values.material !== editingArrows.material ||
 			(values.arrowsCount ?? null) !== (typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null) ||
+			(values.diameter ?? null) !== (typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null) ||
 			(values.length ?? null) !== (typeof editingArrows.length === 'number' ? editingArrows.length : null) ||
 			(values.weight ?? null) !== (typeof editingArrows.weight === 'number' ? editingArrows.weight : null) ||
+			(values.spine ?? '') !== (typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '') ||
 			values.isFavorite !== Boolean(editingArrows.isFavorite);
 
 		setLoading(true);
@@ -132,8 +136,10 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 										name: editingArrows.name,
 										material: editingArrows.material,
 										arrowsCount: typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null,
+										diameter: typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null,
 										length: typeof editingArrows.length === 'number' ? editingArrows.length : null,
 										weight: typeof editingArrows.weight === 'number' ? editingArrows.weight : null,
+										spine: typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '',
 										isFavorite: Boolean(editingArrows.isFavorite),
 									}
 								: undefined

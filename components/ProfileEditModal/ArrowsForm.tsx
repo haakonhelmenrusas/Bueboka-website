@@ -9,8 +9,10 @@ export interface ArrowsFormValues {
 	name: string;
 	material: ArrowMaterial;
 	arrowsCount: number | null;
+	diameter: number | null;
 	length: number | null;
 	weight: number | null;
+	spine: string;
 	isFavorite: boolean;
 }
 
@@ -31,23 +33,33 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 	const [arrowsCount, setArrowsCount] = useState<number | null>(
 		typeof (initialValues as any)?.arrowsCount === 'number' ? (initialValues as any).arrowsCount : null
 	);
+	const [diameter, setDiameter] = useState<number | null>(
+		typeof (initialValues as any)?.diameter === 'number' ? (initialValues as any).diameter : null
+	);
 	const [length, setLength] = useState<number | null>(typeof initialValues?.length === 'number' ? initialValues.length : null);
 	const [weight, setWeight] = useState<number | null>(typeof initialValues?.weight === 'number' ? initialValues.weight : null);
+	const [spine, setSpine] = useState<string>(typeof (initialValues as any)?.spine === 'string' ? (initialValues as any).spine : '');
 	const [isFavorite, setIsFavorite] = useState<boolean>(Boolean((initialValues as any)?.isFavorite));
+	const [nameError, setNameError] = useState<string>('');
 
 	useEffect(() => {
 		setName(initialValues?.name ?? '');
 		setMaterial((initialValues?.material as ArrowMaterial) ?? 'KARBON');
 		setArrowsCount(typeof (initialValues as any)?.arrowsCount === 'number' ? (initialValues as any).arrowsCount : null);
+		setDiameter(typeof (initialValues as any)?.diameter === 'number' ? (initialValues as any).diameter : null);
 		setLength(typeof initialValues?.length === 'number' ? initialValues.length : null);
 		setWeight(typeof initialValues?.weight === 'number' ? initialValues.weight : null);
+		setSpine(typeof (initialValues as any)?.spine === 'string' ? (initialValues as any).spine : '');
 		setIsFavorite(Boolean((initialValues as any)?.isFavorite));
+		setNameError('');
 	}, [
 		initialValues?.name,
 		initialValues?.material,
 		(initialValues as any)?.arrowsCount,
+		(initialValues as any)?.diameter,
 		initialValues?.length,
 		initialValues?.weight,
+		(initialValues as any)?.spine,
 		(initialValues as any)?.isFavorite,
 	]);
 
@@ -56,19 +68,43 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 			id="arrows-form"
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await onSubmit({ name, material, arrowsCount, length, weight, isFavorite });
+				const trimmedName = name.trim();
+				if (!trimmedName) {
+					setNameError('Du må legge inn et navn.');
+					return;
+				}
+				setNameError('');
+				await onSubmit({ name: trimmedName, material, arrowsCount, diameter, length, weight, spine, isFavorite });
 			}}
 		>
-			<div style={{ marginTop: 14 }}>
+			<div
+				style={{
+					marginTop: 14,
+					display: 'grid',
+					gridTemplateColumns: '1fr 1fr',
+					gap: 'var(--space-6)',
+					alignItems: 'end',
+				}}
+			>
 				<Select
 					label="Material"
 					value={material}
 					onChange={(v) => setMaterial(v as ArrowMaterial)}
 					options={materialOptions.map((o) => ({ ...o }))}
 				/>
+				<NumberInput
+					label="Diameter (mm)"
+					value={diameter ?? 0}
+					onChange={(v) => setDiameter(v)}
+					onEmpty={() => setDiameter(null)}
+					min={0}
+					step={0.1}
+					startEmpty
+					emptyBehavior="ignore"
+				/>
 			</div>
 
-			<div style={{ marginTop: 12 }}>
+			<div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)', alignItems: 'end' }}>
 				<NumberInput
 					label="Antall piler"
 					value={arrowsCount ?? 0}
@@ -79,6 +115,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					startEmpty
 					emptyBehavior="ignore"
 				/>
+				<Input label="Spine" value={spine} onChange={(e) => setSpine(e.target.value)} />
 			</div>
 
 			<div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)', alignItems: 'end' }}>
@@ -108,9 +145,14 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 				<Input
 					label="Navn på piler"
 					value={name}
-					onChange={(e) => setName(e.target.value)}
+					onChange={(e) => {
+						setName(e.target.value);
+						if (nameError) setNameError('');
+					}}
 					required
 					helpText="Gi pilene et navn du kjenner igjen"
+					error={Boolean(nameError)}
+					errorMessage={nameError}
 				/>
 			</div>
 

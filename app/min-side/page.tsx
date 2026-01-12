@@ -268,8 +268,10 @@ export default function MyPage() {
 								material: selectedArrows.material as any,
 								isFavorite: (selectedArrows as any).isFavorite,
 								arrowsCount: (selectedArrows as any).arrowsCount ?? null,
+								diameter: (selectedArrows as any).diameter ?? null,
 								length: selectedArrows.length ?? null,
 								weight: (selectedArrows as any).weight ?? null,
+								spine: (selectedArrows as any).spine ?? '',
 							}
 						: undefined
 				}

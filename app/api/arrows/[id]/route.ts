@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		}
 
 		const { id } = await params;
-		const { name, material, length, weight, arrowsCount, isFavorite } = await request.json();
+		const { name, material, length, weight, arrowsCount, diameter, spine, isFavorite } = await request.json();
 
 		if (!name || !material) {
 			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -44,6 +44,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return NextResponse.json({ error: 'Invalid weight' }, { status: 400 });
 		}
 
+		const parsedDiameter =
+			typeof diameter === 'number' ? diameter : diameter === null || typeof diameter === 'undefined' ? null : Number(diameter);
+		if (parsedDiameter !== null && (Number.isNaN(parsedDiameter) || parsedDiameter < 0)) {
+			return NextResponse.json({ error: 'Invalid diameter' }, { status: 400 });
+		}
+
 		const parsedArrowsCount =
 			typeof arrowsCount === 'number'
 				? arrowsCount
@@ -53,6 +59,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		if (parsedArrowsCount !== null && (!Number.isInteger(parsedArrowsCount) || parsedArrowsCount < 0)) {
 			return NextResponse.json({ error: 'Invalid arrowsCount' }, { status: 400 });
 		}
+
+		const parsedSpine =
+			typeof spine === 'string' ? spine.trim() : spine === null || typeof spine === 'undefined' ? '' : String(spine).trim();
+		const spineValue = parsedSpine.length > 0 ? parsedSpine : null;
 
 		const existing = await prisma.arrows.findFirst({
 			where: { id, userId: user.id },
@@ -76,8 +86,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 					material,
 					isFavorite: makeFavorite,
 					arrowsCount: parsedArrowsCount,
+					diameter: parsedDiameter,
 					length: parsedLength,
 					weight: parsedWeight,
+					spine: spineValue,
 				},
 			});
 		});

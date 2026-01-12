@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Input } from '@/components';
 
 export interface ProfileFormValues {
@@ -14,9 +14,9 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ initialValues, loading, onSubmit }: ProfileFormProps) {
-	const [club, setClub] = React.useState(initialValues.club);
+	const [club, setClub] = useState(initialValues.club);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		setClub(initialValues.club);
 	}, [initialValues.club]);
 

@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const { name, material, length, weight, arrowsCount, isFavorite } = await request.json();
+		const { name, material, length, weight, arrowsCount, diameter, spine, isFavorite } = await request.json();
 
 		if (!name || !material) {
 			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -43,6 +43,12 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Invalid weight' }, { status: 400 });
 		}
 
+		const parsedDiameter =
+			typeof diameter === 'number' ? diameter : diameter === null || typeof diameter === 'undefined' ? null : Number(diameter);
+		if (parsedDiameter !== null && (Number.isNaN(parsedDiameter) || parsedDiameter < 0)) {
+			return NextResponse.json({ error: 'Invalid diameter' }, { status: 400 });
+		}
+
 		const parsedArrowsCount =
 			typeof arrowsCount === 'number'
 				? arrowsCount
@@ -52,6 +58,10 @@ export async function POST(request: NextRequest) {
 		if (parsedArrowsCount !== null && (!Number.isInteger(parsedArrowsCount) || parsedArrowsCount < 0)) {
 			return NextResponse.json({ error: 'Invalid arrowsCount' }, { status: 400 });
 		}
+
+		const parsedSpine =
+			typeof spine === 'string' ? spine.trim() : spine === null || typeof spine === 'undefined' ? '' : String(spine).trim();
+		const spineValue = parsedSpine.length > 0 ? parsedSpine : null;
 
 		const arrows = await prisma.$transaction(async (tx) => {
 			if (makeFavorite) {
@@ -68,8 +78,10 @@ export async function POST(request: NextRequest) {
 					material,
 					isFavorite: makeFavorite,
 					arrowsCount: parsedArrowsCount,
+					diameter: parsedDiameter,
 					length: parsedLength,
 					weight: parsedWeight,
+					spine: spineValue,
 				},
 			});
 		});
