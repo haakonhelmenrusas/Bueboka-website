@@ -2,7 +2,6 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
-import { ClarityInit } from '@/lib/ClarityInit';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,10 +22,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
 	return (
 		<html lang="no-nb">
-			<body className={inter.className}>
-				<ClarityInit />
-				{children}
-			</body>
+			<body className={inter.className}>{children}</body>
 		</html>
 	);
 }
