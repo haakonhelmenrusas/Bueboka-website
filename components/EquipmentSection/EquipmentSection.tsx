@@ -44,16 +44,15 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 		<section className={styles.section} aria-label="Utstyr">
 			<div className={styles.header}>
 				<h2 className={styles.title}>Utstyr</h2>
-				<div className={styles.actions}>
-					<Button label="Ny bue" onClick={onCreateBow} icon={<BowArrow size={18} />} width={170} size="small" />
-					<Button label="Nye piler" onClick={onCreateArrows} icon={<ArrowUpRight size={18} />} width={170} size="small" />
-				</div>
 			</div>
 
 			<div className={styles.panel}>
 				<div className={styles.grid}>
 					<div>
-						<div className={styles.subTitle}>Buer</div>
+						<div className={styles.subHeaderRow}>
+							<div className={styles.subTitle}>Buer</div>
+							<Button label="Ny bue" onClick={onCreateBow} icon={<BowArrow size={18} />} width={140} size="small" />
+						</div>
 						<div className={styles.list}>
 							{bows && bows.length > 0 ? (
 								bows.map((bow) => (
@@ -81,7 +80,10 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 					</div>
 
 					<div>
-						<div className={styles.subTitle}>Piler</div>
+						<div className={styles.subHeaderRow}>
+							<div className={styles.subTitle}>Piler</div>
+							<Button label="Nye piler" onClick={onCreateArrows} icon={<ArrowUpRight size={18} />} width={140} size="small" />
+						</div>
 						<div className={styles.list}>
 							{arrows && arrows.length > 0 ? (
 								arrows.map((a) => (
