@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './PracticeCreateModal.module.css';
 import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Home, MapPin, Sun, Target, Trees, Wind, X, Zap } from 'lucide-react';
 import { Environment, WeatherCondition } from '@/lib/prismaEnums';
@@ -81,7 +81,7 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [arrowsShot, setArrowsShot] = useState<number>(0);
 	const [location, setLocation] = useState('');
-	const [environment, setEnvironment] = useState<Environment>(Environment.OUTDOOR);
+	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
 	const [weather, setWeather] = useState<WeatherCondition[]>([]);
 	const [notes, setNotes] = useState('');
 	const [roundTypeId, setRoundTypeId] = useState<string>('');
@@ -90,18 +90,21 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	const weatherSet = useMemo(() => new Set(weather), [weather]);
-
-	const toggleWeather = (w: WeatherCondition) => {
-		if (environment === Environment.INDOOR) return;
-		setWeather((prev) => (prev.includes(w) ? prev.filter((x) => x !== w) : [...prev, w]));
-	};
-
 	useEffect(() => {
-		if (environment === Environment.INDOOR) {
+		// Weather is only tracked for outdoor practice.
+		if (environment !== Environment.OUTDOOR) {
 			setWeather([]);
 		}
 	}, [environment]);
+
+	const weatherSelectOptions = weatherOptions.map((w) => {
+		const Icon = weatherIcons[w];
+		return {
+			value: w,
+			label: weatherLabels[w] ?? w,
+			icon: <Icon size={16} />,
+		};
+	});
 
 	const roundTypeOptions = roundTypes.map((r) => {
 		const values: string[] = [];
@@ -135,7 +138,7 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 			setDate(new Date().toISOString().slice(0, 10));
 			setArrowsShot(0);
 			setLocation('');
-			setEnvironment(Environment.OUTDOOR);
+			setEnvironment(Environment.INDOOR);
 			setWeather([]);
 			setNotes('');
 			setRoundTypeId('');
@@ -159,6 +162,9 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 		if (!open) return;
 		// Always start with today's date when opening the modal.
 		setDate(new Date().toISOString().slice(0, 10));
+		setEnvironment(Environment.INDOOR);
+		setWeather([]);
+		setArrowsShot(0);
 	}, [open]);
 
 	// Prefill favorites when opening (without overriding user choice)
@@ -198,9 +204,8 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 							onChange={setArrowsShot}
 							min={0}
 							step={1}
-							required
-							startEmpty
-							emptyBehavior="ignore"
+							startEmpty={false}
+							emptyBehavior="clamp"
 							containerClassName={styles.field}
 						/>
 					</div>
@@ -216,41 +221,25 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 						/>
 					</div>
 
-					<label className={styles.field}>
-						<span className={styles.label}>Vær</span>
-						{environment === Environment.INDOOR ? <div className={styles.helpText}>Vær registreres kun for utetrening.</div> : null}
-						<div className={styles.weatherGrid}>
-							{weatherOptions.map((w) => {
-								const Icon = weatherIcons[w];
-								const disabledWeather = environment === Environment.INDOOR;
-								return (
-									<label
-										key={w}
-										className={`${styles.weatherOption} ${weatherSet.has(w) ? styles.weatherOptionSelected : ''} ${disabledWeather ? styles.weatherOptionDisabled : ''}`}
-									>
-										<input
-											type="checkbox"
-											className={styles.weatherCheckbox}
-											checked={weatherSet.has(w)}
-											disabled={disabledWeather}
-											onChange={() => toggleWeather(w)}
-										/>
-										<span className={styles.weatherBox} aria-hidden="true" />
-										<span className={styles.weatherIcon} aria-hidden="true">
-											<Icon size={16} />
-										</span>
-										<span className={styles.weatherText}>{weatherLabels[w] ?? w}</span>
-									</label>
-								);
-							})}
-						</div>
-					</label>
+					{environment === Environment.OUTDOOR ? (
+						<Select
+							label="Vær"
+							helpText="Velg ett eller flere"
+							value={weather}
+							onChange={(v) => setWeather(v as WeatherCondition[])}
+							multiple
+							maxSelectedLabels={2}
+							placeholderLabel="Velg vær (valgfritt)"
+							options={weatherSelectOptions}
+							containerClassName={styles.field}
+						/>
+					) : null}
 
 					<div className={styles.row}>
 						<Select
 							label="Bue"
 							value={bowId}
-							onChange={setBowId}
+							onChange={(v) => setBowId(v as string)}
 							placeholderLabel="Velg bue (valgfritt)"
 							options={bowOptions.map((o) => ({ ...o, icon: <CloudSun size={16} /> }))}
 							containerClassName={styles.field}
@@ -258,7 +247,7 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 						<Select
 							label="Piler"
 							value={arrowsId}
-							onChange={setArrowsId}
+							onChange={(v) => setArrowsId(v as string)}
 							placeholderLabel="Velg piler (valgfritt)"
 							options={arrowsOptions.map((o) => ({ ...o, icon: <MapPin size={16} /> }))}
 							containerClassName={styles.field}
@@ -269,7 +258,7 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 						<Select
 							label="Runde"
 							value={roundTypeId}
-							onChange={setRoundTypeId}
+							onChange={(v) => setRoundTypeId(v as string)}
 							placeholderLabel="Velg runde (valgfritt)"
 							options={roundTypeOptions.map((o) => ({ ...o, icon: <Target size={16} /> }))}
 							containerClassName={styles.field}

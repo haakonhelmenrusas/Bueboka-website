@@ -97,106 +97,7 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
-.weatherGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: var(--space-2);
-}
-
-.checkbox {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  font-size: 0.95rem;
-}
-
-.weatherOption {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--bg-gray-200);
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--text-gray-700);
-  cursor: pointer;
-  user-select: none;
-  transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
-}
-
-.weatherOption:hover {
-  border-color: rgba(5, 53, 70, 0.28);
-  background: rgba(5, 53, 70, 0.04);
-}
-
-.weatherOptionSelected {
-  border-color: rgba(5, 53, 70, 0.45);
-  background: rgba(5, 53, 70, 0.08);
-  box-shadow: 0 6px 16px rgba(5, 53, 70, 0.12);
-}
-
-/* Hide the native checkbox but keep it accessible */
-.weatherCheckbox {
-  position: absolute;
-  opacity: 0;
-  width: 1px;
-  height: 1px;
-  pointer-events: none;
-}
-
-.weatherBox {
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
-  border: 2px solid rgba(5, 53, 70, 0.45);
-  background: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  transition: background 150ms ease, border-color 150ms ease, transform 120ms ease;
-}
-
-.weatherText {
-  color: #053546; /* explicit for contrast */
-  font-weight: 650;
-  line-height: 1.2;
-}
-
-/* Checkmark when selected */
-.weatherOptionSelected .weatherBox {
-  background: #053546;
-  border-color: #053546;
-}
-
-.weatherOptionSelected .weatherBox::after {
-  content: '';
-  width: 9px;
-  height: 5px;
-  border-left: 2px solid #fff;
-  border-bottom: 2px solid #fff;
-  transform: rotate(-45deg);
-  margin-top: -1px;
-}
-
-/* Keyboard focus */
-.weatherOption:focus-within {
-  outline: 3px solid rgba(5, 53, 70, 0.25);
-  outline-offset: 2px;
-}
-
-.weatherIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  color: rgba(5, 53, 70, 0.85);
-}
-
-.weatherOptionSelected .weatherIcon {
-  color: #053546;
-}
+/* Weather selection is now handled via the shared Select component to save space. */
 
 .actions {
   display: flex;
@@ -244,20 +145,4 @@
   padding: var(--space-3);
   border-radius: 10px;
   font-size: 0.95rem;
-}
-
-.weatherOptionDisabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.weatherOptionDisabled:hover {
-  border-color: var(--bg-gray-200);
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.helpText {
-  color: var(--text-gray-600);
-  font-size: 0.95rem;
-  line-height: 1.25;
 }

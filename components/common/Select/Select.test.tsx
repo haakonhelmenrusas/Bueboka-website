@@ -94,4 +94,41 @@ describe('Select', () => {
 		await user.click(screen.getByRole('button', { name: /runde/i }));
 		expect(screen.getByText('Ingen runder')).toBeInTheDocument();
 	});
+
+	test('supports multiple select (toggles options and shows summary)', async () => {
+		const user = userEvent.setup();
+		const Wrapper = () => {
+			const [val, setVal] = React.useState<string[]>([]);
+			return (
+				<Select
+					label="Vær"
+					value={val}
+					onChange={(v) => setVal(v as string[])}
+					multiple
+					placeholderLabel="Velg vær"
+					options={[
+						{ value: 'SUN', label: 'Sol' },
+						{ value: 'RAIN', label: 'Regn' },
+						{ value: 'WIND', label: 'Vind' },
+					]}
+				/>
+			);
+		};
+
+		render(<Wrapper />);
+
+		const button = screen.getByRole('button', { name: /vær/i });
+		expect(button).toHaveTextContent('Velg vær');
+
+		await user.click(button);
+		await user.click(screen.getByRole('option', { name: 'Sol' }));
+		expect(button).toHaveTextContent('Sol');
+
+		await user.click(screen.getByRole('option', { name: 'Regn' }));
+		expect(button).toHaveTextContent('Sol, Regn');
+
+		// toggle off
+		await user.click(screen.getByRole('option', { name: 'Sol' }));
+		expect(button).toHaveTextContent('Regn');
+	});
 });

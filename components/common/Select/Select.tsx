@@ -14,8 +14,8 @@ export type SelectOption = {
 export interface SelectProps {
 	label: string;
 	options: SelectOption[];
-	value: string;
-	onChange: (value: string) => void;
+	value: string | string[];
+	onChange: (value: string | string[]) => void;
 	placeholderLabel?: string;
 	/** Text shown in the dropdown when there are no options. */
 	emptyText?: string;
@@ -27,6 +27,10 @@ export interface SelectProps {
 	containerClassName?: string;
 	labelClassName?: string;
 	buttonClassName?: string;
+	/** Enable multi-select behavior (toggle options, keep menu open). */
+	multiple?: boolean;
+	/** When multiple is true and more than this number is selected, show a count instead of joined labels. */
+	maxSelectedLabels?: number;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -44,6 +48,8 @@ export const Select: React.FC<SelectProps> = ({
 	containerClassName,
 	labelClassName,
 	buttonClassName,
+	multiple = false,
+	maxSelectedLabels = 2,
 }) => {
 	const autoId = useId();
 	const selectId = id ?? `select-${autoId}`;
@@ -62,7 +68,21 @@ export const Select: React.FC<SelectProps> = ({
 		return ids.length ? ids.join(' ') : undefined;
 	}, [errorMessage, helpText, selectId]);
 
-	const selectedOption = options.find((o) => o.value === value);
+	const selectedValues = useMemo(() => {
+		return multiple ? (Array.isArray(value) ? value : value ? [value] : []) : [];
+	}, [multiple, value]);
+
+	const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
+
+	const selectedOption = useMemo(() => {
+		if (multiple) return undefined;
+		return options.find((o) => o.value === value);
+	}, [multiple, options, value]);
+
+	const selectedOptions = useMemo(() => {
+		if (!multiple) return [];
+		return options.filter((o) => selectedSet.has(o.value));
+	}, [multiple, options, selectedSet]);
 
 	const hasEnabledOptions = options.some((o) => !o.disabled);
 
@@ -70,6 +90,11 @@ export const Select: React.FC<SelectProps> = ({
 		if (disabled) return;
 		setOpen(true);
 		// set active to selected, otherwise first enabled
+		if (multiple) {
+			const firstEnabledIdx = options.findIndex((o) => !o.disabled);
+			setActiveIndex(firstEnabledIdx);
+			return;
+		}
 		const selectedIdx = options.findIndex((o) => o.value === value);
 		const firstEnabledIdx = options.findIndex((o) => !o.disabled);
 		setActiveIndex(selectedIdx >= 0 ? selectedIdx : firstEnabledIdx);
@@ -113,6 +138,14 @@ export const Select: React.FC<SelectProps> = ({
 		if (!hasEnabledOptions) return;
 		const opt = options[idx];
 		if (!opt || opt.disabled) return;
+
+		if (multiple) {
+			const next = selectedSet.has(opt.value) ? selectedValues.filter((v) => v !== opt.value) : [...selectedValues, opt.value];
+			onChange(next);
+			// Keep menu open for multi-select.
+			return;
+		}
+
 		onChange(opt.value);
 		closeMenu();
 		buttonRef.current?.focus();
@@ -157,6 +190,13 @@ export const Select: React.FC<SelectProps> = ({
 		}
 	};
 
+	const buttonText = useMemo(() => {
+		if (!multiple) return selectedOption ? selectedOption.label : placeholderLabel || '';
+		if (selectedOptions.length === 0) return placeholderLabel || '';
+		if (selectedOptions.length > maxSelectedLabels) return `${selectedOptions.length} valgt`;
+		return selectedOptions.map((o) => o.label).join(', ');
+	}, [maxSelectedLabels, multiple, placeholderLabel, selectedOption, selectedOptions]);
+
 	return (
 		<div className={`${styles.container} ${containerClassName || ''}`} ref={rootRef}>
 			<label htmlFor={buttonId} className={`${styles.label} ${labelClassName || ''}`}>
@@ -186,9 +226,11 @@ export const Select: React.FC<SelectProps> = ({
 					aria-describedby={describedById}
 				>
 					<span className={styles.valueRow}>
-						{selectedOption?.icon ? <span className={styles.optionIcon}>{selectedOption.icon}</span> : null}
-						<span className={`${styles.valueText} ${!selectedOption && !value ? styles.placeholder : ''}`}>
-							{selectedOption ? selectedOption.label : placeholderLabel || ''}
+						{!multiple && selectedOption?.icon ? <span className={styles.optionIcon}>{selectedOption.icon}</span> : null}
+						<span
+							className={`${styles.valueText} ${(!buttonText && !Array.isArray(value) && !value) || (multiple && selectedOptions.length === 0) ? styles.placeholder : ''}`}
+						>
+							{buttonText}
 						</span>
 					</span>
 				</button>
@@ -201,7 +243,7 @@ export const Select: React.FC<SelectProps> = ({
 							</li>
 						) : (
 							options.map((opt, idx) => {
-								const selected = opt.value === value;
+								const selected = multiple ? selectedSet.has(opt.value) : opt.value === value;
 								const active = idx === activeIndex;
 								return (
 									<li
@@ -227,7 +269,13 @@ export const Select: React.FC<SelectProps> = ({
 			</div>
 
 			{/* hidden input for native form posts */}
-			{name ? <input type="hidden" name={name} value={value} /> : null}
+			{name ? (
+				multiple ? (
+					selectedValues.map((v) => <input key={v} type="hidden" name={name} value={v} />)
+				) : (
+					<input type="hidden" name={name} value={typeof value === 'string' ? value : ''} />
+				)
+			) : null}
 
 			{errorMessage ? (
 				<div id={`${selectId}-error`} className={styles.errorMessage}>
