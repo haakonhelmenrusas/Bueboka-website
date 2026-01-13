@@ -103,30 +103,17 @@ export const Button: React.FC<ButtonProps> = ({
 		return content;
 	};
 
+	const className = [styles.button, styles[size], styles[buttonType], styles[variant], props.className].filter(Boolean).join(' ');
+
+	const cssVars: React.CSSProperties = {
+		['--btn-bg' as any]: buttonColor,
+		['--btn-color' as any]: textColor,
+		width,
+		...buttonStyle,
+	};
+
 	return (
-		<button
-			className={styles.button}
-			style={{
-				backgroundColor: buttonType === 'outline' ? 'var(--transparent)' : buttonColor,
-				color: textColor,
-				border: buttonType === 'outline' ? `1px solid ${buttonColor}` : 'none',
-				padding: sizeStyles.padding,
-				height: sizeStyles.height,
-				width,
-				fontSize: sizeStyles.fontSize,
-				borderRadius: 8,
-				display: 'flex',
-				alignItems: 'center',
-				justifyContent: 'center',
-				gap: 8,
-				cursor: disabled || loading ? 'not-allowed' : 'pointer',
-				opacity: disabled || loading ? 0.6 : 1,
-				transition: 'opacity 0.2s',
-				...buttonStyle,
-			}}
-			disabled={disabled || loading}
-			{...props}
-		>
+		<button className={className} style={cssVars} disabled={disabled || loading} {...props}>
 			{renderContent()}
 		</button>
 	);

@@ -1,11 +1,87 @@
 .button {
-	transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+	/* Default tokens (can be overridden by modifier classes / inline CSS variables) */
+	--btn-bg: var(--primary);
+	--btn-color: var(--white);
+	--btn-border-color: transparent;
+	--btn-padding: 8px 24px;
+	--btn-height: 48px;
+	--btn-font-size: 16px;
+
+	appearance: none;
+	border: 1px solid var(--btn-border-color);
+	background: var(--btn-bg);
+	color: var(--btn-color);
+
+	padding: var(--btn-padding);
+	height: var(--btn-height);
+	font-size: var(--btn-font-size);
+	border-radius: 8px;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+
+	cursor: pointer;
+	opacity: 1;
+
+	transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease, opacity 0.2s;
+}
+
+.button:disabled {
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+/* Sizes */
+.small {
+	--btn-height: 32px;
+	--btn-padding: 4px 16px;
+	--btn-font-size: 14px;
+}
+
+.normal {
+	--btn-height: 48px;
+	--btn-padding: 8px 24px;
+	--btn-font-size: 16px;
+}
+
+/* Types */
+.filled {
+	--btn-border-color: transparent;
+}
+
+.outline {
+	--btn-bg: var(--transparent);
+	--btn-border-color: var(--btn-bg);
+}
+
+/* Variants */
+.standard {
+	--btn-bg: var(--primary);
+	--btn-color: var(--white);
+}
+
+.standard.outline {
+	--btn-color: var(--primary);
+	--btn-border-color: var(--primary);
+}
+
+.warning {
+	--btn-bg: var(--error);
+	--btn-color: var(--white);
+}
+
+.warning.outline {
+	--btn-bg: var(--transparent);
+	--btn-color: var(--error);
+	--btn-border-color: var(--error);
 }
 
 .button:hover:not(:disabled) {
-	background-color: rgba(0, 0, 0, 0.10) !important;
-	color: var(--white) !important;
-	border-color: rgba(255, 255, 255, 0.35) !important;
+	background-color: rgba(0, 0, 0, 0.50);
+	color: var(--white);
+	border-color: rgba(255, 255, 255, 0.35);
 	transform: translateY(-1px);
 }
 
