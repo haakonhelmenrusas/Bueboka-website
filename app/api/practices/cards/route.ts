@@ -38,15 +38,28 @@ export async function GET(request: Request) {
 				select: {
 					id: true,
 					date: true,
+					location: true,
+					environment: true,
+					bow: { select: { name: true } },
+					arrows: { select: { name: true } },
+					roundType: { select: { name: true, environment: true } },
 					ends: { select: { arrows: true } },
 				},
 			}),
 		]);
 
-		const cards = practices.map((p) => ({
+		type PracticeRow = (typeof practices)[number];
+
+		const cards = practices.map((p: PracticeRow) => ({
 			id: p.id,
 			date: p.date,
-			arrowsShot: p.ends.reduce((sum, e) => sum + (e.arrows ?? 0), 0),
+			arrowsShot: p.ends.reduce((sum: number, e: { arrows: number }) => sum + (e.arrows ?? 0), 0),
+			location: p.location ?? null,
+			environment: p.environment ?? null,
+			bowName: p.bow?.name ?? null,
+			arrowsName: p.arrows?.name ?? null,
+			roundTypeName: p.roundType?.name ?? null,
+			roundTypeEnvironment: p.roundType?.environment ?? null,
 		}));
 
 		return NextResponse.json({ practices: cards, page, pageSize, total });

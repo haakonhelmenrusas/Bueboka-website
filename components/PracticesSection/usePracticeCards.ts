@@ -3,7 +3,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as Sentry from '@sentry/nextjs';
 
-export type PracticeCardItem = { id: string; date: string; arrowsShot: number };
+export type PracticeCardItem = {
+	id: string;
+	date: string;
+	arrowsShot: number;
+	location?: string | null;
+	environment?: string | null;
+	bowName?: string | null;
+	arrowsName?: string | null;
+	roundTypeName?: string | null;
+	roundTypeEnvironment?: string | null;
+};
 
 interface PracticeCardsResponse {
 	practices: PracticeCardItem[];

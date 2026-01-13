@@ -25,7 +25,7 @@
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: 18px;
 	box-shadow: 0 20px 60px var(--dark-20);
-	padding: var(--space-10);
+	padding: var(--space-8);
 	color: var(--text-dark);
 }
 

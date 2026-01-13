@@ -1,18 +1,6 @@
 import React from 'react';
 import styles from './PracticeDetailsModal.module.css';
-import {
-	BowArrow,
-	CloudSun,
-	Hash,
-	Home,
-	MapPin,
-	Navigation,
-	NotebookText,
-	Target,
-	Trash2,
-	Trees,
-	X
-} from 'lucide-react';
+import { BowArrow, CloudSun, Hash, Home, MapPin, Navigation, NotebookText, Target, Trash2, Trees, X } from 'lucide-react';
 import { Environment, WeatherCondition } from '@/lib/prismaEnums';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
