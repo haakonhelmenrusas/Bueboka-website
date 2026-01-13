@@ -34,25 +34,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 					<div className={styles.avatarPlaceholder} aria-hidden="true" />
 				)}
 			</div>
-
 			<header className={styles.header}>
 				<h2 className={styles.name}>{displayName}</h2>
 				<p className={styles.meta}>{displayClub}</p>
 			</header>
-
-			<Button
-				label="Rediger"
-				onClick={onEdit}
-				icon={<Edit size={18} />}
-				size="small"
-				buttonType="outline"
-				buttonStyle={{
-					width: '100%',
-					borderRadius: 10,
-					borderColor: 'rgba(5, 53, 70, 0.22)',
-					color: 'rgba(5, 53, 70, 0.95)',
-				}}
-			/>
+			<Button label="Rediger" onClick={onEdit} icon={<Edit size={18} />} size="small" buttonType="outline" />
 		</section>
 	);
 };
