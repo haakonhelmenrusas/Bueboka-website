@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { signIn } from '@/lib/auth-client';
 import { Button, Header, Input, SocialAuthButtons } from '@/components';
-import styles from '@/app/ny-bruker/page.module.css';
+import styles from './page.module.css';
 
 export default function SignInPage() {
 	const [error, setError] = useState<string | null>(null);

@@ -17,7 +17,7 @@
 	background-color: var(--bg-lighter);
 	border: 1px solid var(--white-15);
 	border-radius: 16px;
-	padding: var(--space-10);
+	padding: var(--space-8);
 	box-shadow: 0 10px 30px var(--dark-25);
 }
 
