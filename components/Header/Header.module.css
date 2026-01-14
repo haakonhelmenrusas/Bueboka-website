@@ -248,15 +248,15 @@
 .profileMenu {
 	position: absolute;
 	top: calc(100% + var(--space-3));
-	right: -6px;
+	right: var(--space-10);
 	background: var(--white);
 	color: var(--primary);
 	border-radius: 12px;
 	box-shadow: 0 12px 34px var(--dark-20);
-	min-width: 200px;
+	min-width: 160px;
 	overflow: hidden;
 	z-index: 60;
-	padding: var(--space-2);
+	padding: var(--space-3);
 	animation: dropdown-in 160ms cubic-bezier(.2,.9,.2,1) both;
 }
 

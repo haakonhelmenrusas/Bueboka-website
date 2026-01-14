@@ -53,10 +53,9 @@ export function useEquipmentData() {
 	}, [refresh]);
 
 	useEffect(() => {
-		const unsubscribe = onEquipmentChanged(() => {
+		return onEquipmentChanged(() => {
 			refresh();
 		});
-		return unsubscribe;
 	}, [refresh]);
 
 	return { bows, arrows, loading, error, refresh, refreshBows: fetchBows, refreshArrows: fetchArrows, setBows, setArrows };
