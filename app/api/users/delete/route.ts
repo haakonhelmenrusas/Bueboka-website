@@ -24,9 +24,35 @@ export async function DELETE() {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		// Delete user and all related data (cascading deletes are configured in schema)
-		await prisma.user.delete({
-			where: { id: user.id },
+		await prisma.$transaction(async (tx) => {
+			// Collect practice IDs for this user
+			const practices = await tx.practice.findMany({
+				where: { userId: user.id },
+				select: { id: true },
+			});
+			const practiceIds = practices.map((p) => p.id);
+
+			// Delete ends for user's practices
+			if (practiceIds.length > 0) {
+				await tx.end.deleteMany({ where: { practiceId: { in: practiceIds } } });
+			}
+
+			// Delete practices
+			await tx.practice.deleteMany({ where: { userId: user.id } });
+
+			// Delete equipment
+			await tx.bow.deleteMany({ where: { userId: user.id } });
+			await tx.arrows.deleteMany({ where: { userId: user.id } });
+
+			// Auth-related
+			await tx.account.deleteMany({ where: { userId: user.id } });
+			await tx.session.deleteMany({ where: { userId: user.id } });
+
+			// Verifications may exist without FK, but if you store identifier as email, clean those too
+			await tx.verification.deleteMany({ where: { identifier: user.email } });
+
+			// Finally delete user
+			await tx.user.delete({ where: { id: user.id } });
 		});
 
 		return NextResponse.json({ success: true });
