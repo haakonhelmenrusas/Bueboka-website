@@ -1,7 +1,7 @@
 .button {
 	/* Default tokens (can be overridden by modifier classes / inline CSS variables) */
 	--btn-bg: var(--primary);
-	--btn-color: var(--white);
+	--btn-color: var(--btn-text-light);
 	--btn-border-color: transparent;
 	--btn-padding: 8px 24px;
 	--btn-height: 48px;
@@ -59,7 +59,7 @@
 /* Variants */
 .standard {
 	--btn-bg: var(--primary);
-	--btn-color: var(--white);
+	--btn-color: var(--btn-text-light);
 }
 
 .standard.outline {
@@ -69,7 +69,7 @@
 
 .warning {
 	--btn-bg: var(--error);
-	--btn-color: var(--white);
+	--btn-color: var(--btn-text-light);
 }
 
 .warning.outline {
@@ -80,7 +80,7 @@
 
 .button:hover:not(:disabled) {
 	background-color: var(--secondary);
-	color: var(--white);
+	color: var(--btn-text-light);
 	border-color: rgba(255, 255, 255, 0.35);
 	transform: translateY(-1px);
 }

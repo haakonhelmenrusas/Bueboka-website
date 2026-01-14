@@ -46,6 +46,9 @@
 	--card-bg-light: rgba(255, 255, 255, 0.11);
 	--modal-bg: #ffffff;
 
+	/* Button colors */
+	--btn-text-light: #ffffff;
+
 	/* Page backgrounds */
 	--page-gradient-start: var(--primary);
 	--page-gradient-mid: rgba(7, 66, 86, 0.95);
@@ -190,6 +193,9 @@
 	--card-bg-solid: #1f2937;
 	--card-bg-light: rgba(55, 65, 81, 0.3);
 	--modal-bg: #1f2937;
+
+	/* Button colors */
+	--btn-text-light: #f9fafb;
 
 	/* Page backgrounds - darker gradient for dark mode */
 	--page-gradient-start: #0a1520;

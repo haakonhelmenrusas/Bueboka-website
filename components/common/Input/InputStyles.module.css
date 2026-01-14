@@ -19,14 +19,14 @@
   gap: 10px;
   border-radius: 10px;
   border: 1px solid var(--bg-gray-200);
-  background: var(--white);
+  background: var(--card-bg-solid);
   padding: 8px 10px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 0 var(--dark-02);
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
 .control:focus-within {
-  outline: 3px solid rgba(5, 53, 70, 0.18);
+  outline: 3px solid var(--primary-20);
   outline-offset: 2px;
 }
 
@@ -35,7 +35,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: rgba(5, 53, 70, 0.7);
+  color: var(--primary);
   font-weight: 700;
 }
 
@@ -46,12 +46,12 @@
   background: transparent;
   font-size: 0.98rem;
   font-weight: 500;
-  color: #053546;
+  color: var(--text-dark);
   min-height: 24px;
 }
 
 .input::placeholder {
-  color: rgba(5, 53, 70, 0.45);
+  color: var(--text-gray-600);
   font-weight: 500;
 }
 

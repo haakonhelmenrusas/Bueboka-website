@@ -25,20 +25,20 @@
 	align-items: stretch;
 	border-radius: 10px;
 	border: 1px solid var(--bg-gray-200);
-	background: var(--white);
+	background: var(--card-bg-solid);
 	overflow: hidden;
-	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+	box-shadow: 0 1px 0 var(--dark-02);
 }
 
 .control:focus-within {
-	outline: 3px solid rgba(5, 53, 70, 0.18);
+	outline: 3px solid var(--primary-20);
 	outline-offset: 2px;
 }
 
 .stepper {
 	border: none;
-	background: rgba(5, 53, 70, 0.04);
-	color: #053546;
+	background: var(--primary-06);
+	color: var(--primary);
 	font-size: 18px;
 	font-weight: 700;
 	cursor: pointer;
@@ -49,7 +49,7 @@
 }
 
 .stepper:hover:not(:disabled) {
-	background: rgba(5, 53, 70, 0.08);
+	background: var(--primary-08);
 }
 
 .stepper:active:not(:disabled) {
@@ -75,7 +75,7 @@
 	padding: 10px 12px;
 	font-size: 0.98rem;
 	font-weight: 500;
-	color: #053546;
+	color: var(--text-dark);
 	text-align: center;
 	appearance: textfield;
 }
@@ -90,7 +90,7 @@
 .unit {
 	position: absolute;
 	right: 40px;
-	color: rgba(5, 53, 70, 0.65);
+	color: var(--text-gray-600);
 	font-weight: 600;
 	pointer-events: none;
 }
