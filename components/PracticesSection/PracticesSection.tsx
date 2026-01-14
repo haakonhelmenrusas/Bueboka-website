@@ -33,7 +33,7 @@ export function PracticesSection({ onCreate, onSelectPractice, reloadKey, delete
 	return (
 		<section className={styles.practicesSection}>
 			<div className={styles.practicesHeader}>
-				<h2 className={styles.sectionTitleLight}>Treninger</h2>
+				<h2 className={styles.sectionTitle}>Treninger</h2>
 				<Button label="Ny trening" onClick={onCreate} icon={<Plus size={18} />} width={240} buttonStyle={{ marginLeft: 'auto' }} />
 			</div>
 

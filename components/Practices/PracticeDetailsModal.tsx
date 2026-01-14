@@ -111,7 +111,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						<X size={20} />
 					</button>
 				</div>
-
 				<div className={styles.grid}>
 					{practice.location ? (
 						<div className={styles.row}>
@@ -122,7 +121,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							<span className={styles.value}>{practice.location}</span>
 						</div>
 					) : null}
-
 					<div className={styles.row}>
 						<span className={styles.icon} aria-hidden="true">
 							{practice.environment === 'INDOOR' ? <Home size={18} /> : <Trees size={18} />}
@@ -130,7 +128,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						<span className={styles.label}>Miljø</span>
 						<span className={styles.value}>{practice.environment === 'INDOOR' ? 'Inne' : 'Ute'}</span>
 					</div>
-
 					<div className={styles.row}>
 						<span className={styles.icon} aria-hidden="true">
 							<Hash size={18} />
@@ -138,7 +135,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						<span className={styles.label}>Piler skutt</span>
 						<span className={styles.value}>{totalArrows}</span>
 					</div>
-
 					{practice.weather?.length ? (
 						<div className={styles.row}>
 							<span className={styles.icon} aria-hidden="true">
@@ -148,7 +144,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							<span className={styles.value}>{practice.weather.map((w) => weatherLabels[w] ?? String(w)).join(', ')}</span>
 						</div>
 					) : null}
-
 					{practice.roundType ? (
 						<div className={styles.row}>
 							<span className={styles.icon} aria-hidden="true">
@@ -162,7 +157,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							</span>
 						</div>
 					) : null}
-
 					{practice.bow ? (
 						<div className={styles.row}>
 							<span className={styles.icon} aria-hidden="true">
@@ -174,7 +168,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							</span>
 						</div>
 					) : null}
-
 					{practice.arrows ? (
 						<div className={styles.row}>
 							<span className={styles.icon} aria-hidden="true">
@@ -187,7 +180,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						</div>
 					) : null}
 				</div>
-
 				{practice.notes ? (
 					<div className={styles.notes}>
 						<div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8, color: 'var(--primary)', fontWeight: 900 }}>
@@ -197,11 +189,9 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						{practice.notes}
 					</div>
 				) : null}
-
 				{practice.ends?.length ? (
 					<div className={styles.ends}>
 						<h4 className={styles.endsTitle}>Serier</h4>
-
 						{practice.ends.map((end, idx) => {
 							const arrows = end.arrows ?? end.scores?.length ?? 0;
 							const scoreSum = Array.isArray(end.scores) ? end.scores.reduce((s, v) => s + v, 0) : 0;
@@ -224,9 +214,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						})}
 					</div>
 				) : null}
-
 				{deleteError ? <div className={styles.errorBox}>{deleteError}</div> : null}
-
 				<div className={styles.actions}>
 					<Button label="Lukk" buttonType="outline" onClick={onClose} width={140} disabled={deleting} />
 					<Button

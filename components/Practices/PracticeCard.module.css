@@ -66,32 +66,50 @@
   line-height: 1.2;
 }
 
-.badge {
-  background: linear-gradient(90deg, var(--primary), var(--primary-light));
-  color: var(--white);
-  padding: var(--space-3) var(--space-5);
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 220px;
-  justify-content: center;
-}
-
-.iconCircle {
-  background: rgba(255, 255, 255, 0.18);
-}
-
 .hideOnMobile {
   display: inline-flex;
 }
 
+.arrowsPill {
+  width: 64px;
+  height: 64px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(5, 53, 70, 0.90) 0%, rgba(12, 130, 172, 0.92) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  box-shadow: 0 10px 22px var(--dark-20);
+  flex: 0 0 auto;
+}
+
+.arrowsNumber {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.arrowsLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  opacity: 0.92;
+  margin-top: 4px;
+}
+
 @media (max-width: 700px) {
-  .badge {
-    min-width: 170px;
-    padding: 8px 14px;
+  .arrowsPill {
+    width: 60px;
+    height: 60px;
+  }
+
+  .arrowsNumber {
+    font-size: 1.1rem;
+  }
+
+  .arrowsLabel {
+    font-size: 0.75rem;
   }
 
   .details {

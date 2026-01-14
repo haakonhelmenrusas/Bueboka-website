@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
-import { ArrowRight, ArrowUpRight, BowArrow, Home, MapPin, Target, Trees, Wind } from 'lucide-react';
+import { ArrowRight, BowArrow, Home, MapPin, Target, Trees, Wind } from 'lucide-react';
 
 export interface PracticeCardProps {
 	id: string;
@@ -57,11 +57,9 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 			<div className={styles.main}>
 				<div className={styles.topRow}>
 					<div className={styles.date}>{formattedDate}</div>
-					<div className={styles.badge}>
-						<span className={styles.iconCircle}>
-							<ArrowUpRight size={16} />
-						</span>
-						{arrowsShot} piler
+					<div className={styles.arrowsPill} aria-label={`${arrowsShot} piler`}>
+						<span className={styles.arrowsNumber}>{arrowsShot}</span>
+						<span className={styles.arrowsLabel}>piler</span>
 					</div>
 				</div>
 
