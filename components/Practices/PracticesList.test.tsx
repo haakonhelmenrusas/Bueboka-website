@@ -7,11 +7,10 @@ const practices = [
 ];
 
 describe('PracticesList', () => {
-	it('renders title and list of practices', () => {
+	it('renders list of practices', () => {
 		render(<PracticesList practices={practices} />);
-		expect(screen.getByText('Treninger')).toBeInTheDocument();
-		expect(screen.getByText(/8. jan/)).toBeInTheDocument();
-		expect(screen.getByText(/9. jan/)).toBeInTheDocument();
+		expect(screen.getByText(/8\. jan/)).toBeInTheDocument();
+		expect(screen.getByText(/9\. jan/)).toBeInTheDocument();
 	});
 
 	it('renders empty state', () => {
