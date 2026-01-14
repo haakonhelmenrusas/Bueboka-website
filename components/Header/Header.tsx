@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { CircleUserRound, LogOut, Menu, MoreVertical, X } from 'lucide-react';
+import { CircleUserRound, LogOut, Menu, Settings, X } from 'lucide-react';
 import styles from './Header.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut, useSession } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
 
 export function Header() {
@@ -14,7 +14,11 @@ export function Header() {
 	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 	const { data: session } = useSession();
 	const router = useRouter();
+	const pathname = usePathname();
 	const menuRef = useRef<HTMLDivElement | null>(null);
+
+	// Check if we're on an authenticated page
+	const isAuthPage = pathname === '/min-side' || pathname === '/settings';
 
 	const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
 	const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -36,6 +40,12 @@ export function Header() {
 			});
 			console.error('Logout failed', err);
 		}
+	};
+
+	const handleSettingsClick = () => {
+		router.push('/settings');
+		closeProfileMenu();
+		closeMobileMenu();
 	};
 
 	const handleLogoClick = (e: React.MouseEvent) => {
@@ -116,52 +126,62 @@ export function Header() {
 
 					{/* Desktop Navigation */}
 					<nav className={styles.desktopNav} aria-label="Primary">
-						<Link href="#features" className={styles.navLink}>
-							Funksjoner
-						</Link>
-						<Link href="#team" className={styles.navLink}>
-							Team
-						</Link>
-						<Link href="#sponsors" className={styles.navLink}>
-							Sponsorer
-						</Link>
-						<Link href="#contact" className={styles.navLink}>
-							Kontakt
-						</Link>
+						{!isAuthPage && (
+							<>
+								<Link href="#features" className={styles.navLink}>
+									Funksjoner
+								</Link>
+								<Link href="#team" className={styles.navLink}>
+									Team
+								</Link>
+								<Link href="#sponsors" className={styles.navLink}>
+									Sponsorer
+								</Link>
+								<Link href="#contact" className={styles.navLink}>
+									Kontakt
+								</Link>
+							</>
+						)}
 						{session?.user ? (
 							<div className={styles.profileMenuWrapper}>
-								<Link href="/min-side" className={styles.navLink} aria-label="Go to dashboard">
-									{session.user.image ? (
-										<Image
-											src={session.user.image}
-											alt={session.user.name || 'User avatar'}
-											width={32}
-											height={32}
-											className={styles.userAvatar}
-										/>
-									) : (
-										<CircleUserRound />
-									)}
-								</Link>
+								{!isAuthPage && (
+									<Link href="/min-side" className={styles.navLink} aria-label="Go to dashboard">
+										{session.user.image ? (
+											<Image
+												src={session.user.image}
+												alt={session.user.name || 'User avatar'}
+												width={32}
+												height={32}
+												className={styles.userAvatar}
+											/>
+										) : (
+											<CircleUserRound />
+										)}
+									</Link>
+								)}
 								<button
-									className={styles.profileMenuButton}
+									className={`${styles.profileMenuButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 									onClick={toggleProfileMenu}
 									aria-haspopup="true"
 									aria-expanded={profileMenuOpen}
 									aria-controls="profile-menu"
 								>
-									<MoreVertical />
+									<span className={styles.hamburgerBox}>
+										<span className={styles.hamburgerInner} />
+									</span>
 								</button>
 							</div>
 						) : (
-							<div className={styles.authButtons}>
-								<Link href="/logg-inn" className={styles.authButton}>
-									Logg inn
-								</Link>
-								<Link href="/ny-bruker" className={styles.authButton}>
-									Opprett bruker
-								</Link>
-							</div>
+							!isAuthPage && (
+								<div className={styles.authButtons}>
+									<Link href="/logg-inn" className={styles.authButton}>
+										Logg inn
+									</Link>
+									<Link href="/ny-bruker" className={styles.authButton}>
+										Opprett bruker
+									</Link>
+								</div>
+							)
 						)}
 					</nav>
 
@@ -181,16 +201,22 @@ export function Header() {
 						<div className={styles.profileMenuContainer}>
 							{/* Mobile-only profile button (visible on small screens) */}
 							<button
-								className={`${styles.profileMenuButton} ${styles.mobileProfileButton}`}
+								className={`${styles.profileMenuButton} ${styles.mobileProfileButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 								onClick={toggleProfileMenu}
 								aria-haspopup="true"
 								aria-expanded={profileMenuOpen}
 							>
-								<MoreVertical />
+								<span className={styles.hamburgerBox}>
+									<span className={styles.hamburgerInner} />
+								</span>
 							</button>
 
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
+									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
+										<Settings size={16} />
+										<span>Innstillinger</span>
+									</button>
 									<button className={styles.profileMenuItem} onClick={handleLogout} role="menuitem">
 										<LogOut size={16} />
 										<span>Logg ut</span>
@@ -204,34 +230,41 @@ export function Header() {
 				{/* Mobile Navigation */}
 				<nav id="mobile-menu" className={`${styles.mobileNav} ${mobileMenuOpen ? styles.mobileNavOpen : ''}`}>
 					<div className={styles.mobileLinks}>
-						<Link href="#features" onClick={closeMobileMenu} className={styles.mobileLink}>
-							Funksjoner
-						</Link>
-						<Link href="#team" onClick={closeMobileMenu} className={styles.mobileLink}>
-							Team
-						</Link>
-						<Link href="#sponsors" onClick={closeMobileMenu} className={styles.mobileLink}>
-							Sponsorer
-						</Link>
-						<Link href="#contact" onClick={closeMobileMenu} className={styles.mobileLink}>
-							Kontakt
-						</Link>
+						{!isAuthPage && (
+							<>
+								<Link href="#features" onClick={closeMobileMenu} className={styles.mobileLink}>
+									Funksjoner
+								</Link>
+								<Link href="#team" onClick={closeMobileMenu} className={styles.mobileLink}>
+									Team
+								</Link>
+								<Link href="#sponsors" onClick={closeMobileMenu} className={styles.mobileLink}>
+									Sponsorer
+								</Link>
+								<Link href="#contact" onClick={closeMobileMenu} className={styles.mobileLink}>
+									Kontakt
+								</Link>
+							</>
+						)}
 						{session?.user ? (
 							<>
-								<Link href="/min-side" onClick={closeMobileMenu} className={styles.mobileLink}>
-									Min side
-								</Link>
-								{/* Mobile logout removed; use profile dropdown (mobileProfileButton) to log out */}
+								{!isAuthPage && (
+									<Link href="/min-side" onClick={closeMobileMenu} className={styles.mobileLink}>
+										Min side
+									</Link>
+								)}
 							</>
 						) : (
-							<>
-								<Link href="/logg-inn" onClick={closeMobileMenu} className={styles.mobileLink}>
-									Logg inn
-								</Link>
-								<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
-									Opprett bruker
-								</Link>
-							</>
+							!isAuthPage && (
+								<>
+									<Link href="/logg-inn" onClick={closeMobileMenu} className={styles.mobileLink}>
+										Logg inn
+									</Link>
+									<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
+										Opprett bruker
+									</Link>
+								</>
+							)
 						)}
 					</div>
 				</nav>

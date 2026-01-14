@@ -6,32 +6,8 @@
   color: var(--white);
 }
 
-.headerBar {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-5) var(--space-8);
-  background: transparent;
-  border-bottom: 1px solid var(--white-06);
-}
-
-.logoBox {
-  background: var(--white);
-  border-radius: 10px;
-  padding: var(--space-2);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.brand {
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: var(--white);
-}
-
 .main {
-  padding: var(--space-14) var(--space-8);
+  padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;

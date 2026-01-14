@@ -1,19 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import {
 	ArrowsModal,
 	BowModal,
 	EquipmentSection,
+	Header,
 	PracticeCreateModal,
 	PracticeDetailsModal,
 	PracticesSection,
 	ProfileCard,
 	ProfileEditModal,
-	ProfileMenu,
 	StatsSummary,
 	usePracticeDetails,
 	useRoundTypes,
@@ -145,12 +144,7 @@ export default function MyPage() {
 	if (error || !profile) {
 		return (
 			<div className={styles.page}>
-				<div className={styles.headerBar}>
-					<div className={styles.logoBox}>
-						<Image src="/assets/logo.png" alt="Bueboka Logo" width={28} height={28} />
-					</div>
-					<div className={styles.brand}>Bueboka</div>
-				</div>
+				<Header />
 				<main className={styles.main}>
 					<div className={styles.card}>
 						<div className={styles.empty}>{error || 'Du må være logget inn for å se denne siden.'}</div>
@@ -164,14 +158,7 @@ export default function MyPage() {
 
 	return (
 		<div className={styles.page}>
-			<header className={styles.headerBar}>
-				<div className={styles.logoBox}>
-					<Image src="/assets/logo.png" alt="Bueboka Logo" width={28} height={28} />
-				</div>
-				<div className={styles.brand}>Bueboka</div>
-
-				<ProfileMenu />
-			</header>
+			<Header />
 
 			<main className={styles.main}>
 				<div className={styles.profileContainer}>

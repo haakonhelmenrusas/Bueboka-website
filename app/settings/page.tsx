@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ConfirmModal, Header } from '@/components';
 import { useSession } from '@/lib/auth-client';
+import { ArrowLeft } from 'lucide-react';
 import styles from './page.module.css';
 
 export default function SettingsPage() {
@@ -47,6 +48,10 @@ export default function SettingsPage() {
 		}
 	};
 
+	const handleBackClick = () => {
+		router.push('/min-side');
+	};
+
 	// Show nothing while checking session or if not logged in
 	if (isPending || !session?.user) {
 		return null;
@@ -57,7 +62,12 @@ export default function SettingsPage() {
 			<Header />
 			<main className={styles.main}>
 				<div className={styles.container}>
-					<h1 className={styles.title}>Innstillinger</h1>
+					<div className={styles.header}>
+						<button className={styles.backButton} onClick={handleBackClick} aria-label="Tilbake">
+							<ArrowLeft size={20} />
+						</button>
+						<h1 className={styles.title}>Innstillinger</h1>
+					</div>
 
 					<div className={styles.section}>
 						<h2 className={styles.sectionTitle}>Konto</h2>
