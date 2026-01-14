@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Accordion, ConfirmModal, Header } from '@/components';
 import { useSession } from '@/lib/auth-client';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Key, Lock, Shield, Target } from 'lucide-react';
 import styles from './page.module.css';
 
 export default function SettingsPage() {
@@ -86,7 +86,6 @@ export default function SettingsPage() {
 							</div>
 						</div>
 					</div>
-
 					<div className={styles.section}>
 						<h2 className={styles.sectionTitle}>Ofte stilte spørsmål (FAQ)</h2>
 						<Accordion
@@ -197,7 +196,55 @@ export default function SettingsPage() {
 							]}
 						/>
 					</div>
-
+					<div className={styles.section}>
+						<h2 className={styles.sectionTitle}>Personvern og datasikkerhet</h2>
+						<div className={styles.card}>
+							<div className={styles.cardContent}>
+								<p className={styles.privacyText}>
+									Dine data er trygge hos oss. Vi tar personvern på alvor og forplikter oss til å beskytte informasjonen din.
+								</p>
+								<ul className={styles.privacyList}>
+									<li className={styles.privacyItem}>
+										<span className={styles.privacyIcon}>
+											<Lock size={18} />
+										</span>
+										<div>
+											<strong>Aldri delt eller solgt</strong>: Vi deler eller selger aldri dataene dine til tredjeparter. Din informasjon
+											forblir privat.
+										</div>
+									</li>
+									<li className={styles.privacyItem}>
+										<span className={styles.privacyIcon}>
+											<Target size={18} />
+										</span>
+										<div>
+											<strong>Kun til appens drift</strong>: Vi bruker kun dataene dine til å drive appen og gi deg den beste
+											brukeropplevelsen.
+										</div>
+									</li>
+									<li className={styles.privacyItem}>
+										<span className={styles.privacyIcon}>
+											<Key size={18} />
+										</span>
+										<div>
+											<strong>Din kontroll</strong>: Du kan når som helst slette kontoen din og all tilhørende data.
+										</div>
+									</li>
+									<li className={styles.privacyItem}>
+										<span className={styles.privacyIcon}>
+											<Shield size={18} />
+										</span>
+										<div>
+											<strong>Sikker lagring</strong>: All data krypteres og lagres sikkert i samsvar med moderne sikkerhetsstandarder.
+										</div>
+									</li>
+								</ul>
+								<p className={styles.privacyFooter}>
+									Hvis du har spørsmål om hvordan vi håndterer dataene dine, ta gjerne kontakt med oss.
+								</p>
+							</div>
+						</div>
+					</div>
 					<div className={styles.dangerZone}>
 						<h2 className={styles.dangerTitle}>Farlig sone</h2>
 						<div className={styles.dangerCard}>
@@ -218,7 +265,6 @@ export default function SettingsPage() {
 					</div>
 				</div>
 			</main>
-
 			<ConfirmModal
 				open={showConfirmModal}
 				onClose={() => setShowConfirmModal(false)}
