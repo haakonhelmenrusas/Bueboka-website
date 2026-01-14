@@ -25,6 +25,7 @@ import { ProfileMenu } from './ProfileMenu/ProfileMenu';
 import { EquipmentSection } from './EquipmentSection/EquipmentSection';
 import { Checkbox } from './common/Checkbox/Checkbox';
 import { PracticesSection } from './PracticesSection/PracticesSection';
+import { ConfirmModal } from './common/ConfirmModal/ConfirmModal';
 
 export {
 	Header,
@@ -54,6 +55,7 @@ export {
 	EquipmentSection,
 	Checkbox,
 	PracticesSection,
+	ConfirmModal,
 };
 
 export * from './common/StatsSummary/StatsSummary';

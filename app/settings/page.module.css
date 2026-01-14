@@ -1,0 +1,181 @@
+.page {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background: linear-gradient(180deg, var(--primary) 0%, rgba(7, 66, 86, 0.95) 40%, var(--primary-light) 100%);
+	color: var(--white);
+}
+
+.main {
+	padding: var(--space-14) var(--space-8);
+	max-width: 800px;
+	margin: 0 auto;
+	width: 100%;
+	flex: 1;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-10);
+}
+
+.title {
+	margin: 0 0 var(--space-8);
+	font-size: 2rem;
+	font-weight: 900;
+	color: var(--white);
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.sectionTitle {
+	margin: 0;
+	font-size: 1.4rem;
+	font-weight: 900;
+	color: var(--white);
+}
+
+.card {
+	background: rgba(255, 255, 255, 0.92);
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: 18px;
+	box-shadow: 0 20px 60px var(--dark-20);
+	padding: var(--space-8);
+	color: var(--text-dark);
+}
+
+.cardContent {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+}
+
+.userInfo {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.label {
+	margin: 0;
+	font-size: 0.875rem;
+	font-weight: 700;
+	color: var(--text-gray-700);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.value {
+	margin: 0;
+	font-size: 1.1rem;
+	font-weight: 600;
+	color: var(--text-dark);
+}
+
+.dangerZone {
+	margin-top: var(--space-8);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+
+.dangerTitle {
+	margin: 0;
+	font-size: 1.4rem;
+	font-weight: 900;
+	color: #ff6b6b;
+}
+
+.dangerCard {
+	background: rgba(255, 255, 255, 0.92);
+	border: 1px solid rgba(255, 107, 107, 0.3);
+	border-radius: 18px;
+	box-shadow: 0 20px 60px rgba(255, 107, 107, 0.15);
+	padding: var(--space-8);
+}
+
+.dangerContent {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+}
+
+.dangerInfo {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.dangerHeading {
+	margin: 0;
+	font-size: 1.2rem;
+	font-weight: 800;
+	color: #d63031;
+}
+
+.dangerDescription {
+	margin: 0;
+	font-size: 0.95rem;
+	line-height: 1.6;
+	color: var(--text-gray-700);
+}
+
+.deleteButton {
+	align-self: flex-start;
+	padding: var(--space-4) var(--space-6);
+	background: linear-gradient(90deg, #d63031, #e74c3c);
+	color: var(--white);
+	border: none;
+	border-radius: 12px;
+	font-weight: 800;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: all 150ms ease;
+	box-shadow: 0 8px 18px rgba(214, 48, 49, 0.25);
+}
+
+.deleteButton:hover:not(:disabled) {
+	transform: translateY(-1px);
+	box-shadow: 0 12px 24px rgba(214, 48, 49, 0.35);
+}
+
+.deleteButton:active:not(:disabled) {
+	transform: translateY(0);
+}
+
+.deleteButton:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.error {
+	padding: var(--space-3);
+	background: var(--error-bg);
+	border: 1px solid var(--error-border);
+	border-radius: 10px;
+	color: var(--error-light);
+	font-size: 0.95rem;
+	font-weight: 600;
+}
+
+@media (max-width: 900px) {
+	.main {
+		padding: var(--space-8) var(--space-4);
+	}
+
+	.title {
+		font-size: 1.75rem;
+	}
+
+	.card,
+	.dangerCard {
+		padding: var(--space-6);
+	}
+}
+
