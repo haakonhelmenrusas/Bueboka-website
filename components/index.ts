@@ -28,6 +28,7 @@ import { EquipmentSection } from './EquipmentSection/EquipmentSection';
 import { Checkbox } from './common/Checkbox/Checkbox';
 import { PracticesSection } from './PracticesSection/PracticesSection';
 import { ConfirmModal } from './common/ConfirmModal/ConfirmModal';
+import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 
 export {
 	Header,
@@ -60,6 +61,7 @@ export {
 	Checkbox,
 	PracticesSection,
 	ConfirmModal,
+	ThemeToggle,
 };
 
 export * from './common/StatsSummary/StatsSummary';

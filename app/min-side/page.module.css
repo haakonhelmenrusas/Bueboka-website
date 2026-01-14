@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(180deg, var(--primary) 0%, rgba(7,66,86,0.95) 40%, var(--primary-light) 100%);
+  background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
   color: var(--white);
 }
 
@@ -15,7 +15,7 @@
 
 /* Generic white card container (used for error/empty states, etc.) */
 .card {
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 18px;
   padding: var(--space-8);
@@ -132,7 +132,7 @@
 }
 
 .item:hover {
-  background: rgba(255, 255, 255, 0.11);
+  background: var(--card-bg-light);
   box-shadow: 0 10px 28px var(--dark-30);
   transform: translateY(-2px);
 }
@@ -215,7 +215,7 @@
 }
 
 .practicesList {
-	background: rgba(255, 255, 255, 0.92);
+	background: var(--card-bg);
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: 18px;
 	box-shadow: 0 20px 60px var(--dark-20);
@@ -238,7 +238,7 @@
 }
 
 .summaryCard {
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 20px;
   padding: var(--space-8);

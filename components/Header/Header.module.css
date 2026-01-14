@@ -249,10 +249,10 @@
 	position: absolute;
 	top: calc(100% + var(--space-3));
 	right: var(--space-10);
-	background: var(--white);
-	color: var(--primary);
+	background: var(--card-bg-solid);
+	color: var(--text-dark);
 	border-radius: 12px;
-	box-shadow: 0 12px 34px var(--dark-20);
+	box-shadow: 0 2px 12px var(--dark-20);
 	min-width: 160px;
 	overflow: hidden;
 	z-index: 60;
@@ -278,6 +278,7 @@
 .profileMenuItem:hover {
 	background: var(--primary-06);
 }
+
 
 /* Dropdown animation */
 @keyframes dropdown-in {

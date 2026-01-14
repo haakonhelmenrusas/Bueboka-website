@@ -20,10 +20,10 @@
 }
 
 .panel {
-	background: rgba(255, 255, 255, 0.92);
+	background: var(--card-bg);
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: 18px;
-	box-shadow: 0 20px 60px var(--dark-20);
+	box-shadow: 0 8px 16px var(--dark-05);
 	padding: var(--space-8);
 	color: var(--text-dark);
 }
@@ -64,7 +64,6 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: var(--space-7);
-	box-shadow: 0 8px 18px var(--dark-06);
 	cursor: pointer;
 	transition: all 200ms ease;
 	border: 1px solid rgba(12, 130, 172, 0.14);
@@ -73,8 +72,7 @@
 }
 
 .item:hover {
-	background: rgba(255, 255, 255, 0.11);
-	box-shadow: 0 10px 28px var(--dark-30);
+	background: var(--card-bg-light);
 	transform: translateY(-2px);
 }
 

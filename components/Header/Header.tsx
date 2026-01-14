@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
+import { ThemeToggle } from '@/components';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -213,6 +214,9 @@ export function Header() {
 
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
+									<div className={styles.profileMenuItem}>
+										<ThemeToggle />
+									</div>
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<Settings size={16} />
 										<span>Innstillinger</span>

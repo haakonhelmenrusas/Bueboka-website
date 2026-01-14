@@ -82,7 +82,7 @@
   border-radius: 10px;
   padding: var(--space-3);
   font-size: 1rem;
-  background: var(--white);
+  background: var(--card-bg-solid);
   color: var(--text-gray-700);
 }
 

@@ -1,10 +1,9 @@
 .card {
   background: rgba(12, 130, 172, 0.06);
   border: 1px solid rgba(12, 130, 172, 0.14);
-  border-radius: 18px;
+  border-radius: 12px;
   padding: var(--space-5) var(--space-6);
   display: block;
-  box-shadow: 0 8px 18px var(--dark-06);
   cursor: pointer;
   transition: all 180ms ease;
   width: 100%;
@@ -12,7 +11,6 @@
 
 .card:hover {
   background: rgba(12, 130, 172, 0.085);
-  box-shadow: 0 12px 26px var(--dark-08);
   transform: translateY(-2px);
 }
 
@@ -27,27 +25,12 @@
   gap: var(--space-5);
 }
 
-.topRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  flex: 1;
-}
-
 .date {
   color: var(--text-dark);
   font-weight: 650;
   font-size: 1.05rem;
   white-space: nowrap;
-}
-
-.details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-  align-items: center;
-  flex: 1;
+  width: 120px;
 }
 
 .detailItem {
@@ -64,7 +47,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: rgba(5, 53, 70, 0.85);
+  color: var(--text-gray-700);
   flex: 0 0 auto;
 }
 
@@ -81,11 +64,13 @@
   align-items: baseline;
   gap: var(--space-2);
   flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .arrowsNumber {
   font-size: 1.25rem;
   font-weight: 900;
+  color: var(--text-gray-700);
 }
 
 .arrowsLabel {

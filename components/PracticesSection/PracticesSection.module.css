@@ -21,7 +21,7 @@
 
 .practicesList {
 	width: 100%;
-	background: rgba(255, 255, 255, 0.92);
+	background: var(--card-bg);
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: 18px;
 	box-shadow: 0 20px 60px var(--dark-20);
