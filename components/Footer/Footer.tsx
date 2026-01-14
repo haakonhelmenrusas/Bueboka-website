@@ -47,7 +47,7 @@ export function Footer() {
 					</div>
 					<div className={styles.separator}>
 						<p className={styles.finePrint}>
-							© 2025 Bueboka. Alle rettigheter forbeholdt. Laget med ❤️ av{' '}
+							© 2026 Bueboka. Alle rettigheter forbeholdt. Laget med ❤️ av{' '}
 							<a
 								href="https://rusåsdesign.no"
 								target="_blank"
