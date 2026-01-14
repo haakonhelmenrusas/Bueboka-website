@@ -186,7 +186,7 @@ export default function SettingsPage() {
 													</a>
 												</li>
 												<li>
-													<a href="https://www.arcticbueskytter.no" target="_blank" rel="noopener noreferrer">
+													<a href="https://www.arcticbuesport.no" target="_blank" rel="noopener noreferrer">
 														Arctic Bueskytter (butikk)
 													</a>
 												</li>
