@@ -36,10 +36,14 @@ export interface Arrow {
 export interface Practice {
 	id: string;
 	date: string;
+	arrowsShot: number;
 	location?: string | null;
 	environment: Environment;
 	weather: WeatherCondition[];
 	notes?: string | null;
+	roundTypeId?: string | null;
+	bowId?: string | null;
+	arrowsId?: string | null;
 	roundType?: {
 		name: string;
 		distanceMeters?: number | null;

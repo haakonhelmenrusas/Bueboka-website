@@ -8,6 +8,7 @@ import { Button } from '@/components';
 export interface PracticeDetails {
 	id: string;
 	date: string; // ISO
+	arrowsShot?: number;
 	location?: string | null;
 	environment: Environment;
 	weather: WeatherCondition[];
@@ -39,6 +40,7 @@ interface PracticeDetailsModalProps {
 	open: boolean;
 	practice?: PracticeDetails;
 	onClose: () => void;
+	onEdit?: () => void;
 	onDeleted?: (id: string) => void;
 }
 
@@ -55,7 +57,25 @@ const weatherLabels: Record<WeatherCondition, string> = {
 	[WeatherCondition.OTHER]: 'Annet',
 };
 
-export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose, onDeleted }) => {
+// Bow type translations
+const bowTypeLabels: Record<string, string> = {
+	RECURVE: 'Recurve',
+	COMPOUND: 'Compound',
+	LONGBOW: 'Langbue',
+	BAREBOW: 'Barebow',
+	HORSEBOW: 'Rytterbue',
+	TRADITIONAL: 'Tradisjonell',
+	OTHER: 'Annet',
+};
+
+// Arrow material translations
+const arrowMaterialLabels: Record<string, string> = {
+	KARBON: 'Karbon',
+	ALUMINIUM: 'Aluminium',
+	TREVERK: 'Treverk',
+};
+
+export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose, onEdit, onDeleted }) => {
 	useModalBehavior({ open, onClose });
 	const [deleting, setDeleting] = React.useState(false);
 	const [deleteError, setDeleteError] = React.useState<string | null>(null);
@@ -68,7 +88,8 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 		day: 'numeric',
 	});
 
-	const totalArrows = practice.ends?.reduce((sum, end) => sum + (end.arrows ?? end.scores?.length ?? 0), 0) ?? 0;
+	// Use arrowsShot if available, otherwise fallback to calculating from ends
+	const totalArrows = practice.arrowsShot ?? practice.ends?.reduce((sum, end) => sum + (end.arrows ?? end.scores?.length ?? 0), 0) ?? 0;
 
 	const handleDelete = async () => {
 		setDeleting(true);
@@ -164,7 +185,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							</span>
 							<span className={styles.label}>Bue</span>
 							<span className={styles.value}>
-								{practice.bow.name} • {practice.bow.type}
+								{practice.bow.name} • {bowTypeLabels[practice.bow.type] || practice.bow.type}
 							</span>
 						</div>
 					) : null}
@@ -175,7 +196,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							</span>
 							<span className={styles.label}>Piler</span>
 							<span className={styles.value}>
-								{practice.arrows.name} • {practice.arrows.material}
+								{practice.arrows.name} • {arrowMaterialLabels[practice.arrows.material] || practice.arrows.material}
 							</span>
 						</div>
 					) : null}
@@ -217,6 +238,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				{deleteError ? <div className={styles.errorBox}>{deleteError}</div> : null}
 				<div className={styles.actions}>
 					<Button label="Lukk" buttonType="outline" onClick={onClose} width={140} disabled={deleting} />
+					{onEdit ? <Button label="Rediger" onClick={onEdit} width={140} disabled={deleting} /> : null}
 					<Button
 						label={deleting ? 'Sletter...' : 'Slett trening'}
 						onClick={handleDelete}

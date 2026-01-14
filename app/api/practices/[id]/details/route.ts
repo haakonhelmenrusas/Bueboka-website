@@ -37,7 +37,13 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
 		if (!practice) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-		return NextResponse.json({ practice });
+		// Map totalScore to arrowsShot for frontend compatibility
+		const mappedPractice = {
+			...practice,
+			arrowsShot: practice.totalScore,
+		};
+
+		return NextResponse.json({ practice: mappedPractice });
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'practices/[id]/details', method: 'GET' },

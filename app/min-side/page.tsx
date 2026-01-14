@@ -10,6 +10,7 @@ import {
 	Header,
 	PracticeCreateModal,
 	PracticeDetailsModal,
+	PracticeEditModal,
 	PracticesSection,
 	ProfileCard,
 	ProfileEditModal,
@@ -30,6 +31,7 @@ export default function MyPage() {
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
 	const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
 	const [createPracticeOpen, setCreatePracticeOpen] = useState(false);
+	const [editPracticeOpen, setEditPracticeOpen] = useState(false);
 	const [profileModalOpen, setProfileModalOpen] = useState(false);
 	const [bowModalOpen, setBowModalOpen] = useState(false);
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
@@ -127,6 +129,46 @@ export default function MyPage() {
 		setSelectedPractice((prev) => (prev?.id === id ? null : prev));
 		setPracticeModalOpen(false);
 		await fetchStats();
+	};
+
+	const handleEditPractice = async (input: PracticeCreateInput & { id: string }) => {
+		const { id, ...data } = input;
+		try {
+			const res = await fetch(`/api/practices/${id}`, {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(data),
+			});
+
+			if (!res.ok) {
+				let details: any = null;
+				try {
+					details = await res.json();
+				} catch {
+					// ignore
+				}
+
+				let errMsg: string = 'Kunne ikke oppdatere trening';
+				const fieldErrors = details && typeof details === 'object' ? (details as any).fieldErrors : undefined;
+				if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
+					const msgs = Object.entries(fieldErrors)
+						.map(([field, msg]) => `${field}: ${msg}`)
+						.join('\n');
+					errMsg = `Manglende/ugyldige felt:\n${msgs}`;
+				} else if (details && typeof details === 'object' && (details as any).error) {
+					errMsg = (details as any).error;
+				}
+
+				return Promise.reject(new Error(errMsg));
+			}
+
+			setPracticeReloadKey((k) => k + 1);
+			setEditPracticeOpen(false);
+			await fetchStats();
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'min-side', action: 'edit-practice' } });
+			throw err;
+		}
 	};
 
 	const handleSelectPractice = async (id: string) => {
@@ -271,6 +313,10 @@ export default function MyPage() {
 					setPracticeModalOpen(false);
 					setSelectedPractice(null);
 				}}
+				onEdit={() => {
+					setPracticeModalOpen(false);
+					setEditPracticeOpen(true);
+				}}
 				onDeleted={handlePracticeDeleted}
 			/>
 
@@ -278,6 +324,38 @@ export default function MyPage() {
 				open={createPracticeOpen}
 				onClose={() => setCreatePracticeOpen(false)}
 				onCreate={handleCreatePractice}
+				roundTypes={roundTypes}
+				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
+				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
+			/>
+
+			<PracticeEditModal
+				open={editPracticeOpen}
+				onClose={() => {
+					setEditPracticeOpen(false);
+					setSelectedPractice(null);
+				}}
+				onSave={async (input) => {
+					if (selectedPractice) {
+						await handleEditPractice({ ...input, id: selectedPractice.id });
+					}
+				}}
+				practice={
+					selectedPractice
+						? {
+								id: selectedPractice.id,
+								date: selectedPractice.date,
+								arrowsShot: selectedPractice.arrowsShot,
+								location: selectedPractice.location,
+								environment: selectedPractice.environment,
+								weather: selectedPractice.weather,
+								notes: selectedPractice.notes,
+								roundTypeId: selectedPractice.roundTypeId,
+								bowId: selectedPractice.bowId,
+								arrowsId: selectedPractice.arrowsId,
+							}
+						: undefined
+				}
 				roundTypes={roundTypes}
 				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
