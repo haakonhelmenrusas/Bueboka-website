@@ -8,6 +8,31 @@ import type { Arrow, Bow } from '@/lib/types';
 import { useEquipmentData } from './useEquipmentData';
 import { formatOneDecimal } from '@/lib/format';
 
+// Type translations
+const BOW_TYPE_LABELS: Record<string, string> = {
+	RECURVE: 'Recurve',
+	COMPOUND: 'Compound',
+	LONGBOW: 'Langbue',
+	BAREBOW: 'Barebow',
+	HORSEBOW: 'Rytterbue',
+	TRADITIONAL: 'Tradisjonell',
+	OTHER: 'Annet',
+};
+
+const ARROW_MATERIAL_LABELS: Record<string, string> = {
+	KARBON: 'Karbon',
+	ALUMINIUM: 'Aluminium',
+	TREVERK: 'Treverk',
+};
+
+function getBowTypeLabel(type: string): string {
+	return BOW_TYPE_LABELS[type] || type;
+}
+
+function getArrowMaterialLabel(material: string): string {
+	return ARROW_MATERIAL_LABELS[material] || material;
+}
+
 export interface EquipmentSectionProps {
 	/** If provided, the component becomes controlled and will not fetch its own data */
 	bows?: Bow[];
@@ -66,7 +91,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 													</span>
 												) : null}
 											</div>
-											<div className={styles.itemMeta}>{bow.type}</div>
+											<div className={styles.itemMeta}>{getBowTypeLabel(bow.type)}</div>
 										</div>
 										<div className={styles.itemIcon}>
 											<BowArrow size={18} />
@@ -98,7 +123,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 												) : null}
 											</div>
 											<div className={styles.itemMeta}>
-												{a.material}
+												{getArrowMaterialLabel(a.material)}
 												{typeof a.length === 'number' ? ` • ${formatOneDecimal(a.length)}cm` : ''}
 												{typeof a.weight === 'number' ? ` • ${formatOneDecimal(a.weight)}g` : ''}
 											</div>

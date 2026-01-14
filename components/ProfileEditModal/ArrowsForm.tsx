@@ -87,7 +87,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 				}}
 			>
 				<Select
-					label="Material"
+					label="Materiale"
 					value={material}
 					onChange={(v) => setMaterial(v as ArrowMaterial)}
 					options={materialOptions.map((o) => ({ ...o }))}
