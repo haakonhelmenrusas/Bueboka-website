@@ -257,6 +257,7 @@ export default function MyPage() {
 					name: profile.name,
 					email: profile.email,
 					club: profile.club,
+					image: profile.image,
 				}}
 				onProfileUpdate={fetchProfile}
 			/>

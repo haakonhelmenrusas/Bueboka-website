@@ -57,13 +57,31 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 		}
 
-		const { club, name } = await request.json();
+		const { club, name, image } = await request.json();
+
+		// Validate image if provided
+		if (image !== undefined && image !== null) {
+			// Check if it's a valid base64 image or external URL
+			if (typeof image !== 'string') {
+				return NextResponse.json({ error: 'Invalid image format' }, { status: 400 });
+			}
+
+			// If it's a base64 string, validate it's not too large (max ~4MB base64 = ~3MB file)
+			if (image.startsWith('data:image/')) {
+				const base64Length = image.length;
+				const maxSize = 5 * 1024 * 1024; // 5MB
+				if (base64Length > maxSize) {
+					return NextResponse.json({ error: 'Image too large. Max 5MB.' }, { status: 400 });
+				}
+			}
+		}
 
 		const updatedUser = await prisma.user.update({
 			where: { id: user.id },
 			data: {
 				...(club !== undefined && { club }),
 				...(name !== undefined && { name }),
+				...(image !== undefined && { image }),
 			},
 		});
 

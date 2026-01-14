@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import styles from './ProfileEditModal.module.css';
 import { ProfileForm } from './ProfileForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
+import { ImageUpload } from '@/components/common/ImageUpload/ImageUpload';
 
 interface ProfileEditModalProps {
 	isOpen: boolean;
@@ -14,6 +15,7 @@ interface ProfileEditModalProps {
 		name: string | null;
 		email: string;
 		club: string | null;
+		image?: string | null;
 	};
 	onProfileUpdate?: () => void;
 }
@@ -23,6 +25,15 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+	const [profileImage, setProfileImage] = useState<string | null>(user.image || null);
+
+	// Reset state when modal opens/closes
+	React.useEffect(() => {
+		if (isOpen) {
+			setMessage(null);
+			setProfileImage(user.image || null);
+		}
+	}, [isOpen, user.image]);
 
 	const handleProfileSubmit = async (values: { club: string }) => {
 		setLoading(true);
@@ -32,7 +43,10 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 			const response = await fetch('/api/users', {
 				method: 'PATCH',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ club: values.club }),
+				body: JSON.stringify({
+					club: values.club,
+					image: profileImage,
+				}),
 			});
 
 			if (!response.ok) {
@@ -67,6 +81,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 				<div className={styles.content}>
 					{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
 					<div className={styles.form}>
+						<ImageUpload currentImage={profileImage} onImageChange={setProfileImage} disabled={loading} />
 						<ProfileForm initialValues={{ club: user.club || '' }} loading={loading} onSubmit={handleProfileSubmit} />
 					</div>
 				</div>

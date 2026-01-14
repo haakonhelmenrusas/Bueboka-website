@@ -12,6 +12,7 @@ import { Input } from './common/Input/Input';
 import { NumberInput } from './common/NumberInput/NumberInput';
 import { DateInput } from './common/DateInput/DateInput';
 import { TextArea } from './common/TextArea/TextArea';
+import { ImageUpload } from './common/ImageUpload/ImageUpload';
 import { ProfileEditModal } from './ProfileEditModal/ProfileEditModal';
 import { PracticeCard } from './Practices/PracticeCard';
 import { PracticesList } from './Practices/PracticesList';
@@ -43,6 +44,7 @@ export {
 	NumberInput,
 	DateInput,
 	TextArea,
+	ImageUpload,
 	ProfileEditModal,
 	PracticeCard,
 	PracticesList,
