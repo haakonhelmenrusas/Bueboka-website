@@ -57,12 +57,11 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 			<div className={styles.main}>
 				<div className={styles.topRow}>
 					<div className={styles.date}>{formattedDate}</div>
-					<div className={styles.arrowsPill} aria-label={`${arrowsShot} piler`}>
+					<div className={styles.arrowsCount}>
 						<span className={styles.arrowsNumber}>{arrowsShot}</span>
 						<span className={styles.arrowsLabel}>piler</span>
 					</div>
 				</div>
-
 				<div className={styles.details}>
 					{roundText ? (
 						<div className={styles.detailItem}>
@@ -72,7 +71,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 							<span className={styles.detailText}>{roundText}</span>
 						</div>
 					) : null}
-
 					{location ? (
 						<div className={styles.detailItem}>
 							<span className={styles.detailIcon}>
@@ -81,14 +79,12 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 							<span className={styles.detailText}>{location}</span>
 						</div>
 					) : null}
-
 					{envText ? (
 						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
 							<span className={styles.detailIcon}>{envIcon(environment)}</span>
 							<span className={styles.detailText}>{envText}</span>
 						</div>
 					) : null}
-
 					{bowName ? (
 						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
 							<span className={styles.detailIcon}>
@@ -97,7 +93,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 							<span className={styles.detailText}>{bowName}</span>
 						</div>
 					) : null}
-
 					{arrowsName ? (
 						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
 							<span className={styles.detailIcon}>

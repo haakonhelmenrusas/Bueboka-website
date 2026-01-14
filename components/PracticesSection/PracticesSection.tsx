@@ -49,7 +49,6 @@ export function PracticesSection({ onCreate, onSelectPractice, reloadKey, delete
 				<div className={styles.pagination}>
 					<Button
 						label={loading ? 'Laster…' : 'Forrige'}
-						buttonType="outline"
 						size="small"
 						width={120}
 						loading={loading}

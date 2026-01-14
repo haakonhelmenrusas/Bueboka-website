@@ -2,7 +2,7 @@
   background: rgba(12, 130, 172, 0.06);
   border: 1px solid rgba(12, 130, 172, 0.14);
   border-radius: 18px;
-  padding: var(--space-6) var(--space-7);
+  padding: var(--space-5) var(--space-6);
   display: block;
   box-shadow: 0 8px 18px var(--dark-06);
   cursor: pointer;
@@ -22,28 +22,32 @@
 
 .main {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-5);
 }
 
 .topRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-6);
+  gap: var(--space-4);
+  flex: 1;
 }
 
 .date {
   color: var(--text-dark);
   font-weight: 650;
   font-size: 1.05rem;
+  white-space: nowrap;
 }
 
 .details {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3) var(--space-5);
+  gap: var(--space-2) var(--space-4);
   align-items: center;
+  flex: 1;
 }
 
 .detailItem {
@@ -52,7 +56,8 @@
   gap: var(--space-2);
   color: var(--text-gray-700);
   font-weight: 550;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .detailIcon {
@@ -60,6 +65,7 @@
   align-items: center;
   justify-content: center;
   color: rgba(5, 53, 70, 0.85);
+  flex: 0 0 auto;
 }
 
 .detailText {
@@ -70,50 +76,46 @@
   display: inline-flex;
 }
 
-.arrowsPill {
-  width: 64px;
-  height: 64px;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(5, 53, 70, 0.90) 0%, rgba(12, 130, 172, 0.92) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: var(--white);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  box-shadow: 0 10px 22px var(--dark-20);
+.arrowsCount {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
   flex: 0 0 auto;
 }
 
 .arrowsNumber {
-  font-size: 1.3rem;
-  font-weight: 800;
+  font-size: 1.25rem;
+  font-weight: 900;
 }
 
 .arrowsLabel {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 700;
-  opacity: 0.92;
-  margin-top: 4px;
+  color: var(--text-gray-700);
 }
 
 @media (max-width: 700px) {
-  .arrowsPill {
-    width: 60px;
-    height: 60px;
+  .card {
+    padding: var(--space-4) var(--space-5);
   }
 
-  .arrowsNumber {
-    font-size: 1.1rem;
+  .main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
   }
 
-  .arrowsLabel {
-    font-size: 0.75rem;
+  .topRow {
+    width: 100%;
+    flex-direction: row;
   }
 
   .details {
-    gap: var(--space-3);
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .detailItem {
+    font-size: 0.85rem;
   }
 
   .hideOnMobile {
