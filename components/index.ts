@@ -71,3 +71,4 @@ export * from './PracticesSection/useRoundTypes';
 // Re-export social auth button directly (avoids TS module resolution issues with barrel files)
 export { SocialAuthButtons } from './common/SocialAuthButtons/SocialAuthButtons';
 export { Tooltip } from './common/Tooltip/Tooltip';
+export { Accordion } from './common/Accordion/Accordion';
