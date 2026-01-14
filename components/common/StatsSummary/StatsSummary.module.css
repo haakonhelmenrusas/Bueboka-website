@@ -11,22 +11,21 @@
 }
 
 .card {
-	background: rgba(12, 130, 172, 0.06);
-	border: 1px solid rgba(12, 130, 172, 0.14);
+	background: var(--primary-08);
+	border: 1px solid var(--primary-20);
 	border-radius: 16px;
 	padding: var(--space-5);
 	display: flex;
 	align-items: center;
 	gap: var(--space-4);
-	box-shadow: 0 8px 18px var(--dark-06);
 }
 
 .icon {
 	width: 44px;
 	height: 44px;
 	border-radius: 14px;
-	background: rgba(12, 130, 172, 0.12);
-	color: rgba(5, 53, 70, 0.92);
+	background: var(--primary-06);
+	color: var(--primary);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -48,7 +47,7 @@
 
 .value {
 	color: var(--text-dark);
-	font-weight: 900;
+	font-weight: 700;
 	font-size: 1.6rem;
 	line-height: 1;
 }
