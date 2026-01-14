@@ -15,23 +15,22 @@
 .sectionTitle {
 	margin: 0;
 	font-size: 1.4rem;
-	font-weight: 900;
-	color: var(--white);
+	font-weight: 700;
+	color: var(--section-title-light);
 }
 
 .practicesList {
 	width: 100%;
 	background: var(--card-bg);
-	border: 1px solid rgba(0, 0, 0, 0.06);
+	border: 1px solid var(--primary-dark);
 	border-radius: 18px;
-	box-shadow: 0 20px 60px var(--dark-20);
 	padding: var(--space-8);
 	color: var(--text-dark);
 }
 
 .placeholderCard {
-	background: rgba(12, 130, 172, 0.05);
-	border: 1px dashed rgba(12, 130, 172, 0.26);
+	background: var(--primary-02);
+	border: 1px dashed var(--primary-20);
 	border-radius: 16px;
 	padding: var(--space-5) var(--space-6);
 	color: var(--text-gray-700);

@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from './PracticeDetailsModal.module.css';
 import { BowArrow, CloudSun, Hash, Home, MapPin, Navigation, NotebookText, Target, Trash2, Trees, X } from 'lucide-react';
-import { Environment, WeatherCondition } from '@/lib/prismaEnums';
+import type { WeatherCondition } from '@/lib/prismaEnums';
+import { Environment } from '@/lib/prismaEnums';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
+import { formatWeatherConditions } from '@/lib/weatherUtils';
 
 export interface PracticeDetails {
 	id: string;
@@ -43,19 +45,6 @@ interface PracticeDetailsModalProps {
 	onEdit?: () => void;
 	onDeleted?: (id: string) => void;
 }
-
-const weatherLabels: Record<WeatherCondition, string> = {
-	[WeatherCondition.SUN]: 'Sol',
-	[WeatherCondition.CLOUDED]: 'Overskyet',
-	[WeatherCondition.CLEAR]: 'Klarvær',
-	[WeatherCondition.RAIN]: 'Regn',
-	[WeatherCondition.WIND]: 'Vind',
-	[WeatherCondition.SNOW]: 'Snø',
-	[WeatherCondition.FOG]: 'Tåke',
-	[WeatherCondition.THUNDER]: 'Torden',
-	[WeatherCondition.CHANGING_CONDITIONS]: 'Skiftende',
-	[WeatherCondition.OTHER]: 'Annet',
-};
 
 // Bow type translations
 const bowTypeLabels: Record<string, string> = {
@@ -162,7 +151,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 								<CloudSun size={18} />
 							</span>
 							<span className={styles.label}>Vær</span>
-							<span className={styles.value}>{practice.weather.map((w) => weatherLabels[w] ?? String(w)).join(', ')}</span>
+							<span className={styles.value}>{formatWeatherConditions(practice.weather)}</span>
 						</div>
 					) : null}
 					{practice.roundType ? (

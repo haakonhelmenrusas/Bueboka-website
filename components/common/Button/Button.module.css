@@ -4,7 +4,7 @@
 	--btn-color: var(--btn-text-light);
 	--btn-border-color: transparent;
 	--btn-padding: 8px 24px;
-	--btn-height: 48px;
+	--btn-height: 40px;
 	--btn-font-size: 16px;
 
 	appearance: none;
@@ -35,13 +35,13 @@
 
 /* Sizes */
 .small {
-	--btn-height: 32px;
+	--btn-height: 28px;
 	--btn-padding: 4px 16px;
 	--btn-font-size: 14px;
 }
 
 .normal {
-	--btn-height: 48px;
+	--btn-height: 42px;
 	--btn-padding: 8px 24px;
 	--btn-font-size: 16px;
 }
@@ -83,6 +83,17 @@
 	color: var(--btn-text-light);
 	border-color: rgba(255, 255, 255, 0.35);
 	transform: translateY(-1px);
+}
+
+.warning:hover:not(:disabled) {
+	background-color: var(--error-light);
+	border-color: var(--error-light);
+}
+
+.warning.outline:hover:not(:disabled) {
+	background-color: var(--error-bg);
+	color: var(--error-light);
+	border-color: var(--error-light);
 }
 
 .button:active:not(:disabled) {

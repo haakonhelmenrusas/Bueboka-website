@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import styles from './PracticeCreateModal.module.css';
-import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Home, MapPin, Sun, Target, Trees, Wind, X, Zap } from 'lucide-react';
-import { Environment, WeatherCondition } from '@/lib/prismaEnums';
-import { DateInput, Input, NumberInput, Select, TextArea } from '@/components';
+import { CloudSun, Home, MapPin, Target, Trees, X } from 'lucide-react';
+import type { WeatherCondition } from '@/lib/prismaEnums';
+import { Environment } from '@/lib/prismaEnums';
+import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
+import { getWeatherSelectOptions } from '@/lib/weatherUtils';
 
 export interface PracticeCreateInput {
 	date: string; // ISO
@@ -27,46 +29,6 @@ interface PracticeCreateModalProps {
 	arrows?: Array<{ id: string; name: string; material: string; isFavorite?: boolean }>;
 	roundTypes?: Array<{ id: string; name: string; distanceMeters?: number | null; targetSizeCm?: number | null }>;
 }
-
-const weatherOptions: WeatherCondition[] = [
-	WeatherCondition.SUN,
-	WeatherCondition.CLOUDED,
-	WeatherCondition.CLEAR,
-	WeatherCondition.RAIN,
-	WeatherCondition.WIND,
-	WeatherCondition.SNOW,
-	WeatherCondition.FOG,
-	WeatherCondition.THUNDER,
-	WeatherCondition.CHANGING_CONDITIONS,
-	WeatherCondition.OTHER,
-];
-
-// Render user-friendly labels (instead of raw enum strings)
-const weatherLabels: Record<WeatherCondition, string> = {
-	[WeatherCondition.SUN]: 'Sol',
-	[WeatherCondition.CLOUDED]: 'Overskyet',
-	[WeatherCondition.CLEAR]: 'Klarvær',
-	[WeatherCondition.RAIN]: 'Regn',
-	[WeatherCondition.WIND]: 'Vind',
-	[WeatherCondition.SNOW]: 'Snø',
-	[WeatherCondition.FOG]: 'Tåke',
-	[WeatherCondition.THUNDER]: 'Torden',
-	[WeatherCondition.CHANGING_CONDITIONS]: 'Skiftende',
-	[WeatherCondition.OTHER]: 'Annet',
-};
-
-const weatherIcons: Record<WeatherCondition, React.ComponentType<{ size?: number; className?: string }>> = {
-	[WeatherCondition.SUN]: Sun,
-	[WeatherCondition.CLOUDED]: Cloudy,
-	[WeatherCondition.CLEAR]: CloudSun,
-	[WeatherCondition.RAIN]: CloudRain,
-	[WeatherCondition.WIND]: Wind,
-	[WeatherCondition.SNOW]: CloudSnow,
-	[WeatherCondition.FOG]: Cloud,
-	[WeatherCondition.THUNDER]: Zap,
-	[WeatherCondition.CHANGING_CONDITIONS]: CloudSun,
-	[WeatherCondition.OTHER]: HelpCircle,
-};
 
 export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	open,
@@ -96,15 +58,6 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 			setWeather([]);
 		}
 	}, [environment]);
-
-	const weatherSelectOptions = weatherOptions.map((w) => {
-		const Icon = weatherIcons[w];
-		return {
-			value: w,
-			label: weatherLabels[w] ?? w,
-			icon: <Icon size={16} />,
-		};
-	});
 
 	const roundTypeOptions = roundTypes.map((r) => {
 		const values: string[] = [];
@@ -230,7 +183,7 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 							multiple
 							maxSelectedLabels={2}
 							placeholderLabel="Velg vær (valgfritt)"
-							options={weatherSelectOptions}
+							options={getWeatherSelectOptions()}
 							containerClassName={styles.field}
 						/>
 					) : null}
@@ -274,12 +227,14 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 					/>
 
 					<div className={styles.actions}>
-						<button type="button" className={`${styles.button} ${styles.secondary}`} onClick={onClose}>
-							Avbryt
-						</button>
-						<button type="submit" className={`${styles.button} ${styles.primary}`} disabled={submitting}>
-							{submitting ? 'Lagrer...' : 'Lagre trening'}
-						</button>
+						<Button label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" />
+						<Button
+							label={submitting ? 'Lagrer...' : 'Lagre trening'}
+							type="submit"
+							variant="standard"
+							disabled={submitting}
+							loading={submitting}
+						/>
 					</div>
 				</form>
 			</div>

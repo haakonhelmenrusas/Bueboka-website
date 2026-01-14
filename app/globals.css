@@ -36,6 +36,11 @@
 	--accent-yellow: #ffbf00;
 	--accent-red: #c01c24;
 
+	/* Star/Favorite Colors */
+	--star-bg: rgba(255, 214, 0, 0.20);
+	--star-border: rgba(255, 214, 0, 0.35);
+	--star-color: rgba(110, 80, 0, 0.95);
+
 	/* Utility Colors */
 	--transparent: transparent;
 	--border-gray: #e5e7eb;
@@ -48,6 +53,9 @@
 
 	/* Button colors */
 	--btn-text-light: #ffffff;
+
+	/* Section titles on colored backgrounds */
+	--section-title-light: #ffffff;
 
 	/* Page backgrounds */
 	--page-gradient-start: var(--primary);
@@ -185,6 +193,11 @@
 	--accent-yellow: #fbbf24;
 	--accent-red: #ef4444;
 
+	/* Star/Favorite Colors - brighter for dark mode */
+	--star-bg: rgba(251, 191, 36, 0.15);
+	--star-border: rgba(251, 191, 36, 0.4);
+	--star-color: rgba(251, 191, 36, 0.95);
+
 	/* Utility Colors */
 	--border-gray: #374151;
 
@@ -196,6 +209,9 @@
 
 	/* Button colors */
 	--btn-text-light: #f9fafb;
+
+	/* Section titles on colored backgrounds */
+	--section-title-light: #f9fafb;
 
 	/* Page backgrounds - darker gradient for dark mode */
 	--page-gradient-start: #0a1520;

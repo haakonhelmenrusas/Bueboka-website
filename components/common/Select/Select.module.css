@@ -158,7 +158,7 @@
 	justify-content: center;
 	width: 18px;
 	height: 18px;
-	color: rgba(5, 53, 70, 0.85);
+	color: var(--primary);
 	flex: 0 0 auto;
 }
 
