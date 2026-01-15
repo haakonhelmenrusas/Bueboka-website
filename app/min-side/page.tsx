@@ -7,6 +7,7 @@ import {
 	ArrowsModal,
 	BowModal,
 	EquipmentSection,
+	FullPageLoader,
 	Header,
 	PracticeCreateModal,
 	PracticeDetailsModal,
@@ -21,7 +22,6 @@ import {
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
-import { MyPageSkeleton } from './Skeleton';
 import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
 
 export default function MyPage() {
@@ -180,7 +180,7 @@ export default function MyPage() {
 	};
 
 	if (loading) {
-		return <MyPageSkeleton />;
+		return <FullPageLoader />;
 	}
 
 	if (error || !profile) {

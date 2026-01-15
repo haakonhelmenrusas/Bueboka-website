@@ -72,3 +72,4 @@ export * from './PracticesSection/useRoundTypes';
 export { SocialAuthButtons } from './common/SocialAuthButtons/SocialAuthButtons';
 export { Tooltip } from './common/Tooltip/Tooltip';
 export { Accordion } from './common/Accordion/Accordion';
+export { FullPageLoader } from './common/FullPageLoader/FullPageLoader';
