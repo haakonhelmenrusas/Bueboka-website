@@ -118,7 +118,7 @@ export function Header() {
 		<header className={`${styles.header} ${styles.headerEnter}`}>
 			<div className={styles.container}>
 				<div className={styles.row}>
-					<Link href="/" onClick={handleLogoClick} className={styles.logoLink}>
+					<Link href={session?.user ? '/min-side' : '/'} onClick={handleLogoClick} className={styles.logoLink}>
 						<div className={styles.logoBox}>
 							<Image width={24} height={24} priority src="/assets/logo.png" alt="Bueboka Logo" className={styles.logoImg} />
 						</div>
