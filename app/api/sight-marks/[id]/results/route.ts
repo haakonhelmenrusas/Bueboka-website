@@ -1,0 +1,117 @@
+import { headers } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import * as Sentry from '@sentry/nextjs';
+import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+
+async function getCurrentUser() {
+	try {
+		const reqHeaders = await headers();
+		const headerObj: Record<string, string> = {};
+		for (const [key, value] of reqHeaders) headerObj[key] = value;
+		const session = await auth.api.getSession({ headers: headerObj });
+		return session?.user || null;
+	} catch (error) {
+		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]/results', where: 'getCurrentUser' } });
+		return null;
+	}
+}
+
+async function getOwnedSightMark(userId: string, sightMarkId: string) {
+	return prisma.sightMark.findFirst({ where: { id: sightMarkId, userId } });
+}
+
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	try {
+		const user = await getCurrentUser();
+		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		const { id: sightMarkId } = await params;
+
+		const sightMark = await getOwnedSightMark(user.id, sightMarkId);
+		if (!sightMark) return NextResponse.json({ error: 'Sight mark not found' }, { status: 404 });
+
+		const results = await prisma.sightMarkResult.findMany({
+			where: { sightMarkId },
+			orderBy: { createdAt: 'desc' },
+		});
+
+		return NextResponse.json({ sightMarkResults: results });
+	} catch (error) {
+		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]/results', method: 'GET' } });
+		return NextResponse.json({ error: 'Failed to fetch sight mark results' }, { status: 500 });
+	}
+}
+
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	try {
+		const user = await getCurrentUser();
+		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		const { id: sightMarkId } = await params;
+
+		const sightMark = await getOwnedSightMark(user.id, sightMarkId);
+		if (!sightMark) return NextResponse.json({ error: 'Sight mark not found' }, { status: 404 });
+
+		const body = (await request.json()) as Partial<{
+			distanceFrom: unknown;
+			distanceTo: unknown;
+			interval: unknown;
+			angles: unknown;
+			distances: unknown;
+			sightMarksByAngle: unknown;
+			arrowSpeedByAngle: unknown;
+		}>;
+
+		const fieldErrors: Record<string, string> = {};
+		if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+
+		const toFloat = (val: unknown, key: string) => {
+			if (typeof val !== 'number' || Number.isNaN(val)) {
+				fieldErrors[key] = `${key} must be a number`;
+				return null;
+			}
+			return val;
+		};
+
+		const distanceFrom = toFloat(body.distanceFrom, 'distanceFrom');
+		const distanceTo = toFloat(body.distanceTo, 'distanceTo');
+		const interval = toFloat(body.interval, 'interval');
+
+		const parseNumberArray = (val: unknown, key: string) => {
+			if (!Array.isArray(val)) {
+				fieldErrors[key] = `${key} must be an array`;
+				return [] as number[];
+			}
+			const nums = val.filter((item) => typeof item === 'number' && !Number.isNaN(item)) as number[];
+			if (nums.length !== val.length) fieldErrors[key] = `${key} contains invalid numbers`;
+			return nums;
+		};
+
+		const angles = parseNumberArray(body.angles, 'angles');
+		const distances = parseNumberArray(body.distances, 'distances');
+		const sightMarksByAngle = typeof body.sightMarksByAngle === 'object' && body.sightMarksByAngle !== null ? body.sightMarksByAngle : {};
+		const arrowSpeedByAngle = typeof body.arrowSpeedByAngle === 'object' && body.arrowSpeedByAngle !== null ? body.arrowSpeedByAngle : {};
+
+		if (Object.keys(fieldErrors).length) {
+			return NextResponse.json({ error: 'Validation error', fieldErrors }, { status: 400 });
+		}
+
+		const result = await prisma.sightMarkResult.create({
+			data: {
+				userId: user.id,
+				sightMarkId,
+				distanceFrom: distanceFrom as number,
+				distanceTo: distanceTo as number,
+				interval: interval as number,
+				angles,
+				distances,
+				sightMarksByAngle,
+				arrowSpeedByAngle,
+			},
+		});
+
+		return NextResponse.json({ sightMarkResult: result }, { status: 201 });
+	} catch (error) {
+		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]/results', method: 'POST' } });
+		return NextResponse.json({ error: 'Failed to create sight mark result' }, { status: 500 });
+	}
+}

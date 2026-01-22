@@ -15,6 +15,7 @@ import {
 	PracticesSection,
 	ProfileCard,
 	ProfileEditModal,
+	SightMarksSection,
 	StatsSummary,
 	usePracticeDetails,
 	useRoundTypes,
@@ -248,6 +249,9 @@ export default function MyPage() {
 				reloadKey={practiceReloadKey}
 				deletedPracticeId={deletedPracticeId}
 			/>
+
+			{/* Sight Marks section */}
+			<SightMarksSection />
 
 			<ProfileEditModal
 				isOpen={profileModalOpen}

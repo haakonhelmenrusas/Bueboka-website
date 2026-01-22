@@ -26,4 +26,7 @@ export type {
 	PracticeModel as Practice,
 	EndModel as End,
 	RoundTypeModel as RoundType,
+	BowSpecificationModel as BowSpecification,
+	SightMarkModel as SightMark,
+	SightMarkResultModel as SightMarkResult,
 } from '@/prisma/prisma/generated/prisma-client/models';

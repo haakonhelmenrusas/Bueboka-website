@@ -18,11 +18,14 @@ model User {
   updatedAt     DateTime @updatedAt
 
   // Relation fields
-  bows      Bow[]
-  arrows    Arrows[]
-  practices Practice[]
-  Account   Account[]
-  Session   Session[]
+  bows              Bow[]
+  arrows            Arrows[]
+  practices         Practice[]
+  Account           Account[]
+  Session           Session[]
+  bowSpecifications BowSpecification[]
+  sightMarks        SightMark[]
+  sightMarkResults  SightMarkResult[]
 
   @@map("user")
 }
@@ -75,18 +78,19 @@ model Verification {
 }
 
 model Bow {
-  id         String     @id @default(cuid())
-  userId     String
-  name       String
-  practice   Practice[]
-  type       BowType
-  eyeToNock  Int?
-  aimMeasure Int?
-  eyeToSight Int?
-  notes      String?
-  isFavorite Boolean    @default(false)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  id                String             @id @default(cuid())
+  userId            String
+  name              String
+  practice          Practice[]
+  type              BowType
+  eyeToNock         Int?
+  aimMeasure        Int?
+  eyeToSight        Int?
+  notes             String?
+  isFavorite        Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  bowSpecifications BowSpecification[]
 
   // Relation field
   user User @relation(fields: [userId], references: [id])
@@ -173,6 +177,61 @@ model End {
   Practice Practice @relation(fields: [practiceId], references: [id])
 
   @@map("ends")
+}
+
+model BowSpecification {
+  id                    String   @id @default(cuid())
+  userId                String
+  bowId                 String
+  intervalSightReal     Int?
+  intervalSightMeasured Int?
+  placement             Int?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bow        Bow         @relation(fields: [bowId], references: [id], onDelete: Cascade)
+  sightMarks SightMark[]
+
+  @@unique([userId, bowId])
+  @@map("bow_specifications")
+}
+
+model SightMark {
+  id                   String   @id @default(cuid())
+  userId               String
+  bowSpecificationId   String
+  givenMarks           Float[]
+  givenDistances       Float[]
+  ballisticsParameters Json
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bowSpec      BowSpecification  @relation(fields: [bowSpecificationId], references: [id], onDelete: Cascade)
+  sightResults SightMarkResult[]
+
+  @@map("sight_marks")
+}
+
+model SightMarkResult {
+  id                String   @id @default(cuid())
+  userId            String
+  sightMarkId       String
+  distanceFrom      Float
+  distanceTo        Float
+  interval          Float
+  angles            Float[]
+  distances         Float[]
+  sightMarksByAngle Json
+  arrowSpeedByAngle Json
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sightMark SightMark @relation(fields: [sightMarkId], references: [id], onDelete: Cascade)
+
+  @@map("sight_mark_results")
 }
 
 enum Material {
