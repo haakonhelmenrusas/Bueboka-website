@@ -3,12 +3,14 @@
 import { signIn, signUp } from '@/lib/auth-client';
 import Link from 'next/link';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button, Header, Input, SocialAuthButtons } from '@/components';
 import styles from './page.module.css';
 
 export default function SignUpPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const router = useRouter();
 
 	async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
 		e.preventDefault();
@@ -30,7 +32,10 @@ export default function SignUpPage() {
 
 			if (data.error) {
 				setError(data.error.message || 'En feil har skjedd ved opprettelse av brukeren din.');
+				return;
 			}
+
+			router.push('/min-side');
 		} finally {
 			setIsSubmitting(false);
 		}

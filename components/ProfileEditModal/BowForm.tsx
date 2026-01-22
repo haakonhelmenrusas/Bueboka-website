@@ -69,7 +69,7 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 				<NumberInput
 					label={
 						<span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-							Målt sikte (cm)
+							Målt sikte
 							<Tooltip text="Mål hvor langt 5cm er på siktet ditt" label="Hjelp for Målt sikte" />
 						</span>
 					}

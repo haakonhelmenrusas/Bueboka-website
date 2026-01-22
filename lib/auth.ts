@@ -7,7 +7,12 @@ export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql',
 	}),
-	trustedOrigins: ['https://appleid.apple.com'],
+	trustedOrigins: [
+		'https://appleid.apple.com',
+		process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(',')
+			.map((origin) => origin.trim())
+			.filter(Boolean) ?? [],
+	].flat(),
 	baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
 	emailAndPassword: {
 		enabled: true,
