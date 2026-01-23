@@ -27,6 +27,7 @@
 		"@prisma/client": "^7.2.0",
 		"@prisma/extension-accelerate": "^3.0.1",
 		"@sentry/nextjs": "^10.32.1",
+		"@types/swagger-ui-react": "^5.18.0",
 		"bcrypt": "^6.0.0",
 		"better-auth": "^1.4.7",
 		"dotenv": "^17.2.3",
@@ -38,6 +39,8 @@
 		"react": "^19.2.3",
 		"react-dom": "^19.2.3",
 		"resend": "^6.7.0",
+		"swagger-ui": "^5.31.0",
+		"swagger-ui-react": "^5.31.0",
 		"zod": "^4.2.1"
 	},
 	"devDependencies": {

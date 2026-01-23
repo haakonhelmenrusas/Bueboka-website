@@ -109,6 +109,15 @@ Før du starter, sørg for at du har følgende installert:
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting
 
+## API Documentation
+
+We provide interactive API docs powered by Swagger UI:
+
+- OpenAPI spec: `GET /api/openapi`
+- Interactive docs: visit `/api/docs` in your browser.
+
+Update the OpenAPI spec in `app/api/openapi/route.ts` as you add or change endpoints. Keep the spec minimal and focused on public routes.
+
 ## 🤝 Contributing
 
 We welcome contributions from everyone! Please read our [Contributing Guidelines](CONTRIBUTING.md)
@@ -185,7 +194,3 @@ By contributing to this project, you agree to license your contributions under t
 ---
 
 **Made with ❤️ for the archery community**
-
-```
-
-```
