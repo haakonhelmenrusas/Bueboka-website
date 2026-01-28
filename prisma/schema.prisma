@@ -180,14 +180,14 @@ model End {
 }
 
 model BowSpecification {
-  id                    String   @id @default(cuid())
+  id                    String     @id @default(cuid())
   userId                String
   bowId                 String
   intervalSightReal     Int?
   intervalSightMeasured Int?
-  placement             Int?
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  placement             Placement?
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
 
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   bow        Bow         @relation(fields: [bowId], references: [id], onDelete: Cascade)
@@ -238,6 +238,12 @@ enum Material {
   KARBON
   ALUMINIUM
   TREVERK
+}
+
+enum Placement {
+  BAK_LINJEN
+  OVER_LINJEN
+  ANNET
 }
 
 enum Environment {
