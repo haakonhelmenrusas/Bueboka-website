@@ -59,7 +59,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 			data: {
 				intervalSightReal: parseIntOrNull(body.intervalSightReal),
 				intervalSightMeasured: parseIntOrNull(body.intervalSightMeasured),
-				placement: parseIntOrNull(body.placement),
+				placement: typeof body.placement === 'string' && body.placement ? (body.placement as any) : null,
 			},
 		});
 

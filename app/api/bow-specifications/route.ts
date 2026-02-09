@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
 
 		const intervalSightReal = parseIntOrNull(body.intervalSightReal);
 		const intervalSightMeasured = parseIntOrNull(body.intervalSightMeasured);
-		const placement = parseIntOrNull(body.placement);
+		const placement = typeof body.placement === 'string' && body.placement ? body.placement : null;
 
 		if (Object.keys(fieldErrors).length) {
 			return NextResponse.json({ error: 'Validation error', fieldErrors }, { status: 400 });
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
 				bowId: body.bowId as string,
 				intervalSightReal,
 				intervalSightMeasured,
-				placement,
+				placement: placement as any,
 			},
 		});
 
