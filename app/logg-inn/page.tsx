@@ -36,14 +36,21 @@ export default function SignInPage() {
 
 	return (
 		<div className={`${styles.container} ${styles.themeBackground}`}>
+			<a href="#main-content" className="skip-link">
+				Gå til hovedinnhold
+			</a>
 			<Header />
-			<div className={styles.card}>
+			<main id="main-content" className={styles.card}>
 				<div className={styles.formWrapper}>
 					<div className={styles.header}>
 						<h1 className={styles.title}>Logg inn</h1>
 					</div>
-					{error && <p className="text-red-500">{error}</p>}
-					<form onSubmit={handleSubmit} className={styles.form}>
+					{error && (
+						<p className="text-red-500" role="alert" aria-live="polite">
+							{error}
+						</p>
+					)}
+					<form onSubmit={handleSubmit} className={styles.form} aria-label="Logg inn skjema">
 						<div className={styles.inputGroup}>
 							<Input label="E-postadresse" id="email" name="email" type="email" autoComplete="email" disabled={isSubmitting} />
 							<Input label="Passord" id="password" name="password" type="password" autoComplete="new-password" disabled={isSubmitting} />
@@ -70,7 +77,7 @@ export default function SignInPage() {
 						/>
 					</div>
 				</div>
-			</div>
+			</main>
 		</div>
 	);
 }

@@ -35,7 +35,7 @@ describe('ProfileEditModal', () => {
 
 		it('should close modal when close button is clicked', () => {
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-			const closeBtn = screen.getByLabelText('Close modal');
+			const closeBtn = screen.getByLabelText('Lukk');
 			fireEvent.click(closeBtn);
 			expect(mockOnClose).toHaveBeenCalled();
 		});

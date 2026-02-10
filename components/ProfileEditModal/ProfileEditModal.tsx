@@ -69,11 +69,19 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 	if (!isOpen) return null;
 
 	return (
-		<div className={styles.overlay} onClick={onClose}>
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+		<div className={styles.overlay} onClick={onClose} role="presentation">
+			<div
+				className={styles.modal}
+				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="profile-edit-title"
+			>
 				<div className={styles.header}>
-					<h2 className={styles.title}>Rediger profil</h2>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Close modal">
+					<h2 id="profile-edit-title" className={styles.title}>
+						Rediger profil
+					</h2>
+					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
 						<X size={24} />
 					</button>
 				</div>

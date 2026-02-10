@@ -134,9 +134,17 @@ export const PracticeEditModal: React.FC<PracticeEditModalProps> = ({
 
 	return (
 		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+			<div
+				className={styles.modal}
+				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="practice-edit-title"
+			>
 				<div className={styles.header}>
-					<h3 className={styles.title}>Rediger trening</h3>
+					<h3 id="practice-edit-title" className={styles.title}>
+						Rediger trening
+					</h3>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
 						<X size={20} />
 					</button>

@@ -113,7 +113,7 @@ export const Button: React.FC<ButtonProps> = ({
 	};
 
 	return (
-		<button className={className} style={cssVars} disabled={disabled || loading} {...props}>
+		<button className={className} style={cssVars} disabled={disabled || loading} aria-busy={loading} {...props}>
 			{renderContent()}
 		</button>
 	);

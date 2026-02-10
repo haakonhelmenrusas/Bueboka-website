@@ -25,10 +25,24 @@ export function HeroSection() {
 					{windowWidth > 768 && (
 						<div className={styles.right}>
 							<div className={styles.phoneCard}>
-								<Image src="/assets/training.jpeg" alt="iOS app preview" width={300} height={560} className={styles.phoneImg} priority />
+								<Image
+									src="/assets/training.jpeg"
+									alt="Bueboka app viser treningsoversikt med registrerte økter"
+									width={300}
+									height={560}
+									className={styles.phoneImg}
+									priority
+								/>
 							</div>
 							<div className={`${styles.phoneCard} ${styles.phoneOffset}`}>
-								<Image src="/assets/profile.jpeg" alt="Android app preview" width={300} height={560} className={styles.phoneImg} priority />
+								<Image
+									src="/assets/profile.jpeg"
+									alt="Bueboka app viser brukerprofil med utstyr og statistikk"
+									width={300}
+									height={560}
+									className={styles.phoneImg}
+									priority
+								/>
 							</div>
 						</div>
 					)}

@@ -52,13 +52,25 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	const roundText = roundTypeName ? (extraRoundEnv ? `${roundTypeName} • ${extraRoundEnv}` : roundTypeName) : null;
 	const envText = formatEnvironment(environment);
 
+	// Build accessible label
+	const ariaLabel = [
+		`Trening fra ${formattedDate}`,
+		`${arrowsShot} piler skutt`,
+		roundText && `Runde: ${roundText}`,
+		location && `Sted: ${location}`,
+		bowName && `Bue: ${bowName}`,
+		arrowsName && `Piler: ${arrowsName}`,
+	]
+		.filter(Boolean)
+		.join(', ');
+
 	return (
-		<button className={styles.card} onClick={() => onClick?.(id)} type="button">
+		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={ariaLabel}>
 			<div className={styles.main}>
 				<div className={styles.date}>{formattedDate}</div>
 				{roundText ? (
 					<div className={styles.detailItem}>
-						<span className={styles.detailIcon}>
+						<span className={styles.detailIcon} aria-hidden="true">
 							<Target size={14} />
 						</span>
 						<span className={styles.detailText}>{roundText}</span>
@@ -66,7 +78,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 				) : null}
 				{location ? (
 					<div className={styles.detailItem}>
-						<span className={styles.detailIcon}>
+						<span className={styles.detailIcon} aria-hidden="true">
 							<MapPin size={14} />
 						</span>
 						<span className={styles.detailText}>{location}</span>
@@ -74,13 +86,15 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 				) : null}
 				{envText ? (
 					<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-						<span className={styles.detailIcon}>{envIcon(environment)}</span>
+						<span className={styles.detailIcon} aria-hidden="true">
+							{envIcon(environment)}
+						</span>
 						<span className={styles.detailText}>{envText}</span>
 					</div>
 				) : null}
 				{bowName ? (
 					<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-						<span className={styles.detailIcon}>
+						<span className={styles.detailIcon} aria-hidden="true">
 							<BowArrow size={14} />
 						</span>
 						<span className={styles.detailText}>{bowName}</span>
@@ -88,7 +102,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 				) : null}
 				{arrowsName ? (
 					<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-						<span className={styles.detailIcon}>
+						<span className={styles.detailIcon} aria-hidden="true">
 							<ArrowRight size={14} />
 						</span>
 						<span className={styles.detailText}>{arrowsName}</span>

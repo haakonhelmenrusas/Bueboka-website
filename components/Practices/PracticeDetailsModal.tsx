@@ -111,10 +111,10 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				onClick={(e) => e.stopPropagation()}
 				role="dialog"
 				aria-modal="true"
-				aria-label={`Trening ${formattedDate}`}
+				aria-labelledby="practice-details-title"
 			>
 				<div className={styles.header}>
-					<h3 className={styles.title}>
+					<h3 id="practice-details-title" className={styles.title}>
 						Trening <span className={styles.titleDate}>{formattedDate}</span>
 					</h3>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">

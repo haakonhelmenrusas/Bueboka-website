@@ -201,9 +201,12 @@ export default function MyPage() {
 
 	return (
 		<div className={styles.page}>
+			<a href="#main-content" className="skip-link">
+				Gå til hovedinnhold
+			</a>
 			<Header />
 
-			<main className={styles.main}>
+			<main id="main-content" className={styles.main}>
 				<div className={styles.profileContainer}>
 					<div className={styles.profileSummaryGrid}>
 						<div>

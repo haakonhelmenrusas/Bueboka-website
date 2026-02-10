@@ -138,9 +138,17 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 
 	return (
 		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+			<div
+				className={styles.modal}
+				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="practice-create-title"
+			>
 				<div className={styles.header}>
-					<h3 className={styles.title}>Ny trening</h3>
+					<h3 id="practice-create-title" className={styles.title}>
+						Ny trening
+					</h3>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
 						<X size={20} />
 					</button>

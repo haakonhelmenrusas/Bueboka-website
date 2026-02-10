@@ -118,10 +118,18 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 
 	return (
 		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="Piler">
+			<div
+				className={styles.modal}
+				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="arrows-modal-title"
+			>
 				<div className={styles.header}>
-					<h2 className={styles.title}>{editingArrows ? 'Rediger piler' : 'Legg til piler'}</h2>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Close modal">
+					<h2 id="arrows-modal-title" className={styles.title}>
+						{editingArrows ? 'Rediger piler' : 'Legg til piler'}
+					</h2>
+					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
 						<X size={22} />
 					</button>
 				</div>

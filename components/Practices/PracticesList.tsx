@@ -10,11 +10,17 @@ export interface PracticesListProps {
 export const PracticesList: React.FC<PracticesListProps> = ({ practices, onSelectPractice }) => {
 	return (
 		<div className={styles.wrapper}>
-			<div className={styles.list}>
+			<div className={styles.list} role="list" aria-label="Treninger">
 				{practices.length === 0 ? (
-					<div className={styles.empty}>Ingen treninger registrert ennå.</div>
+					<div className={styles.empty} role="status">
+						Ingen treninger registrert ennå.
+					</div>
 				) : (
-					practices.map((practice) => <PracticeCard key={practice.id} {...practice} onClick={onSelectPractice} />)
+					practices.map((practice) => (
+						<div key={practice.id} role="listitem">
+							<PracticeCard {...practice} onClick={onSelectPractice} />
+						</div>
+					))
 				)}
 			</div>
 		</div>

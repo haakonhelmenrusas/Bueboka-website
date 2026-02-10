@@ -9,12 +9,21 @@
 	box-shadow: 0 6px 18px var(--dark-06);
 }
 
+[data-theme='dark'] .card {
+	background: var(--bg-gray-100);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
 .heading {
 	font-size: 1.5rem; /* text-2xl */
 	font-weight: 700; /* font-bold */
 	color: var(--primary);
 	margin-bottom: var(--space-6); /* mb-6 */
 	text-align: center;
+}
+
+[data-theme='dark'] .heading {
+	color: var(--primary-light);
 }
 
 .form {
@@ -30,6 +39,10 @@
 	margin-bottom: var(--space-2); /* mb-2 */
 }
 
+[data-theme='dark'] .label {
+	color: var(--text-gray-800);
+}
+
 .input {
 	width: 100%;
 	padding: var(--space-3) var(--space-4); /* py-3 px-4 */
@@ -43,9 +56,19 @@
 		box-shadow 150ms ease;
 }
 
+[data-theme='dark'] .input {
+	background: var(--bg-gray-200);
+	border-color: var(--bg-gray-200);
+	color: var(--text-gray-800);
+}
+
 .input:focus {
 	border-color: transparent;
 	box-shadow: 0 0 0 3px var(--primary-35); /* focus:ring-2 color */
+}
+
+[data-theme='dark'] .input:focus {
+	box-shadow: 0 0 0 3px rgba(12, 130, 172, 0.3);
 }
 
 .textarea {
@@ -77,6 +100,10 @@
 	box-shadow: 0 12px 24px var(--primary-25); /* hover:shadow-lg */
 }
 
+[data-theme='dark'] .button:hover {
+	box-shadow: 0 12px 24px rgba(12, 130, 172, 0.2);
+}
+
 .buttonIcon {
 	width: 16px; /* w-4 */
 	height: 16px; /* h-4 */
@@ -99,6 +126,10 @@
 	margin-top: var(--space-2);
 	font-size: 0.9rem;
 	color: var(--primary);
+}
+
+[data-theme='dark'] .status {
+	color: var(--primary-light);
 }
 
 /* Honeypot should stay hidden from users and ATs */

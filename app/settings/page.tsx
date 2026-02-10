@@ -59,8 +59,11 @@ export default function SettingsPage() {
 
 	return (
 		<div className={styles.page}>
+			<a href="#main-content" className="skip-link">
+				Gå til hovedinnhold
+			</a>
 			<Header />
-			<main className={styles.main}>
+			<main id="main-content" className={styles.main}>
 				<div className={styles.container}>
 					<div className={styles.header}>
 						<button className={styles.backButton} onClick={handleBackClick} aria-label="Tilbake">

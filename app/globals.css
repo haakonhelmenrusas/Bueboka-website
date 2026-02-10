@@ -267,3 +267,74 @@ body {
 	height: 100%;
 	margin: 0;
 }
+
+/* Skip link for keyboard navigation */
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: var(--primary);
+	color: var(--white);
+	padding: 8px 16px;
+	text-decoration: none;
+	z-index: 10000;
+	border-radius: 0 0 4px 0;
+	font-weight: 600;
+}
+
+.skip-link:focus {
+	top: 0;
+	outline: 2px solid var(--primary-light);
+	outline-offset: 2px;
+}
+
+[data-theme='dark'] .skip-link {
+	background: var(--primary-light);
+	color: var(--text-dark);
+}
+
+[data-theme='dark'] .skip-link:focus {
+	outline-color: var(--white);
+}
+
+/* Focus styles for better keyboard navigation */
+*:focus-visible {
+	outline: 2px solid var(--primary);
+	outline-offset: 2px;
+}
+
+[data-theme='dark'] *:focus-visible {
+	outline-color: var(--primary-light);
+}
+
+/* Ensure interactive elements have visible focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: 2px solid var(--primary);
+	outline-offset: 2px;
+}
+
+[data-theme='dark'] button:focus-visible,
+[data-theme='dark'] a:focus-visible,
+[data-theme='dark'] input:focus-visible,
+[data-theme='dark'] textarea:focus-visible,
+[data-theme='dark'] select:focus-visible {
+	outline-color: var(--primary-light);
+}
+
+/* Screen reader only text - visually hidden but accessible */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+

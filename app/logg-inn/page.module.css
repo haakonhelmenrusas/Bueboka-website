@@ -10,6 +10,10 @@
 	background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
 }
 
+[data-theme='dark'] .themeBackground {
+	background: var(--bg-dark);
+}
+
 /* Card wrapper for forms/content */
 .card {
 	width: 100%;
@@ -19,6 +23,12 @@
 	border-radius: 16px;
 	padding: var(--space-8);
 	box-shadow: 0 10px 30px var(--dark-25);
+}
+
+[data-theme='dark'] .card {
+	background-color: var(--bg-light);
+	border-color: var(--bg-gray-200);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .formWrapper {
@@ -37,6 +47,10 @@
     font-size: 1.5rem;
     line-height: 2rem;
     font-weight: 700;
+}
+
+[data-theme='dark'] .title {
+	color: var(--text-dark);
 }
 
 .errorMessage {
@@ -71,3 +85,8 @@
 .forgotLinkRow {
 	padding: var(--space-2) 0;
 }
+
+[data-theme='dark'] .forgotLinkRow a {
+	color: var(--primary-light);
+}
+

@@ -66,7 +66,7 @@ export function ImageUpload({ currentImage, onImageChange, disabled }: ImageUplo
 			<div className={styles.uploadArea}>
 				{preview ? (
 					<div className={styles.preview}>
-						<Image src={preview} alt="Profile preview" width={120} height={120} className={styles.image} />
+						<Image src={preview} alt="Forhåndsvisning av profilbilde" width={120} height={120} className={styles.image} />
 						<div className={styles.actions}>
 							<button type="button" onClick={handleClick} disabled={disabled} className={styles.changeButton} aria-label="Endre bilde">
 								<Camera size={16} />

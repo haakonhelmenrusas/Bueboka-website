@@ -47,11 +47,19 @@ export function Contributors() {
 						<div key={index} className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: `${index * 100}ms` }}>
 							{contributor.image ? (
 								<div>
-									<Image src={contributor.image} alt="Profile picture" width={100} height={100} className={styles.profile} />
+									<Image
+										src={contributor.image}
+										alt={`${contributor.name} profilbilde`}
+										width={100}
+										height={100}
+										className={styles.profile}
+									/>
 								</div>
 							) : (
-								<div className={styles.avatar}>
-									<span className={styles.avatarText}>{contributor.initials}</span>
+								<div className={styles.avatar} aria-label={`${contributor.name} initialer`}>
+									<span className={styles.avatarText} aria-hidden="true">
+										{contributor.initials}
+									</span>
 								</div>
 							)}
 							<h3 className={styles.name}>{contributor.name}</h3>
@@ -59,7 +67,8 @@ export function Contributors() {
 							{contributor.website && (
 								<a href={contributor.website} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.scaleOnHover}`}>
 									<span>Besøk nettside</span>
-									<ExternalLink className={styles.externalIcon} />
+									<ExternalLink className={styles.externalIcon} aria-hidden="true" />
+									<span className="sr-only">(åpnes i ny fane)</span>
 								</a>
 							)}
 						</div>

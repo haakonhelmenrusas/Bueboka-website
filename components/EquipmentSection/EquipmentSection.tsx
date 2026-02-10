@@ -78,28 +78,37 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 							<div className={styles.subTitle}>Buer</div>
 							<Button label="Ny bue" onClick={onCreateBow} icon={<BowArrow size={18} />} width={140} size="small" />
 						</div>
-						<div className={styles.list}>
+						<div className={styles.list} role="list">
 							{bows && bows.length > 0 ? (
 								bows.map((bow) => (
-									<div key={bow.id} className={styles.item} onClick={() => onSelectBow(bow)}>
+									<button
+										key={bow.id}
+										type="button"
+										className={styles.item}
+										onClick={() => onSelectBow(bow)}
+										aria-label={`Rediger bue: ${bow.name}, ${getBowTypeLabel(bow.type)}${bow.isFavorite ? ', favoritt' : ''}`}
+										role="listitem"
+									>
 										<div className={styles.itemLeft}>
 											<div className={styles.itemName}>
 												{bow.name}
 												{bow.isFavorite ? (
-													<span className={styles.favorite} aria-label="Favorittbue">
-														<Star size={14} />
+													<span className={styles.favorite} aria-hidden="true">
+														<Star size={14} fill="currentColor" />
 													</span>
 												) : null}
 											</div>
 											<div className={styles.itemMeta}>{getBowTypeLabel(bow.type)}</div>
 										</div>
-										<div className={styles.itemIcon}>
+										<div className={styles.itemIcon} aria-hidden="true">
 											<BowArrow size={18} />
 										</div>
-									</div>
+									</button>
 								))
 							) : (
-								<div className={styles.placeholder}>Ingen buer funnet</div>
+								<div className={styles.placeholder} role="status">
+									Ingen buer funnet
+								</div>
 							)}
 						</div>
 					</div>
@@ -109,16 +118,23 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 							<div className={styles.subTitle}>Piler</div>
 							<Button label="Nye piler" onClick={onCreateArrows} icon={<ArrowUpRight size={18} />} width={140} size="small" />
 						</div>
-						<div className={styles.list}>
+						<div className={styles.list} role="list">
 							{arrows && arrows.length > 0 ? (
 								arrows.map((a) => (
-									<div key={a.id} className={styles.item} onClick={() => onSelectArrows(a)}>
+									<button
+										key={a.id}
+										type="button"
+										className={styles.item}
+										onClick={() => onSelectArrows(a)}
+										aria-label={`Rediger pilsett: ${a.name}, ${getArrowMaterialLabel(a.material)}${a.isFavorite ? ', favoritt' : ''}`}
+										role="listitem"
+									>
 										<div className={styles.itemLeft}>
 											<div className={styles.itemName}>
 												{a.name}
 												{a.isFavorite ? (
-													<span className={styles.favorite} aria-label="Favorittpilsett">
-														<Star size={14} />
+													<span className={styles.favorite} aria-hidden="true">
+														<Star size={14} fill="currentColor" />
 													</span>
 												) : null}
 											</div>
@@ -128,13 +144,15 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 												{typeof a.weight === 'number' ? ` • ${formatOneDecimal(a.weight)}g` : ''}
 											</div>
 										</div>
-										<div className={styles.itemIcon}>
+										<div className={styles.itemIcon} aria-hidden="true">
 											<ArrowUpRight size={18} />
 										</div>
-									</div>
+									</button>
 								))
 							) : (
-								<div className={styles.placeholder}>Legg til dine første piler</div>
+								<div className={styles.placeholder} role="status">
+									Legg til dine første piler
+								</div>
 							)}
 						</div>
 					</div>

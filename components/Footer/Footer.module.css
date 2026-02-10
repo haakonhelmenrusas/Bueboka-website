@@ -5,6 +5,10 @@
 	padding-bottom: var(--space-18);
 }
 
+[data-theme='dark'] .footer {
+	background: var(--primary-dark);
+}
+
 .container {
 	max-width: 1200px;
 	margin: 0 auto;
@@ -151,6 +155,7 @@
 		color 150ms ease,
 		transform 120ms ease;
 }
+
 
 .creditLink:hover {
 	color: var(--white); /* hover:text-white */

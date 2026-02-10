@@ -38,7 +38,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
 	return (
 		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-labelledby="confirm-title">
+			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="confirm-title">
 				<div className={styles.header}>
 					<h3 id="confirm-title" className={styles.title}>
 						{title}

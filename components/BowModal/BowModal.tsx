@@ -129,16 +129,12 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 
 	return (
 		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div
-				className={styles.modal}
-				onClick={(e) => e.stopPropagation()}
-				role="dialog"
-				aria-modal="true"
-				aria-label={editingBow ? 'Rediger bue' : 'Legg til bue'}
-			>
+			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="bow-modal-title">
 				<div className={styles.header}>
-					<h2 className={styles.title}>{editingBow ? 'Rediger bue' : 'Legg til bue'}</h2>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Close modal">
+					<h2 id="bow-modal-title" className={styles.title}>
+						{editingBow ? 'Rediger bue' : 'Legg til bue'}
+					</h2>
+					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
 						<X size={22} />
 					</button>
 				</div>

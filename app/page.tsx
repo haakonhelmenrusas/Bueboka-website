@@ -17,13 +17,18 @@ export default function Home() {
 
 	// Show the landing page while checking session or if not logged in
 	return (
-		<main>
-			<Header />
-			<HeroSection />
-			<Features />
-			<Contributors />
-			<Sponsors />
-			<Footer />
-		</main>
+		<>
+			<a href="#main-content" className="skip-link">
+				Gå til hovedinnhold
+			</a>
+			<main id="main-content">
+				<Header />
+				<HeroSection />
+				<Features />
+				<Contributors />
+				<Sponsors />
+				<Footer />
+			</main>
+		</>
 	);
 }

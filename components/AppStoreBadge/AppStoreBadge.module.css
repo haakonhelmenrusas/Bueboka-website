@@ -22,6 +22,24 @@
 	color: var(--white);
 	padding: 8px 16px;
 	border-radius: 12px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	transition: all 150ms ease;
+}
+
+[data-theme='dark'] .badge {
+	background: var(--bg-light);
+	color: var(--text-dark);
+	border-color: var(--bg-gray-200);
+}
+
+.badge:hover {
+	border-color: rgba(255, 255, 255, 0.4);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='dark'] .badge:hover {
+	border-color: var(--bg-gray-300);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .icon {

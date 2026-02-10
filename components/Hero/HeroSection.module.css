@@ -4,7 +4,7 @@
 	padding-top: 96px; /* space under fixed header */
 	min-height: 82vh;
 	background: linear-gradient(to bottom, var(--primary) 0%, var(--primary) 55%, var(--primary-light) 95%);
-	color: var(--text-dark); /* gray-900-ish */
+	color: var(--white); /* White text that works on dark primary background */
 	display: flex; /* center the hero container */
 	align-items: center; /* vertical center */
 	justify-content: center;
@@ -98,7 +98,7 @@
 	margin-top: var(--space-4);
 	max-width: 42rem;
 	font-size: 1rem;
-	color: var(--white); /* gray-600 */
+	color: var(--white);
 }
 
 @media (min-width: 640px) {
@@ -161,5 +161,5 @@
 	margin-top: 64px;
 	height: 1px;
 	width: 100%;
-	background: linear-gradient(to right, transparent, var(--bg-gray-200), transparent);
+	background: linear-gradient(to right, transparent, var(--text-gray-600), transparent);
 }

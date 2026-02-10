@@ -43,8 +43,11 @@ export default function SignUpPage() {
 
 	return (
 		<div className={`${styles.container} ${styles.themeBackground}`}>
+			<a href="#main-content" className="skip-link">
+				Gå til hovedinnhold
+			</a>
 			<Header />
-			<div className={styles.card}>
+			<main id="main-content" className={styles.card}>
 				<div className={styles.formWrapper}>
 					<div className={styles.header}>
 						<h1 className={styles.title}>Ny bruker</h1>
@@ -52,8 +55,12 @@ export default function SignUpPage() {
 							Har du allerede en brukerkonto? <Link href="/logg-inn">Logg inn her</Link>
 						</p>
 					</div>
-					{error && <div className={styles.errorMessage}>{error}</div>}
-					<form onSubmit={handleSignUp} className={styles.form}>
+					{error && (
+						<div className={styles.errorMessage} role="alert" aria-live="polite">
+							{error}
+						</div>
+					)}
+					<form onSubmit={handleSignUp} className={styles.form} aria-label="Registrer ny bruker skjema">
 						<div className={styles.inputGroup}>
 							<Input label="Navn" id="name" name="name" type="text" disabled={isSubmitting} />
 							<Input label="E-postadresse" id="email" name="email" type="email" autoComplete="email" disabled={isSubmitting} />
@@ -84,7 +91,7 @@ export default function SignUpPage() {
 						/>
 					</div>
 				</div>
-			</div>
+			</main>
 		</div>
 	);
 }

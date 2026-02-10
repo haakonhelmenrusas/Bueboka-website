@@ -30,13 +30,14 @@ export function Sponsors() {
 					{sponsors.map((sponsor, index) => (
 						<div key={index} className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: `${index * 100}ms` }}>
 							<div className={styles.logoWrap}>
-								<Image width={80} height={80} src={sponsor.logo} alt={sponsor.name} className={styles.logoImg} />
+								<Image width={80} height={80} src={sponsor.logo} alt={`${sponsor.name} logo`} className={styles.logoImg} />
 							</div>
 							<h3 className={styles.cardTitle}>{sponsor.name}</h3>
 							<p className={styles.cardDesc}>{sponsor.description}</p>
 							<a href={sponsor.website} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.scaleOnHover}`}>
 								<span>Besøk nettside</span>
-								<ExternalLink className={styles.linkIconSm} />
+								<ExternalLink className={styles.linkIconSm} aria-hidden="true" />
+								<span className="sr-only">(åpnes i ny fane)</span>
 							</a>
 						</div>
 					))}
