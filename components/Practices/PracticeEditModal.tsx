@@ -231,8 +231,14 @@ export const PracticeEditModal: React.FC<PracticeEditModalProps> = ({
 					/>
 
 					<div className={styles.actions}>
-						<Button type="button" label="Avbryt" onClick={onClose} />
-						<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre endringer'} disabled={submitting} />
+						<Button type="button" label="Avbryt" onClick={onClose} buttonType="outline" width={160} disabled={submitting} />
+						<Button
+							type="submit"
+							label={submitting ? 'Lagrer...' : 'Lagre endringer'}
+							disabled={submitting}
+							loading={submitting}
+							width={180}
+						/>
 					</div>
 				</form>
 			</div>

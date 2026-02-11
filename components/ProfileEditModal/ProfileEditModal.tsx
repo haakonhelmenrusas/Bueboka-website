@@ -90,7 +90,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 					{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
 					<div className={styles.form}>
 						<ImageUpload currentImage={profileImage} onImageChange={setProfileImage} disabled={loading} />
-						<ProfileForm initialValues={{ club: user.club || '' }} loading={loading} onSubmit={handleProfileSubmit} />
+						<ProfileForm initialValues={{ club: user.club || '' }} loading={loading} onSubmit={handleProfileSubmit} onCancel={onClose} />
 					</div>
 				</div>
 			</div>

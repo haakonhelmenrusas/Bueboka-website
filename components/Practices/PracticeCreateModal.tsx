@@ -235,13 +235,14 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 					/>
 
 					<div className={styles.actions}>
-						<Button label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" />
+						<Button label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" width={160} disabled={submitting} />
 						<Button
 							label={submitting ? 'Lagrer...' : 'Lagre trening'}
 							type="submit"
 							variant="standard"
 							disabled={submitting}
 							loading={submitting}
+							width={180}
 						/>
 					</div>
 				</form>
