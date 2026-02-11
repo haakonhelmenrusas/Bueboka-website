@@ -20,6 +20,11 @@
 	position: relative;
 }
 
+.control:focus-within {
+	outline: 3px solid var(--primary-20);
+	outline-offset: 2px;
+}
+
 /* remove old pseudo caret on .control; caret is now on the button */
 .control::after {
 	content: none;
@@ -39,6 +44,11 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 10px;
+}
+
+.button:focus,
+.button:focus-visible {
+	outline: none;
 }
 
 .button:disabled {

@@ -23,6 +23,11 @@
   flex-direction: column;
 }
 
+[data-theme='dark'] .modal {
+  background: linear-gradient(180deg, var(--card-bg-solid) 0%, var(--bg-lighter) 100%);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -31,11 +36,19 @@
   border-bottom: 1px solid var(--dark-08);
 }
 
+[data-theme='dark'] .header {
+  border-bottom: 1px solid var(--dark-20);
+}
+
 .title {
   margin: 0;
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--primary);
+}
+
+[data-theme='dark'] .title {
+  color: var(--primary-light);
 }
 
 .closeBtn {
@@ -54,6 +67,15 @@
 .closeBtn:hover {
   background: var(--dark-05);
   color: #000;
+}
+
+[data-theme='dark'] .closeBtn {
+  color: var(--text-gray-600);
+}
+
+[data-theme='dark'] .closeBtn:hover {
+  background: var(--dark-20);
+  color: var(--white);
 }
 
 .tabs {
@@ -92,6 +114,10 @@
   font-size: 0.95rem;
 }
 
+[data-theme='dark'] .formGroup label {
+  color: var(--primary-light);
+}
+
 .input {
   padding: var(--space-3);
   border: 1px solid #ddd;
@@ -117,6 +143,26 @@
   color: #999;
 }
 
+[data-theme='dark'] .input {
+  background: var(--card-bg-solid);
+  border-color: var(--dark-20);
+  color: var(--white);
+}
+
+[data-theme='dark'] .input:hover {
+  border-color: var(--primary-light);
+}
+
+[data-theme='dark'] .input:focus {
+  border-color: var(--primary-light);
+  box-shadow: 0 0 0 3px rgba(12, 130, 172, 0.2);
+}
+
+[data-theme='dark'] .input:disabled {
+  background: var(--bg-lighter);
+  color: var(--text-gray-700);
+}
+
 .submitBtn {
   padding: var(--space-3) var(--space-6);
   background: var(--primary);
@@ -140,6 +186,21 @@
   cursor: not-allowed;
 }
 
+[data-theme='dark'] .submitBtn {
+  background: var(--primary-light);
+  color: var(--text-dark);
+}
+
+[data-theme='dark'] .submitBtn:hover {
+  background: var(--primary-lighter);
+  box-shadow: 0 4px 12px rgba(12, 130, 172, 0.3);
+}
+
+[data-theme='dark'] .submitBtn:disabled {
+  background: var(--bg-gray-100);
+  color: var(--text-gray-600);
+}
+
 .message {
   padding: var(--space-3) var(--space-4);
   border-radius: 8px;
@@ -158,6 +219,18 @@
   background: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+}
+
+[data-theme='dark'] .success {
+  background: rgba(34, 123, 154, 0.2);
+  color: var(--primary-light);
+  border: 1px solid rgba(34, 123, 154, 0.3);
+}
+
+[data-theme='dark'] .error {
+  background: var(--error-bg);
+  color: var(--error-light);
+  border: 1px solid var(--error-border);
 }
 
 @media (max-width: 600px) {

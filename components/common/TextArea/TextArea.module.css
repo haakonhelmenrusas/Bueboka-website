@@ -37,6 +37,11 @@
 	line-height: 1.35;
 }
 
+.textarea:focus,
+.textarea:focus-visible {
+	outline: none;
+}
+
 .textarea::placeholder {
 	color: var(--text-gray-600);
 	font-weight: 500;

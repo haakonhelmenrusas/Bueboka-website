@@ -80,6 +80,11 @@
 	appearance: textfield;
 }
 
+.input:focus,
+.input:focus-visible {
+	outline: none;
+}
+
 /* Hide default spinners in WebKit */
 .input::-webkit-outer-spin-button,
 .input::-webkit-inner-spin-button {
