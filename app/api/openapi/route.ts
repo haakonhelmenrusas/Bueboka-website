@@ -25,15 +25,6 @@ const spec = {
 			},
 		},
 
-		// Register
-		'/api/register': {
-			post: {
-				summary: 'Register new user',
-				description: 'Creates a new user account.',
-				responses: { '201': { description: 'Created' }, '400': { description: 'Validation error' } },
-			},
-		},
-
 		// Users
 		'/api/users': {
 			get: { summary: 'List users', responses: { '200': { description: 'Array of users' } } },
