@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
+import { updateBowSchema } from '@/lib/validations/bow';
+import { validateRequest } from '@/lib/validations/helpers';
 
 async function getCurrentUser() {
 	try {
@@ -26,7 +28,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		}
 
 		const { id } = await params;
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = await request.json();
+
+		const body = await request.json();
+		const validation = validateRequest(updateBowSchema, body);
+
+		if (!validation.success) {
+			return validation.error;
+		}
+
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = validation.data;
 
 		// Verify the bow belongs to the user
 		const existingBow = await prisma.bow.findUnique({
@@ -35,10 +45,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 		if (!existingBow || existingBow.userId !== user.id) {
 			return NextResponse.json({ error: 'Bow not found or unauthorized' }, { status: 404 });
-		}
-
-		if (!name || !type) {
-			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
 		}
 
 		const makeFavorite = Boolean(isFavorite);
@@ -56,11 +62,11 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				data: {
 					name,
 					type,
-					eyeToNock: eyeToNock !== undefined ? eyeToNock : null,
-					aimMeasure: aimMeasure !== undefined ? aimMeasure : null,
-					eyeToSight: eyeToSight !== undefined ? eyeToSight : null,
+					eyeToNock: eyeToNock ?? null,
+					aimMeasure: aimMeasure ?? null,
+					eyeToSight: eyeToSight ?? null,
 					isFavorite: makeFavorite,
-					notes: notes || null,
+					notes: notes ?? null,
 				},
 			});
 		});

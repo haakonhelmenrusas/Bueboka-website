@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
+import { updateArrowsSchema } from '@/lib/validations/arrows';
+import { validateRequest } from '@/lib/validations/helpers';
 
 async function getCurrentUser() {
 	try {
@@ -26,43 +28,16 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		}
 
 		const { id } = await params;
-		const { name, material, length, weight, arrowsCount, diameter, spine, isFavorite } = await request.json();
 
-		if (!name || !material) {
-			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+		const body = await request.json();
+		const validation = validateRequest(updateArrowsSchema, body);
+
+		if (!validation.success) {
+			return validation.error;
 		}
 
-		const makeFavorite = Boolean(isFavorite);
-
-		const parsedLength = typeof length === 'number' ? length : length === null || typeof length === 'undefined' ? null : Number(length);
-		if (parsedLength !== null && (Number.isNaN(parsedLength) || parsedLength < 0)) {
-			return NextResponse.json({ error: 'Invalid length' }, { status: 400 });
-		}
-
-		const parsedWeight = typeof weight === 'number' ? weight : weight === null || typeof weight === 'undefined' ? null : Number(weight);
-		if (parsedWeight !== null && (Number.isNaN(parsedWeight) || parsedWeight < 0)) {
-			return NextResponse.json({ error: 'Invalid weight' }, { status: 400 });
-		}
-
-		const parsedDiameter =
-			typeof diameter === 'number' ? diameter : diameter === null || typeof diameter === 'undefined' ? null : Number(diameter);
-		if (parsedDiameter !== null && (Number.isNaN(parsedDiameter) || parsedDiameter < 0)) {
-			return NextResponse.json({ error: 'Invalid diameter' }, { status: 400 });
-		}
-
-		const parsedArrowsCount =
-			typeof arrowsCount === 'number'
-				? arrowsCount
-				: arrowsCount === null || typeof arrowsCount === 'undefined'
-					? null
-					: Number(arrowsCount);
-		if (parsedArrowsCount !== null && (!Number.isInteger(parsedArrowsCount) || parsedArrowsCount < 0)) {
-			return NextResponse.json({ error: 'Invalid arrowsCount' }, { status: 400 });
-		}
-
-		const parsedSpine =
-			typeof spine === 'string' ? spine.trim() : spine === null || typeof spine === 'undefined' ? '' : String(spine).trim();
-		const spineValue = parsedSpine.length > 0 ? parsedSpine : null;
+		const { name, material, length, weight, arrowsCount, diameter, spine, pointType, pointWeight, vanes, nock, notes, isFavorite } =
+			validation.data;
 
 		const existing = await prisma.arrows.findFirst({
 			where: { id, userId: user.id },
@@ -70,6 +45,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		if (!existing) {
 			return NextResponse.json({ error: 'Not found' }, { status: 404 });
 		}
+
+		const makeFavorite = Boolean(isFavorite);
 
 		const arrows = await prisma.$transaction(async (tx) => {
 			if (makeFavorite) {
@@ -85,11 +62,16 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 					name,
 					material,
 					isFavorite: makeFavorite,
-					arrowsCount: parsedArrowsCount,
-					diameter: parsedDiameter,
-					length: parsedLength,
-					weight: parsedWeight,
-					spine: spineValue,
+					arrowsCount: arrowsCount ?? null,
+					diameter: diameter ?? null,
+					length: length ?? null,
+					weight: weight ?? null,
+					spine: spine ?? null,
+					pointType: pointType ?? null,
+					pointWeight: pointWeight ?? null,
+					vanes: vanes ?? null,
+					nock: nock ?? null,
+					notes: notes ?? null,
 				},
 			});
 		});

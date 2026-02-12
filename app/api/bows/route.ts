@@ -3,6 +3,8 @@ import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
+import { createBowSchema } from '@/lib/validations/bow';
+import { validateRequest } from '@/lib/validations/helpers';
 
 async function getCurrentUser() {
 	try {
@@ -25,11 +27,14 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = await request.json();
+		const body = await request.json();
+		const validation = validateRequest(createBowSchema, body);
 
-		if (!name || !type) {
-			return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+		if (!validation.success) {
+			return validation.error;
 		}
+
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = validation.data;
 
 		const makeFavorite = Boolean(isFavorite);
 
@@ -46,11 +51,11 @@ export async function POST(request: NextRequest) {
 					userId: user.id,
 					name,
 					type,
-					eyeToNock: eyeToNock !== undefined ? eyeToNock : null,
-					aimMeasure: aimMeasure !== undefined ? aimMeasure : null,
-					eyeToSight: eyeToSight !== undefined ? eyeToSight : null,
+					eyeToNock: eyeToNock ?? null,
+					aimMeasure: aimMeasure ?? null,
+					eyeToSight: eyeToSight ?? null,
 					isFavorite: makeFavorite,
-					notes: notes || null,
+					notes: notes ?? null,
 				},
 			});
 		});
