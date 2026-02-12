@@ -3,7 +3,9 @@ import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { Environment, WeatherCondition } from '@/lib/prismaEnums';
+import { Environment } from '@/lib/prismaEnums';
+import { createPracticeSchema } from '@/lib/validations/practice';
+import { formatZodErrors } from '@/lib/validations/helpers';
 
 async function getCurrentUser() {
 	try {
@@ -25,98 +27,43 @@ export async function POST(request: NextRequest) {
 		const user = await getCurrentUser();
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-		const body = (await request.json()) as unknown;
-		if (!body || typeof body !== 'object') {
-			return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
-		}
+		const body = await request.json();
 
-		const { date, totalScore, arrowsShot, location, environment, weather, notes, roundTypeId, bowId, arrowsId } = body as {
-			date?: unknown;
-			totalScore?: unknown;
-			arrowsShot?: unknown;
-			location?: unknown;
-			environment?: unknown;
-			weather?: unknown;
-			notes?: unknown;
-			roundTypeId?: unknown;
-			bowId?: unknown;
-			arrowsId?: unknown;
-		};
-
-		const fieldErrors: Record<string, string> = {};
-
-		if (typeof date !== 'string' || !date) fieldErrors.date = 'Dato er påkrevd';
-		if (typeof arrowsShot !== 'number' || Number.isNaN(arrowsShot)) fieldErrors.arrowsShot = 'Antall skutte piler må være et tall';
-		if (typeof arrowsShot === 'number' && arrowsShot < 0) fieldErrors.arrowsShot = 'Antall skutte piler kan ikke være negativt';
-		if (typeof environment !== 'string' || !environment) fieldErrors.environment = 'Miljø er påkrevd';
-
-		// Validate date string (avoid silently passing Invalid Date into Prisma)
-		let parsedDate: Date | null = null;
-		if (typeof date === 'string' && date) {
-			const d = new Date(date);
-			if (Number.isNaN(d.getTime())) fieldErrors.date = 'Ugyldig datoformat';
-			else parsedDate = d;
-		}
-
-		// Validate environment enum
-		if (typeof environment === 'string' && environment) {
-			const envValues = Object.values(Environment) as string[];
-			if (!envValues.includes(environment)) fieldErrors.environment = 'Ugyldig miljøverdi';
-		}
-
-		// Validate weather enums; if invalid values come in, treat it as a validation error
-		let normalizedWeather: WeatherCondition[] = [];
-		if (weather === undefined) {
-			normalizedWeather = [];
-		} else if (!Array.isArray(weather)) {
-			fieldErrors.weather = 'Vær må være en liste';
-		} else {
-			const allowed = new Set(Object.values(WeatherCondition) as string[]);
-			const invalid = weather.filter((w) => typeof w !== 'string' || !allowed.has(w));
-			if (invalid.length) {
-				fieldErrors.weather = 'Vær inneholder ugyldige verdier';
-			} else {
-				normalizedWeather = weather as WeatherCondition[];
-			}
-		}
-
-		if (Object.keys(fieldErrors).length) {
+		// Validate input using Zod schema
+		const validation = createPracticeSchema.safeParse(body);
+		if (!validation.success) {
 			return NextResponse.json(
 				{
 					error: 'Validation error',
-					fieldErrors,
+					fieldErrors: formatZodErrors(validation.error),
 				},
 				{ status: 400 }
 			);
 		}
 
-		const normalizedLocation = typeof location === 'string' && location.trim() ? location.trim() : null;
-		const normalizedNotes = typeof notes === 'string' && notes.trim() ? notes.trim() : null;
-		const normalizedRoundTypeId = typeof roundTypeId === 'string' && roundTypeId.trim() ? roundTypeId.trim() : null;
-		const normalizedBowId = typeof bowId === 'string' && bowId.trim() ? bowId.trim() : null;
-		const normalizedArrowsId = typeof arrowsId === 'string' && arrowsId.trim() ? arrowsId.trim() : null;
+		const { date, arrowsShot, location, environment, weather, notes, roundTypeId, bowId, arrowsId } = validation.data;
 
-		const normalizedTotalScore = typeof totalScore === 'number' && !Number.isNaN(totalScore) ? totalScore : 0;
+		const parsedDate = new Date(date);
 
 		const data: any = {
 			userId: user.id,
-			date: parsedDate!,
-			totalScore: normalizedTotalScore,
-			location: normalizedLocation,
+			date: parsedDate,
+			totalScore: arrowsShot,
+			location: location || null,
 			environment: environment as Environment,
-			weather: normalizedWeather,
-			notes: normalizedNotes,
+			weather: weather || [],
+			notes: notes || null,
 			ends: {
 				create: {
-					arrows: arrowsShot as number,
+					arrows: arrowsShot,
 					scores: [],
 				},
 			},
 		};
 
-		if (normalizedRoundTypeId) data.roundTypeId = normalizedRoundTypeId;
-		if (normalizedBowId) data.bowId = normalizedBowId;
-		if (normalizedArrowsId) data.arrowsId = normalizedArrowsId;
+		if (roundTypeId) data.roundTypeId = roundTypeId;
+		if (bowId) data.bowId = bowId;
+		if (arrowsId) data.arrowsId = arrowsId;
 
 		// Create the practice + a first end that stores arrowsShot (so we can show arrowsShot without a second call)
 		const practice = await prisma.practice.create({

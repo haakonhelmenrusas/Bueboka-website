@@ -2,6 +2,22 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 /**
+ * Formats Zod validation errors into a field-error map
+ * @param error - ZodError instance
+ * @returns Object mapping field names to error messages
+ */
+export function formatZodErrors(error: z.ZodError): Record<string, string> {
+	const fieldErrors: Record<string, string> = {};
+	error.issues.forEach((issue) => {
+		const field = issue.path.join('.');
+		if (!fieldErrors[field]) {
+			fieldErrors[field] = issue.message;
+		}
+	});
+	return fieldErrors;
+}
+
+/**
  * Validates data against a Zod schema and returns formatted error response if validation fails
  * @param schema - Zod schema to validate against
  * @param data - Data to validate
