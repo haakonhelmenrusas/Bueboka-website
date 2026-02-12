@@ -53,7 +53,9 @@ export default function SignInPage() {
 					<form onSubmit={handleSubmit} className={styles.form} aria-label="Logg inn skjema">
 						<div className={styles.inputGroup}>
 							<Input label="E-postadresse" id="email" name="email" type="email" autoComplete="email" disabled={isSubmitting} />
-							<Input label="Passord" id="password" name="password" type="password" autoComplete="new-password" disabled={isSubmitting} />
+							<div className={styles.passwordInput}>
+								<Input label="Passord" id="password" name="password" type="password" autoComplete="new-password" disabled={isSubmitting} />
+							</div>
 						</div>
 						<div className={styles.forgotLinkRow}>
 							<Link href="/glemt-passord" className="text-sm underline">

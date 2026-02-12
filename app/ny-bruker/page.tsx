@@ -64,15 +64,17 @@ export default function SignUpPage() {
 						<div className={styles.inputGroup}>
 							<Input label="Navn" id="name" name="name" type="text" disabled={isSubmitting} />
 							<Input label="E-postadresse" id="email" name="email" type="email" autoComplete="email" disabled={isSubmitting} />
-							<Input
-								label="Passord"
-								id="password"
-								name="password"
-								type="password"
-								autoComplete="new-password"
-								minLength={8}
-								disabled={isSubmitting}
-							/>
+							<div className={styles.passwordInput}>
+								<Input
+									label="Passord"
+									id="password"
+									name="password"
+									type="password"
+									autoComplete="new-password"
+									minLength={8}
+									disabled={isSubmitting}
+								/>
+							</div>
 						</div>
 						<Button type="submit" label="Opprett bruker" loading={isSubmitting} disabled={isSubmitting} />
 					</form>

@@ -11,10 +11,9 @@
 }
 
 [data-theme='dark'] .themeBackground {
-	background: var(--bg-dark);
+	background: var(--primary-dark);
 }
 
-/* Card wrapper for forms/content */
 .card {
 	width: 100%;
 	max-width: 32rem;
@@ -75,17 +74,18 @@
     gap: var(--space-2);
 }
 
+.passwordInput {
+	margin-bottom: var(--space-4);
+}
+
 .authActions {
 	display: flex;
 	flex-direction: column;
 	gap: var(--space-2);
 }
-
-/* Extra spacing around the 'Glemt passord?' row */
 .forgotLinkRow {
 	padding: var(--space-2) 0;
 }
-
 [data-theme='dark'] .forgotLinkRow a {
 	color: var(--primary-light);
 }

@@ -2,7 +2,10 @@
 	width: 100%;
 	height: 40px !important;
 	border-radius: 10px;
-	justify-content: center;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+	gap: 8px !important;
 }
 
 .socialButton:hover:not(:disabled) {
