@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Accordion, ConfirmModal, Header } from '@/components';
-import { useSession } from '@/lib/auth-client';
+import { signOut, useSession } from '@/lib/auth-client';
 import { ArrowLeft, Key, Lock, Shield, Target } from 'lucide-react';
 import styles from './page.module.css';
 
@@ -37,6 +37,9 @@ export default function SettingsPage() {
 				const data = await res.json().catch(() => ({}));
 				throw new Error(data.error || 'Kunne ikke slette konto');
 			}
+
+			// Sign out to clear session state before redirecting
+			await signOut();
 
 			// Redirect to home page after deletion
 			router.push('/');
