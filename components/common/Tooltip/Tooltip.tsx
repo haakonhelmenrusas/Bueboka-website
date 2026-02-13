@@ -1,8 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { HelpCircle } from 'lucide-react';
 import styles from './Tooltip.module.css';
+import { useClickOutside, useEscapeKey } from '@/lib/hooks';
 
 type TooltipProps = {
 	text: string;
@@ -16,33 +17,21 @@ export function Tooltip({ text, label = 'Vis hjelpetekst', trigger }: TooltipPro
 	const [open, setOpen] = React.useState(false);
 	// Tracks if the tooltip was opened via click toggle. If so, don't auto-close on mouse leave.
 	const [pinned, setPinned] = React.useState(false);
-	const rootRef = React.useRef<HTMLSpanElement | null>(null);
+	const rootRef = React.useRef<HTMLSpanElement>(null);
 
-	React.useEffect(() => {
-		if (!open) return;
+	// Use custom hooks for better separation of concerns
+	const handleClickOutside = useCallback(() => {
+		setOpen(false);
+		setPinned(false);
+	}, []);
 
-		const handlePointerDown = (e: MouseEvent) => {
-			const root = rootRef.current;
-			if (!root) return;
-			if (root.contains(e.target as Node)) return;
-			setOpen(false);
-			setPinned(false);
-		};
+	const handleEscapeKey = useCallback(() => {
+		setOpen(false);
+		setPinned(false);
+	}, []);
 
-		const handleKeyDown = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				setOpen(false);
-				setPinned(false);
-			}
-		};
-
-		document.addEventListener('mousedown', handlePointerDown);
-		document.addEventListener('keydown', handleKeyDown);
-		return () => {
-			document.removeEventListener('mousedown', handlePointerDown);
-			document.removeEventListener('keydown', handleKeyDown);
-		};
-	}, [open]);
+	useClickOutside(rootRef, handleClickOutside, open);
+	useEscapeKey(handleEscapeKey, open);
 
 	const handleHoverOpen = () => {
 		if (!pinned) setOpen(true);

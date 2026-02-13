@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useEscapeKey } from './hooks';
 
 interface UseModalBehaviorOptions {
 	open: boolean;
@@ -17,27 +18,24 @@ interface UseModalBehaviorOptions {
  * - Disable background scroll while open
  */
 export function useModalBehavior({ open, onClose, lockScroll = true, closeOnEscape = true }: UseModalBehaviorOptions) {
-	useEffect(() => {
-		if (!open) return;
-
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (!closeOnEscape) return;
-			if (e.key === 'Escape') onClose();
-		};
-
-		document.addEventListener('keydown', onKeyDown);
-
-		let prevOverflow: string | null = null;
-		if (lockScroll) {
-			prevOverflow = document.body.style.overflow;
-			document.body.style.overflow = 'hidden';
+	// Use the reusable escape key hook
+	const handleEscapeKey = useCallback(() => {
+		if (closeOnEscape) {
+			onClose();
 		}
+	}, [closeOnEscape, onClose]);
+
+	useEscapeKey(handleEscapeKey, open);
+
+	// Handle scroll locking separately
+	useEffect(() => {
+		if (!open || !lockScroll) return;
+
+		const prevOverflow = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
 
 		return () => {
-			document.removeEventListener('keydown', onKeyDown);
-			if (lockScroll) {
-				document.body.style.overflow = prevOverflow ?? '';
-			}
+			document.body.style.overflow = prevOverflow ?? '';
 		};
-	}, [open, onClose, lockScroll, closeOnEscape]);
+	}, [open, lockScroll]);
 }

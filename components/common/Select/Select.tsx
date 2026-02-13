@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import styles from './Select.module.css';
+import { useClickOutside, useEscapeKey } from '@/lib/hooks';
 
 export type SelectOption = {
 	value: string;
@@ -110,29 +111,19 @@ export const Select: React.FC<SelectProps> = ({
 		else openMenu();
 	};
 
-	useEffect(() => {
-		if (!open) return;
-		const onDocMouseDown = (e: MouseEvent) => {
-			const el = rootRef.current;
-			if (!el) return;
-			if (e.target instanceof Node && !el.contains(e.target)) {
-				closeMenu();
-			}
-		};
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				e.preventDefault();
-				closeMenu();
-				buttonRef.current?.focus();
-			}
-		};
-		document.addEventListener('mousedown', onDocMouseDown);
-		document.addEventListener('keydown', onKeyDown);
-		return () => {
-			document.removeEventListener('mousedown', onDocMouseDown);
-			document.removeEventListener('keydown', onKeyDown);
-		};
-	}, [open]);
+	// Use custom hooks for better separation of concerns
+	const handleClickOutside = useCallback(() => {
+		closeMenu();
+	}, []);
+
+	const handleEscapeKey = useCallback((e: KeyboardEvent) => {
+		e.preventDefault();
+		closeMenu();
+		buttonRef.current?.focus();
+	}, []);
+
+	useClickOutside(rootRef, handleClickOutside, open);
+	useEscapeKey(handleEscapeKey, open);
 
 	const commitIndex = (idx: number) => {
 		if (!hasEnabledOptions) return;
