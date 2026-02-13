@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { CircleUserRound, LogOut, Menu, Settings, X } from 'lucide-react';
 import styles from './Header.module.css';
 import Link from 'next/link';
@@ -9,6 +9,7 @@ import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
 import { ThemeToggle } from '@/components';
+import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ export function Header() {
 	const { data: session } = useSession();
 	const router = useRouter();
 	const pathname = usePathname();
-	const menuRef = useRef<HTMLDivElement | null>(null);
+	const menuRef = useRef<HTMLDivElement>(null);
 
 	// Check if we're on an authenticated page
 	const isAuthPage = pathname === '/min-side' || pathname === '/settings';
@@ -61,58 +62,18 @@ export function Header() {
 		}
 	};
 
-	// Close on Escape and trap focus within menu when open
-	useEffect(() => {
-		if (!profileMenuOpen) return;
+	// Use custom hooks for better separation of concerns
+	const handleClickOutside = useCallback(() => {
+		closeProfileMenu();
+	}, []);
 
-		const onKeyDown = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				closeProfileMenu();
-			}
+	const handleEscapeKey = useCallback(() => {
+		closeProfileMenu();
+	}, []);
 
-			if (e.key === 'Tab') {
-				// focus trap
-				const el = menuRef.current;
-				if (!el) return;
-				const focusable = el.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-				if (focusable.length === 0) return;
-				const first = focusable[0];
-				const last = focusable[focusable.length - 1];
-
-				if (e.shiftKey && document.activeElement === first) {
-					e.preventDefault();
-					last.focus();
-				} else if (!e.shiftKey && document.activeElement === last) {
-					e.preventDefault();
-					first.focus();
-				}
-			}
-		};
-
-		const onClickOutside = (ev: MouseEvent) => {
-			const el = menuRef.current;
-			if (!el) return;
-			if (ev.target instanceof Node && !el.contains(ev.target)) {
-				closeProfileMenu();
-			}
-		};
-
-		document.addEventListener('keydown', onKeyDown);
-		document.addEventListener('mousedown', onClickOutside);
-
-		// focus first focusable inside menu after open
-		setTimeout(() => {
-			const el = menuRef.current;
-			if (!el) return;
-			const focusable = el.querySelectorAll<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-			if (focusable.length) focusable[0].focus();
-		}, 0);
-
-		return () => {
-			document.removeEventListener('keydown', onKeyDown);
-			document.removeEventListener('mousedown', onClickOutside);
-		};
-	}, [profileMenuOpen]);
+	useClickOutside(menuRef, handleClickOutside, profileMenuOpen);
+	useEscapeKey(handleEscapeKey, profileMenuOpen);
+	useFocusTrap(menuRef, profileMenuOpen, true);
 
 	return (
 		<header className={`${styles.header} ${styles.headerEnter}`}>
