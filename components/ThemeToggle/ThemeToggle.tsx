@@ -13,12 +13,10 @@ export function ThemeToggle() {
 			className={styles.toggle}
 			aria-label={theme === 'light' ? 'Bytt til mørk modus' : 'Bytt til lys modus'}
 			title={theme === 'light' ? 'Bytt til mørk modus' : 'Bytt til lys modus'}
+			role="menuitem"
 		>
-			<div className={styles.iconWrapper}>
-				<Sun className={`${styles.icon} ${styles.sun} ${theme === 'light' ? styles.active : ''}`} size={16} />
-				<Moon className={`${styles.icon} ${styles.moon} ${theme === 'dark' ? styles.active : ''}`} size={16} />
-			</div>
-			<span className={styles.label}>{theme === 'light' ? 'Lys' : 'Mørk'}</span>
+			{theme === 'light' ? <Sun size={16} /> : <Moon size={16} />}
+			<span>{theme === 'light' ? 'Lys modus' : 'Mørk modus'}</span>
 		</button>
 	);
 }

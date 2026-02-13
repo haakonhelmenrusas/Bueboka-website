@@ -185,8 +185,6 @@ export function Header() {
 							)
 						)}
 					</nav>
-
-					{/* Mobile Menu Button */}
 					<button
 						onClick={toggleMobileMenu}
 						className={styles.mobileButton}
@@ -196,11 +194,8 @@ export function Header() {
 					>
 						{mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
 					</button>
-
-					{/* Profile menu dropdown (rendered here so it can be used on mobile and desktop) */}
 					{session?.user && (
 						<div className={styles.profileMenuContainer}>
-							{/* Mobile-only profile button (visible on small screens) */}
 							<button
 								className={`${styles.profileMenuButton} ${styles.mobileProfileButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 								onClick={toggleProfileMenu}
@@ -211,12 +206,9 @@ export function Header() {
 									<span className={styles.hamburgerInner} />
 								</span>
 							</button>
-
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
-									<div className={styles.profileMenuItem}>
-										<ThemeToggle />
-									</div>
+									<ThemeToggle />
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<Settings size={16} />
 										<span>Innstillinger</span>
