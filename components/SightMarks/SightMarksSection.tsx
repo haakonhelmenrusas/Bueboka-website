@@ -27,17 +27,25 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 	if (loading) {
 		return (
 			<section className={styles.section}>
-				<h2 className={styles.title}>Sikte Merkeringer</h2>
-				<div className={styles.loading}>Laster...</div>
+				<div className={styles.header}>
+					<h2 className={styles.title}>Sikte Merkeringer</h2>
+				</div>
+				<div className={styles.container}>
+					<div className={styles.loading}>Laster...</div>
+				</div>
 			</section>
 		);
 	}
 
 	return (
 		<section className={styles.section}>
-			<h2 className={styles.title}>Sikte Merkeringer</h2>
-			{error && <div className={styles.error}>{error}</div>}
-			<SightMarksTable sightMarks={sightMarks} onDelete={handleDelete} isDeleting={isDeletingId !== null} />
+			<div className={styles.header}>
+				<h2 className={styles.title}>Sikte Merkeringer</h2>
+			</div>
+			<div className={styles.container}>
+				{error && <div className={styles.error}>{error}</div>}
+				<SightMarksTable sightMarks={sightMarks} onDelete={handleDelete} isDeleting={isDeletingId !== null} />
+			</div>
 		</section>
 	);
 }

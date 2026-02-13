@@ -6,10 +6,9 @@
 .table {
 	width: 100%;
 	border-collapse: collapse;
-	background-color: var(--card-bg);
+	background-color: transparent;
 	border-radius: var(--radius-base);
 	overflow: hidden;
-	box-shadow: var(--shadow-card, 0 1px 3px rgba(0, 0, 0, 0.1));
 }
 
 .table thead {
@@ -24,7 +23,7 @@
 	font-size: 14px;
 	color: var(--text-dark);
 	text-transform: uppercase;
-	letter-spacing: 0.5px;
+	letter-spacing: 1px;
 }
 
 .table td {
@@ -53,11 +52,12 @@
 	align-items: center;
 	justify-content: center;
 	padding: 40px 20px;
-	background-color: var(--card-bg);
+	background-color: var(--primary-02);
 	border-radius: var(--radius-base);
-	border: 1px dashed var(--border-gray);
+	border: 1px dashed var(--primary-20);
 	text-align: center;
-	color: var(--text-gray-600);
+	color: var(--text-gray-700);
+	font-weight: 600;
 }
 
 .emptyState p {
@@ -66,28 +66,24 @@
 }
 
 /* Dark mode support */
-[data-theme='dark'] & .table {
-	background-color: var(--card-bg);
-}
-
-[data-theme='dark'] & .table thead {
+[data-theme='dark'] .table thead {
 	background-color: var(--card-bg-solid);
 }
 
-[data-theme='dark'] & .table th {
+[data-theme='dark'] .table th {
 	color: var(--text-dark);
 }
 
-[data-theme='dark'] & .table td {
+[data-theme='dark'] .table td {
 	color: var(--text-gray-600);
 }
 
-[data-theme='dark'] & .table tbody tr:hover {
+[data-theme='dark'] .table tbody tr:hover {
 	background-color: var(--card-bg-light);
 }
 
-[data-theme='dark'] & .emptyState {
-	background-color: var(--card-bg);
-	border-color: var(--border-gray);
-	color: var(--text-gray-600);
+[data-theme='dark'] .emptyState {
+	background-color: var(--primary-02);
+	border-color: var(--primary-20);
+	color: var(--text-gray-700);
 }
