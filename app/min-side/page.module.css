@@ -17,7 +17,7 @@
 .card {
   background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 18px;
+  border-radius: var(--radius-4);
   padding: var(--space-8);
   box-shadow: 0 20px 60px var(--dark-20);
   display: block;
@@ -28,7 +28,7 @@
 .profileContainer {
   background: transparent;
   border: none;
-  border-radius: 0;
+  border-radius: var(--radius-0);
   padding: 0;
   box-shadow: none;
 }
@@ -51,7 +51,7 @@
   background: var(--white-15);
   border: 1px solid var(--white-30);
   color: var(--white);
-  border-radius: 8px;
+  border-radius: var(--radius-base);
   cursor: pointer;
   font-weight: 600;
   display: flex;
@@ -118,7 +118,7 @@
 .item {
   background: rgba(12, 130, 172, 0.06);
   padding: var(--space-5) var(--space-6);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -163,7 +163,7 @@
 .itemIcon {
   width: 42px;
   height: 42px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,7 +217,7 @@
 .practicesList {
 	background: var(--card-bg);
 	border: 1px solid rgba(0, 0, 0, 0.06);
-	border-radius: 18px;
+	border-radius: var(--radius-4);
 	box-shadow: 0 20px 60px var(--dark-20);
 	padding: var(--space-8);
 	color: var(--text-dark);
@@ -226,7 +226,7 @@
 .placeholderCard {
   background: rgba(12, 130, 172, 0.05);
   border: 1px dashed rgba(12, 130, 172, 0.26);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   padding: var(--space-5) var(--space-6);
   color: var(--text-gray-700);
   font-weight: 600;
@@ -240,7 +240,7 @@
 .summaryCard {
   background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 20px;
+  border-radius: var(--radius-xl);
   padding: var(--space-8);
   color: var(--text-dark);
 }
@@ -302,7 +302,7 @@
 /* Skeleton for practice cards */
 .skeletonItem {
   height: 88px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
   animation: shimmer 1.4s infinite;
   background-size: 200% 100%;
@@ -317,7 +317,7 @@
 .circleSkeleton {
 	width: 40px;
 	height: 40px;
-	border-radius: 999px;
+	border-radius: var(--radius-full);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -326,7 +326,7 @@
 .avatarSkeleton {
 	width: 128px;
 	height: 128px;
-	border-radius: 999px;
+	border-radius: var(--radius-full);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -336,7 +336,7 @@
 .lineSkeletonWide {
 	width: 220px;
 	height: 18px;
-	border-radius: 10px;
+	border-radius: var(--radius-base);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -345,7 +345,7 @@
 .lineSkeleton {
 	width: 170px;
 	height: 14px;
-	border-radius: 10px;
+	border-radius: var(--radius-base);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -354,7 +354,7 @@
 .buttonSkeleton {
 	width: 180px;
 	height: 40px;
-	border-radius: 10px;
+	border-radius: var(--radius-base);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -364,7 +364,7 @@
 .actionButtonSkeleton {
 	width: 170px;
 	height: 32px;
-	border-radius: 10px;
+	border-radius: var(--radius-base);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -373,7 +373,7 @@
 .sectionTitleSkeleton {
 	width: 120px;
 	height: 16px;
-	border-radius: 10px;
+	border-radius: var(--radius-base);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -383,7 +383,7 @@
 .practicesTitleSkeleton {
 	width: 180px;
 	height: 20px;
-	border-radius: 10px;
+	border-radius: var(--radius-base);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
@@ -392,7 +392,7 @@
 .itemSkeleton {
 	width: 100%;
 	min-height: 72px;
-	border-radius: 16px;
+	border-radius: var(--radius-lg);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;

@@ -81,7 +81,7 @@
 .card {
 	background: linear-gradient(135deg, var(--bg-light), var(--white));
 	padding: var(--space-8);
-	border-radius: 24px;
+	border-radius: var(--radius-2xl);
 	border: 1px solid var(--tertiary);
 	transition:
 		box-shadow 200ms ease,
@@ -105,7 +105,7 @@
 .iconBox {
 	width: 64px;
 	height: 64px;
-	border-radius: 16px;
+	border-radius: var(--radius-lg);
 	background: linear-gradient(135deg, var(--accent-yellow), var(--accent-red));
 	color: var(--white);
 	display: flex;
@@ -141,7 +141,7 @@
 .cta {
 	margin-top: var(--space-18); /* mt-16 */
 	background: linear-gradient(90deg, var(--primary), var(--primary-light));
-	border-radius: 24px; /* rounded-3xl */
+	border-radius: var(--radius-2xl); /* rounded-3xl */
 	padding: var(--space-8); /* p-8 */
 	text-align: center;
 	color: var(--white);
@@ -173,7 +173,7 @@
 	display: inline-block;
 	width: 12px;
 	height: 12px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	background-color: var(--tertiary);
 	margin-right: var(--space-2);
 }
@@ -189,7 +189,7 @@
 	}
 }
 .tile {
-	border-radius: 16px; /* rounded-2xl */
+	border-radius: var(--radius-lg); /* rounded-2xl */
 	height: 200px;
 	background-size: cover;
 	background-position: center;

@@ -13,7 +13,7 @@
 .card {
 	background: var(--primary-08);
 	border: 1px solid var(--primary-20);
-	border-radius: 16px;
+	border-radius: var(--radius-lg);
 	padding: var(--space-5);
 	display: flex;
 	align-items: center;
@@ -23,7 +23,7 @@
 .icon {
 	width: 44px;
 	height: 44px;
-	border-radius: 14px;
+	border-radius: var(--radius-lg);
 	background: var(--primary-06);
 	color: var(--primary);
 	display: inline-flex;

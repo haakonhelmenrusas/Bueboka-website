@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  border-radius: 10px;
+  border-radius: var(--radius-base);
   border: 1px solid var(--bg-gray-200);
   background: var(--card-bg-solid);
   padding: 8px 10px;

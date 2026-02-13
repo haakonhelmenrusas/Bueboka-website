@@ -19,7 +19,7 @@
 	max-width: 32rem;
 	background-color: var(--bg-lighter);
 	border: 1px solid var(--white-15);
-	border-radius: 16px;
+	border-radius: var(--radius-lg);
 	padding: var(--space-8);
 	box-shadow: 0 10px 30px var(--dark-25);
 }
@@ -58,7 +58,7 @@
     color: var(--error-light);
     background-color: var(--error-bg);
     border: 1px solid var(--error-border);
-    border-radius: 0.375rem;
+    border-radius: var(--radius-sm);
 }
 
 .form {

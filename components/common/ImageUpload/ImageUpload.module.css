@@ -24,7 +24,7 @@
 .image {
 	width: 120px;
 	height: 120px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	object-fit: cover;
 	border: 3px solid var(--primary-light);
 	box-shadow: 0 4px 12px var(--dark-20);
@@ -41,7 +41,7 @@
 	align-items: center;
 	gap: var(--space-2);
 	padding: var(--space-2) var(--space-4);
-	border-radius: 8px;
+	border-radius: var(--radius-base);
 	font-size: 0.9rem;
 	font-weight: 600;
 	cursor: pointer;
@@ -87,8 +87,8 @@
 	width: 100%;
 	padding: var(--space-8);
 	border: 2px dashed var(--primary);
-	border-radius: 12px;
-	background: var(--primary);
+	border-radius: var(--radius-md);
+	background: var(--background);
 	cursor: pointer;
 	transition: all 200ms ease;
 	color: var(--primary);
@@ -124,7 +124,7 @@
 	padding: var(--space-3);
 	background: var(--error-bg);
 	border: 1px solid var(--error-border);
-	border-radius: 8px;
+	border-radius: var(--radius-base);
 	color: var(--error);
 	font-size: 0.9rem;
 	font-weight: 600;

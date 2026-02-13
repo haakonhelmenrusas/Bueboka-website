@@ -67,7 +67,7 @@
 
 .logoBox {
 	background: var(--white);
-	border-radius: 12px; /* rounded-xl */
+	border-radius: var(--radius-md); /* rounded-xl */
 	padding: var(--space-2); /* p-2 */
 	display: inline-flex;
 	align-items: center;

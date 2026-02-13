@@ -23,7 +23,7 @@
 	width: 100%;
 	background: var(--card-bg);
 	border: 1px solid var(--primary-dark);
-	border-radius: 18px;
+	border-radius: var(--radius-4);
 	padding: var(--space-8);
 	color: var(--text-dark);
 }
@@ -31,7 +31,7 @@
 .placeholderCard {
 	background: var(--primary-02);
 	border: 1px dashed var(--primary-20);
-	border-radius: 16px;
+	border-radius: var(--radius-lg);
 	padding: var(--space-5) var(--space-6);
 	color: var(--text-gray-700);
 	font-weight: 600;

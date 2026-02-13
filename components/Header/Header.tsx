@@ -124,8 +124,6 @@ export function Header() {
 						</div>
 						<span className={styles.brand}>Bueboka</span>
 					</Link>
-
-					{/* Desktop Navigation */}
 					<nav className={styles.desktopNav} aria-label="Primary">
 						{!isAuthPage && (
 							<>

@@ -83,7 +83,7 @@
 .card {
 	background: var(--white);
 	padding: var(--space-8); /* p-8 */
-	border-radius: 24px; /* rounded-3xl */
+	border-radius: var(--radius-2xl); /* rounded-3xl */
 	box-shadow: 0 10px 20px var(--dark-20); /* shadow-lg */
 	transition:
 		box-shadow 200ms ease,
@@ -102,7 +102,7 @@
 .avatar {
 	width: 80px; /* w-20 */
 	height: 80px; /* h-20 */
-	border-radius: 9999px; /* rounded-full */
+	border-radius: var(--radius-full); /* rounded-full */
 	margin: 0 auto 16px; /* mx-auto mb-4 */
 	background: linear-gradient(135deg, #ffbf00, #c01c24);
 	display: flex;
@@ -113,7 +113,7 @@
 .profile {
 	width: 80px;
 	height: 80px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	background: none;
 }
 

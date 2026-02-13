@@ -11,7 +11,7 @@
 
 .modal {
   background: var(--modal-bg);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   width: 100%;
   max-width: 720px;
   max-height: 86vh;
@@ -50,7 +50,7 @@
   cursor: pointer;
   color: var(--text-gray-600);
   padding: var(--space-2);
-  border-radius: 8px;
+  border-radius: var(--radius-base);
   transition: background 150ms ease;
 }
 
@@ -88,6 +88,6 @@
   background: var(--error-bg);
   border: 1px solid var(--error-border);
   padding: var(--space-3);
-  border-radius: 10px;
+  border-radius: var(--radius-base);
   font-size: 0.95rem;
 }

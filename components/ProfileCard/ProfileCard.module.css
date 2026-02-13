@@ -2,7 +2,7 @@
 	width: 100%;
 	background: var(--card-bg);
 	border: 1px solid var(--card-bg);
-	border-radius: 20px;
+	border-radius: var(--radius-xl);
 	padding: var(--space-8);
 	display: flex;
 	flex-direction: column;
@@ -20,7 +20,7 @@
 .avatar {
 	width: 140px;
 	height: 140px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	object-fit: cover;
 	border: 3px solid var(--secondary);
 }
@@ -28,9 +28,9 @@
 .avatarPlaceholder {
 	width: 140px;
 	height: 140px;
-	border-radius: 50%;
-	background: rgba(5, 53, 70, 0.08);
-	border: 2px dashed rgba(5, 53, 70, 0.18);
+	border-radius: var(--radius-circle);
+	background: var(--primary);
+	border: 3px solid var(--primary-dark);
 }
 
 .header {

@@ -15,7 +15,7 @@
 	padding: var(--btn-padding);
 	height: var(--btn-height);
 	font-size: var(--btn-font-size);
-	border-radius: 8px;
+	border-radius: var(--radius-base);
 
 	display: inline-flex;
 	align-items: center;
@@ -139,7 +139,7 @@
 	display: inline-block;
 	border: 2px solid var(--white-20);
 	border-top-color: var(--white-85);
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	animation: spin 0.8s linear infinite;
 }
 

@@ -63,7 +63,7 @@
 
 .logoBox {
 	background: var(--white);
-	border-radius: 12px;
+	border-radius: var(--radius-md);
 	padding: var(--space-2);
 	display: inline-flex;
 	align-items: center;
@@ -115,7 +115,7 @@
 	color: var(--white-80);
 	text-decoration: none;
 	padding: var(--space-2) var(--space-4);
-	border-radius: 8px;
+	border-radius: var(--radius-base);
 	transition: all 150ms ease-in-out;
 	border: 1px solid var(--white-20);
 }
@@ -129,7 +129,7 @@
 .userAvatar {
 	width: 32px;
 	height: 32px;
-	border-radius: 50%;
+	border-radius: var(--radius-circle);
 	object-fit: cover;
 	display: inline-block;
 }
@@ -195,7 +195,7 @@
 	color: var(--white-85);
 	cursor: pointer;
 	padding: var(--space-1);
-	border-radius: 8px;
+	border-radius: var(--radius-base);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -256,7 +256,7 @@
 	right: var(--space-10);
 	background: var(--card-bg-solid);
 	color: var(--text-dark);
-	border-radius: 12px;
+	border-radius: var(--radius-md);
 	box-shadow: 0 2px 12px var(--dark-20);
 	min-width: 160px;
 	overflow: hidden;

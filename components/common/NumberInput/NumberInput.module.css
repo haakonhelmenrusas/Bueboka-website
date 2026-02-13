@@ -23,7 +23,7 @@
 	display: grid;
 	grid-template-columns: 38px 1fr 38px;
 	align-items: stretch;
-	border-radius: 10px;
+	border-radius: var(--radius-base);
 	border: 1px solid var(--bg-gray-200);
 	background: var(--card-bg-solid);
 	overflow: hidden;

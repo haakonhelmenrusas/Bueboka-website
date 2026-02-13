@@ -7,7 +7,7 @@
 .item {
   background: var(--card-bg);
   border: 1px solid var(--bg-gray-200);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
 }
 

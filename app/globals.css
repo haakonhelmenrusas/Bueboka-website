@@ -152,6 +152,28 @@
 	--gap-xl: var(--space-12);
 	--gap-2xl: var(--space-14);
 	--gap-3xl: var(--space-18);
+
+	/* Border Radius Scale (8px base unit) */
+	--radius-0: 0px;
+	--radius-1: 4px;
+	--radius-2: 8px;
+	--radius-3: 12px;
+	--radius-4: 16px;
+	--radius-5: 20px;
+	--radius-6: 24px;
+	--radius-7: 32px;
+	--radius-8: 40px;
+	--radius-full: 9999px;
+	--radius-circle: 50%;
+
+	/* Border Radius shortcuts */
+	--radius-sm: var(--radius-1);
+	--radius-base: var(--radius-2);
+	--radius-md: var(--radius-3);
+	--radius-lg: var(--radius-4);
+	--radius-xl: var(--radius-5);
+	--radius-2xl: var(--radius-6);
+	--radius-3xl: var(--radius-7);
 }
 
 /* Dark mode theme */
@@ -278,7 +300,7 @@ body {
 	padding: 8px 16px;
 	text-decoration: none;
 	z-index: 10000;
-	border-radius: 0 0 4px 0;
+	border-radius: 0 0 var(--radius-1) 0;
 	font-weight: 600;
 }
 

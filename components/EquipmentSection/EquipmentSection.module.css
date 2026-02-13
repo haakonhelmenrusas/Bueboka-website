@@ -22,7 +22,7 @@
 .panel {
 	background: var(--card-bg);
 	border: 1px solid var(--primary-dark);
-	border-radius: 18px;
+	border-radius: var(--radius-4);
 	padding: var(--space-8);
 	color: var(--text-dark);
 }
@@ -58,7 +58,7 @@
 .item {
 	background: var(--primary-06);
 	padding: var(--space-5) var(--space-6);
-	border-radius: 16px;
+	border-radius: var(--radius-lg);
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -113,7 +113,7 @@
 .itemIcon {
 	width: 42px;
 	height: 42px;
-	border-radius: 12px;
+	border-radius: var(--radius-md);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -133,7 +133,7 @@
 .placeholder {
 	background: var(--primary-02);
 	border: 1px dashed var(--primary-20);
-	border-radius: 16px;
+	border-radius: var(--radius-lg);
 	padding: var(--space-5) var(--space-6);
 	color: var(--text-gray-700);
 	font-weight: 600;
@@ -151,7 +151,7 @@
 	margin-left: 8px;
 	width: 22px;
 	height: 22px;
-	border-radius: 999px;
+	border-radius: var(--radius-full);
 	background: var(--star-bg);
 	border: 1px solid var(--star-border);
 	color: var(--star-color);
