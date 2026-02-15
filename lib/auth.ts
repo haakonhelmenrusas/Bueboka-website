@@ -2,6 +2,7 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { prisma } from './prisma';
 import { sendEmail } from './email';
+import { expo } from '@better-auth/expo';
 
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
@@ -9,10 +10,12 @@ export const auth = betterAuth({
 	}),
 	trustedOrigins: [
 		'https://appleid.apple.com',
-		process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(',')
+		'exp://',
+		'http://localhost:8081', // Expo dev server
+		...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(',')
 			.map((origin) => origin.trim())
-			.filter(Boolean) ?? [],
-	].flat(),
+			.filter(Boolean) ?? []),
+	],
 	baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
 	emailAndPassword: {
 		enabled: true,
@@ -32,6 +35,7 @@ export const auth = betterAuth({
 		resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
 		// You can enable this later if you want to sign out all devices after reset.
 		revokeSessionsOnPasswordReset: false,
+		requireEmailVerification: true,
 	},
 	redirect: {
 		signIn: '/min-side',
@@ -50,11 +54,16 @@ export const auth = betterAuth({
 				html: `
 					<p>Velkommen! Bekreft e-postadressen din ved å trykke på lenken:</p>
 					<p><a href="${verifyUrl}">Bekreft e-post</a></p>
+					<p>Hvis du ikke opprettet en konto hos oss, kan du ignorere denne e-posten.</p>
 				`,
 				text: `Bekreft e-post: ${verifyUrl}`,
 			});
 		},
 		autoSignInAfterVerification: true,
+		sendOnSignUp: true,
+		sendVerificationOnSignIn: true, // Send verification email when unverified user tries to sign in
+		// Longer token expiry for mobile users who might check email later
+		verificationTokenExpiresIn: 60 * 60 * 24, // 24 hours
 	},
 	session: {
 		expiresIn: 60 * 60 * 24 * 7,
@@ -66,7 +75,7 @@ export const auth = betterAuth({
 			enabled: false,
 		},
 	},
-	plugins: [],
+	plugins: [expo()],
 	socialProviders: {
 		google: {
 			clientId: process.env.GOOGLE_CLIENT_ID || '',
