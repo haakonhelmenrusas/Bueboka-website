@@ -32,6 +32,7 @@ import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 import { Accordion } from './common/Accordion/Accordion';
 import { FullPageLoader } from './common/FullPageLoader/FullPageLoader';
 import { SightMarksSection } from './SightMarks/SightMarksSection';
+import { EmailVerificationBanner } from './EmailVerificationBanner/EmailVerificationBanner';
 
 export {
 	Header,
@@ -68,6 +69,7 @@ export {
 	Accordion,
 	FullPageLoader,
 	SightMarksSection,
+	EmailVerificationBanner,
 };
 
 export * from './common/StatsSummary/StatsSummary';

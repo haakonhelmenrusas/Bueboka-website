@@ -21,7 +21,7 @@ export const auth = betterAuth({
 		enabled: true,
 		// Password reset (dev): log reset link to the server console instead of sending an email.
 		sendResetPassword: async ({ user, url }) => {
-			await sendEmail({
+			void sendEmail({
 				to: user.email,
 				subject: 'Tilbakestill passord',
 				html: `
@@ -35,7 +35,7 @@ export const auth = betterAuth({
 		resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
 		// You can enable this later if you want to sign out all devices after reset.
 		revokeSessionsOnPasswordReset: false,
-		requireEmailVerification: true,
+		requireEmailVerification: false,
 	},
 	redirect: {
 		signIn: '/min-side',
@@ -48,7 +48,7 @@ export const auth = betterAuth({
 			const baseURL = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
 			const verifyUrl = `${baseURL}/verify-email?token=${token}`;
 
-			await sendEmail({
+			void sendEmail({
 				to: user.email,
 				subject: 'Bekreft e-postadressen din',
 				html: `

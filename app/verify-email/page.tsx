@@ -22,15 +22,9 @@ export default function VerifyEmailPage() {
 			}
 
 			try {
-				// Better Auth email verification endpoint
-				// Try the correct endpoint format
-				const response = await fetch(`/api/auth/verify-email`, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify({ token }),
-					redirect: 'manual', // Don't follow redirects automatically
+				const response = await fetch(`/api/auth/verify-email/${token}`, {
+					method: 'GET',
+					credentials: 'include',
 				});
 
 				// Better Auth might return a redirect (303/302) on success
@@ -45,24 +39,8 @@ export default function VerifyEmailPage() {
 					return;
 				}
 
-				// Try to parse JSON response if available
-				let data = null;
-				const contentType = response.headers.get('content-type');
-
-				if (contentType && contentType.includes('application/json')) {
-					const text = await response.text();
-					if (text) {
-						try {
-							data = JSON.parse(text);
-						} catch (e) {
-							console.error('JSON parse error:', e, 'Text:', text);
-						}
-					}
-				}
-
-				// If we get here, verification failed
 				setStatus('error');
-				setMessage(data?.message || data?.error || `Kunne ikke bekrefte e-postadressen. Lenken kan ha utløpt. (${response.status})`);
+				setMessage(`Kunne ikke bekrefte e-postadressen. Lenken kan ha utløpt. (${response.status})`);
 			} catch (error) {
 				setStatus('error');
 				setMessage('En feil oppstod. Prøv igjen senere.');

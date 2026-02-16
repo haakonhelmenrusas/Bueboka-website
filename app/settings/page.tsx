@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Accordion, ConfirmModal, Header } from '@/components';
+import { Accordion, ConfirmModal, EmailVerificationBanner, Header } from '@/components';
 import { signOut, useSession } from '@/lib/auth-client';
 import { ArrowLeft, Key, Lock, Shield, Target } from 'lucide-react';
 import styles from './page.module.css';
@@ -74,6 +74,10 @@ export default function SettingsPage() {
 						</button>
 						<h1 className={styles.title}>Innstillinger</h1>
 					</div>
+
+					{session.user.email && (
+						<EmailVerificationBanner userEmail={session.user.email} emailVerified={session.user.emailVerified || false} />
+					)}
 
 					<div className={styles.section}>
 						<h2 className={styles.sectionTitle}>Konto</h2>
