@@ -36,7 +36,7 @@ export interface SightMarkResult {
 }
 
 export interface AimDistanceMark {
-	ballistics_pars?: Record<string, unknown>;
+	ballistics_pars?: number[];
 	bow_category: string;
 	interval_sight_real?: number;
 	interval_sight_measured?: number;
@@ -52,7 +52,7 @@ export interface AimDistanceMark {
 }
 
 export interface SightMarkCalc {
-	ballistics_pars: Record<string, unknown>;
+	ballistics_pars: number[];
 	distances_def: [number, number, number];
 	angles: number[];
 }
@@ -61,7 +61,7 @@ export interface CalculatedMarks {
 	given_distances: number[];
 	given_marks: number[];
 	calculated_marks: number[];
-	ballistics_pars: Record<string, unknown>;
+	ballistics_pars: number[];
 }
 
 export interface MarksResult {

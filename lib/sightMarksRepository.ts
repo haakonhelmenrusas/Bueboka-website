@@ -91,6 +91,10 @@ export const sightMarksRepository = {
 		return handleResponse<BowSpecification>(await fetch(`/api/bow-specifications/${id}`));
 	},
 
+	async getBowSpecificationByBowId(bowId: string): Promise<BowSpecification> {
+		return handleResponse<BowSpecification>(await fetch(`/api/bow-specifications/by-bow/${bowId}`));
+	},
+
 	async createBowSpecification(data: Partial<BowSpecification>): Promise<BowSpecification> {
 		return handleResponse<BowSpecification>(
 			await fetch('/api/bow-specifications', {

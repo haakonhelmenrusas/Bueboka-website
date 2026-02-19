@@ -31,7 +31,6 @@ export async function POST(request: NextRequest) {
 		if (!body || typeof body !== 'object') {
 			return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
 		}
-
 		// Validate required fields for AimDistanceMark
 		const payload = body as AimDistanceMark;
 		const errors: string[] = [];
@@ -47,8 +46,9 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Call external ballistics service
-		const ballisticsUrl = process.env.BALLISTICS_SERVICE_URL || 'http://localhost:8000';
-		const response = await fetch(`${ballisticsUrl}/calculate/aim-distance-mark`, {
+		//const ballisticsUrl = process.env.BALLISTICS_SERVICE_URL || 'http://localhost:7071/api/archerAim?task=CalcBallisticsPars';
+		const ballisticsUrl = 'http://localhost:7071/api/archerAim?task=CalcBallisticsPars';
+		const response = await fetch(ballisticsUrl, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(payload),

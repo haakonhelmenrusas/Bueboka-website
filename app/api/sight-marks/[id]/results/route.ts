@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { parseNumberArray } from '@/lib/utils';
 
 async function getCurrentUser() {
 	try {
@@ -76,18 +77,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 		const distanceTo = toFloat(body.distanceTo, 'distanceTo');
 		const interval = toFloat(body.interval, 'interval');
 
-		const parseNumberArray = (val: unknown, key: string) => {
-			if (!Array.isArray(val)) {
-				fieldErrors[key] = `${key} must be an array`;
-				return [] as number[];
-			}
-			const nums = val.filter((item) => typeof item === 'number' && !Number.isNaN(item)) as number[];
-			if (nums.length !== val.length) fieldErrors[key] = `${key} contains invalid numbers`;
-			return nums;
-		};
-
-		const angles = parseNumberArray(body.angles, 'angles');
-		const distances = parseNumberArray(body.distances, 'distances');
+		const angles = parseNumberArray(body.angles, 'angles', fieldErrors);
+		const distances = parseNumberArray(body.distances, 'distances', fieldErrors);
 		const sightMarksByAngle = typeof body.sightMarksByAngle === 'object' && body.sightMarksByAngle !== null ? body.sightMarksByAngle : {};
 		const arrowSpeedByAngle = typeof body.arrowSpeedByAngle === 'object' && body.arrowSpeedByAngle !== null ? body.arrowSpeedByAngle : {};
 

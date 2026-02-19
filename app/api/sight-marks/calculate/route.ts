@@ -36,11 +36,15 @@ export async function POST(request: NextRequest) {
 		const payload = body as SightMarkCalc;
 		const errors: string[] = [];
 
-		if (!payload.ballistics_pars || typeof payload.ballistics_pars !== 'object') errors.push('ballistics_pars is required');
+		if (!Array.isArray(payload.ballistics_pars) || payload.ballistics_pars.length === 0) {
+			errors.push('ballistics_pars must be a non-empty array');
+		}
 		if (!Array.isArray(payload.distances_def) || payload.distances_def.length !== 3) {
 			errors.push('distances_def must be an array of 3 numbers [distanceFrom, distanceTo, interval]');
 		}
-		if (!Array.isArray(payload.angles)) errors.push('angles must be an array');
+		if (!Array.isArray(payload.angles) || payload.angles.length === 0) {
+			errors.push('angles must be a non-empty array');
+		}
 
 		if (errors.length > 0) {
 			return NextResponse.json({ error: 'Validation error', details: errors }, { status: 400 });
@@ -48,6 +52,8 @@ export async function POST(request: NextRequest) {
 
 		// Call external sight mark calculation service
 		const ballisticsUrl = process.env.BALLISTICS_SERVICE_URL || 'http://localhost:8000';
+		console.log('[SightMarks Calculate] Payload:', JSON.stringify(payload, null, 2));
+
 		const response = await fetch(`${ballisticsUrl}/calculate/sight-marks`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
@@ -55,8 +61,11 @@ export async function POST(request: NextRequest) {
 			signal: AbortSignal.timeout(30000), // 30 second timeout
 		});
 
+		console.log('[SightMarks Calculate] External service response status:', response.status);
+
 		if (!response.ok) {
 			const errorText = await response.text();
+			console.error('[SightMarks Calculate] External service error:', errorText);
 			Sentry.captureException(new Error(`Sight marks service error: ${response.status}`), {
 				tags: { endpoint: 'sight-marks/calculate' },
 				extra: { statusCode: response.status, responseBody: errorText },
@@ -65,6 +74,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		const result: MarksResult = await response.json();
+		console.log('[SightMarks Calculate] ✅ Calculation successful! Result:', JSON.stringify(result, null, 2));
 		return NextResponse.json(result);
 	} catch (error) {
 		Sentry.captureException(error, {

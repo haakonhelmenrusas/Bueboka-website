@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { parseOptionalNumberArray } from '@/lib/utils';
 
 async function getCurrentUser() {
 	try {
@@ -67,23 +68,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 			return val;
 		};
 
-		const parseNumberArray = (val: unknown, key: string) => {
-			if (val === undefined) return undefined;
-			if (!Array.isArray(val)) {
-				fieldErrors[key] = `${key} must be an array`;
-				return undefined;
-			}
-			const nums = val.filter((item) => typeof item === 'number' && !Number.isNaN(item)) as number[];
-			if (nums.length !== val.length) fieldErrors[key] = `${key} contains invalid numbers`;
-			return nums;
-		};
-
 		const updateData: Record<string, unknown> = {};
 		const distanceFrom = toFloat(body.distanceFrom, 'distanceFrom');
 		const distanceTo = toFloat(body.distanceTo, 'distanceTo');
 		const interval = toFloat(body.interval, 'interval');
-		const angles = parseNumberArray(body.angles, 'angles');
-		const distances = parseNumberArray(body.distances, 'distances');
+		const angles = parseOptionalNumberArray(body.angles, 'angles', fieldErrors);
+		const distances = parseOptionalNumberArray(body.distances, 'distances', fieldErrors);
 
 		if (distanceFrom !== undefined) updateData.distanceFrom = distanceFrom;
 		if (distanceTo !== undefined) updateData.distanceTo = distanceTo;

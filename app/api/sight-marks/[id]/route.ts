@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
+import { parseOptionalNumberArray } from '@/lib/utils';
 
 async function getCurrentUser() {
 	try {
@@ -54,19 +55,9 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 		}>;
 
 		const fieldErrors: Record<string, string> = {};
-		const parseNumberArray = (val: unknown, key: string) => {
-			if (val === undefined) return undefined;
-			if (!Array.isArray(val)) {
-				fieldErrors[key] = `${key} must be an array`;
-				return undefined;
-			}
-			const nums = val.filter((item) => typeof item === 'number' && !Number.isNaN(item)) as number[];
-			if (nums.length !== val.length) fieldErrors[key] = `${key} contains invalid numbers`;
-			return nums;
-		};
 
-		const givenMarks = parseNumberArray(body.givenMarks, 'givenMarks');
-		const givenDistances = parseNumberArray(body.givenDistances, 'givenDistances');
+		const givenMarks = parseOptionalNumberArray(body.givenMarks, 'givenMarks', fieldErrors);
+		const givenDistances = parseOptionalNumberArray(body.givenDistances, 'givenDistances', fieldErrors);
 		const rawBallistics =
 			body.ballisticsParameters === undefined || body.ballisticsParameters === null
 				? existing.ballisticsParameters

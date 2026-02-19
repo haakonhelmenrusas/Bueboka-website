@@ -22,9 +22,13 @@ export default function VerifyEmailPage() {
 			}
 
 			try {
-				const response = await fetch(`/api/auth/verify-email/${token}`, {
-					method: 'GET',
+				const response = await fetch('/api/auth/verify-email', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
 					credentials: 'include',
+					body: JSON.stringify({ token }),
 				});
 
 				// Better Auth might return a redirect (303/302) on success
