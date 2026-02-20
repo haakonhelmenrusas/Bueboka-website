@@ -156,15 +156,17 @@ export function Header() {
 							)
 						)}
 					</nav>
-					<button
-						onClick={toggleMobileMenu}
-						className={styles.mobileButton}
-						aria-label="Toggle mobile menu"
-						aria-expanded={mobileMenuOpen}
-						aria-controls="mobile-menu"
-					>
-						{mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-					</button>
+					{!session?.user && (
+						<button
+							onClick={toggleMobileMenu}
+							className={styles.mobileButton}
+							aria-label="Toggle mobile menu"
+							aria-expanded={mobileMenuOpen}
+							aria-controls="mobile-menu"
+						>
+							{mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+						</button>
+					)}
 					{session?.user && (
 						<div className={styles.profileMenuContainer}>
 							<button
