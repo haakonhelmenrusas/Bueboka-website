@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './ProfileCard.module.css';
-import { Edit } from 'lucide-react';
+import { Edit, User } from 'lucide-react';
 import { Button } from '@/components';
 
 export interface ProfileCardProps {
@@ -31,7 +31,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 						className={styles.avatar}
 					/>
 				) : (
-					<div className={styles.avatarPlaceholder} aria-hidden="true" />
+					<div className={styles.avatarPlaceholder} aria-hidden="true">
+						<User size={56} strokeWidth={1.5} />
+					</div>
 				)}
 			</div>
 			<header className={styles.header}>

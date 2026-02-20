@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Camera, Trash2, Upload } from 'lucide-react';
+import { Camera, Trash2, Upload, User } from 'lucide-react';
 import styles from './ImageUpload.module.css';
 import Image from 'next/image';
 
@@ -79,11 +79,15 @@ export function ImageUpload({ currentImage, onImageChange, disabled }: ImageUplo
 						</div>
 					</div>
 				) : (
-					<button type="button" onClick={handleClick} disabled={disabled} className={styles.uploadButton}>
-						<Upload size={24} />
-						<span className={styles.uploadText}>Last opp profilbilde</span>
-						<span className={styles.uploadHint}>Maks 5MB (JPG, PNG, GIF)</span>
-					</button>
+					<div className={styles.placeholder}>
+						<div className={styles.placeholderIcon}>
+							<User size={48} strokeWidth={1.5} />
+						</div>
+						<button type="button" onClick={handleClick} disabled={disabled} className={styles.uploadButton}>
+							<Upload size={16} />
+							<span>Last opp bilde</span>
+						</button>
+					</div>
 				)}
 
 				<input

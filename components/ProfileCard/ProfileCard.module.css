@@ -29,8 +29,12 @@
 	width: 140px;
 	height: 140px;
 	border-radius: var(--radius-circle);
-	background: var(--primary);
-	border: 3px solid var(--primary-dark);
+	background: var(--background);
+	border: 3px solid var(--primary-light);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-gray-600);
 }
 
 .header {
