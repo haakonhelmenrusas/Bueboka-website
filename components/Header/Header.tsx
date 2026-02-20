@@ -62,6 +62,18 @@ export function Header() {
 		}
 	};
 
+	const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
+		// Only prevent default if we're already on the homepage
+		if (pathname === '/') {
+			e.preventDefault();
+			const element = document.querySelector(hash);
+			if (element) {
+				element.scrollIntoView({ behavior: 'smooth' });
+			}
+		}
+		closeMobileMenu();
+	};
+
 	// Use custom hooks for better separation of concerns
 	const handleClickOutside = useCallback(() => {
 		closeProfileMenu();
@@ -88,16 +100,16 @@ export function Header() {
 					<nav className={styles.desktopNav} aria-label="Primary">
 						{!isAuthPage && (
 							<>
-								<Link href="#features" className={styles.navLink}>
+								<Link href="#features" onClick={(e) => handleHashLinkClick(e, '#features')} className={styles.navLink}>
 									Funksjoner
 								</Link>
-								<Link href="#team" className={styles.navLink}>
+								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.navLink}>
 									Team
 								</Link>
-								<Link href="#sponsors" className={styles.navLink}>
+								<Link href="#sponsors" onClick={(e) => handleHashLinkClick(e, '#sponsors')} className={styles.navLink}>
 									Sponsorer
 								</Link>
-								<Link href="#contact" className={styles.navLink}>
+								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.navLink}>
 									Kontakt
 								</Link>
 							</>
@@ -187,16 +199,16 @@ export function Header() {
 					<div className={styles.mobileLinks}>
 						{!isAuthPage && (
 							<>
-								<Link href="#features" onClick={closeMobileMenu} className={styles.mobileLink}>
+								<Link href="#features" onClick={(e) => handleHashLinkClick(e, '#features')} className={styles.mobileLink}>
 									Funksjoner
 								</Link>
-								<Link href="#team" onClick={closeMobileMenu} className={styles.mobileLink}>
+								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.mobileLink}>
 									Team
 								</Link>
-								<Link href="#sponsors" onClick={closeMobileMenu} className={styles.mobileLink}>
+								<Link href="#sponsors" onClick={(e) => handleHashLinkClick(e, '#sponsors')} className={styles.mobileLink}>
 									Sponsorer
 								</Link>
-								<Link href="#contact" onClick={closeMobileMenu} className={styles.mobileLink}>
+								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.mobileLink}>
 									Kontakt
 								</Link>
 							</>
