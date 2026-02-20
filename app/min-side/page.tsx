@@ -7,7 +7,6 @@ import {
 	ArrowsModal,
 	BowModal,
 	EquipmentSection,
-	FullPageLoader,
 	Header,
 	PracticeCreateModal,
 	PracticeDetailsModal,
@@ -20,6 +19,7 @@ import {
 	usePracticeDetails,
 	useRoundTypes,
 } from '@/components';
+import { MyPageSkeleton } from './Skeleton';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
@@ -55,7 +55,6 @@ export default function MyPage() {
 			const response = await fetch('/api/profile');
 			if (!response.ok) {
 				if (response.status === 401) {
-					// Best practice: redirect to login rather than rendering a partially broken page.
 					router.replace('/logg-inn');
 					return;
 				}
@@ -181,7 +180,7 @@ export default function MyPage() {
 	};
 
 	if (loading) {
-		return <FullPageLoader />;
+		return <MyPageSkeleton />;
 	}
 
 	if (error || !profile) {
@@ -227,8 +226,6 @@ export default function MyPage() {
 					</div>
 				</div>
 			</main>
-
-			{/* Utstyr section */}
 			<EquipmentSection
 				onCreateBow={() => {
 					setSelectedBow(null);
@@ -244,18 +241,13 @@ export default function MyPage() {
 					setArrowsModalOpen(true);
 				}}
 			/>
-
-			{/* Practices moved to dedicated section below main card */}
 			<PracticesSection
 				onCreate={() => setCreatePracticeOpen(true)}
 				onSelectPractice={handleSelectPractice}
 				reloadKey={practiceReloadKey}
 				deletedPracticeId={deletedPracticeId}
 			/>
-
-			{/* Sight Marks section */}
 			<SightMarksSection />
-
 			<ProfileEditModal
 				isOpen={profileModalOpen}
 				onClose={() => setProfileModalOpen(false)}
@@ -268,7 +260,6 @@ export default function MyPage() {
 				}}
 				onProfileUpdate={fetchProfile}
 			/>
-
 			<BowModal
 				open={bowModalOpen}
 				onClose={() => {
@@ -290,7 +281,6 @@ export default function MyPage() {
 						: undefined
 				}
 			/>
-
 			<ArrowsModal
 				open={arrowsModalOpen}
 				onClose={() => {
@@ -313,7 +303,6 @@ export default function MyPage() {
 						: undefined
 				}
 			/>
-
 			<PracticeDetailsModal
 				open={practiceModalOpen}
 				practice={selectedPractice || undefined}
@@ -327,7 +316,6 @@ export default function MyPage() {
 				}}
 				onDeleted={handlePracticeDeleted}
 			/>
-
 			<PracticeCreateModal
 				open={createPracticeOpen}
 				onClose={() => setCreatePracticeOpen(false)}
@@ -336,7 +324,6 @@ export default function MyPage() {
 				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
 			/>
-
 			<PracticeEditModal
 				open={editPracticeOpen}
 				onClose={() => {

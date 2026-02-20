@@ -1,8 +1,0 @@
- - [ ]  Utvid runde i treningsøkter til å inkludere
-   - Avstand 
-     - i meter 
-     - flere avstander
-     - satt av type runde
-   - Blinkstørrelse
-   - Type - f.eks. jakt, 3D, felt
- - [ ]  Legg til kalender-visning av treningsøkter

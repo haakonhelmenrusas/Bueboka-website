@@ -19,7 +19,6 @@ export function MyPageSkeleton() {
 					<SkeletonBlock className={styles.circleSkeleton} />
 				</div>
 			</div>
-
 			<main className={styles.main}>
 				<div className={styles.card}>
 					<div className={styles.twoColumn}>
@@ -31,7 +30,6 @@ export function MyPageSkeleton() {
 								<SkeletonBlock className={styles.buttonSkeleton} />
 							</div>
 						</section>
-
 						<section className={styles.right}>
 							<div className={styles.topRightRow}>
 								<div className={styles.rightActions}>
@@ -39,7 +37,6 @@ export function MyPageSkeleton() {
 									<SkeletonBlock className={styles.actionButtonSkeleton} />
 								</div>
 							</div>
-
 							<div className={styles.rightContent}>
 								<div>
 									<SkeletonBlock className={styles.sectionTitleSkeleton} />
@@ -63,7 +60,6 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 			</main>
-
 			<section className={styles.practicesSection}>
 				<div className={styles.practicesHeader}>
 					<SkeletonBlock className={styles.practicesTitleSkeleton} />
