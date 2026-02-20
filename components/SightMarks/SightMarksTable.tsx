@@ -13,7 +13,7 @@ export function SightMarksTable({ sightMarks, onDelete, isDeleting = false }: Si
 	if (sightMarks.length === 0) {
 		return (
 			<div className={styles.emptyState}>
-				<p>Ingen sikte merker ennå. Opprett din første sikte beregning.</p>
+				<p>Ingen siktemerker ennå. Opprett din første siktemerker i appen.</p>
 			</div>
 		);
 	}
@@ -30,7 +30,7 @@ export function SightMarksTable({ sightMarks, onDelete, isDeleting = false }: Si
 				<thead>
 					<tr>
 						<th>Bue</th>
-						<th>Gitte merker</th>
+						<th>Merker</th>
 						<th>Avstand (m)</th>
 						<th>Opprettet</th>
 						<th></th>
@@ -39,7 +39,7 @@ export function SightMarksTable({ sightMarks, onDelete, isDeleting = false }: Si
 				<tbody>
 					{sightMarks.map((sightMark) => (
 						<tr key={sightMark.id}>
-							<td>{sightMark.bowSpecificationId}</td>
+							<td>{sightMark.bowSpec?.bow?.name || 'Ukjent bue'}</td>
 							<td>{sightMark.givenMarks.length > 0 ? sightMark.givenMarks.join(', ') : '-'}</td>
 							<td>{sightMark.givenDistances.length > 0 ? sightMark.givenDistances.join(', ') : '-'}</td>
 							<td>{new Date(sightMark.createdAt || '').toLocaleDateString('nb-NO')}</td>

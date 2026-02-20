@@ -25,7 +25,13 @@ export async function GET() {
 
 		const sightMarks = await prisma.sightMark.findMany({
 			where: { userId: user.id },
-			include: { bowSpec: true },
+			include: {
+				bowSpec: {
+					include: {
+						bow: true,
+					},
+				},
+			},
 			orderBy: { createdAt: 'desc' },
 		});
 

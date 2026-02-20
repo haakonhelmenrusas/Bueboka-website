@@ -33,6 +33,8 @@ import { Accordion } from './common/Accordion/Accordion';
 import { FullPageLoader } from './common/FullPageLoader/FullPageLoader';
 import { SightMarksSection } from './SightMarks/SightMarksSection';
 import { EmailVerificationBanner } from './EmailVerificationBanner/EmailVerificationBanner';
+import { SocialAuthButtons } from '@/components/common/SocialAuthButtons/SocialAuthButtons';
+import { Tooltip } from './common/Tooltip/Tooltip';
 
 export {
 	Header,
@@ -70,12 +72,10 @@ export {
 	FullPageLoader,
 	SightMarksSection,
 	EmailVerificationBanner,
+	SocialAuthButtons,
+	Tooltip,
 };
 
 export * from './common/StatsSummary/StatsSummary';
 export * from './PracticesSection/usePracticeDetails';
 export * from './PracticesSection/useRoundTypes';
-
-// Re-export social auth button directly (avoids TS module resolution issues with barrel files)
-export { SocialAuthButtons } from './common/SocialAuthButtons/SocialAuthButtons';
-export { Tooltip } from './common/Tooltip/Tooltip';

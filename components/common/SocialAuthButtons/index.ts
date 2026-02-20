@@ -1,1 +1,0 @@
-export { SocialAuthButtons } from './SocialAuthButtons';

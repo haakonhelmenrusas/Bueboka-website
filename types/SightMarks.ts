@@ -7,6 +7,11 @@ export interface BowSpecification {
 	placement?: number;
 	createdAt?: Date;
 	updatedAt?: Date;
+	bow?: {
+		id: string;
+		name: string;
+		type?: string;
+	};
 }
 
 export interface SightMark {
@@ -18,6 +23,7 @@ export interface SightMark {
 	ballisticsParameters: Record<string, unknown>;
 	createdAt?: Date;
 	updatedAt?: Date;
+	bowSpec?: BowSpecification;
 }
 
 export interface SightMarkResult {
