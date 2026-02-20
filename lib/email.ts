@@ -9,11 +9,16 @@ export type SendEmailArgs = {
 	text?: string;
 };
 
-function getResendModule(): ResendModule {
-	// Avoid TS/bundler module resolution errors in environments where `resend` isn't installed.
-	// eslint-disable-next-line @typescript-eslint/no-implied-eval
-	const req = eval('require') as (id: string) => unknown;
-	return req('resend') as ResendModule;
+async function getResendModule(): Promise<ResendModule | null> {
+	// Safely attempt to load the resend module
+	// This avoids bundler errors when resend is not installed in all environments
+	try {
+		const resend = await import('resend');
+		return resend as unknown as ResendModule;
+	} catch (error) {
+		// Resend not installed - fallback to console logging
+		return null;
+	}
 }
 
 /**
@@ -35,10 +40,9 @@ export async function sendEmail({ to, subject, html, text }: SendEmailArgs) {
 		return;
 	}
 
-	let mod: ResendModule;
-	try {
-		mod = getResendModule();
-	} catch (e) {
+	const mod = await getResendModule();
+
+	if (!mod) {
 		console.log('\n[email] Resend is not installed. Falling back to console output.');
 		console.log(`To: ${to}`);
 		console.log(`Subject: ${subject}`);

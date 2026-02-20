@@ -9,12 +9,16 @@ export const auth = betterAuth({
 		provider: 'postgresql',
 	}),
 	trustedOrigins: [
-		'https://appleid.apple.com',
-		'exp://',
-		'http://localhost:8081', // Expo dev server
-		...(process.env.BETTER_AUTH_TRUSTED_ORIGINS?.split(',')
-			.map((origin) => origin.trim())
-			.filter(Boolean) ?? []),
+		// Use environment-specific trusted origins
+		// In production: use BETTER_AUTH_TRUSTED_ORIGINS_PROD
+		// In development: use BETTER_AUTH_TRUSTED_ORIGINS_DEV
+		...(process.env.NODE_ENV === 'production'
+			? (process.env.BETTER_AUTH_TRUSTED_ORIGINS_PROD?.split(',')
+					.map((origin) => origin.trim())
+					.filter(Boolean) ?? ['https://appleid.apple.com'])
+			: (process.env.BETTER_AUTH_TRUSTED_ORIGINS_DEV?.split(',')
+					.map((origin) => origin.trim())
+					.filter(Boolean) ?? ['https://appleid.apple.com', 'exp://', 'http://localhost:8081', 'http://localhost:3000'])),
 	],
 	baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
 	emailAndPassword: {
@@ -89,8 +93,8 @@ export const auth = betterAuth({
 	rateLimit: {
 		enabled: true,
 		maxRequests: 100,
-		windowMs: 60,
-		message: 'Too many requests from this IP, please try again after an hour',
+		windowMs: 60000, // 1 minute (60000ms)
+		message: 'Too many requests from this IP, please try again after a minute',
 	},
 });
 
