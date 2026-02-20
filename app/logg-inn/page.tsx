@@ -71,12 +71,6 @@ export default function SignInPage() {
 							onClick={() => signIn.social({ provider: 'google', callbackURL: '/min-side' })}
 							disabled={isSubmitting}
 						/>
-						<SocialAuthButtons
-							provider="apple"
-							label="Logg på med Apple"
-							onClick={() => signIn.social({ provider: 'apple', callbackURL: '/min-side' })}
-							disabled={isSubmitting}
-						/>
 					</div>
 				</div>
 			</main>
