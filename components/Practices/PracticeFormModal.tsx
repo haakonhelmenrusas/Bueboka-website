@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import styles from './PracticeCreateModal.module.css';
+import styles from './PracticeFormModal.module.css';
 import { CloudSun, Home, MapPin, Target, Trees, X } from 'lucide-react';
 import type { WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
@@ -9,7 +9,7 @@ import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/compo
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { getWeatherSelectOptions } from '@/lib/weatherUtils';
 
-export interface PracticeCreateInput {
+export interface PracticeFormInput {
 	date: string; // ISO
 	arrowsShot: number;
 	location?: string;
@@ -21,19 +21,34 @@ export interface PracticeCreateInput {
 	arrowsId?: string;
 }
 
-interface PracticeCreateModalProps {
+interface PracticeFormModalProps {
 	open: boolean;
 	onClose: () => void;
-	onCreate: (input: PracticeCreateInput) => Promise<void>;
+	onSave: (input: PracticeFormInput) => Promise<void>;
+	mode: 'create' | 'edit';
+	practice?: {
+		id: string;
+		date: string; // ISO
+		arrowsShot: number;
+		location?: string | null;
+		environment: Environment;
+		weather: WeatherCondition[];
+		notes?: string | null;
+		roundTypeId?: string | null;
+		bowId?: string | null;
+		arrowsId?: string | null;
+	};
 	bows?: Array<{ id: string; name: string; type: string; isFavorite?: boolean }>;
 	arrows?: Array<{ id: string; name: string; material: string; isFavorite?: boolean }>;
 	roundTypes?: Array<{ id: string; name: string; distanceMeters?: number | null; targetSizeCm?: number | null }>;
 }
 
-export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
+export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 	open,
 	onClose,
-	onCreate,
+	onSave,
+	mode,
+	practice,
 	bows = [],
 	arrows = [],
 	roundTypes = [],
@@ -52,8 +67,52 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
+	// Initialize form based on mode
 	useEffect(() => {
-		// Weather is only tracked for outdoor practice.
+		if (!open) return;
+
+		if (mode === 'edit' && practice) {
+			// Edit mode: prefill with practice data
+			setDate(practice.date.split('T')[0]);
+			setArrowsShot(practice.arrowsShot);
+			setLocation(practice.location || '');
+			setEnvironment(practice.environment);
+			setWeather(practice.weather || []);
+			setNotes(practice.notes || '');
+			setRoundTypeId(practice.roundTypeId || '');
+			setBowId(practice.bowId || '');
+			setArrowsId(practice.arrowsId || '');
+		} else {
+			// Create mode: reset to defaults
+			setDate(new Date().toISOString().slice(0, 10));
+			setArrowsShot(0);
+			setLocation('');
+			setEnvironment(Environment.INDOOR);
+			setWeather([]);
+			setNotes('');
+			setRoundTypeId('');
+			setBowId('');
+			setArrowsId('');
+		}
+		setError(null);
+	}, [open, mode, practice]);
+
+	// Prefill favorites for create mode
+	useEffect(() => {
+		if (!open || mode !== 'create') return;
+
+		if (!bowId) {
+			const favBow = bows.find((b) => b.isFavorite);
+			if (favBow) setBowId(favBow.id);
+		}
+		if (!arrowsId) {
+			const favArrows = arrows.find((a) => a.isFavorite);
+			if (favArrows) setArrowsId(favArrows.id);
+		}
+	}, [open, mode, bows, arrows, bowId, arrowsId]);
+
+	// Clear weather when switching to indoor
+	useEffect(() => {
 		if (environment !== Environment.OUTDOOR) {
 			setWeather([]);
 		}
@@ -76,7 +135,7 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 		setSubmitting(true);
 		setError(null);
 		try {
-			await onCreate({
+			await onSave({
 				date: new Date(date).toISOString(),
 				arrowsShot,
 				location: location || undefined,
@@ -88,15 +147,6 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 				arrowsId: arrowsId || undefined,
 			});
 			onClose();
-			setDate(new Date().toISOString().slice(0, 10));
-			setArrowsShot(0);
-			setLocation('');
-			setEnvironment(Environment.INDOOR);
-			setWeather([]);
-			setNotes('');
-			setRoundTypeId('');
-			setBowId('');
-			setArrowsId('');
 		} catch (err) {
 			setError(err instanceof Error ? err.message : 'Kunne ikke lagre trening.');
 		} finally {
@@ -111,30 +161,11 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}` }));
 	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}` }));
 
-	useEffect(() => {
-		if (!open) return;
-		// Always start with today's date when opening the modal.
-		setDate(new Date().toISOString().slice(0, 10));
-		setEnvironment(Environment.INDOOR);
-		setWeather([]);
-		setArrowsShot(0);
-	}, [open]);
-
-	// Prefill favorites when opening (without overriding user choice)
-	useEffect(() => {
-		if (!open) return;
-
-		if (!bowId) {
-			const favBow = bows.find((b) => b.isFavorite);
-			if (favBow) setBowId(favBow.id);
-		}
-		if (!arrowsId) {
-			const favArrows = arrows.find((a) => a.isFavorite);
-			if (favArrows) setArrowsId(favArrows.id);
-		}
-	}, [open, bows, arrows, bowId, arrowsId]);
-
 	if (!open) return null;
+
+	const isEditMode = mode === 'edit';
+	const title = isEditMode ? 'Rediger trening' : 'Ny trening';
+	const submitLabel = isEditMode ? 'Lagre endringer' : 'Lagre trening';
 
 	return (
 		<div className={styles.overlay} onClick={onClose} role="presentation">
@@ -143,11 +174,11 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 				onClick={(e) => e.stopPropagation()}
 				role="dialog"
 				aria-modal="true"
-				aria-labelledby="practice-create-title"
+				aria-labelledby="practice-form-title"
 			>
 				<div className={styles.header}>
-					<h3 id="practice-create-title" className={styles.title}>
-						Ny trening
+					<h3 id="practice-form-title" className={styles.title}>
+						{title}
 					</h3>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
 						<X size={20} />
@@ -235,10 +266,18 @@ export const PracticeCreateModal: React.FC<PracticeCreateModalProps> = ({
 					/>
 
 					<div className={styles.actions}>
-						<Button label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" width={160} disabled={submitting} />
 						<Button
-							label={submitting ? 'Lagrer...' : 'Lagre trening'}
+							type="button"
+							label="Avbryt"
+							onClick={onClose}
+							variant="standard"
+							buttonType="outline"
+							width={160}
+							disabled={submitting}
+						/>
+						<Button
 							type="submit"
+							label={submitting ? 'Lagrer...' : submitLabel}
 							variant="standard"
 							disabled={submitting}
 							loading={submitting}

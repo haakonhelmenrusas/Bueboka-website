@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { PracticeDetailsModal } from './PracticeDetailsModal';
+import { PracticeDetailsModal } from '@/components';
 import { Environment, WeatherCondition } from '@/lib/prismaEnums';
 
 const practice = {

@@ -17,8 +17,7 @@ import { ProfileEditModal } from './ProfileEditModal/ProfileEditModal';
 import { PracticeCard } from './Practices/PracticeCard';
 import { PracticesList } from './Practices/PracticesList';
 import { PracticeDetailsModal } from './Practices/PracticeDetailsModal';
-import { PracticeCreateModal } from './Practices/PracticeCreateModal';
-import { PracticeEditModal } from './Practices/PracticeEditModal';
+import { PracticeFormModal } from './Practices/PracticeFormModal';
 import { Select } from './common/Select/Select';
 import { BowModal } from './BowModal/BowModal';
 import { ArrowsModal } from './ArrowsModal/ArrowsModal';
@@ -56,8 +55,7 @@ export {
 	PracticeCard,
 	PracticesList,
 	PracticeDetailsModal,
-	PracticeCreateModal,
-	PracticeEditModal,
+	PracticeFormModal,
 	Select,
 	BowModal,
 	ArrowsModal,

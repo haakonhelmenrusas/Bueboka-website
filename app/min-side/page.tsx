@@ -8,9 +8,8 @@ import {
 	BowModal,
 	EquipmentSection,
 	Header,
-	PracticeCreateModal,
 	PracticeDetailsModal,
-	PracticeEditModal,
+	PracticeFormModal,
 	PracticesSection,
 	ProfileCard,
 	ProfileEditModal,
@@ -22,7 +21,7 @@ import {
 import { MyPageSkeleton } from './Skeleton';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import * as Sentry from '@sentry/nextjs';
-import { PracticeCreateInput } from '@/components/Practices/PracticeCreateModal';
+import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
 
 export default function MyPage() {
@@ -31,8 +30,8 @@ export default function MyPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
 	const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
-	const [createPracticeOpen, setCreatePracticeOpen] = useState(false);
-	const [editPracticeOpen, setEditPracticeOpen] = useState(false);
+	const [practiceFormOpen, setPracticeFormOpen] = useState(false);
+	const [practiceFormMode, setPracticeFormMode] = useState<'create' | 'edit'>('create');
 	const [profileModalOpen, setProfileModalOpen] = useState(false);
 	const [bowModalOpen, setBowModalOpen] = useState(false);
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
@@ -86,10 +85,14 @@ export default function MyPage() {
 		}
 	};
 
-	const handleCreatePractice = async (input: PracticeCreateInput) => {
+	const handleSavePractice = async (input: PracticeFormInput) => {
+		const isEditMode = practiceFormMode === 'edit';
+		const url = isEditMode && selectedPractice ? `/api/practices/${selectedPractice.id}` : '/api/practices';
+		const method = isEditMode ? 'PATCH' : 'POST';
+
 		try {
-			const res = await fetch('/api/practices', {
-				method: 'POST',
+			const res = await fetch(url, {
+				method,
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(input),
 			});
@@ -102,7 +105,7 @@ export default function MyPage() {
 					// ignore
 				}
 
-				let errMsg: string = 'Kunne ikke lagre trening';
+				let errMsg: string = `Kunne ikke ${isEditMode ? 'oppdatere' : 'lagre'} trening`;
 				const fieldErrors = details && typeof details === 'object' ? (details as any).fieldErrors : undefined;
 				if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
 					const msgs = Object.entries(fieldErrors)
@@ -118,8 +121,12 @@ export default function MyPage() {
 
 			setPracticeReloadKey((k) => k + 1);
 			await fetchStats();
+			setPracticeFormOpen(false);
+			if (isEditMode) {
+				setSelectedPractice(null);
+			}
 		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'create-practice' } });
+			Sentry.captureException(err, { tags: { page: 'min-side', action: isEditMode ? 'edit-practice' : 'create-practice' } });
 			throw err;
 		}
 	};
@@ -129,46 +136,6 @@ export default function MyPage() {
 		setSelectedPractice((prev) => (prev?.id === id ? null : prev));
 		setPracticeModalOpen(false);
 		await fetchStats();
-	};
-
-	const handleEditPractice = async (input: PracticeCreateInput & { id: string }) => {
-		const { id, ...data } = input;
-		try {
-			const res = await fetch(`/api/practices/${id}`, {
-				method: 'PATCH',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(data),
-			});
-
-			if (!res.ok) {
-				let details: any = null;
-				try {
-					details = await res.json();
-				} catch {
-					// ignore
-				}
-
-				let errMsg: string = 'Kunne ikke oppdatere trening';
-				const fieldErrors = details && typeof details === 'object' ? (details as any).fieldErrors : undefined;
-				if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
-					const msgs = Object.entries(fieldErrors)
-						.map(([field, msg]) => `${field}: ${msg}`)
-						.join('\n');
-					errMsg = `Manglende/ugyldige felt:\n${msgs}`;
-				} else if (details && typeof details === 'object' && (details as any).error) {
-					errMsg = (details as any).error;
-				}
-
-				return Promise.reject(new Error(errMsg));
-			}
-
-			setPracticeReloadKey((k) => k + 1);
-			setEditPracticeOpen(false);
-			await fetchStats();
-		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'edit-practice' } });
-			throw err;
-		}
 	};
 
 	const handleSelectPractice = async (id: string) => {
@@ -242,7 +209,10 @@ export default function MyPage() {
 				}}
 			/>
 			<PracticesSection
-				onCreate={() => setCreatePracticeOpen(true)}
+				onCreate={() => {
+					setPracticeFormMode('create');
+					setPracticeFormOpen(true);
+				}}
 				onSelectPractice={handleSelectPractice}
 				reloadKey={practiceReloadKey}
 				deletedPracticeId={deletedPracticeId}
@@ -312,31 +282,23 @@ export default function MyPage() {
 				}}
 				onEdit={() => {
 					setPracticeModalOpen(false);
-					setEditPracticeOpen(true);
+					setPracticeFormMode('edit');
+					setPracticeFormOpen(true);
 				}}
 				onDeleted={handlePracticeDeleted}
 			/>
-			<PracticeCreateModal
-				open={createPracticeOpen}
-				onClose={() => setCreatePracticeOpen(false)}
-				onCreate={handleCreatePractice}
-				roundTypes={roundTypes}
-				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
-				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
-			/>
-			<PracticeEditModal
-				open={editPracticeOpen}
+			<PracticeFormModal
+				open={practiceFormOpen}
+				mode={practiceFormMode}
 				onClose={() => {
-					setEditPracticeOpen(false);
-					setSelectedPractice(null);
-				}}
-				onSave={async (input) => {
-					if (selectedPractice) {
-						await handleEditPractice({ ...input, id: selectedPractice.id });
+					setPracticeFormOpen(false);
+					if (practiceFormMode === 'edit') {
+						setSelectedPractice(null);
 					}
 				}}
+				onSave={handleSavePractice}
 				practice={
-					selectedPractice
+					practiceFormMode === 'edit' && selectedPractice
 						? {
 								id: selectedPractice.id,
 								date: selectedPractice.date,
