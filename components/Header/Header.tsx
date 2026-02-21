@@ -22,6 +22,13 @@ export function Header() {
 	// Check if we're on an authenticated page
 	const isAuthPage = pathname === '/min-side' || pathname === '/settings';
 
+	// Check if we're on an auth form page (login/signup)
+	const isAuthFormPage =
+		pathname === '/logg-inn' || pathname === '/ny-bruker' || pathname === '/glemt-passord' || pathname === '/tilbakestill-passord';
+
+	// Determine logo destination
+	const logoHref = isAuthFormPage ? '/' : session?.user ? '/min-side' : '/';
+
 	const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
 	const closeMobileMenu = () => setMobileMenuOpen(false);
 
@@ -51,15 +58,13 @@ export function Header() {
 	};
 
 	const handleLogoClick = (e: React.MouseEvent) => {
-		if (typeof window === 'undefined') return;
-
-		const currentUrl = window.location.href;
-		const targetUrl = window.location.origin + window.location.pathname;
-
-		if (currentUrl === targetUrl) {
+		// Only prevent default navigation if we're on the homepage and trying to go to homepage
+		// This allows smooth scrolling on homepage, but normal navigation from auth pages
+		if (pathname === '/' && logoHref === '/') {
 			e.preventDefault();
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
+		// For all other cases (like /logg-inn -> /), let the normal Link navigation happen
 	};
 
 	const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
@@ -91,7 +96,7 @@ export function Header() {
 		<header className={`${styles.header} ${styles.headerEnter}`}>
 			<div className={styles.container}>
 				<div className={styles.row}>
-					<Link href={session?.user ? '/min-side' : '/'} onClick={handleLogoClick} className={styles.logoLink}>
+					<Link href={logoHref} onClick={handleLogoClick} className={styles.logoLink}>
 						<div className={styles.logoBox}>
 							<Image width={24} height={24} priority src="/assets/logo.png" alt="Bueboka Logo" className={styles.logoImg} />
 						</div>

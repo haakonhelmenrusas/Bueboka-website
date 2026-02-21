@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { signIn } from '@/lib/auth-client';
-import { Button, Header, Input, SocialAuthButtons } from '@/components';
+import { Button, Input, SocialAuthButtons } from '@/components';
 import { validateLoginForm } from '@/lib/validations/authValidation';
+import { BarChart3, Target, TrendingUp } from 'lucide-react';
 import styles from './page.module.css';
 
 export default function SignInPage() {
@@ -61,68 +63,116 @@ export default function SignInPage() {
 			<a href="#main-content" className="skip-link">
 				Gå til hovedinnhold
 			</a>
-			<Header />
-			<main id="main-content" className={styles.card}>
-				<div className={styles.formWrapper}>
-					<div className={styles.header}>
-						<h1 className={styles.title}>Logg inn</h1>
-					</div>
-					{error && (
-						<div className={styles.errorBox} role="alert" aria-live="polite">
-							{error}
-						</div>
-					)}
-					<form onSubmit={handleSubmit} className={styles.form} aria-label="Logg inn skjema">
-						<div className={styles.inputGroup}>
-							<div>
-								<Input
-									label="E-postadresse"
-									id="email"
-									name="email"
-									type="email"
-									autoComplete="email"
-									disabled={isSubmitting}
-									onFocus={() => clearFieldError('email')}
-								/>
-								{fieldErrors.email && (
-									<div className={styles.fieldError} role="alert">
-										{fieldErrors.email}
-									</div>
-								)}
-							</div>
-							<div className={styles.passwordInput}>
-								<Input
-									label="Passord"
-									id="password"
-									name="password"
-									type="password"
-									autoComplete="current-password"
-									disabled={isSubmitting}
-									onFocus={() => clearFieldError('password')}
-								/>
-								{fieldErrors.password && (
-									<div className={styles.fieldError} role="alert">
-										{fieldErrors.password}
-									</div>
-								)}
-							</div>
-						</div>
-						<div className={styles.forgotLinkRow}>
-							<Link href="/glemt-passord" className="text-sm underline">
-								Glemt passord?
-							</Link>
-						</div>
-						<Button type="submit" label="Logg inn" loading={isSubmitting} disabled={isSubmitting} />
-					</form>
-					<div className={styles.authActions}>
-						<SocialAuthButtons
-							provider="google"
-							label="Logg på med Google"
-							onClick={() => signIn.social({ provider: 'google', callbackURL: '/min-side' })}
-							disabled={isSubmitting}
-						/>
-					</div>
+			{/* Small navigation logo */}
+			<Link href="/" className={styles.navLogo} aria-label="Gå til forsiden">
+				<div className={styles.navLogoBox} aria-hidden="true">
+					<Image width={24} height={24} src="/assets/logo.png" alt="" className={styles.navLogoImg} />
 				</div>
+				<span className={styles.navBrand}>Bueboka</span>
+			</Link>
+
+			<main id="main-content" className={styles.layout}>
+				<section className={styles.brandSection} aria-labelledby="brand-heading">
+					<div className={styles.brandContent}>
+						{/* Big decorative logo */}
+						<div className={styles.bigLogoBox} aria-hidden="true">
+							<Image width={80} height={80} priority src="/assets/logo.png" alt="" className={styles.bigLogoImg} />
+						</div>
+						<h1 id="brand-heading" className={styles.brandTitle}>
+							Bueboka
+						</h1>
+						<p className={styles.brandDescription}>
+							Din komplette treningspartner for bueskyting. Logg økter, følg fremgang og optimaliser siktemerkene dine.
+						</p>
+						<ul className={styles.brandFeatures} aria-label="Hovedfunksjoner">
+							<li className={styles.feature}>
+								<BarChart3 size={32} className={styles.featureIcon} aria-hidden="true" />
+								<span>Detaljert statistikk</span>
+							</li>
+							<li className={styles.feature}>
+								<Target size={32} className={styles.featureIcon} aria-hidden="true" />
+								<span>Siktemerke-beregning</span>
+							</li>
+							<li className={styles.feature}>
+								<TrendingUp size={32} className={styles.featureIcon} aria-hidden="true" />
+								<span>Følg din utvikling</span>
+							</li>
+						</ul>
+					</div>
+				</section>
+
+				<section className={styles.formSection} aria-labelledby="login-heading">
+					<div className={styles.card}>
+						<div className={styles.formWrapper}>
+							<div className={styles.header}>
+								<h2 id="login-heading" className={styles.title}>
+									Logg inn
+								</h2>
+							</div>
+							{error && (
+								<div className={styles.errorBox} role="alert" aria-live="polite" aria-atomic="true">
+									{error}
+								</div>
+							)}
+							<form onSubmit={handleSubmit} className={styles.form} noValidate>
+								<fieldset className={styles.inputGroup}>
+									<legend className="sr-only">Innloggingsinformasjon</legend>
+									<div>
+										<Input
+											label="E-postadresse"
+											id="email"
+											name="email"
+											type="email"
+											autoComplete="email"
+											disabled={isSubmitting}
+											required
+											aria-required="true"
+											onFocus={() => clearFieldError('email')}
+										/>
+										{fieldErrors.email && (
+											<div className={styles.fieldError} role="alert" aria-live="polite">
+												{fieldErrors.email}
+											</div>
+										)}
+									</div>
+									<div className={styles.passwordInput}>
+										<Input
+											label="Passord"
+											id="password"
+											name="password"
+											type="password"
+											autoComplete="current-password"
+											disabled={isSubmitting}
+											required
+											aria-required="true"
+											onFocus={() => clearFieldError('password')}
+										/>
+										{fieldErrors.password && (
+											<div className={styles.fieldError} role="alert" aria-live="polite">
+												{fieldErrors.password}
+											</div>
+										)}
+									</div>
+								</fieldset>
+								<div className={styles.forgotLinkRow}>
+									<Link href="/glemt-passord">Glemt passord?</Link>
+								</div>
+								<Button type="submit" label="Logg inn" loading={isSubmitting} disabled={isSubmitting} />
+							</form>
+							<div className={styles.authActions}>
+								<SocialAuthButtons
+									provider="google"
+									label="Logg på med Google"
+									onClick={() => signIn.social({ provider: 'google', callbackURL: '/min-side' })}
+									disabled={isSubmitting}
+								/>
+							</div>
+							<div className={styles.signupPrompt}>
+								Har du ikke en konto? <Link href="/ny-bruker">Opprett bruker</Link>
+							</div>
+						</div>
+					</div>
+				</section>
 			</main>
 		</div>
 	);
