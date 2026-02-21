@@ -24,9 +24,9 @@ export default function Home() {
 			<main id="main-content">
 				<Header />
 				<HeroSection />
-				<CallToAction />
 				<Features />
 				<Privacy />
+				<CallToAction />
 				<Contributors />
 				<Sponsors />
 				<Footer />

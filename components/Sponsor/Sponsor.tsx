@@ -20,10 +20,12 @@ export function Sponsors() {
 	];
 
 	return (
-		<section id="sponsors" className={styles.section}>
+		<section id="sponsors" className={styles.section} aria-labelledby="sponsors-heading">
 			<div className={styles.container}>
 				<div className={`${styles.textCenter} ${styles.mb16} ${styles.reveal}`}>
-					<h2 className={styles.title}>Våre samarbeidspartnere</h2>
+					<h2 id="sponsors-heading" className={styles.title}>
+						Våre samarbeidspartnere
+					</h2>
 					<p className={styles.subtitle}>Vi er stolte av å samarbeide med ledende aktører i bueskyting-miljøet som støtter vår visjon.</p>
 				</div>
 				<div className={styles.gridCards}>

@@ -8,7 +8,7 @@ export function HeroSection() {
 	// get window width
 	const windowWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
 	return (
-		<section className={styles.section}>
+		<section className={styles.section} aria-label="Hovedbanner">
 			<HeroBackground />
 			<div className={styles.container}>
 				<div className={styles.grid}>

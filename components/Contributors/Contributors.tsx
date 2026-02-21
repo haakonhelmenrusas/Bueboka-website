@@ -33,10 +33,12 @@ export function Contributors() {
 	];
 
 	return (
-		<section id="team" className={styles.section}>
+		<section id="team" className={styles.section} aria-labelledby="team-heading">
 			<div className={styles.container}>
 				<div className={`${styles.textCenter} ${styles.mb16} ${styles.reveal}`}>
-					<h2 className={styles.title}>Møt teamet</h2>
+					<h2 id="team-heading" className={styles.title}>
+						Møt teamet
+					</h2>
 					<p className={styles.subtitle}>
 						De lidenskapelige personene bak Bueboka som er dedikert til å forbedre bueskyting-opplevelsen for alle.
 					</p>

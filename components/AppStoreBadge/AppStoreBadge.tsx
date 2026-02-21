@@ -4,7 +4,13 @@ export function AppStoreBadge({ store, href }: { store: 'ios' | 'android'; href:
 	const isIOS = store === 'ios';
 
 	return (
-		<a href={href} className={styles.link}>
+		<a
+			href={href}
+			className={styles.link}
+			aria-label={isIOS ? 'Last ned Bueboka på App Store' : 'Få Bueboka på Google Play'}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
 			<div className={styles.badge}>
 				<div className={styles.icon}>
 					{isIOS ? (

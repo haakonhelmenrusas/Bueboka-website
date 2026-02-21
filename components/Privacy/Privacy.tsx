@@ -3,11 +3,13 @@ import styles from './Privacy.module.css';
 
 export function Privacy() {
 	return (
-		<section className={styles.section}>
+		<section className={styles.section} aria-labelledby="privacy-heading">
 			<div className={styles.container}>
 				<div className={styles.content}>
 					<div className={`${styles.reveal} ${styles.textCenter} ${styles.headerBlock}`}>
-						<h2 className={styles.title}>Dine data er trygge hos oss</h2>
+						<h2 id="privacy-heading" className={styles.title}>
+							Dine data er trygge hos oss
+						</h2>
 						<p className={styles.subtitle}>
 							Vi tar personvern på alvor og forplikter oss til å beskytte informasjonen din. Hos Bueboka har du full kontroll over dine egne
 							data.
@@ -15,7 +17,7 @@ export function Privacy() {
 					</div>
 					<div className={styles.grid}>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '0ms' }}>
-							<div className={styles.iconBox}>
+							<div className={styles.iconBox} aria-hidden="true">
 								<Shield className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>100% personvern</h3>
@@ -25,7 +27,7 @@ export function Privacy() {
 							</p>
 						</div>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '160ms' }}>
-							<div className={styles.iconBox}>
+							<div className={styles.iconBox} aria-hidden="true">
 								<Target className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>Kun til appens drift</h3>
@@ -35,7 +37,7 @@ export function Privacy() {
 							</p>
 						</div>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '320ms' }}>
-							<div className={styles.iconBox}>
+							<div className={styles.iconBox} aria-hidden="true">
 								<Key className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>Din kontroll</h3>
