@@ -1,4 +1,4 @@
-import { Target, ToolCase, ChartBar } from 'lucide-react';
+import { ChartBar, Target, ToolCase } from 'lucide-react';
 import styles from './Features.module.css';
 
 export function Features() {
@@ -39,13 +39,13 @@ export function Features() {
 					))}
 				</div>
 				<div className={`${styles.cta} ${styles.reveal}`} style={{ animationDelay: '600ms' }}>
-					<h3 className={styles.ctaTitle}>Se hva som kommer</h3>
-					<p className={styles.ctaText}>Med tilbakemeldinger fra klubber og skyttere bygger vi en tjeneste for alle.</p>
+					<h3 className={styles.ctaTitle}>Nye funksjoner tilgjengelig nå!</h3>
+					<p className={styles.ctaText}>Vi har lansert statistikk og enkel pålogging med e-post eller Google. Kom i gang i dag!</p>
 					<div className={styles.tiles}>
 						<div>
 							<div className={styles.bulletContainer}>
 								<div className={styles.bullet} />
-								<p>Statistikk</p>
+								<p>Detaljert statistikk ✨</p>
 							</div>
 							<div
 								className={`${styles.tile}`}
@@ -57,24 +57,24 @@ export function Features() {
 						<div>
 							<div className={styles.bulletContainer}>
 								<div className={styles.bullet} />
-								<p>Registrering av score</p>
+								<p>Innlogging med Google ✨</p>
 							</div>
 							<div
 								className={`${styles.tile}`}
 								style={{
-									backgroundImage: `url('https://plus.unsplash.com/premium_photo-1718315730752-eb55b9b6afa8?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
+									backgroundImage: `url('https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGFuYWx5dGljcyUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NTUxNzUxOTF8MA&ixlib=rb-4.1.0&q=80&w=1080')`,
 								}}
 							/>
 						</div>
 						<div>
 							<div className={styles.bulletContainer}>
 								<div className={styles.bullet} />
-								<p>Innlogging med Google/Apple</p>
+								<p>Snart: Registrering av score</p>
 							</div>
 							<div
 								className={`${styles.tile}`}
 								style={{
-									backgroundImage: `url('https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGFuYWx5dGljcyUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NTUxNzUxOTF8MA&ixlib=rb-4.1.0&q=80&w=1080')`,
+									backgroundImage: `url('https://plus.unsplash.com/premium_photo-1718315730752-eb55b9b6afa8?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
 								}}
 							/>
 						</div>

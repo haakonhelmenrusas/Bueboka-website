@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Contributors, Features, Footer, Header, HeroSection, Sponsors } from '@/components';
+import { Contributors, Features, Footer, Header, HeroSection, Privacy, Sponsors } from '@/components';
 import { useSession } from '@/lib/auth-client';
 
 export default function Home() {
@@ -25,6 +25,7 @@ export default function Home() {
 				<Header />
 				<HeroSection />
 				<Features />
+				<Privacy />
 				<Contributors />
 				<Sponsors />
 				<Footer />

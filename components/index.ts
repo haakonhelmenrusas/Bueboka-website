@@ -34,6 +34,7 @@ import { SightMarksSection } from './SightMarks/SightMarksSection';
 import { EmailVerificationBanner } from './EmailVerificationBanner/EmailVerificationBanner';
 import { SocialAuthButtons } from '@/components/common/SocialAuthButtons/SocialAuthButtons';
 import { Tooltip } from './common/Tooltip/Tooltip';
+import { Privacy } from './Privacy/Privacy';
 
 export {
 	Header,
@@ -72,6 +73,7 @@ export {
 	EmailVerificationBanner,
 	SocialAuthButtons,
 	Tooltip,
+	Privacy,
 };
 
 export * from './common/StatsSummary/StatsSummary';
