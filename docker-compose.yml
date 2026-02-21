@@ -4,15 +4,15 @@ services:
     restart: always
     container_name: bueboka-postgres
     environment:
-      POSTGRES_DB: bueboka
-      POSTGRES_USER: bueboka
-      POSTGRES_PASSWORD: bueboka
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - '5432:5432'
     volumes:
       - bueboka_pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U bueboka -d bueboka']
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
       interval: 5s
       timeout: 5s
       retries: 10
