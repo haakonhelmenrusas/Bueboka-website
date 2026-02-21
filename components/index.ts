@@ -35,6 +35,7 @@ import { EmailVerificationBanner } from './EmailVerificationBanner/EmailVerifica
 import { SocialAuthButtons } from '@/components/common/SocialAuthButtons/SocialAuthButtons';
 import { Tooltip } from './common/Tooltip/Tooltip';
 import { Privacy } from './Privacy/Privacy';
+import { CallToAction } from './CallToAction/CallToAction';
 
 export {
 	Header,
@@ -74,6 +75,7 @@ export {
 	SocialAuthButtons,
 	Tooltip,
 	Privacy,
+	CallToAction,
 };
 
 export * from './common/StatsSummary/StatsSummary';
