@@ -196,7 +196,10 @@ export default function SignUpPage() {
 								/>
 							</div>
 							<div className={styles.loginPrompt}>
-								Har du allerede en konto? <Link href="/logg-inn">Logg inn her</Link>
+								Har du allerede en konto?{' '}
+								<Link tabIndex={0} href="/logg-inn">
+									Logg inn her
+								</Link>
 							</div>
 						</div>
 					</div>

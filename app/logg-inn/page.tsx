@@ -155,7 +155,9 @@ export default function SignInPage() {
 									</div>
 								</fieldset>
 								<div className={styles.forgotLinkRow}>
-									<Link href="/glemt-passord">Glemt passord?</Link>
+									<Link tabIndex={0} href="/glemt-passord">
+										Glemt passord?
+									</Link>
 								</div>
 								<Button type="submit" label="Logg inn" loading={isSubmitting} disabled={isSubmitting} />
 							</form>
@@ -168,7 +170,10 @@ export default function SignInPage() {
 								/>
 							</div>
 							<div className={styles.signupPrompt}>
-								Har du ikke en konto? <Link href="/ny-bruker">Opprett bruker</Link>
+								Har du ikke en konto?{' '}
+								<Link tabIndex={0} href="/ny-bruker">
+									Opprett bruker
+								</Link>
 							</div>
 						</div>
 					</div>
