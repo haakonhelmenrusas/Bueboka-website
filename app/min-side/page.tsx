@@ -16,7 +16,6 @@ import {
 	SightMarksSection,
 	StatsSummary,
 	usePracticeDetails,
-	useRoundTypes,
 } from '@/components';
 import { MyPageSkeleton } from './Skeleton';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
@@ -41,7 +40,6 @@ export default function MyPage() {
 	const [practiceReloadKey, setPracticeReloadKey] = useState(0);
 	const [deletedPracticeId, setDeletedPracticeId] = useState<string | null>(null);
 	const { fetchPracticeDetails } = usePracticeDetails();
-	const { roundTypes } = useRoundTypes();
 	const { bows, arrows } = useEquipmentData();
 	const router = useRouter();
 
@@ -306,14 +304,15 @@ export default function MyPage() {
 								location: selectedPractice.location,
 								environment: selectedPractice.environment,
 								weather: selectedPractice.weather,
+								practiceType: (selectedPractice as any).practiceType,
 								notes: selectedPractice.notes,
 								roundTypeId: selectedPractice.roundTypeId,
 								bowId: selectedPractice.bowId,
 								arrowsId: selectedPractice.arrowsId,
+								ends: (selectedPractice as any).ends,
 							}
 						: undefined
 				}
-				roundTypes={roundTypes}
 				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
 			/>

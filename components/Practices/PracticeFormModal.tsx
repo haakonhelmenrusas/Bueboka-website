@@ -2,21 +2,41 @@
 
 import { useEffect, useState } from 'react';
 import styles from './PracticeFormModal.module.css';
-import { CloudSun, Home, MapPin, Target, Trees, X } from 'lucide-react';
-import type { WeatherCondition } from '@/lib/prismaEnums';
+import { CloudSun, Home, MapPin, Trees, X } from 'lucide-react';
+import type { PracticeType, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
-import { getWeatherSelectOptions } from '@/lib/weatherUtils';
+
+// Weather select options
+const getWeatherSelectOptions = () => [
+	{ value: 'SUN', label: 'Sol' },
+	{ value: 'CLOUDED', label: 'Skyet' },
+	{ value: 'CLEAR', label: 'Klarvær' },
+	{ value: 'RAIN', label: 'Regn' },
+	{ value: 'WIND', label: 'Vind' },
+	{ value: 'SNOW', label: 'Snø' },
+	{ value: 'FOG', label: 'Tåke' },
+	{ value: 'THUNDER', label: 'Torden' },
+	{ value: 'CHANGING_CONDITIONS', label: 'Skiftende forhold' },
+	{ value: 'OTHER', label: 'Annet' },
+];
+
+export interface RoundInput {
+	distanceMeters: number;
+	targetType: string;
+	numberArrows: number;
+	roundScore: number;
+}
 
 export interface PracticeFormInput {
 	date: string; // ISO
-	arrowsShot: number;
 	location?: string;
 	environment: Environment;
 	weather: WeatherCondition[];
+	practiceType: PracticeType;
 	notes?: string;
-	roundTypeId?: string;
+	rounds: RoundInput[];
 	bowId?: string;
 	arrowsId?: string;
 }
@@ -33,39 +53,47 @@ interface PracticeFormModalProps {
 		location?: string | null;
 		environment: Environment;
 		weather: WeatherCondition[];
+		practiceType?: PracticeType | null;
 		notes?: string | null;
 		roundTypeId?: string | null;
 		bowId?: string | null;
 		arrowsId?: string | null;
+		ends?: Array<{
+			id: string;
+			arrows: number;
+			distanceMeters?: number | null;
+			targetSizeCm?: number | null;
+			roundScore?: number | null;
+		}>;
 	};
 	bows?: Array<{ id: string; name: string; type: string; isFavorite?: boolean }>;
 	arrows?: Array<{ id: string; name: string; material: string; isFavorite?: boolean }>;
-	roundTypes?: Array<{ id: string; name: string; distanceMeters?: number | null; targetSizeCm?: number | null }>;
 }
 
-export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
-	open,
-	onClose,
-	onSave,
-	mode,
-	practice,
-	bows = [],
-	arrows = [],
-	roundTypes = [],
-}) => {
+export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onClose, onSave, mode, practice, bows = [], arrows = [] }) => {
 	useModalBehavior({ open, onClose });
 
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
-	const [arrowsShot, setArrowsShot] = useState<number>(0);
 	const [location, setLocation] = useState('');
 	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
 	const [weather, setWeather] = useState<WeatherCondition[]>([]);
+	const [practiceType, setPracticeType] = useState<PracticeType>('TRENING');
 	const [notes, setNotes] = useState('');
-	const [roundTypeId, setRoundTypeId] = useState<string>('');
+	const [rounds, setRounds] = useState<RoundInput[]>([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
 	const [bowId, setBowId] = useState<string>('');
 	const [arrowsId, setArrowsId] = useState<string>('');
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+
+	// Target type options - TODO: can be expanded based on requirements
+	const targetTypeOptions = [
+		{ value: '40cm', label: '40cm' },
+		{ value: '60cm', label: '60cm' },
+		{ value: '80cm', label: '80cm' },
+		{ value: '122cm', label: '122cm' },
+		{ value: '3-spot', label: '3-spot' },
+		{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
+	];
 
 	// Initialize form based on mode
 	useEffect(() => {
@@ -74,23 +102,42 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 		if (mode === 'edit' && practice) {
 			// Edit mode: prefill with practice data
 			setDate(practice.date.split('T')[0]);
-			setArrowsShot(practice.arrowsShot);
 			setLocation(practice.location || '');
 			setEnvironment(practice.environment);
 			setWeather(practice.weather || []);
+			setPracticeType(practice.practiceType || 'TRENING');
 			setNotes(practice.notes || '');
-			setRoundTypeId(practice.roundTypeId || '');
+
+			// Extract rounds from ends data
+			if (practice.ends && practice.ends.length > 0) {
+				const extractedRounds = practice.ends.map((end) => {
+					// Convert targetSizeCm back to targetType format (e.g., 40 -> "40cm")
+					const targetType = end.targetSizeCm ? `${end.targetSizeCm}cm` : '';
+
+					return {
+						distanceMeters: end.distanceMeters || 0,
+						targetType: targetType,
+						numberArrows: end.arrows || 0,
+						roundScore: end.roundScore || 0,
+					};
+				});
+				setRounds(extractedRounds);
+			} else {
+				// No ends data, start with one empty round
+				setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+			}
+
 			setBowId(practice.bowId || '');
 			setArrowsId(practice.arrowsId || '');
 		} else {
 			// Create mode: reset to defaults
 			setDate(new Date().toISOString().slice(0, 10));
-			setArrowsShot(0);
 			setLocation('');
 			setEnvironment(Environment.INDOOR);
 			setWeather([]);
+			setPracticeType('TRENING');
 			setNotes('');
-			setRoundTypeId('');
+			setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
 			setBowId('');
 			setArrowsId('');
 		}
@@ -118,31 +165,39 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 		}
 	}, [environment]);
 
-	const roundTypeOptions = roundTypes.map((r) => {
-		const values: string[] = [];
-		if (r.distanceMeters) values.push(`${r.distanceMeters}m`);
-		if (r.targetSizeCm) values.push(`${r.targetSizeCm}cm`);
-		const subtitle = values.length ? values.join(' • ') : undefined;
-		return {
-			value: r.id,
-			label: r.name,
-			subtitle,
-		};
-	});
+	// Helper functions for managing rounds
+	const addRound = () => {
+		setRounds([...rounds, { distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+	};
+
+	const updateRound = (index: number, field: keyof RoundInput, value: number | string) => {
+		const newRounds = [...rounds];
+		newRounds[index] = { ...newRounds[index], [field]: value };
+		setRounds(newRounds);
+	};
+
+	const removeRound = (index: number) => {
+		if (rounds.length > 1) {
+			setRounds(rounds.filter((_, i) => i !== index));
+		}
+	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setSubmitting(true);
 		setError(null);
 		try {
+			// Filter out empty rounds (where no values are set)
+			const validRounds = rounds.filter((r) => r.distanceMeters > 0 || r.targetType || r.numberArrows > 0 || r.roundScore > 0);
+
 			await onSave({
 				date: new Date(date).toISOString(),
-				arrowsShot,
 				location: location || undefined,
 				environment,
 				weather,
+				practiceType,
 				notes: notes || undefined,
-				roundTypeId: roundTypeId || undefined,
+				rounds: validRounds,
 				bowId: bowId || undefined,
 				arrowsId: arrowsId || undefined,
 			});
@@ -157,6 +212,10 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 	const environmentOptions = [
 		{ value: Environment.INDOOR, label: 'Inne', icon: <Home size={16} /> },
 		{ value: Environment.OUTDOOR, label: 'Ute', icon: <Trees size={16} /> },
+	];
+	const practiceTypeOptions = [
+		{ value: 'TRENING', label: 'Trening' },
+		{ value: 'KONKURRANSE', label: 'Konkurranse' },
 	];
 	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}` }));
 	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}` }));
@@ -184,24 +243,18 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 						<X size={20} />
 					</button>
 				</div>
-
 				{error && <div className={styles.error}>{error}</div>}
-
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<div className={styles.row}>
 						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
-						<NumberInput
-							label="Antall skutte piler"
-							value={arrowsShot}
-							onChange={setArrowsShot}
-							min={0}
-							step={1}
-							startEmpty={false}
-							emptyBehavior="clamp"
+						<Select
+							label="Type"
+							value={practiceType}
+							onChange={(v) => setPracticeType(v as PracticeType)}
+							options={practiceTypeOptions}
 							containerClassName={styles.field}
 						/>
 					</div>
-
 					<div className={styles.row}>
 						<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
 						<Select
@@ -212,7 +265,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 							containerClassName={styles.field}
 						/>
 					</div>
-
 					{environment === Environment.OUTDOOR ? (
 						<Select
 							label="Vær"
@@ -226,7 +278,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 							containerClassName={styles.field}
 						/>
 					) : null}
-
 					<div className={styles.row}>
 						<Select
 							label="Bue"
@@ -245,26 +296,67 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 							containerClassName={styles.field}
 						/>
 					</div>
-
-					<div className={styles.row}>
-						<Select
-							label="Runde"
-							value={roundTypeId}
-							onChange={(v) => setRoundTypeId(v as string)}
-							placeholderLabel="Velg runde (valgfritt)"
-							options={roundTypeOptions.map((o) => ({ ...o, icon: <Target size={16} /> }))}
-							containerClassName={styles.field}
-						/>
+					<div className={styles.roundsSection}>
+						<h4 className={styles.sectionTitle}>Runder</h4>
+						{rounds.map((round, index) => (
+							<div key={index} className={styles.roundCard}>
+								<div className={styles.roundHeader}>
+									<span className={styles.roundNumber}>Runde {index + 1}</span>
+									{rounds.length > 1 && (
+										<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
+											<X size={16} />
+										</button>
+									)}
+								</div>
+								<div className={styles.roundInputs}>
+									<NumberInput
+										label="Avstand"
+										value={round.distanceMeters}
+										onChange={(v) => updateRound(index, 'distanceMeters', v)}
+										min={0}
+										step={1}
+										startEmpty={true}
+										containerClassName={styles.roundField}
+									/>
+									<Select
+										label="Blink"
+										value={round.targetType}
+										onChange={(v) => updateRound(index, 'targetType', v as string)}
+										placeholderLabel="Velg"
+										options={targetTypeOptions}
+										containerClassName={styles.roundField}
+									/>
+									<NumberInput
+										label="Piler"
+										value={round.numberArrows}
+										onChange={(v) => updateRound(index, 'numberArrows', v)}
+										min={0}
+										step={1}
+										startEmpty={true}
+										containerClassName={styles.roundField}
+									/>
+									<NumberInput
+										label="Score"
+										value={round.roundScore}
+										onChange={(v) => updateRound(index, 'roundScore', v)}
+										min={0}
+										step={1}
+										startEmpty={true}
+										containerClassName={styles.roundField}
+									/>
+								</div>
+							</div>
+						))}
+						<Button type="button" label="+ Legg til runde" onClick={addRound} variant="standard" buttonType="outline" width="100%" />
 					</div>
-
 					<TextArea
 						label="Notater"
 						value={notes}
 						onChange={(e) => setNotes(e.target.value)}
-						helpText="Hvordan gikk treningen?"
+						placeholder="Hvordan gikk treningen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
+						helpText="Dine tanker og observasjoner om treningen"
 						containerClassName={styles.field}
 					/>
-
 					<div className={styles.actions}>
 						<Button
 							type="button"

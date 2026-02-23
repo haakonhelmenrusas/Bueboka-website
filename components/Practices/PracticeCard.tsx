@@ -6,6 +6,7 @@ export interface PracticeCardProps {
 	id: string;
 	date: string; // ISO string
 	arrowsShot: number;
+	totalScore?: number;
 	location?: string | null;
 	environment?: string | null;
 	bowName?: string | null;
@@ -34,6 +35,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	id,
 	date,
 	arrowsShot,
+	totalScore,
 	location,
 	environment,
 	bowName,
@@ -52,9 +54,13 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	const roundText = roundTypeName ? (extraRoundEnv ? `${roundTypeName} • ${extraRoundEnv}` : roundTypeName) : null;
 	const envText = formatEnvironment(environment);
 
+	// Use totalScore if available, otherwise fallback to arrowsShot for backwards compatibility
+	const displayScore = totalScore ?? arrowsShot;
+
 	// Build accessible label
 	const ariaLabel = [
 		`Trening fra ${formattedDate}`,
+		`${displayScore} poeng`,
 		`${arrowsShot} piler skutt`,
 		roundText && `Runde: ${roundText}`,
 		location && `Sted: ${location}`,
@@ -109,8 +115,8 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 					</div>
 				) : null}
 				<div className={styles.arrowsCount}>
-					<span className={styles.arrowsNumber}>{arrowsShot}</span>
-					<span className={styles.arrowsLabel}>piler</span>
+					<span className={styles.arrowsNumber}>{displayScore}</span>
+					<span className={styles.arrowsLabel}>Score</span>
 				</div>
 			</div>
 		</button>

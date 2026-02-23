@@ -10,7 +10,7 @@ const practice = {
 	environment: Environment.INDOOR,
 	weather: [WeatherCondition.SUN, WeatherCondition.CLOUDED],
 	notes: 'God trening',
-	roundType: { name: '30m', distanceMeters: 30, targetSizeCm: 80 },
+	roundType: { name: '30m', distanceMeters: 30, targetType: { sizeCm: 80, type: '80cm', scoringZones: 10 } },
 	bow: { name: 'Recurve', type: 'RECURVE' },
 	arrows: { name: 'X10', material: 'KARBON' },
 	ends: [],

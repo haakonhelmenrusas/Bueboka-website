@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeDetailsModal.module.css';
-import { BowArrow, CloudSun, Hash, Home, MapPin, Navigation, NotebookText, Target, Trash2, Trees, X } from 'lucide-react';
+import { BowArrow, CloudSun, Home, MapPin, Navigation, NotebookText, Target, Trash2, Trees, X } from 'lucide-react';
 import type { WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -18,7 +18,10 @@ export interface PracticeDetails {
 	roundType?: {
 		name: string;
 		distanceMeters?: number | null;
-		targetSizeCm?: number | null;
+		targetType?: { sizeCm: number; type: string; scoringZones?: number } | null;
+		numberArrows?: number | null;
+		arrowsWithoutScore?: number | null;
+		roundScore?: number | null;
 	};
 	bow?: {
 		name: string;
@@ -35,6 +38,7 @@ export interface PracticeDetails {
 		distanceMeters?: number | null;
 		targetSizeCm?: number | null;
 		scores: number[];
+		roundScore?: number | null;
 	}>;
 }
 
@@ -80,6 +84,20 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 	// Use arrowsShot if available, otherwise fallback to calculating from ends
 	const totalArrows = practice.arrowsShot ?? practice.ends?.reduce((sum, end) => sum + (end.arrows ?? end.scores?.length ?? 0), 0) ?? 0;
 
+	// Calculate total score from round scores in ends
+	// First check if ends have a roundScore property (from the new structure)
+	// Otherwise fallback to summing individual arrow scores
+	const totalScore =
+		practice.ends?.reduce((sum, end) => {
+			// @ts-ignore - roundScore might exist on end
+			if (end.roundScore !== undefined) {
+				// @ts-ignore
+				return sum + (end.roundScore || 0);
+			}
+			// Fallback to summing scores array
+			return sum + (end.scores?.reduce((s, v) => s + v, 0) || 0);
+		}, 0) || 0;
+
 	const handleDelete = async () => {
 		setDeleting(true);
 		setDeleteError(null);
@@ -114,124 +132,133 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				aria-labelledby="practice-details-title"
 			>
 				<div className={styles.header}>
-					<h3 id="practice-details-title" className={styles.title}>
-						Trening <span className={styles.titleDate}>{formattedDate}</span>
-					</h3>
+					<div className={styles.headerContent}>
+						<h3 id="practice-details-title" className={styles.title}>
+							{formattedDate}
+						</h3>
+						<div className={styles.envBadge}>
+							{practice.environment === 'INDOOR' ? (
+								<>
+									<Home size={16} />
+									<span>Inne</span>
+								</>
+							) : (
+								<>
+									<Trees size={16} />
+									<span>Ute</span>
+								</>
+							)}
+						</div>
+					</div>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={20} />
+						<X size={24} />
 					</button>
 				</div>
-				<div className={styles.grid}>
-					{practice.location ? (
-						<div className={styles.row}>
-							<span className={styles.icon} aria-hidden="true">
-								<MapPin size={18} />
-							</span>
-							<span className={styles.label}>Sted</span>
-							<span className={styles.value}>{practice.location}</span>
-						</div>
-					) : null}
-					<div className={styles.row}>
-						<span className={styles.icon} aria-hidden="true">
-							{practice.environment === 'INDOOR' ? <Home size={18} /> : <Trees size={18} />}
-						</span>
-						<span className={styles.label}>Miljø</span>
-						<span className={styles.value}>{practice.environment === 'INDOOR' ? 'Inne' : 'Ute'}</span>
-					</div>
-					<div className={styles.row}>
-						<span className={styles.icon} aria-hidden="true">
-							<Hash size={18} />
-						</span>
-						<span className={styles.label}>Piler skutt</span>
-						<span className={styles.value}>{totalArrows}</span>
-					</div>
-					{practice.weather?.length ? (
-						<div className={styles.row}>
-							<span className={styles.icon} aria-hidden="true">
-								<CloudSun size={18} />
-							</span>
-							<span className={styles.label}>Vær</span>
-							<span className={styles.value}>{formatWeatherConditions(practice.weather)}</span>
-						</div>
-					) : null}
-					{practice.roundType ? (
-						<div className={styles.row}>
-							<span className={styles.icon} aria-hidden="true">
-								<Target size={18} />
-							</span>
-							<span className={styles.label}>Runde</span>
-							<span className={styles.value}>
-								{practice.roundType.name}
-								{practice.roundType.distanceMeters ? ` • ${practice.roundType.distanceMeters}m` : ''}
-								{practice.roundType.targetSizeCm ? ` • ${practice.roundType.targetSizeCm}cm` : ''}
-							</span>
-						</div>
-					) : null}
-					{practice.bow ? (
-						<div className={styles.row}>
-							<span className={styles.icon} aria-hidden="true">
-								<BowArrow size={18} />
-							</span>
-							<span className={styles.label}>Bue</span>
-							<span className={styles.value}>
-								{practice.bow.name} • {bowTypeLabels[practice.bow.type] || practice.bow.type}
-							</span>
-						</div>
-					) : null}
-					{practice.arrows ? (
-						<div className={styles.row}>
-							<span className={styles.icon} aria-hidden="true">
-								<Navigation size={18} />
-							</span>
-							<span className={styles.label}>Piler</span>
-							<span className={styles.value}>
-								{practice.arrows.name} • {arrowMaterialLabels[practice.arrows.material] || practice.arrows.material}
-							</span>
-						</div>
-					) : null}
+				<div className={styles.scoreCard}>
+					<div className={styles.scoreLabel}>Total Score</div>
+					<div className={styles.scoreValue}>{totalScore}</div>
+					<div className={styles.scoreSubtext}>{totalArrows} piler skutt</div>
 				</div>
-				{practice.notes ? (
-					<div className={styles.notes}>
-						<div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 8, color: 'var(--primary)', fontWeight: 900 }}>
-							<NotebookText size={18} />
-							Notater
+				<div className={styles.statsGrid}>
+					{practice.location && (
+						<div className={styles.statCard}>
+							<MapPin size={20} className={styles.statIcon} />
+							<div className={styles.statLabel}>Sted</div>
+							<div className={styles.statValue}>{practice.location}</div>
 						</div>
-						{practice.notes}
-					</div>
-				) : null}
-				{practice.ends?.length ? (
-					<div className={styles.ends}>
-						<h4 className={styles.endsTitle}>Serier</h4>
-						{practice.ends.map((end, idx) => {
-							const arrows = end.arrows ?? end.scores?.length ?? 0;
-							const scoreSum = Array.isArray(end.scores) ? end.scores.reduce((s, v) => s + v, 0) : 0;
-							return (
-								<div key={end.id} className={styles.endRow}>
-									<div className={styles.serieHeader}>
-										<div className={styles.serieTitle}>Serie {idx + 1}</div>
-										<div className={styles.serieStats}>
-											{arrows} piler{scoreSum ? ` • ${scoreSum} poeng` : ''}
+					)}
+					{practice.weather?.length > 0 && (
+						<div className={styles.statCard}>
+							<CloudSun size={20} className={styles.statIcon} />
+							<div className={styles.statLabel}>Vær</div>
+							<div className={styles.statValue}>{formatWeatherConditions(practice.weather)}</div>
+						</div>
+					)}
+					{practice.bow && (
+						<div className={styles.statCard}>
+							<BowArrow size={20} className={styles.statIcon} />
+							<div className={styles.statLabel}>Bue</div>
+							<div className={styles.statValue}>
+								{practice.bow.name} • {bowTypeLabels[practice.bow.type] || practice.bow.type}
+							</div>
+						</div>
+					)}
+					{practice.arrows && (
+						<div className={styles.statCard}>
+							<Navigation size={20} className={styles.statIcon} />
+							<div className={styles.statLabel}>Piler</div>
+							<div className={styles.statValue}>
+								{practice.arrows.name} • {arrowMaterialLabels[practice.arrows.material] || practice.arrows.material}
+							</div>
+						</div>
+					)}
+				</div>
+				{practice.ends && practice.ends.length > 0 && (
+					<div className={styles.roundsSection}>
+						<h4 className={styles.sectionTitle}>
+							<Target size={20} />
+							Runder
+						</h4>
+						<div className={styles.roundsList}>
+							{practice.ends.map((end, idx) => {
+								const arrows = end.arrows ?? end.scores?.length ?? 0;
+								// Use roundScore if available, otherwise sum scores array
+								const scoreSum = end.roundScore ?? (Array.isArray(end.scores) ? end.scores.reduce((s, v) => s + v, 0) : 0);
+								return (
+									<div key={end.id} className={styles.roundCard}>
+										<div className={styles.roundScore}>{scoreSum} poeng</div>
+										<div className={styles.roundMeta}>
+											{end.distanceMeters && (
+												<div className={styles.roundMetaItem}>
+													<span className={styles.roundMetaLabel}>Avstand</span>
+													<span className={styles.roundMetaValue}>{end.distanceMeters}m</span>
+												</div>
+											)}
+											{end.targetSizeCm && (
+												<div className={styles.roundMetaItem}>
+													<span className={styles.roundMetaLabel}>Blink</span>
+													<span className={styles.roundMetaValue}>{end.targetSizeCm}cm</span>
+												</div>
+											)}
+											{arrows > 0 && (
+												<div className={styles.roundMetaItem}>
+													<span className={styles.roundMetaLabel}>Piler</span>
+													<span className={styles.roundMetaValue}>{arrows} stk</span>
+												</div>
+											)}
 										</div>
+										{Array.isArray(end.scores) && end.scores.length > 0 && (
+											<div className={styles.roundScores}>
+												{end.scores.map((score, i) => (
+													<div key={i} className={styles.scoreChip}>
+														{score}
+													</div>
+												))}
+											</div>
+										)}
 									</div>
-									<div className={styles.serieDetails}>
-										{end.distanceMeters ? <span className={styles.chip}>{end.distanceMeters}m</span> : null}
-										{end.targetSizeCm ? <span className={styles.chip}>{end.targetSizeCm}cm</span> : null}
-										{end.arrowsPerEnd ? <span className={styles.chip}>{end.arrowsPerEnd} / serie</span> : null}
-										{Array.isArray(end.scores) && end.scores.length ? <span className={styles.chip}>{end.scores.join(' · ')}</span> : null}
-									</div>
-								</div>
-							);
-						})}
+								);
+							})}
+						</div>
 					</div>
-				) : null}
-				{deleteError ? <div className={styles.errorBox}>{deleteError}</div> : null}
+				)}
+				{practice.notes && (
+					<div className={styles.notesSection}>
+						<h4 className={styles.sectionTitle}>
+							<NotebookText size={20} />
+							Notater
+						</h4>
+						<div className={styles.notesContent}>{practice.notes}</div>
+					</div>
+				)}
+				{deleteError && <div className={styles.errorBox}>{deleteError}</div>}
 				<div className={styles.actions}>
 					<Button label="Lukk" buttonType="outline" onClick={onClose} width={140} disabled={deleting} />
-					{onEdit ? <Button label="Rediger" onClick={onEdit} width={140} disabled={deleting} /> : null}
+					{onEdit && <Button label="Rediger" onClick={onEdit} width={140} disabled={deleting} />}
 					<Button
-						label={deleting ? 'Sletter...' : 'Slett trening'}
+						label={deleting ? 'Sletter...' : 'Slett'}
 						onClick={handleDelete}
-						width={220}
+						width={140}
 						variant="warning"
 						buttonType="outline"
 						disabled={deleting}
