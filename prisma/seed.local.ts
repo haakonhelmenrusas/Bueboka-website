@@ -30,13 +30,55 @@ async function main() {
 	const prisma = new PrismaClient({ adapter });
 
 	// 1) Ensure RoundTypes exist (import-less to avoid TS path issues in seed runners)
-	const roundTypesSpec: Array<{ name: string; environment: Environment; distanceMeters?: number | null; targetSizeCm?: number | null }> = [
-		{ name: '18m', environment: 'INDOOR', distanceMeters: 18, targetSizeCm: 40 },
-		{ name: '25m', environment: 'INDOOR', distanceMeters: 25, targetSizeCm: 60 },
+	const roundTypesSpec: Array<{
+		name: string;
+		environment: Environment;
+		distanceMeters?: number | null;
+		targetType?: { sizeCm: number; type: string; scoringZones?: number } | null;
+		numberArrows?: number | null;
+		arrowsWithoutScore?: number | null;
+	}> = [
+		{
+			name: '18m',
+			environment: 'INDOOR',
+			distanceMeters: 18,
+			targetType: { sizeCm: 40, type: '40cm', scoringZones: 10 },
+			numberArrows: 60,
+			arrowsWithoutScore: 0,
+		},
+		{
+			name: '25m',
+			environment: 'INDOOR',
+			distanceMeters: 25,
+			targetType: { sizeCm: 60, type: '60cm', scoringZones: 10 },
+			numberArrows: 60,
+			arrowsWithoutScore: 0,
+		},
 		{ name: 'Veggbane', environment: 'INDOOR' },
-		{ name: '30m', environment: 'OUTDOOR', distanceMeters: 30, targetSizeCm: 80 },
-		{ name: '50m', environment: 'OUTDOOR', distanceMeters: 50, targetSizeCm: 122 },
-		{ name: '70m', environment: 'OUTDOOR', distanceMeters: 70, targetSizeCm: 122 },
+		{
+			name: '30m',
+			environment: 'OUTDOOR',
+			distanceMeters: 30,
+			targetType: { sizeCm: 80, type: '80cm', scoringZones: 10 },
+			numberArrows: 72,
+			arrowsWithoutScore: 0,
+		},
+		{
+			name: '50m',
+			environment: 'OUTDOOR',
+			distanceMeters: 50,
+			targetType: { sizeCm: 122, type: '122cm', scoringZones: 10 },
+			numberArrows: 72,
+			arrowsWithoutScore: 0,
+		},
+		{
+			name: '70m',
+			environment: 'OUTDOOR',
+			distanceMeters: 70,
+			targetType: { sizeCm: 122, type: '122cm', scoringZones: 10 },
+			numberArrows: 72,
+			arrowsWithoutScore: 0,
+		},
 		{ name: 'Felt', environment: 'OUTDOOR' },
 		{ name: '3D', environment: 'OUTDOOR' },
 	];
@@ -46,7 +88,12 @@ async function main() {
 		if (existing) {
 			await prisma.roundType.update({
 				where: { id: existing.id },
-				data: { distanceMeters: rt.distanceMeters ?? null, targetSizeCm: rt.targetSizeCm ?? null },
+				data: {
+					distanceMeters: rt.distanceMeters ?? null,
+					targetType: rt.targetType ?? undefined,
+					numberArrows: rt.numberArrows ?? null,
+					arrowsWithoutScore: rt.arrowsWithoutScore ?? null,
+				},
 			});
 		} else {
 			await prisma.roundType.create({
@@ -54,7 +101,9 @@ async function main() {
 					name: rt.name,
 					environment: rt.environment,
 					distanceMeters: rt.distanceMeters ?? null,
-					targetSizeCm: rt.targetSizeCm ?? null,
+					targetType: rt.targetType ?? undefined,
+					numberArrows: rt.numberArrows ?? null,
+					arrowsWithoutScore: rt.arrowsWithoutScore ?? null,
 				},
 			});
 		}
@@ -150,6 +199,8 @@ async function main() {
 		const roundType = envRoundTypes.length ? pick(envRoundTypes) : null;
 		const arrowsPerEnd = 6;
 		const endsCount = env === Environment.INDOOR ? 10 : 6;
+		// Mix of training and competition practices (80% training, 20% competition)
+		const practiceType = i % 5 === 0 ? 'KONKURRANSE' : 'TRENING';
 
 		const existing = await prisma.practice.findFirst({ where: { userId: user.id, date } });
 		const practice = existing
@@ -159,7 +210,8 @@ async function main() {
 						location: env === Environment.INDOOR ? 'Innebanen' : 'Utebanen',
 						environment: env,
 						weather: makeWeather(env),
-						notes: 'Seeded practice',
+						practiceType,
+						notes: practiceType === 'KONKURRANSE' ? 'Competition practice' : 'Seeded practice',
 						totalScore: 0,
 						roundTypeId: roundType?.id,
 						bowId: bow1.id,
@@ -173,7 +225,8 @@ async function main() {
 						location: env === Environment.INDOOR ? 'Innebanen' : 'Utebanen',
 						environment: env,
 						weather: makeWeather(env),
-						notes: 'Seeded practice',
+						practiceType,
+						notes: practiceType === 'KONKURRANSE' ? 'Competition practice' : 'Seeded practice',
 						totalScore: 0,
 						roundTypeId: roundType?.id,
 						bowId: bow1.id,
@@ -183,6 +236,10 @@ async function main() {
 
 		// delete existing ends and recreate (keeps things deterministic)
 		await prisma.end.deleteMany({ where: { practiceId: practice.id } });
+
+		// Extract target size from the new targetType JSON structure
+		const targetSizeCm = roundType?.targetType ? (roundType.targetType as any).sizeCm : null;
+
 		const endsData = Array.from({ length: endsCount }).map(() => {
 			const scores = Array.from({ length: arrowsPerEnd }).map(() => randInt(6, 10));
 			return {
@@ -191,7 +248,7 @@ async function main() {
 				scores,
 				arrowsPerEnd,
 				distanceMeters: roundType?.distanceMeters ?? null,
-				targetSizeCm: roundType?.targetSizeCm ?? null,
+				targetSizeCm,
 			};
 		});
 		await prisma.end.createMany({ data: endsData });

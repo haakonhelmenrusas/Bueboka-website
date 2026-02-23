@@ -1,4 +1,4 @@
-import type { Environment, WeatherCondition } from '@/lib/prismaEnums';
+import type { Environment, PracticeType, WeatherCondition } from '@/lib/prismaEnums';
 
 export interface User {
 	id: string;
@@ -33,6 +33,23 @@ export interface Arrow {
 	isFavorite: boolean;
 }
 
+export interface TargetType {
+	sizeCm: number;
+	type: string;
+	scoringZones?: number;
+}
+
+export interface RoundType {
+	id: string;
+	name: string;
+	environment: Environment;
+	distanceMeters?: number | null;
+	targetType?: TargetType | null;
+	numberArrows?: number | null;
+	arrowsWithoutScore?: number | null;
+	roundScore?: number | null;
+}
+
 export interface Practice {
 	id: string;
 	date: string;
@@ -40,15 +57,12 @@ export interface Practice {
 	location?: string | null;
 	environment: Environment;
 	weather: WeatherCondition[];
+	practiceType: PracticeType;
 	notes?: string | null;
 	roundTypeId?: string | null;
 	bowId?: string | null;
 	arrowsId?: string | null;
-	roundType?: {
-		name: string;
-		distanceMeters?: number | null;
-		targetSizeCm?: number | null;
-	};
+	roundType?: Pick<RoundType, 'name' | 'distanceMeters' | 'targetType' | 'numberArrows' | 'arrowsWithoutScore' | 'roundScore'>;
 	bow?: {
 		name: string;
 		type: string;

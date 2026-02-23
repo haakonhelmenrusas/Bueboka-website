@@ -127,20 +127,21 @@ model Arrows {
 }
 
 model Practice {
-  id          String             @id @default(cuid())
-  userId      String
-  date        DateTime           @default(now())
-  notes       String?
-  totalScore  Int
-  location    String?
-  environment Environment
-  weather     WeatherCondition[]
-  roundTypeId String?
-  bowId       String?
-  arrowsId    String?
-  ends        End[]
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
+  id           String             @id @default(cuid())
+  userId       String
+  date         DateTime           @default(now())
+  notes        String?
+  totalScore   Int
+  location     String?
+  environment  Environment
+  weather      WeatherCondition[]
+  practiceType PracticeType       @default(TRENING)
+  roundTypeId  String?
+  bowId        String?
+  arrowsId     String?
+  ends         End[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 
   // Relation fields
   user      User       @relation(fields: [userId], references: [id])
@@ -152,14 +153,17 @@ model Practice {
 }
 
 model RoundType {
-  id             String      @id @default(cuid())
-  name           String
-  Practice       Practice[]
-  environment    Environment
-  distanceMeters Int?
-  targetSizeCm   Int?
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
+  id                 String      @id @default(cuid())
+  name               String
+  Practice           Practice[]
+  environment        Environment
+  distanceMeters     Int?
+  targetType         Json?
+  numberArrows       Int?
+  arrowsWithoutScore Int?
+  roundScore         Int?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
 
   @@map("round_types")
 }
@@ -169,6 +173,7 @@ model End {
   practiceId     String
   arrows         Int
   scores         Int[]
+  roundScore     Int?
   distanceMeters Int?
   targetSizeCm   Int?
   arrowsPerEnd   Int?
@@ -274,4 +279,9 @@ enum BowType {
   HORSEBOW
   TRADITIONAL
   OTHER
+}
+
+enum PracticeType {
+  TRENING
+  KONKURRANSE
 }
