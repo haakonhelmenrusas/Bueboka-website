@@ -28,7 +28,6 @@ export async function POST(request: NextRequest) {
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const body = await request.json();
-
 		// Validate input using Zod schema
 		const validation = createPracticeSchema.safeParse(body);
 		if (!validation.success) {
@@ -41,23 +40,85 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const { date, arrowsShot, location, environment, weather, notes, roundTypeId, bowId, arrowsId } = validation.data;
+		const { date, location, environment, weather, practiceType, notes, rounds, bowId, arrowsId } = validation.data;
 
 		const parsedDate = new Date(date);
+		// Calculate total arrows shot from all rounds
+		const arrowsShot = rounds.reduce((sum, round) => sum + (round.numberArrows || 0), 0);
+
+		// Calculate total score from all rounds
+		const totalScore = rounds.reduce((sum, round) => sum + (round.roundScore || 0), 0);
+
+		// For now, we'll use the first round's data for the practice
+		// TODO: In future, might want to handle multiple rounds differently
+		const firstRound = rounds[0];
+		let roundTypeId: string | null = null;
+
+		// Try to find or create a matching RoundType for the first round
+		if (firstRound && (firstRound.distanceMeters || firstRound.targetType || firstRound.numberArrows)) {
+			// Try to find existing round type
+			const existingRoundType = await prisma.roundType.findFirst({
+				where: {
+					environment: environment as Environment,
+					distanceMeters: firstRound.distanceMeters || null,
+					// Note: targetType is JSON, so we can't easily match on it
+					// For now, we'll just match on distance and environment
+				},
+			});
+
+			if (existingRoundType) {
+				roundTypeId = existingRoundType.id;
+			} else {
+				// Create a new round type
+				const targetTypeJson = firstRound.targetType
+					? {
+							type: firstRound.targetType,
+							sizeCm: parseInt(firstRound.targetType) || 0,
+						}
+					: undefined;
+
+				const newRoundType = await prisma.roundType.create({
+					data: {
+						name: `${firstRound.distanceMeters || 0}m - ${firstRound.targetType || 'Custom'}`,
+						environment: environment as Environment,
+						distanceMeters: firstRound.distanceMeters || null,
+						targetType: targetTypeJson,
+						numberArrows: firstRound.numberArrows || null,
+						roundScore: firstRound.roundScore || null,
+					},
+				});
+				roundTypeId = newRoundType.id;
+			}
+		}
 
 		const data: any = {
 			userId: user.id,
 			date: parsedDate,
-			totalScore: arrowsShot,
+			totalScore: totalScore, // Sum of all round scores
 			location: location || null,
 			environment: environment as Environment,
 			weather: weather || [],
+			practiceType: practiceType || 'TRENING',
 			notes: notes || null,
 			ends: {
-				create: {
-					arrows: arrowsShot,
-					scores: [],
-				},
+				create: rounds.map((round) => {
+					// Parse targetSizeCm from targetType (e.g., "40cm" -> 40)
+					let targetSizeCm = null;
+					if (round.targetType) {
+						const parsed = parseInt(round.targetType);
+						if (!isNaN(parsed)) {
+							targetSizeCm = parsed;
+						}
+					}
+
+					return {
+						arrows: round.numberArrows || 0,
+						scores: [],
+						roundScore: round.roundScore || null,
+						distanceMeters: round.distanceMeters || null,
+						targetSizeCm,
+					};
+				}),
 			},
 		};
 
@@ -65,11 +126,14 @@ export async function POST(request: NextRequest) {
 		if (bowId) data.bowId = bowId;
 		if (arrowsId) data.arrowsId = arrowsId;
 
-		// Create the practice + a first end that stores arrowsShot (so we can show arrowsShot without a second call)
+		// Create the practice with ends for each round
 		const practice = await prisma.practice.create({
 			data,
 			include: {
 				ends: true,
+				roundType: true,
+				bow: true,
+				arrows: true,
 			},
 		});
 
@@ -81,9 +145,16 @@ export async function POST(request: NextRequest) {
 				message: 'Error creating practice',
 				errorName: error instanceof Error ? error.name : typeof error,
 				errorMessage: error instanceof Error ? error.message : undefined,
+				errorStack: error instanceof Error ? error.stack : undefined,
 			},
 		});
-		return NextResponse.json({ error: 'Failed to create practice' }, { status: 500 });
+		return NextResponse.json(
+			{
+				error: 'Failed to create practice',
+				details: error instanceof Error ? error.message : 'Unknown error',
+			},
+			{ status: 500 }
+		);
 	}
 }
 

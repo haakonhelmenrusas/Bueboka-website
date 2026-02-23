@@ -27,3 +27,10 @@ export const WeatherCondition = {
 } as const;
 
 export type WeatherCondition = (typeof WeatherCondition)[keyof typeof WeatherCondition];
+
+export const PracticeType = {
+	TRENING: 'TRENING',
+	KONKURRANSE: 'KONKURRANSE',
+} as const;
+
+export type PracticeType = (typeof PracticeType)[keyof typeof PracticeType];

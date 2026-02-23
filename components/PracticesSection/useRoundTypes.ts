@@ -8,7 +8,14 @@ export type RoundTypeItem = {
 	name: string;
 	environment: string;
 	distanceMeters?: number | null;
-	targetSizeCm?: number | null;
+	targetType?: {
+		sizeCm: number;
+		type: string;
+		scoringZones?: number;
+	} | null;
+	numberArrows?: number | null;
+	arrowsWithoutScore?: number | null;
+	roundScore?: number | null;
 };
 
 export function useRoundTypes() {

@@ -29,7 +29,10 @@ export async function GET() {
 				name: true,
 				environment: true,
 				distanceMeters: true,
-				targetSizeCm: true,
+				targetType: true,
+				numberArrows: true,
+				arrowsWithoutScore: true,
+				roundScore: true,
 			},
 		});
 

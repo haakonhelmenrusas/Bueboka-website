@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// Environment and Weather enums matching Prisma schema
+// Environment, Weather, and PracticeType enums matching Prisma schema
 export const EnvironmentEnum = z.enum(['INDOOR', 'OUTDOOR']);
 export const WeatherConditionEnum = z.enum([
 	'SUN',
@@ -14,17 +14,26 @@ export const WeatherConditionEnum = z.enum([
 	'CHANGING_CONDITIONS',
 	'OTHER',
 ]);
+export const PracticeTypeEnum = z.enum(['TRENING', 'KONKURRANSE']);
+
+// Round input schema
+export const RoundInputSchema = z.object({
+	distanceMeters: z.number().int().min(0).optional(),
+	targetType: z.string().optional(),
+	numberArrows: z.number().int().min(0).optional(),
+	roundScore: z.number().int().min(0).optional(),
+});
 
 // Schema for creating a practice
 export const createPracticeSchema = z
 	.object({
 		date: z.string().min(1, 'Dato er påkrevd'),
-		arrowsShot: z.number().int().min(0, 'Antall skutte piler kan ikke være negativt'),
 		location: z.string().max(200, 'Sted må være mindre enn 200 tegn').optional().nullable(),
 		environment: EnvironmentEnum,
 		weather: z.array(WeatherConditionEnum).optional().default([]),
+		practiceType: PracticeTypeEnum.optional().default('TRENING'),
 		notes: z.string().max(2000, 'Notater må være mindre enn 2000 tegn').optional().nullable(),
-		roundTypeId: z.string().optional().nullable(),
+		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd'),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),
 	})
@@ -56,3 +65,4 @@ export const updatePracticeSchema = createPracticeSchema;
 // Types derived from schemas
 export type CreatePracticeInput = z.infer<typeof createPracticeSchema>;
 export type UpdatePracticeInput = z.infer<typeof updatePracticeSchema>;
+export type RoundInput = z.infer<typeof RoundInputSchema>;

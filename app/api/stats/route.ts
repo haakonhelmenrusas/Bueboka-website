@@ -32,19 +32,14 @@ export async function GET() {
 		const from7 = startOfDay(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
 		const from30 = startOfDay(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
 
-		// Aggregate over End.arrows and Practice.totalScore
-		// We need both because practices can be created via forms (which only set totalScore)
-		// or via detailed scoring (which creates End records)
-		const [overallEnds, overallPractices, last7Ends, last7Practices, last30Ends, last30Practices] = await Promise.all([
+		// Count arrows shot from ends
+		// Each practice creates ends with the arrows shot per round
+		const [overallEnds, last7Ends, last30Ends] = await Promise.all([
 			prisma.end.aggregate({
 				where: {
 					Practice: { userId: user.id },
 				},
 				_sum: { arrows: true },
-			}),
-			prisma.practice.aggregate({
-				where: { userId: user.id },
-				_sum: { totalScore: true },
 			}),
 			prisma.end.aggregate({
 				where: {
@@ -52,27 +47,19 @@ export async function GET() {
 				},
 				_sum: { arrows: true },
 			}),
-			prisma.practice.aggregate({
-				where: { userId: user.id, date: { gte: from7 } },
-				_sum: { totalScore: true },
-			}),
 			prisma.end.aggregate({
 				where: {
 					Practice: { userId: user.id, date: { gte: from30 } },
 				},
 				_sum: { arrows: true },
 			}),
-			prisma.practice.aggregate({
-				where: { userId: user.id, date: { gte: from30 } },
-				_sum: { totalScore: true },
-			}),
 		]);
 
 		return NextResponse.json({
 			stats: {
-				last7Days: overallNumber(last7Ends._sum.arrows) + overallNumber(last7Practices._sum.totalScore),
-				last30Days: overallNumber(last30Ends._sum.arrows) + overallNumber(last30Practices._sum.totalScore),
-				overall: overallNumber(overallEnds._sum.arrows) + overallNumber(overallPractices._sum.totalScore),
+				last7Days: overallNumber(last7Ends._sum.arrows),
+				last30Days: overallNumber(last30Ends._sum.arrows),
+				overall: overallNumber(overallEnds._sum.arrows),
 			},
 		});
 	} catch (error) {

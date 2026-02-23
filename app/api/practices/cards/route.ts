@@ -54,8 +54,8 @@ export async function GET(request: Request) {
 		const cards = practices.map((p: PracticeRow) => ({
 			id: p.id,
 			date: p.date,
-			// Use totalScore if available (from form edits), otherwise calculate from ends
-			arrowsShot: p.totalScore || p.ends.reduce((sum: number, e: { arrows: number }) => sum + (e.arrows ?? 0), 0),
+			totalScore: p.totalScore,
+			arrowsShot: p.ends.reduce((sum: number, e: { arrows: number }) => sum + (e.arrows ?? 0), 0),
 			location: p.location ?? null,
 			environment: p.environment ?? null,
 			bowName: p.bow?.name ?? null,

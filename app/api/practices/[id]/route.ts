@@ -43,11 +43,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			);
 		}
 
-		const { date, arrowsShot, location, environment, weather, notes, roundTypeId, bowId, arrowsId } = validation.data;
+		const { date, location, environment, weather, practiceType, notes, rounds, bowId, arrowsId } = validation.data;
 
 		// Verify practice exists and belongs to user
 		const existingPractice = await prisma.practice.findFirst({
 			where: { id: practiceId, userId: user.id },
+			include: { ends: true },
 		});
 
 		if (!existingPractice) {
@@ -56,20 +57,92 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 		const parsedDate = new Date(date);
 
+		// Calculate total arrows and score from rounds
+		const totalArrows = rounds.reduce((sum, round) => sum + (round.numberArrows || 0), 0);
+		const totalScore = rounds.reduce((sum, round) => sum + (round.roundScore || 0), 0);
+
+		// Find or create round type for first round (same logic as POST)
+		const firstRound = rounds[0];
+		let roundTypeId: string | null = null;
+
+		if (firstRound && (firstRound.distanceMeters || firstRound.targetType || firstRound.numberArrows)) {
+			const existingRoundType = await prisma.roundType.findFirst({
+				where: {
+					environment: environment as Environment,
+					distanceMeters: firstRound.distanceMeters || null,
+				},
+			});
+
+			if (existingRoundType) {
+				roundTypeId = existingRoundType.id;
+			} else {
+				const targetTypeJson = firstRound.targetType
+					? {
+							type: firstRound.targetType,
+							sizeCm: parseInt(firstRound.targetType) || 0,
+						}
+					: undefined;
+
+				const newRoundType = await prisma.roundType.create({
+					data: {
+						name: `${firstRound.distanceMeters || 0}m - ${firstRound.targetType || 'Custom'}`,
+						environment: environment as Environment,
+						distanceMeters: firstRound.distanceMeters || null,
+						targetType: targetTypeJson,
+						numberArrows: firstRound.numberArrows || null,
+						roundScore: firstRound.roundScore || null,
+					},
+				});
+				roundTypeId = newRoundType.id;
+			}
+		}
+
+		// Delete existing ends
+		await prisma.end.deleteMany({
+			where: { practiceId: practiceId },
+		});
+
+		// Create new ends from rounds
+		const newEnds = rounds.map((round) => {
+			let targetSizeCm = null;
+			if (round.targetType) {
+				const parsed = parseInt(round.targetType);
+				if (!isNaN(parsed)) {
+					targetSizeCm = parsed;
+				}
+			}
+
+			return {
+				practiceId: practiceId,
+				arrows: round.numberArrows || 0,
+				scores: [],
+				roundScore: round.roundScore || null,
+				distanceMeters: round.distanceMeters || null,
+				targetSizeCm,
+			};
+		});
+
+		await prisma.end.createMany({
+			data: newEnds,
+		});
+
+		// Update practice
 		const updatedPractice = await prisma.practice.update({
 			where: { id: practiceId },
 			data: {
 				date: parsedDate,
-				totalScore: arrowsShot,
+				totalScore: totalScore,
 				location: location || null,
 				environment: environment as Environment,
 				weather: weather || [],
+				practiceType: practiceType || 'TRENING',
 				notes: notes || null,
 				roundTypeId: roundTypeId || null,
 				bowId: bowId || null,
 				arrowsId: arrowsId || null,
 			},
 			include: {
+				ends: true,
 				roundType: true,
 				bow: true,
 				arrows: true,
@@ -79,21 +152,30 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		// Map totalScore to arrowsShot for frontend compatibility
 		const mappedPractice = {
 			...updatedPractice,
-			arrowsShot: updatedPractice.totalScore,
+			arrowsShot: totalArrows,
 		};
 
 		return NextResponse.json(mappedPractice);
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'practices/[id]', method: 'PATCH' },
-			extra: { message: 'Error updating practice' },
+			extra: {
+				message: 'Error updating practice',
+				errorMessage: error instanceof Error ? error.message : undefined,
+			},
 		});
 
 		if (error instanceof Error && error.message.includes('Unique constraint failed')) {
 			return NextResponse.json({ error: 'A practice with this data already exists' }, { status: 409 });
 		}
 
-		return NextResponse.json({ error: 'Failed to update practice' }, { status: 500 });
+		return NextResponse.json(
+			{
+				error: 'Failed to update practice',
+				details: error instanceof Error ? error.message : 'Unknown error',
+			},
+			{ status: 500 }
+		);
 	}
 }
 
