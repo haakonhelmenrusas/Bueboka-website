@@ -48,19 +48,16 @@ export const auth = betterAuth({
 	},
 	emailVerification: {
 		enabled: true,
-		sendVerificationEmail: async ({ user, token }) => {
-			const baseURL = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
-			const verifyUrl = `${baseURL}/verify-email?token=${token}`;
-
+		sendVerificationEmail: async ({ user, url, token }, request) => {
 			void sendEmail({
 				to: user.email,
 				subject: 'Bekreft e-postadressen din',
 				html: `
 					<p>Velkommen! Bekreft e-postadressen din ved å trykke på lenken:</p>
-					<p><a href="${verifyUrl}">Bekreft e-post</a></p>
+					<p><a href="${url}">Bekreft e-post</a></p>
 					<p>Hvis du ikke opprettet en konto hos oss, kan du ignorere denne e-posten.</p>
 				`,
-				text: `Bekreft e-post: ${verifyUrl}`,
+				text: `Bekreft e-post: ${url}`,
 			});
 		},
 		autoSignInAfterVerification: true,
