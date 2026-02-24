@@ -12,6 +12,15 @@
   border-left: 4px solid var(--primary);
 }
 
+@media (prefers-color-scheme: dark) {
+  .summaryCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 4px solid #4db8e8;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
 .summaryTitle {
   font-size: 0.875rem;
   font-weight: 600;
@@ -32,6 +41,20 @@
   font-size: 0.875rem;
   color: var(--text-gray-600);
   margin: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .summaryTitle {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .summaryValue {
+    color: #4db8e8;
+  }
+
+  .summaryText {
+    color: rgba(255, 255, 255, 0.7);
+  }
 }
 
 @media (max-width: 768px) {

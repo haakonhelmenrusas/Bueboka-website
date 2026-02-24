@@ -281,7 +281,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						<X size={20} />
 					</button>
 				</div>
-				{error && <div className={styles.error}>{error}</div>}
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<div className={styles.row}>
 						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
@@ -423,6 +422,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						helpText="Dine tanker og observasjoner om treningen"
 						containerClassName={styles.field}
 					/>
+					{error && <div className={styles.error}>{error}</div>}
 					<div className={styles.actions}>
 						<Button
 							type="button"
