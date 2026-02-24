@@ -1,8 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './PracticeFormModal.module.css';
-import { CloudSun, Home, MapPin, Trees, X } from 'lucide-react';
+import {
+	Cloud,
+	CloudDrizzle,
+	CloudFog,
+	CloudRain,
+	CloudSnow,
+	CloudSun,
+	Home,
+	Navigation,
+	Sparkles,
+	Sun,
+	Target,
+	Trees,
+	Wind,
+	X,
+	Zap,
+} from 'lucide-react';
 import type { PracticeType, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
@@ -10,16 +26,16 @@ import { useModalBehavior } from '@/lib/useModalBehavior';
 
 // Weather select options
 const getWeatherSelectOptions = () => [
-	{ value: 'SUN', label: 'Sol' },
-	{ value: 'CLOUDED', label: 'Skyet' },
-	{ value: 'CLEAR', label: 'Klarvær' },
-	{ value: 'RAIN', label: 'Regn' },
-	{ value: 'WIND', label: 'Vind' },
-	{ value: 'SNOW', label: 'Snø' },
-	{ value: 'FOG', label: 'Tåke' },
-	{ value: 'THUNDER', label: 'Torden' },
-	{ value: 'CHANGING_CONDITIONS', label: 'Skiftende forhold' },
-	{ value: 'OTHER', label: 'Annet' },
+	{ value: 'SUN', label: 'Sol', icon: <Sun size={16} /> },
+	{ value: 'CLOUDED', label: 'Skyet', icon: <Cloud size={16} /> },
+	{ value: 'CLEAR', label: 'Klarvær', icon: <Sparkles size={16} /> },
+	{ value: 'RAIN', label: 'Regn', icon: <CloudRain size={16} /> },
+	{ value: 'WIND', label: 'Vind', icon: <Wind size={16} /> },
+	{ value: 'SNOW', label: 'Snø', icon: <CloudSnow size={16} /> },
+	{ value: 'FOG', label: 'Tåke', icon: <CloudFog size={16} /> },
+	{ value: 'THUNDER', label: 'Torden', icon: <Zap size={16} /> },
+	{ value: 'CHANGING_CONDITIONS', label: 'Skiftende forhold', icon: <CloudDrizzle size={16} /> },
+	{ value: 'OTHER', label: 'Annet', icon: <CloudSun size={16} /> },
 ];
 
 export interface RoundInput {
@@ -182,7 +198,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		}
 	};
 
-	const handleSubmit = async (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setSubmitting(true);
 		setError(null);
@@ -217,8 +233,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		{ value: 'TRENING', label: 'Trening' },
 		{ value: 'KONKURRANSE', label: 'Konkurranse' },
 	];
-	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}` }));
-	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}` }));
+	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}`, icon: <Target size={16} /> }));
+	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}`, icon: <Navigation size={16} /> }));
 
 	if (!open) return null;
 
@@ -284,7 +300,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							value={bowId}
 							onChange={(v) => setBowId(v as string)}
 							placeholderLabel="Velg bue (valgfritt)"
-							options={bowOptions.map((o) => ({ ...o, icon: <CloudSun size={16} /> }))}
+							options={bowOptions}
 							containerClassName={styles.field}
 						/>
 						<Select
@@ -292,7 +308,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							value={arrowsId}
 							onChange={(v) => setArrowsId(v as string)}
 							placeholderLabel="Velg piler (valgfritt)"
-							options={arrowsOptions.map((o) => ({ ...o, icon: <MapPin size={16} /> }))}
+							options={arrowsOptions}
 							containerClassName={styles.field}
 						/>
 					</div>
