@@ -44,25 +44,39 @@ export async function GET(request: Request) {
 					bow: { select: { name: true } },
 					arrows: { select: { name: true } },
 					roundType: { select: { name: true, environment: true } },
-					ends: { select: { arrows: true } },
+					ends: { select: { arrows: true, distanceMeters: true, targetSizeCm: true } },
 				},
 			}),
 		]);
 
 		type PracticeRow = (typeof practices)[number];
 
-		const cards = practices.map((p: PracticeRow) => ({
-			id: p.id,
-			date: p.date,
-			totalScore: p.totalScore,
-			arrowsShot: p.ends.reduce((sum: number, e: { arrows: number }) => sum + (e.arrows ?? 0), 0),
-			location: p.location ?? null,
-			environment: p.environment ?? null,
-			bowName: p.bow?.name ?? null,
-			arrowsName: p.arrows?.name ?? null,
-			roundTypeName: p.roundType?.name ?? null,
-			roundTypeEnvironment: p.roundType?.environment ?? null,
-		}));
+		const cards = practices.map((p: PracticeRow) => {
+			// Calculate arrows shot
+			const arrowsShot = p.ends.reduce((sum: number, e: { arrows: number }) => sum + (e.arrows ?? 0), 0);
+
+			// Get unique distance/target combinations from ends
+			const combinations = p.ends
+				.filter((e) => e.distanceMeters && e.targetSizeCm)
+				.map((e) => `${e.distanceMeters}m - ${e.targetSizeCm}cm`)
+				.filter((value, index, self) => self.indexOf(value) === index); // unique values
+
+			// Create display text: show first combination or fallback to roundType name
+			const roundTypeName = combinations.length > 0 ? combinations[0] : (p.roundType?.name ?? null);
+
+			return {
+				id: p.id,
+				date: p.date,
+				totalScore: p.totalScore,
+				arrowsShot,
+				location: p.location ?? null,
+				environment: p.environment ?? null,
+				bowName: p.bow?.name ?? null,
+				arrowsName: p.arrows?.name ?? null,
+				roundTypeName,
+				roundTypeEnvironment: p.roundType?.environment ?? null,
+			};
+		});
 
 		return NextResponse.json({ practices: cards, page, pageSize, total });
 	} catch (error) {
