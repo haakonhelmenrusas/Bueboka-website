@@ -371,19 +371,27 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						))}
 						<Button type="button" label="+ Legg til runde" onClick={addRound} variant="standard" buttonType="outline" width="100%" />
 					</div>
-					<NumberInput
-						label="Vurdering"
-						value={rating ?? 0}
-						onChange={(v) => setRating(v)}
-						onEmpty={() => setRating(null)}
-						min={1}
-						max={10}
-						step={1}
-						startEmpty
-						emptyBehavior="ignore"
-						helpText="Hvordan vil du vurdere treningen? (1-10)"
-						containerClassName={styles.field}
-					/>
+					<div className={styles.ratingSection}>
+						<label className={styles.ratingLabel}>
+							Vurdering
+							<span className={styles.ratingOptional}>(valgfritt)</span>
+						</label>
+						<p className={styles.ratingHelpText}>Hvordan vil du vurdere treningen?</p>
+						<div className={styles.ratingButtons}>
+							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+								<button
+									key={num}
+									type="button"
+									className={`${styles.ratingButton} ${rating === num ? styles.ratingButtonActive : ''}`}
+									onClick={() => setRating(rating === num ? null : num)}
+									aria-label={`Vurdering ${num} av 10`}
+									aria-pressed={rating === num}
+								>
+									{num}
+								</button>
+							))}
+						</div>
+					</div>
 					<TextArea
 						label="Notater"
 						value={notes}

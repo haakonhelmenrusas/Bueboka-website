@@ -108,7 +108,7 @@
 
 .roundCard {
   background: var(--background);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-gray);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
   display: flex;
@@ -164,3 +164,89 @@
   gap: var(--space-2);
 }
 
+/* Rating section */
+.ratingSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ratingLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ratingOptional {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text-gray-600);
+}
+
+.ratingHelpText {
+  font-size: 0.875rem;
+  color: var(--text-gray-600);
+  margin: 0;
+}
+
+.ratingButtons {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.ratingButton {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border-gray);
+  background: var(--background);
+  color: var(--text-dark);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ratingButton:hover {
+  border-color: var(--primary);
+  background: var(--primary-06);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(5, 53, 70, 0.15);
+}
+
+.ratingButton:active {
+  transform: translateY(0);
+}
+
+.ratingButtonActive {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(5, 53, 70, 0.2);
+}
+
+.ratingButtonActive:hover {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+
+@media (max-width: 640px) {
+  .ratingButtons {
+    gap: var(--space-2);
+  }
+
+  .ratingButton {
+    width: 40px;
+    height: 40px;
+    font-size: 0.875rem;
+  }
+}
