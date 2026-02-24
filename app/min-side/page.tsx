@@ -17,6 +17,8 @@ import {
 	SightMarksSection,
 	StatsSummary,
 	usePracticeDetails,
+	useWhatsNew,
+	WhatsNewModal,
 } from '@/components';
 import { MyPageSkeleton } from './Skeleton';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
@@ -42,11 +44,20 @@ export default function MyPage() {
 	const [deletedPracticeId, setDeletedPracticeId] = useState<string | null>(null);
 	const { fetchPracticeDetails } = usePracticeDetails();
 	const { bows, arrows } = useEquipmentData();
+	const { hasSeenWhatsNew, isLoading: whatsNewLoading, markAsSeen } = useWhatsNew();
+	const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 	const router = useRouter();
 
 	useEffect(() => {
 		Promise.all([fetchProfile(), fetchStats()]).finally(() => setLoading(false));
 	}, []);
+
+	// Show WhatsNew modal for users who haven't seen it
+	useEffect(() => {
+		if (!whatsNewLoading && !hasSeenWhatsNew && profile) {
+			setWhatsNewOpen(true);
+		}
+	}, [whatsNewLoading, hasSeenWhatsNew, profile]);
 
 	const fetchProfile = async () => {
 		try {
@@ -143,6 +154,11 @@ export default function MyPage() {
 			setSelectedPractice(full);
 			setPracticeModalOpen(true);
 		}
+	};
+
+	const handleWhatsNewClose = () => {
+		setWhatsNewOpen(false);
+		markAsSeen();
 	};
 
 	if (loading) {
@@ -321,6 +337,7 @@ export default function MyPage() {
 				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
 			/>
+			<WhatsNewModal open={whatsNewOpen} onClose={handleWhatsNewClose} />
 		</div>
 	);
 }
