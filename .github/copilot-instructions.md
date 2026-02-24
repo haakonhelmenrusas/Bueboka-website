@@ -1,1 +1,0 @@
-Don't create a summary file when you are done with a task. Instead, just summarise inside the chat window.
