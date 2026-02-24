@@ -154,11 +154,13 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						<X size={24} />
 					</button>
 				</div>
-				<div className={styles.scoreCard}>
-					<div className={styles.scoreLabel}>Total Score</div>
-					<div className={styles.scoreValue}>{totalScore}</div>
-					<div className={styles.scoreSubtext}>{totalArrows} piler skutt</div>
-				</div>
+				{totalScore > 0 && (
+					<div className={styles.scoreCard}>
+						<div className={styles.scoreLabel}>Total Score</div>
+						<div className={styles.scoreValue}>{totalScore}</div>
+						<div className={styles.scoreSubtext}>{totalArrows} piler skutt</div>
+					</div>
+				)}
 				<div className={styles.statsGrid}>
 					{practice.location && (
 						<div className={styles.statCard}>
@@ -200,13 +202,13 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							Runder
 						</h4>
 						<div className={styles.roundsList}>
-							{practice.ends.map((end, idx) => {
+							{practice.ends.map((end) => {
 								const arrows = end.arrows ?? end.scores?.length ?? 0;
 								// Use roundScore if available, otherwise sum scores array
 								const scoreSum = end.roundScore ?? (Array.isArray(end.scores) ? end.scores.reduce((s, v) => s + v, 0) : 0);
 								return (
 									<div key={end.id} className={styles.roundCard}>
-										<div className={styles.roundScore}>{scoreSum} poeng</div>
+										{scoreSum > 0 && <div className={styles.roundScore}>{scoreSum} poeng</div>}
 										<div className={styles.roundMeta}>
 											{end.distanceMeters && (
 												<div className={styles.roundMetaItem}>
