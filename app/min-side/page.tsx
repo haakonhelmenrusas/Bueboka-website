@@ -6,6 +6,7 @@ import styles from './page.module.css';
 import {
 	ArrowsModal,
 	BowModal,
+	Button,
 	EquipmentSection,
 	Header,
 	PracticeDetailsModal,
@@ -187,6 +188,9 @@ export default function MyPage() {
 							<h3 className={styles.summaryTitle}>Oppsummering</h3>
 							<p className={styles.summarySubtitle}>{summarySubtitle}</p>
 							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
+							<div className={styles.statsButtonContainer}>
+								<Button label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} width={240} buttonType="outline" />
+							</div>
 						</div>
 					</div>
 				</div>

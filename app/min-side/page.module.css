@@ -259,6 +259,12 @@
   color: var(--text-gray-700);
 }
 
+.statsButtonContainer {
+  margin-top: var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 900px) {
   .twoColumn {
     grid-template-columns: 1fr;
