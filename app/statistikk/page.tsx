@@ -2,23 +2,20 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Header } from '@/components';
+import {
+	ArrowsChart,
+	BreakdownSection,
+	type DateRange,
+	FilterControls,
+	ScoreChart,
+	type Series,
+	StatisticsHeader,
+	SummaryCards,
+} from '@/components/Statistics';
 import styles from './page.module.css';
 import * as Sentry from '@sentry/nextjs';
-import { ArrowLeft, Download } from 'lucide-react';
 import { exportToCSV } from '@/lib/csvExport';
-
-interface SeriesData {
-	date: string;
-	arrows: number;
-	score: number;
-}
-
-interface Series {
-	name: string;
-	data: SeriesData[];
-}
 
 interface DetailedStatsResponse {
 	series: Series[];
@@ -37,8 +34,6 @@ const COLORS = [
 	'#d97706', // Amber
 	'#059669', // Emerald
 ];
-
-type DateRange = 'all' | '7days' | '30days' | '90days';
 
 export default function StatisticsPage() {
 	const [series, setSeries] = useState<Series[]>([]);
@@ -89,7 +84,7 @@ export default function StatisticsPage() {
 	};
 
 	// Filter data based on date range
-	const getFilteredSeries = () => {
+	const getFilteredSeries = (): Series[] => {
 		if (dateRange === 'all') return series;
 
 		const now = new Date();
@@ -109,7 +104,7 @@ export default function StatisticsPage() {
 	const filteredSeries = getFilteredSeries();
 
 	// Combine all data points from all series into a single dataset for the chart
-	const chartData = () => {
+	const getChartData = () => {
 		if (!filteredSeries.length) return [];
 
 		// Get all unique dates
@@ -120,17 +115,59 @@ export default function StatisticsPage() {
 
 		const sortedDates = Array.from(allDates).sort();
 
-		// Create data points with all series values
+		// Create data points with all series values (arrows and scores)
 		return sortedDates.map((date) => {
 			const point: any = { date };
 
 			filteredSeries.forEach((s) => {
 				const dataPoint = s.data.find((d) => d.date === date);
 				point[s.name] = dataPoint?.arrows || 0;
+				point[`${s.name}_score`] = dataPoint?.score || 0;
 			});
 
 			return point;
 		});
+	};
+
+	const chartData = getChartData();
+
+	// Filter chart data to only include points with arrows > 0
+	const getArrowsChartData = () => {
+		return chartData
+			.map((point) => {
+				const filteredPoint: any = { date: point.date };
+				let hasArrows = false;
+
+				filteredSeries.forEach((s) => {
+					if (point[s.name] > 0) {
+						filteredPoint[s.name] = point[s.name];
+						hasArrows = true;
+					}
+				});
+
+				return hasArrows ? filteredPoint : null;
+			})
+			.filter((point) => point !== null);
+	};
+
+	// Filter chart data to only include points with scores > 0
+	const getScoreChartData = () => {
+		return chartData
+			.map((point) => {
+				const filteredPoint: any = { date: point.date };
+				let hasScore = false;
+
+				filteredSeries.forEach((s) => {
+					const scoreKey = `${s.name}_score`;
+					if (point[scoreKey] > 0) {
+						filteredPoint[scoreKey] = point[scoreKey];
+						hasScore = true;
+					}
+				});
+
+				return hasScore ? filteredPoint : null;
+			})
+			.filter((point) => point !== null);
 	};
 
 	const formatDate = (dateString: string) => {
@@ -143,7 +180,7 @@ export default function StatisticsPage() {
 		const headers = ['Dato', ...filteredSeries.map((s) => s.name)];
 
 		// Prepare data rows
-		const rows = chartData().map((point) => {
+		const rows = chartData.map((point) => {
 			const row = [point.date];
 			filteredSeries.forEach((s) => {
 				row.push(String(point[s.name] || 0));
@@ -156,6 +193,19 @@ export default function StatisticsPage() {
 
 		// Export to CSV
 		exportToCSV(headers, rows, filename);
+	};
+
+	const getMostUsed = () => {
+		if (filteredSeries.length === 0) return 'N/A';
+		return filteredSeries.reduce((prev, curr) => (prev.data.length > curr.data.length ? prev : curr)).name;
+	};
+
+	const getBreakdownItems = () => {
+		return filteredSeries.map((s, index) => ({
+			name: s.name,
+			data: s.data,
+			color: COLORS[index % COLORS.length],
+		}));
 	};
 
 	if (loading) {
@@ -185,15 +235,7 @@ export default function StatisticsPage() {
 			<Header />
 			<main className={styles.main} id="main-content">
 				<div className={styles.content}>
-					<button className={styles.backButton} onClick={() => router.push('/min-side')}>
-						<ArrowLeft size={20} />
-						Tilbake til Min side
-					</button>
-
-					<div className={styles.headerSection}>
-						<h1 className={styles.title}>Statistikk</h1>
-						<p className={styles.subtitle}>Detaljert oversikt over din trening</p>
-					</div>
+					<StatisticsHeader />
 
 					{series.length === 0 ? (
 						<div className={styles.emptyState}>
@@ -202,152 +244,16 @@ export default function StatisticsPage() {
 						</div>
 					) : (
 						<>
-							{/* Filter controls */}
-							<div className={styles.controlsSection}>
-								<div className={styles.filterGroup}>
-									<label className={styles.filterLabel}>Tidsperiode:</label>
-									<div className={styles.filterButtons}>
-										<button
-											className={`${styles.filterButton} ${dateRange === '7days' ? styles.filterButtonActive : ''}`}
-											onClick={() => setDateRange('7days')}
-										>
-											7 dager
-										</button>
-										<button
-											className={`${styles.filterButton} ${dateRange === '30days' ? styles.filterButtonActive : ''}`}
-											onClick={() => setDateRange('30days')}
-										>
-											30 dager
-										</button>
-										<button
-											className={`${styles.filterButton} ${dateRange === '90days' ? styles.filterButtonActive : ''}`}
-											onClick={() => setDateRange('90days')}
-										>
-											90 dager
-										</button>
-										<button
-											className={`${styles.filterButton} ${dateRange === 'all' ? styles.filterButtonActive : ''}`}
-											onClick={() => setDateRange('all')}
-										>
-											Alle
-										</button>
-									</div>
-								</div>
-
-								<button className={styles.downloadButton} onClick={downloadCSV}>
-									<Download size={18} />
-									Last ned CSV
-								</button>
-							</div>
+							<FilterControls dateRange={dateRange} onDateRangeChange={setDateRange} onDownloadCSV={downloadCSV} />
 
 							<div className={styles.chartSection}>
-								<div className={styles.chartCard}>
-									<h2 className={styles.chartTitle}>Piler skutt over tid</h2>
-									<p className={styles.chartSubtitle}>Gruppert etter avstand og blinktype</p>
+								<ArrowsChart data={getArrowsChartData()} series={filteredSeries} colors={COLORS} formatDate={formatDate} />
 
-									<ResponsiveContainer width="100%" height={400}>
-										<LineChart data={chartData()} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-											<CartesianGrid strokeDasharray="3 3" stroke="#d1d5db" />
-											<XAxis dataKey="date" tickFormatter={formatDate} stroke="#4b5563" style={{ fontSize: '0.875rem' }} />
-											<YAxis
-												stroke="#4b5563"
-												style={{ fontSize: '0.875rem' }}
-												label={{ value: 'Antall piler', angle: -90, position: 'insideLeft' }}
-											/>
-											<Tooltip
-												contentStyle={{
-													backgroundColor: '#f3f4f6',
-													border: '1px solid #d1d5db',
-													borderRadius: '8px',
-													padding: '12px',
-												}}
-												labelFormatter={(label) => `Dato: ${formatDate(label as string)}`}
-											/>
-											<Legend wrapperStyle={{ paddingTop: '20px' }} />
-											{filteredSeries.map((s, index) => (
-												<Line
-													key={s.name}
-													type="monotone"
-													dataKey={s.name}
-													stroke={COLORS[index % COLORS.length]}
-													strokeWidth={2}
-													dot={{ r: 4 }}
-													activeDot={{ r: 6 }}
-													name={s.name}
-												/>
-											))}
-										</LineChart>
-									</ResponsiveContainer>
-								</div>
+								<ScoreChart data={getScoreChartData()} series={filteredSeries} colors={COLORS} formatDate={formatDate} />
 
-								{/* Summary cards */}
-								<div className={styles.summaryGrid}>
-									<div className={styles.summaryCard}>
-										<h3 className={styles.summaryTitle}>Totalt antall kombinasjoner</h3>
-										<div className={styles.summaryValue}>{filteredSeries.length}</div>
-										<p className={styles.summaryText}>Ulike avstand/blink kombinasjoner</p>
-									</div>
+								<SummaryCards totalCombinations={filteredSeries.length} totalSessions={chartData.length} mostUsed={getMostUsed()} />
 
-									<div className={styles.summaryCard}>
-										<h3 className={styles.summaryTitle}>Total treningsøkter</h3>
-										<div className={styles.summaryValue}>{chartData().length}</div>
-										<p className={styles.summaryText}>Registrerte økter</p>
-									</div>
-
-									<div className={styles.summaryCard}>
-										<h3 className={styles.summaryTitle}>Mest brukt</h3>
-										<div className={styles.summaryValue}>
-											{filteredSeries.length > 0
-												? filteredSeries.reduce((prev, curr) => (prev.data.length > curr.data.length ? prev : curr)).name
-												: 'N/A'}
-										</div>
-										<p className={styles.summaryText}>Hyppigst trent kombinasjon</p>
-									</div>
-								</div>
-
-								{/* Breakdown by combination */}
-								<div className={styles.breakdownSection}>
-									<h2 className={styles.sectionTitle}>Oversikt per kombinasjon</h2>
-									<div className={styles.breakdownGrid}>
-										{filteredSeries.map((s, index) => {
-											const totalArrows = s.data.reduce((sum, d) => sum + d.arrows, 0);
-											const totalScore = s.data.reduce((sum, d) => sum + d.score, 0);
-											const avgArrows = Math.round(totalArrows / s.data.length);
-											const avgScore = s.data.length > 0 ? Math.round(totalScore / s.data.length) : 0;
-
-											return (
-												<div key={s.name} className={styles.breakdownCard}>
-													<div className={styles.breakdownHeader}>
-														<div className={styles.breakdownColor} style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-														<h3 className={styles.breakdownTitle}>{s.name}</h3>
-													</div>
-													<div className={styles.breakdownStats}>
-														<div className={styles.breakdownStat}>
-															<span className={styles.breakdownLabel}>Totalt piler</span>
-															<span className={styles.breakdownValue}>{totalArrows}</span>
-														</div>
-														<div className={styles.breakdownStat}>
-															<span className={styles.breakdownLabel}>Total score</span>
-															<span className={styles.breakdownValue}>{totalScore}</span>
-														</div>
-														<div className={styles.breakdownStat}>
-															<span className={styles.breakdownLabel}>Gj.snitt piler</span>
-															<span className={styles.breakdownValue}>{avgArrows} piler/økt</span>
-														</div>
-														<div className={styles.breakdownStat}>
-															<span className={styles.breakdownLabel}>Gj.snitt score</span>
-															<span className={styles.breakdownValue}>{avgScore} poeng/økt</span>
-														</div>
-														<div className={styles.breakdownStat}>
-															<span className={styles.breakdownLabel}>Antall økter</span>
-															<span className={styles.breakdownValue}>{s.data.length}</span>
-														</div>
-													</div>
-												</div>
-											);
-										})}
-									</div>
-								</div>
+								<BreakdownSection items={getBreakdownItems()} />
 							</div>
 						</>
 					)}
