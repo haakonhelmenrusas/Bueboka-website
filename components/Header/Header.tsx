@@ -20,7 +20,7 @@ export function Header() {
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	// Check if we're on an authenticated page
-	const isAuthPage = pathname === '/min-side' || pathname === '/settings';
+	const isAuthPage = pathname === '/min-side' || pathname === '/settings' || pathname === '/statistikk';
 
 	// Check if we're on an auth form page (login/signup)
 	const isAuthFormPage =

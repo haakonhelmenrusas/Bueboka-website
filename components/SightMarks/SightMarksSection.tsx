@@ -28,7 +28,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 		return (
 			<section className={styles.section}>
 				<div className={styles.header}>
-					<h2 className={styles.title}>Sikte Merkeringer</h2>
+					<h2 className={styles.title}>Siktemerker</h2>
 				</div>
 				<div className={styles.container}>
 					<div className={styles.loading}>Laster...</div>
@@ -40,7 +40,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 	return (
 		<section className={styles.section}>
 			<div className={styles.header}>
-				<h2 className={styles.title}>Sikte Merkeringer</h2>
+				<h2 className={styles.title}>Siktemerker</h2>
 			</div>
 			<div className={styles.container}>
 				{error && <div className={styles.error}>{error}</div>}

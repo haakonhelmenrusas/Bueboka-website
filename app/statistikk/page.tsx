@@ -6,7 +6,8 @@ import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, X
 import { Header } from '@/components';
 import styles from './page.module.css';
 import * as Sentry from '@sentry/nextjs';
-import { Download } from 'lucide-react';
+import { ArrowLeft, Download } from 'lucide-react';
+import { exportToCSV } from '@/lib/csvExport';
 
 interface SeriesData {
 	date: string;
@@ -138,31 +139,23 @@ export default function StatisticsPage() {
 	};
 
 	const downloadCSV = () => {
-		const csv: string[] = [];
-
-		// Header row
+		// Prepare headers
 		const headers = ['Dato', ...filteredSeries.map((s) => s.name)];
-		csv.push(headers.join(','));
 
-		// Data rows
-		chartData().forEach((point) => {
+		// Prepare data rows
+		const rows = chartData().map((point) => {
 			const row = [point.date];
 			filteredSeries.forEach((s) => {
 				row.push(String(point[s.name] || 0));
 			});
-			csv.push(row.join(','));
+			return row;
 		});
 
-		// Create blob and download
-		const blob = new Blob([csv.join('\n')], { type: 'text/csv;charset=utf-8;' });
-		const link = document.createElement('a');
-		const url = URL.createObjectURL(blob);
-		link.setAttribute('href', url);
-		link.setAttribute('download', `bueboka-statistikk-${new Date().toISOString().split('T')[0]}.csv`);
-		link.style.visibility = 'hidden';
-		document.body.appendChild(link);
-		link.click();
-		document.body.removeChild(link);
+		// Generate filename with current date
+		const filename = `bueboka-statistikk-${new Date().toISOString().split('T')[0]}`;
+
+		// Export to CSV
+		exportToCSV(headers, rows, filename);
 	};
 
 	if (loading) {
@@ -192,6 +185,11 @@ export default function StatisticsPage() {
 			<Header />
 			<main className={styles.main} id="main-content">
 				<div className={styles.content}>
+					<button className={styles.backButton} onClick={() => router.push('/min-side')}>
+						<ArrowLeft size={20} />
+						Tilbake til Min side
+					</button>
+
 					<div className={styles.headerSection}>
 						<h1 className={styles.title}>Statistikk</h1>
 						<p className={styles.subtitle}>Detaljert oversikt over din trening</p>
