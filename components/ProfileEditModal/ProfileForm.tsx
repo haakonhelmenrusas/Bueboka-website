@@ -5,6 +5,7 @@ import { Button, Input } from '@/components';
 import styles from './ProfileForm.module.css';
 
 export interface ProfileFormValues {
+	name: string;
 	club: string;
 }
 
@@ -16,20 +17,23 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: ProfileFormProps) {
+	const [name, setName] = useState(initialValues.name);
 	const [club, setClub] = useState(initialValues.club);
 
 	useEffect(() => {
+		setName(initialValues.name);
 		setClub(initialValues.club);
-	}, [initialValues.club]);
+	}, [initialValues.name, initialValues.club]);
 
 	return (
 		<form
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await onSubmit({ club });
+				await onSubmit({ name, club });
 			}}
 			className={styles.form}
 		>
+			<Input label="Navn" value={name} onChange={(e) => setName(e.target.value)} helpText="Ditt fulle navn" required />
 			<Input label="Klubb" value={club} onChange={(e) => setClub(e.target.value)} helpText="Navnet på klubben din" />
 
 			<div className={styles.actions}>

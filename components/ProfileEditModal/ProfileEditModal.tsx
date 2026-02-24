@@ -35,7 +35,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 		}
 	}, [isOpen, user.image]);
 
-	const handleProfileSubmit = async (values: { club: string }) => {
+	const handleProfileSubmit = async (values: { name: string; club: string }) => {
 		setLoading(true);
 		setMessage(null);
 
@@ -44,6 +44,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 				method: 'PATCH',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
+					name: values.name,
 					club: values.club,
 					image: profileImage,
 				}),
@@ -90,7 +91,12 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 					{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
 					<div className={styles.form}>
 						<ImageUpload currentImage={profileImage} onImageChange={setProfileImage} disabled={loading} />
-						<ProfileForm initialValues={{ club: user.club || '' }} loading={loading} onSubmit={handleProfileSubmit} onCancel={onClose} />
+						<ProfileForm
+							initialValues={{ name: user.name || '', club: user.club || '' }}
+							loading={loading}
+							onSubmit={handleProfileSubmit}
+							onCancel={onClose}
+						/>
 					</div>
 				</div>
 			</div>
