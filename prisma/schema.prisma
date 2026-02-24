@@ -132,6 +132,7 @@ model Practice {
   date         DateTime           @default(now())
   notes        String?
   totalScore   Int
+  rating       Int?
   location     String?
   environment  Environment
   weather      WeatherCondition[]

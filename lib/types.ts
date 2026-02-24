@@ -59,6 +59,7 @@ export interface Practice {
 	weather: WeatherCondition[];
 	practiceType: PracticeType;
 	notes?: string | null;
+	rating?: number | null;
 	roundTypeId?: string | null;
 	bowId?: string | null;
 	arrowsId?: string | null;

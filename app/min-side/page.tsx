@@ -310,10 +310,10 @@ export default function MyPage() {
 								weather: selectedPractice.weather,
 								practiceType: (selectedPractice as any).practiceType,
 								notes: selectedPractice.notes,
-								roundTypeId: selectedPractice.roundTypeId,
+								rating: (selectedPractice as any).rating,
 								bowId: selectedPractice.bowId,
 								arrowsId: selectedPractice.arrowsId,
-								ends: (selectedPractice as any).ends,
+								ends: selectedPractice.ends,
 							}
 						: undefined
 				}

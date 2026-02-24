@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeDetailsModal.module.css';
-import { BowArrow, CloudSun, Home, MapPin, Navigation, NotebookText, Target, Trash2, Trees, X } from 'lucide-react';
+import { BowArrow, CloudSun, Home, MapPin, Navigation, NotebookText, Star, Target, Trash2, Trees, X } from 'lucide-react';
 import type { WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -15,6 +15,7 @@ export interface PracticeDetails {
 	environment: Environment;
 	weather: WeatherCondition[];
 	notes?: string | null;
+	rating?: number | null;
 	roundType?: {
 		name: string;
 		distanceMeters?: number | null;
@@ -162,6 +163,13 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 					</div>
 				)}
 				<div className={styles.statsGrid}>
+					{practice.rating && (
+						<div className={styles.statCard}>
+							<Star size={20} className={styles.statIcon} />
+							<div className={styles.statLabel}>Vurdering</div>
+							<div className={styles.statValue}>{practice.rating}/10</div>
+						</div>
+					)}
 					{practice.location && (
 						<div className={styles.statCard}>
 							<MapPin size={20} className={styles.statIcon} />

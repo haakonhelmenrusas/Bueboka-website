@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
-import { ArrowRight, BowArrow, Home, MapPin, Target, Trees, Wind } from 'lucide-react';
+import { ArrowRight, BowArrow, Home, MapPin, Star, Target, Trees, Wind } from 'lucide-react';
 
 export interface PracticeCardProps {
 	id: string;
@@ -9,6 +9,7 @@ export interface PracticeCardProps {
 	totalScore?: number;
 	location?: string | null;
 	environment?: string | null;
+	rating?: number | null;
 	bowName?: string | null;
 	arrowsName?: string | null;
 	roundTypeName?: string | null;
@@ -38,6 +39,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	totalScore,
 	location,
 	environment,
+	rating,
 	bowName,
 	arrowsName,
 	roundTypeName,
@@ -62,6 +64,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		`Trening fra ${formattedDate}`,
 		`${displayScore} poeng`,
 		`${arrowsShot} piler skutt`,
+		rating && `Vurdering: ${rating}/10`,
 		roundText && `Runde: ${roundText}`,
 		location && `Sted: ${location}`,
 		bowName && `Bue: ${bowName}`,
@@ -74,6 +77,14 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={ariaLabel}>
 			<div className={styles.main}>
 				<div className={styles.date}>{formattedDate}</div>
+				{rating ? (
+					<div className={styles.detailItem}>
+						<span className={styles.detailIcon} aria-hidden="true">
+							<Star size={14} />
+						</span>
+						<span className={styles.detailText}>{rating}/10</span>
+					</div>
+				) : null}
 				{roundText ? (
 					<div className={styles.detailItem}>
 						<span className={styles.detailIcon} aria-hidden="true">

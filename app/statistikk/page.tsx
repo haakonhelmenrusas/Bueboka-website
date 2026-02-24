@@ -7,6 +7,7 @@ import {
 	ArrowsChart,
 	BreakdownSection,
 	type DateRange,
+	EmptyState,
 	FilterControls,
 	ScoreChart,
 	type Series,
@@ -238,10 +239,7 @@ export default function StatisticsPage() {
 					<StatisticsHeader />
 
 					{series.length === 0 ? (
-						<div className={styles.emptyState}>
-							<p>Ingen treningsdata tilgjengelig ennå.</p>
-							<p>Start å registrere treninger for å se statistikk her!</p>
-						</div>
+						<EmptyState />
 					) : (
 						<>
 							<FilterControls dateRange={dateRange} onDateRangeChange={setDateRange} onDownloadCSV={downloadCSV} />

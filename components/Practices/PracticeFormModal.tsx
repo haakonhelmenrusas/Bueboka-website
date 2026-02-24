@@ -52,6 +52,7 @@ export interface PracticeFormInput {
 	weather: WeatherCondition[];
 	practiceType: PracticeType;
 	notes?: string;
+	rating?: number;
 	rounds: RoundInput[];
 	bowId?: string;
 	arrowsId?: string;
@@ -71,6 +72,7 @@ interface PracticeFormModalProps {
 		weather: WeatherCondition[];
 		practiceType?: PracticeType | null;
 		notes?: string | null;
+		rating?: number | null;
 		roundTypeId?: string | null;
 		bowId?: string | null;
 		arrowsId?: string | null;
@@ -95,6 +97,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const [weather, setWeather] = useState<WeatherCondition[]>([]);
 	const [practiceType, setPracticeType] = useState<PracticeType>('TRENING');
 	const [notes, setNotes] = useState('');
+	const [rating, setRating] = useState<number | null>(null);
 	const [rounds, setRounds] = useState<RoundInput[]>([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
 	const [bowId, setBowId] = useState<string>('');
 	const [arrowsId, setArrowsId] = useState<string>('');
@@ -123,6 +126,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setWeather(practice.weather || []);
 			setPracticeType(practice.practiceType || 'TRENING');
 			setNotes(practice.notes || '');
+			setRating(practice.rating ?? null);
 
 			// Extract rounds from ends data
 			if (practice.ends && practice.ends.length > 0) {
@@ -153,6 +157,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setWeather([]);
 			setPracticeType('TRENING');
 			setNotes('');
+			setRating(null);
 			setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
 			setBowId('');
 			setArrowsId('');
@@ -213,6 +218,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 				weather,
 				practiceType,
 				notes: notes || undefined,
+				rating: rating ?? undefined,
 				rounds: validRounds,
 				bowId: bowId || undefined,
 				arrowsId: arrowsId || undefined,
@@ -365,6 +371,19 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						))}
 						<Button type="button" label="+ Legg til runde" onClick={addRound} variant="standard" buttonType="outline" width="100%" />
 					</div>
+					<NumberInput
+						label="Vurdering"
+						value={rating ?? 0}
+						onChange={(v) => setRating(v)}
+						onEmpty={() => setRating(null)}
+						min={1}
+						max={10}
+						step={1}
+						startEmpty
+						emptyBehavior="ignore"
+						helpText="Hvordan vil du vurdere treningen? (1-10)"
+						containerClassName={styles.field}
+					/>
 					<TextArea
 						label="Notater"
 						value={notes}

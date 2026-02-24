@@ -33,6 +33,7 @@ export const createPracticeSchema = z
 		weather: z.array(WeatherConditionEnum).optional().default([]),
 		practiceType: PracticeTypeEnum.optional().default('TRENING'),
 		notes: z.string().max(2000, 'Notater må være mindre enn 2000 tegn').optional().nullable(),
+		rating: z.number().int().min(1).max(10).optional().nullable(),
 		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd'),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),

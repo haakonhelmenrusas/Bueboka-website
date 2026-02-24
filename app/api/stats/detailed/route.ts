@@ -20,64 +20,91 @@ async function getCurrentUser() {
 export async function GET() {
 	try {
 		const user = await getCurrentUser();
-		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		if (!user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
 
 		// Fetch all practices with their ends
 		const practices = await prisma.practice.findMany({
 			where: { userId: user.id },
 			orderBy: { date: 'asc' },
 			include: {
-				ends: {
-					select: {
-						arrows: true,
-						distanceMeters: true,
-						targetSizeCm: true,
-						roundScore: true,
-					},
-				},
+				ends: true,
 			},
 		});
 
+		// Return empty series if no practices found
+		if (!practices || practices.length === 0) {
+			return NextResponse.json({ series: [] });
+		}
+
 		// Group data by distance + target combination
-		const groupedData: Record<
-			string,
-			Array<{
-				date: string;
-				arrows: number;
-				score: number;
-			}>
-		> = {};
+		const groupedData = new Map<string, Array<{ date: string; arrows: number; score: number }>>();
 
-		practices.forEach((practice) => {
-			practice.ends.forEach((end) => {
-				const distance = end.distanceMeters || 0;
-				const target = end.targetSizeCm || 0;
-				const key = `${distance}m - ${target}cm`;
+		for (const practice of practices) {
+			// Skip practices without ends
+			if (!practice.ends || !Array.isArray(practice.ends) || practice.ends.length === 0) {
+				continue;
+			}
 
-				if (!groupedData[key]) {
-					groupedData[key] = [];
+			// Convert date to string safely
+			let dateStr: string;
+			try {
+				if (practice.date instanceof Date) {
+					dateStr = practice.date.toISOString().split('T')[0];
+				} else if (typeof practice.date === 'string') {
+					dateStr = new Date(practice.date).toISOString().split('T')[0];
+				} else {
+					continue;
 				}
+			} catch (dateError) {
+				continue;
+			}
 
-				groupedData[key].push({
-					date: practice.date.toISOString().split('T')[0],
-					arrows: end.arrows,
-					score: end.roundScore || 0,
-				});
-			});
-		});
+			for (const end of practice.ends) {
+				try {
+					const distance = typeof end.distanceMeters === 'number' ? end.distanceMeters : 0;
+					const target = typeof end.targetSizeCm === 'number' ? end.targetSizeCm : 0;
+					const key = `${distance}m - ${target}cm`;
 
-		// Convert to array format for easier consumption
-		const series = Object.entries(groupedData).map(([key, data]) => ({
-			name: key,
-			data: data,
+					const arrows = typeof end.arrows === 'number' ? end.arrows : 0;
+					const score = typeof end.roundScore === 'number' ? end.roundScore : 0;
+
+					if (!groupedData.has(key)) {
+						groupedData.set(key, []);
+					}
+
+					groupedData.get(key)!.push({
+						date: dateStr,
+						arrows,
+						score,
+					});
+				} catch (endError) {
+					// Skip invalid end data
+				}
+			}
+		}
+
+		// Convert to array format
+		const series = Array.from(groupedData.entries()).map(([name, data]) => ({
+			name,
+			data,
 		}));
 
 		return NextResponse.json({ series });
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'stats/detailed', method: 'GET' },
-			extra: { message: 'Error fetching detailed stats' },
+			extra: {
+				message: 'Error fetching detailed stats',
+			},
 		});
-		return NextResponse.json({ error: 'Failed to fetch detailed stats' }, { status: 500 });
+
+		return NextResponse.json(
+			{
+				error: 'Failed to fetch detailed stats',
+			},
+			{ status: 500 }
+		);
 	}
 }
