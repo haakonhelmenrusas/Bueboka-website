@@ -309,6 +309,7 @@ export default function MyPage() {
 								environment: selectedPractice.environment,
 								weather: selectedPractice.weather,
 								practiceType: (selectedPractice as any).practiceType,
+								practiceCategory: (selectedPractice as any).practiceCategory,
 								notes: selectedPractice.notes,
 								rating: (selectedPractice as any).rating,
 								bowId: selectedPractice.bowId,

@@ -3,13 +3,17 @@
 import React, { useEffect, useState } from 'react';
 import styles from './PracticeFormModal.module.css';
 import {
+	BowArrow,
 	Cloud,
 	CloudDrizzle,
 	CloudFog,
 	CloudRain,
 	CloudSnow,
 	CloudSun,
+	Crosshair,
+	Footprints,
 	Home,
+	MoreHorizontal,
 	Navigation,
 	Sparkles,
 	Sun,
@@ -19,7 +23,7 @@ import {
 	X,
 	Zap,
 } from 'lucide-react';
-import type { PracticeType, WeatherCondition } from '@/lib/prismaEnums';
+import type { PracticeCategory, PracticeType, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -51,6 +55,7 @@ export interface PracticeFormInput {
 	environment: Environment;
 	weather: WeatherCondition[];
 	practiceType: PracticeType;
+	practiceCategory: PracticeCategory;
 	notes?: string;
 	rating?: number;
 	rounds: RoundInput[];
@@ -71,6 +76,7 @@ interface PracticeFormModalProps {
 		environment: Environment;
 		weather: WeatherCondition[];
 		practiceType?: PracticeType | null;
+		practiceCategory?: PracticeCategory | null;
 		notes?: string | null;
 		rating?: number | null;
 		roundTypeId?: string | null;
@@ -96,6 +102,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
 	const [weather, setWeather] = useState<WeatherCondition[]>([]);
 	const [practiceType, setPracticeType] = useState<PracticeType>('TRENING');
+	const [practiceCategory, setPracticeCategory] = useState<PracticeCategory>('SKIVE');
 	const [notes, setNotes] = useState('');
 	const [rating, setRating] = useState<number | null>(null);
 	const [rounds, setRounds] = useState<RoundInput[]>([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
@@ -125,6 +132,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setEnvironment(practice.environment);
 			setWeather(practice.weather || []);
 			setPracticeType(practice.practiceType || 'TRENING');
+			setPracticeCategory(practice.practiceCategory || 'SKIVE');
 			setNotes(practice.notes || '');
 			setRating(practice.rating ?? null);
 
@@ -156,6 +164,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setEnvironment(Environment.INDOOR);
 			setWeather([]);
 			setPracticeType('TRENING');
+			setPracticeCategory('SKIVE');
 			setNotes('');
 			setRating(null);
 			setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
@@ -217,6 +226,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 				environment,
 				weather,
 				practiceType,
+				practiceCategory,
 				notes: notes || undefined,
 				rating: rating ?? undefined,
 				rounds: validRounds,
@@ -239,7 +249,13 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		{ value: 'TRENING', label: 'Trening' },
 		{ value: 'KONKURRANSE', label: 'Konkurranse' },
 	];
-	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}`, icon: <Target size={16} /> }));
+	const practiceCategoryOptions = [
+		{ value: 'FELT', label: 'Felt', icon: <Crosshair size={16} /> },
+		{ value: 'JAKT_3D', label: 'Jakt/3D', icon: <Footprints size={16} /> },
+		{ value: 'SKIVE', label: 'Skive', icon: <Target size={16} /> },
+		{ value: 'ANNET', label: 'Annet', icon: <MoreHorizontal size={16} /> },
+	];
+	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}`, icon: <BowArrow size={16} /> }));
 	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}`, icon: <Navigation size={16} /> }));
 
 	if (!open) return null;
@@ -278,7 +294,13 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						/>
 					</div>
 					<div className={styles.row}>
-						<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
+						<Select
+							label="Kategori"
+							value={practiceCategory}
+							onChange={(v) => setPracticeCategory(v as PracticeCategory)}
+							options={practiceCategoryOptions}
+							containerClassName={styles.field}
+						/>
 						<Select
 							label="Miljø"
 							value={environment}
@@ -287,6 +309,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							containerClassName={styles.field}
 						/>
 					</div>
+					<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
 					{environment === Environment.OUTDOOR ? (
 						<Select
 							label="Vær"

@@ -1,7 +1,22 @@
 import React from 'react';
 import styles from './PracticeDetailsModal.module.css';
-import { BowArrow, CloudSun, Home, MapPin, Navigation, NotebookText, Star, Target, Trash2, Trees, X } from 'lucide-react';
-import type { WeatherCondition } from '@/lib/prismaEnums';
+import {
+	BowArrow,
+	CloudSun,
+	Crosshair,
+	Footprints,
+	Home,
+	MapPin,
+	MoreHorizontal,
+	Navigation,
+	NotebookText,
+	Star,
+	Target,
+	Trash2,
+	Trees,
+	X,
+} from 'lucide-react';
+import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
@@ -16,6 +31,7 @@ export interface PracticeDetails {
 	weather: WeatherCondition[];
 	notes?: string | null;
 	rating?: number | null;
+	practiceCategory?: PracticeCategory | null;
 	roundType?: {
 		name: string;
 		distanceMeters?: number | null;
@@ -67,6 +83,22 @@ const arrowMaterialLabels: Record<string, string> = {
 	KARBON: 'Karbon',
 	ALUMINIUM: 'Aluminium',
 	TREVERK: 'Treverk',
+};
+
+// Practice category translations
+const practiceCategoryLabels: Record<string, string> = {
+	FELT: 'Felt',
+	JAKT_3D: 'Jakt/3D',
+	SKIVE: 'Skive',
+	ANNET: 'Annet',
+};
+
+// Practice category icons
+const practiceCategoryIcons: Record<string, React.ReactNode> = {
+	FELT: <Crosshair size={20} />,
+	JAKT_3D: <Footprints size={20} />,
+	SKIVE: <Target size={20} />,
+	ANNET: <MoreHorizontal size={20} />,
 };
 
 export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose, onEdit, onDeleted }) => {
@@ -165,28 +197,37 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				<div className={styles.statsGrid}>
 					{practice.rating && (
 						<div className={styles.statCard}>
-							<Star size={20} className={styles.statIcon} />
+							<Star size={20} className={styles.statIcon} fill="currentColor" />
 							<div className={styles.statLabel}>Vurdering</div>
 							<div className={styles.statValue}>{practice.rating}/10</div>
 						</div>
 					)}
+					{practice.practiceCategory && (
+						<div className={styles.statCard}>
+							{practiceCategoryIcons[practice.practiceCategory] && (
+								<div className={styles.statIcon}>{practiceCategoryIcons[practice.practiceCategory]}</div>
+							)}
+							<div className={styles.statLabel}>Kategori</div>
+							<div className={styles.statValue}>{practiceCategoryLabels[practice.practiceCategory] || practice.practiceCategory}</div>
+						</div>
+					)}
 					{practice.location && (
 						<div className={styles.statCard}>
-							<MapPin size={20} className={styles.statIcon} />
+							<MapPin size={20} className={styles.statIcon} fill="currentColor" />
 							<div className={styles.statLabel}>Sted</div>
 							<div className={styles.statValue}>{practice.location}</div>
 						</div>
 					)}
 					{practice.weather?.length > 0 && (
 						<div className={styles.statCard}>
-							<CloudSun size={20} className={styles.statIcon} />
+							<CloudSun size={20} className={styles.statIcon} fill="currentColor" />
 							<div className={styles.statLabel}>Vær</div>
 							<div className={styles.statValue}>{formatWeatherConditions(practice.weather)}</div>
 						</div>
 					)}
 					{practice.bow && (
 						<div className={styles.statCard}>
-							<BowArrow size={20} className={styles.statIcon} />
+							<BowArrow size={20} className={styles.statIcon} fill="currentColor" />
 							<div className={styles.statLabel}>Bue</div>
 							<div className={styles.statValue}>
 								{practice.bow.name} • {bowTypeLabels[practice.bow.type] || practice.bow.type}
@@ -195,7 +236,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 					)}
 					{practice.arrows && (
 						<div className={styles.statCard}>
-							<Navigation size={20} className={styles.statIcon} />
+							<Navigation size={20} className={styles.statIcon} fill="currentColor" />
 							<div className={styles.statLabel}>Piler</div>
 							<div className={styles.statValue}>
 								{practice.arrows.name} • {arrowMaterialLabels[practice.arrows.material] || practice.arrows.material}

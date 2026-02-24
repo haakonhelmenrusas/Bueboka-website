@@ -1,4 +1,4 @@
-import type { Environment, PracticeType, WeatherCondition } from '@/lib/prismaEnums';
+import type { Environment, PracticeCategory, PracticeType, WeatherCondition } from '@/lib/prismaEnums';
 
 export interface User {
 	id: string;
@@ -58,6 +58,7 @@ export interface Practice {
 	environment: Environment;
 	weather: WeatherCondition[];
 	practiceType: PracticeType;
+	practiceCategory: PracticeCategory;
 	notes?: string | null;
 	rating?: number | null;
 	roundTypeId?: string | null;

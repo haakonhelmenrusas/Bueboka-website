@@ -34,3 +34,12 @@ export const PracticeType = {
 } as const;
 
 export type PracticeType = (typeof PracticeType)[keyof typeof PracticeType];
+
+export const PracticeCategory = {
+	FELT: 'FELT',
+	JAKT_3D: 'JAKT_3D',
+	SKIVE: 'SKIVE',
+	ANNET: 'ANNET',
+} as const;
+
+export type PracticeCategory = (typeof PracticeCategory)[keyof typeof PracticeCategory];

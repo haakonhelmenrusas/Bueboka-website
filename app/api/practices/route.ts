@@ -40,7 +40,8 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const { date, location, environment, weather, practiceType, notes, rating, rounds, bowId, arrowsId } = validation.data;
+		const { date, location, environment, weather, practiceType, practiceCategory, notes, rating, rounds, bowId, arrowsId } =
+			validation.data;
 
 		const parsedDate = new Date(date);
 		// Calculate total arrows shot from all rounds
@@ -99,6 +100,7 @@ export async function POST(request: NextRequest) {
 			environment: environment as Environment,
 			weather: weather || [],
 			practiceType: practiceType || 'TRENING',
+			practiceCategory: practiceCategory || 'SKIVE',
 			notes: notes || null,
 			rating: rating ?? null,
 			ends: {

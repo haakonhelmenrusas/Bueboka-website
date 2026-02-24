@@ -15,6 +15,7 @@ export const WeatherConditionEnum = z.enum([
 	'OTHER',
 ]);
 export const PracticeTypeEnum = z.enum(['TRENING', 'KONKURRANSE']);
+export const PracticeCategoryEnum = z.enum(['FELT', 'JAKT_3D', 'SKIVE', 'ANNET']);
 
 // Round input schema
 export const RoundInputSchema = z.object({
@@ -32,6 +33,7 @@ export const createPracticeSchema = z
 		environment: EnvironmentEnum,
 		weather: z.array(WeatherConditionEnum).optional().default([]),
 		practiceType: PracticeTypeEnum.optional().default('TRENING'),
+		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE'),
 		notes: z.string().max(2000, 'Notater må være mindre enn 2000 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
 		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd'),

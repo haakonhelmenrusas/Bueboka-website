@@ -37,10 +37,13 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
 		if (!practice) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-		// Map totalScore to arrowsShot for frontend compatibility
+		// Calculate total arrows shot from ends
+		const totalArrows = practice.ends?.reduce((sum, end) => sum + (end.arrows || 0), 0) || 0;
+
+		// Map calculated arrowsShot for frontend compatibility
 		const mappedPractice = {
 			...practice,
-			arrowsShot: practice.totalScore,
+			arrowsShot: totalArrows,
 		};
 
 		return NextResponse.json({ practice: mappedPractice });
