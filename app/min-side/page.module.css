@@ -329,14 +329,50 @@
 	animation: shimmer 1.4s infinite;
 }
 
-.avatarSkeleton {
-	width: 128px;
-	height: 128px;
-	border-radius: var(--radius-full);
+.itemSkeleton {
+	width: 100%;
+	min-height: 72px;
+	border-radius: var(--radius-lg);
 	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
-	border: 3px solid var(--white-06);
+	border: 1px solid var(--white-06);
+}
+
+.sectionTitleSkeletonLight {
+	width: 180px;
+	height: 22px;
+	border-radius: var(--radius-base);
+	background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
+.equipmentTitleSkeleton {
+	width: 80px;
+	height: 18px;
+	border-radius: var(--radius-base);
+	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
+.smallButtonSkeleton {
+	width: 120px;
+	height: 36px;
+	border-radius: var(--radius-base);
+	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
+.statsSkeleton {
+	width: 100%;
+	height: 60px;
+	border-radius: var(--radius-md);
+	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
 }
 
 .lineSkeletonWide {
@@ -404,3 +440,40 @@
 	animation: shimmer 1.4s infinite;
 	border: 1px solid var(--white-06);
 }
+
+.sectionTitleSkeletonLight {
+	width: 180px;
+	height: 22px;
+	border-radius: var(--radius-base);
+	background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
+.equipmentTitleSkeleton {
+	width: 80px;
+	height: 18px;
+	border-radius: var(--radius-base);
+	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
+.smallButtonSkeleton {
+	width: 120px;
+	height: 36px;
+	border-radius: var(--radius-base);
+	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
+.statsSkeleton {
+	width: 100%;
+	height: 60px;
+	border-radius: var(--radius-md);
+	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
