@@ -315,7 +315,13 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							containerClassName={styles.field}
 						/>
 					</div>
-					<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
+					<Input
+						label="Sted"
+						value={location}
+						onChange={(e) => setLocation(e.target.value)}
+						helpText="F.eks. Oslo"
+						containerClassName={styles.field}
+					/>
 					{environment === Environment.OUTDOOR ? (
 						<Select
 							label="Vær"
@@ -409,14 +415,14 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							step={1}
 							startEmpty={true}
 							helpText="Antall piler skutt uten å føre score"
-							containerClassName={styles.field}
+							containerClassName={styles.narrowInput}
 						/>
 					</div>
 					<div className={styles.ratingSection}>
-						<label className={styles.ratingLabel}>
+						<div className={styles.ratingLabel}>
 							Vurdering
 							<span className={styles.ratingOptional}>(valgfritt)</span>
-						</label>
+						</div>
 						<p className={styles.ratingHelpText}>Hvordan vil du vurdere treningen?</p>
 						<div className={styles.ratingButtons}>
 							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
