@@ -404,7 +404,16 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 								</div>
 							</div>
 						))}
-						<Button type="button" label="+ Legg til runde" onClick={addRound} variant="standard" buttonType="outline" width="100%" />
+						<Button
+							type="button"
+							label="+ Legg til runde"
+							onClick={addRound}
+							variant="standard"
+							buttonType="outline"
+							width="100%"
+							disabled={rounds.length >= 5}
+						/>
+						{rounds.length >= 5 && <p className={styles.limitMessage}>Maksimalt 5 runder er tillatt</p>}
 					</div>
 					<div className={styles.arrowsWithoutScoreSection}>
 						<NumberInput
@@ -412,6 +421,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							value={arrowsWithoutScore}
 							onChange={setArrowsWithoutScore}
 							min={0}
+							max={1000}
 							step={1}
 							startEmpty={true}
 							helpText="Antall piler skutt uten å føre score"

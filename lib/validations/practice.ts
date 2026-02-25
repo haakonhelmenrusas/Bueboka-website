@@ -19,10 +19,10 @@ export const PracticeCategoryEnum = z.enum(['FELT', 'JAKT_3D', 'SKIVE', 'ANNET']
 
 // Round input schema
 export const RoundInputSchema = z.object({
-	distanceMeters: z.number().int().min(0).optional(),
+	distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional(),
 	targetType: z.string().optional(),
-	numberArrows: z.number().int().min(0).optional(),
-	roundScore: z.number().int().min(0).optional(),
+	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional(),
+	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
 });
 
 // Schema for creating a practice
@@ -36,8 +36,8 @@ export const createPracticeSchema = z
 		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE'),
 		notes: z.string().max(2000, 'Notater må være mindre enn 2000 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
-		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd'),
-		arrowsWithoutScore: z.number().int().min(0).optional().nullable(),
+		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(5, 'Maksimalt 5 runder er tillatt'),
+		arrowsWithoutScore: z.number().int().min(0).max(1000, 'Maksimalt 1000 piler uten scoring').optional().nullable(),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),
 	})
