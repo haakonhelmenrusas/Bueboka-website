@@ -75,8 +75,8 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 				<div className={styles.grid}>
 					<div>
 						<div className={styles.subHeaderRow}>
-							<div className={styles.subTitle}>Buer</div>
-							<Button label="Ny bue" onClick={onCreateBow} icon={<BowArrow size={18} />} width={140} size="small" />
+							<h3 className={styles.subTitle}>Buer</h3>
+							<Button label="Ny bue" onClick={onCreateBow} icon={<BowArrow size={18} />} width={160} />
 						</div>
 						<div className={styles.list} role="list">
 							{bows && bows.length > 0 ? (
@@ -115,13 +115,12 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
 					<div>
 						<div className={styles.subHeaderRow}>
-							<div className={styles.subTitle}>Piler</div>
+							<h3 className={styles.subTitle}>Piler</h3>
 							<Button
 								label="Nye piler"
 								onClick={onCreateArrows}
 								icon={<ArrowUpRight size={18} />}
-								width={140}
-								size="small"
+								width={160}
 								disabled={arrows.length >= 5}
 							/>
 						</div>

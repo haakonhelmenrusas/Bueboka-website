@@ -45,7 +45,7 @@
 .subTitle {
 	font-weight: 800;
 	margin: 0;
-	font-size: 1.1rem;
+	font-size: 1.3rem;
 	color: var(--text-gray-800);
 }
 
@@ -81,7 +81,7 @@
 }
 
 .list::-webkit-scrollbar-thumb:hover {
-	background: var(--primary-30);
+	background: var(--primary);
 }
 
 .item {
