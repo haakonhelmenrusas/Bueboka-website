@@ -166,6 +166,14 @@
   gap: var(--space-2);
 }
 
+/* Arrows Without Score Section */
+.arrowsWithoutScoreSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
 /* Rating section */
 .ratingSection {
   display: flex;

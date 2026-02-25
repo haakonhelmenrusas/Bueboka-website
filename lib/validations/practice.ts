@@ -37,6 +37,7 @@ export const createPracticeSchema = z
 		notes: z.string().max(2000, 'Notater må være mindre enn 2000 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
 		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd'),
+		arrowsWithoutScore: z.number().int().min(0).optional().nullable(),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),
 	})

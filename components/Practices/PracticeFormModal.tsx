@@ -59,6 +59,7 @@ export interface PracticeFormInput {
 	notes?: string;
 	rating?: number;
 	rounds: RoundInput[];
+	arrowsWithoutScore?: number;
 	bowId?: string;
 	arrowsId?: string;
 }
@@ -106,6 +107,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const [notes, setNotes] = useState('');
 	const [rating, setRating] = useState<number | null>(null);
 	const [rounds, setRounds] = useState<RoundInput[]>([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+	const [arrowsWithoutScore, setArrowsWithoutScore] = useState<number>(0);
 	const [bowId, setBowId] = useState<string>('');
 	const [arrowsId, setArrowsId] = useState<string>('');
 	const [submitting, setSubmitting] = useState(false);
@@ -155,6 +157,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 				setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
 			}
 
+			// Set arrows without score from roundType if available
+			setArrowsWithoutScore((practice as any).arrowsWithoutScore || 0);
+
 			setBowId(practice.bowId || '');
 			setArrowsId(practice.arrowsId || '');
 		} else {
@@ -168,6 +173,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setNotes('');
 			setRating(null);
 			setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+			setArrowsWithoutScore(0);
 			setBowId('');
 			setArrowsId('');
 		}
@@ -230,6 +236,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 				notes: notes || undefined,
 				rating: rating ?? undefined,
 				rounds: validRounds,
+				arrowsWithoutScore: arrowsWithoutScore > 0 ? arrowsWithoutScore : undefined,
 				bowId: bowId || undefined,
 				arrowsId: arrowsId || undefined,
 			});
@@ -380,7 +387,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 										containerClassName={styles.roundField}
 									/>
 									<NumberInput
-										label="Score"
+										label="Score (valgfritt)"
 										value={round.roundScore}
 										onChange={(v) => updateRound(index, 'roundScore', v)}
 										min={0}
@@ -392,6 +399,18 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							</div>
 						))}
 						<Button type="button" label="+ Legg til runde" onClick={addRound} variant="standard" buttonType="outline" width="100%" />
+					</div>
+					<div className={styles.arrowsWithoutScoreSection}>
+						<NumberInput
+							label="Piler uten scoring (valgfritt)"
+							value={arrowsWithoutScore}
+							onChange={setArrowsWithoutScore}
+							min={0}
+							step={1}
+							startEmpty={true}
+							helpText="Antall piler skutt uten å føre score"
+							containerClassName={styles.field}
+						/>
 					</div>
 					<div className={styles.ratingSection}>
 						<label className={styles.ratingLabel}>

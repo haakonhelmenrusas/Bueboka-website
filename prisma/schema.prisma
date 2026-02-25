@@ -127,23 +127,24 @@ model Arrows {
 }
 
 model Practice {
-  id               String             @id @default(cuid())
-  userId           String
-  date             DateTime           @default(now())
-  notes            String?
-  totalScore       Int
-  rating           Int?
-  location         String?
-  environment      Environment
-  weather          WeatherCondition[]
-  practiceType     PracticeType       @default(TRENING)
-  practiceCategory PracticeCategory   @default(SKIVE)
-  roundTypeId      String?
-  bowId            String?
-  arrowsId         String?
-  ends             End[]
-  createdAt        DateTime           @default(now())
-  updatedAt        DateTime           @updatedAt
+  id                 String             @id @default(cuid())
+  userId             String
+  date               DateTime           @default(now())
+  notes              String?
+  totalScore         Int
+  rating             Int?
+  location           String?
+  environment        Environment
+  weather            WeatherCondition[]
+  practiceType       PracticeType       @default(TRENING)
+  practiceCategory   PracticeCategory   @default(SKIVE)
+  arrowsWithoutScore Int?
+  roundTypeId        String?
+  bowId              String?
+  arrowsId           String?
+  ends               End[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 
   // Relation fields
   user      User       @relation(fields: [userId], references: [id])

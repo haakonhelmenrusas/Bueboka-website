@@ -40,8 +40,20 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const { date, location, environment, weather, practiceType, practiceCategory, notes, rating, rounds, bowId, arrowsId } =
-			validation.data;
+		const {
+			date,
+			location,
+			environment,
+			weather,
+			practiceType,
+			practiceCategory,
+			notes,
+			rating,
+			rounds,
+			arrowsWithoutScore,
+			bowId,
+			arrowsId,
+		} = validation.data;
 
 		const parsedDate = new Date(date);
 		// Calculate total arrows shot from all rounds
@@ -103,6 +115,7 @@ export async function POST(request: NextRequest) {
 			practiceCategory: practiceCategory || 'SKIVE',
 			notes: notes || null,
 			rating: rating ?? null,
+			arrowsWithoutScore: arrowsWithoutScore ?? null,
 			ends: {
 				create: rounds.map((round) => {
 					// Parse targetSizeCm from targetType (e.g., "40cm" -> 40)

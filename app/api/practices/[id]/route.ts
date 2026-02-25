@@ -43,8 +43,20 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			);
 		}
 
-		const { date, location, environment, weather, practiceType, practiceCategory, notes, rating, rounds, bowId, arrowsId } =
-			validation.data;
+		const {
+			date,
+			location,
+			environment,
+			weather,
+			practiceType,
+			practiceCategory,
+			notes,
+			rating,
+			rounds,
+			arrowsWithoutScore,
+			bowId,
+			arrowsId,
+		} = validation.data;
 
 		// Verify practice exists and belongs to user
 		const existingPractice = await prisma.practice.findFirst({
@@ -140,6 +152,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				practiceCategory: practiceCategory || 'SKIVE',
 				notes: notes || null,
 				rating: rating ?? null,
+				arrowsWithoutScore: arrowsWithoutScore ?? null,
 				roundTypeId: roundTypeId || null,
 				bowId: bowId || null,
 				arrowsId: arrowsId || null,
