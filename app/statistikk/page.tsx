@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import * as Sentry from '@sentry/nextjs';
 import { Header } from '@/components';
 import {
 	ArrowsChart,
@@ -14,27 +15,12 @@ import {
 	StatisticsHeader,
 	SummaryCards,
 } from '@/components/Statistics';
-import styles from './page.module.css';
-import * as Sentry from '@sentry/nextjs';
 import { exportToCSV } from '@/lib/csvExport';
+import styles from './page.module.css';
 
 interface DetailedStatsResponse {
 	series: Series[];
 }
-
-// Generate distinct colors for each line
-const COLORS = [
-	'#053546', // Primary
-	'#0c82ac', // Primary light
-	'#227B9A', // Secondary
-	'#FFA500', // Orange
-	'#008000', // Green
-	'#DD0000', // Red
-	'#9333ea', // Purple
-	'#0891b2', // Cyan
-	'#d97706', // Amber
-	'#059669', // Emerald
-];
 
 export default function StatisticsPage() {
 	const [series, setSeries] = useState<Series[]>([]);
@@ -201,11 +187,47 @@ export default function StatisticsPage() {
 		return filteredSeries.reduce((prev, curr) => (prev.data.length > curr.data.length ? prev : curr)).name;
 	};
 
+	const getAverageScore = (): number => {
+		if (!filteredSeries.length) return 0;
+
+		// Calculate total score and total sessions across all series
+		let totalScore = 0;
+		let totalSessionsWithScore = 0;
+
+		filteredSeries.forEach((s) => {
+			s.data.forEach((d) => {
+				if (d.score > 0) {
+					totalScore += d.score;
+					totalSessionsWithScore++;
+				}
+			});
+		});
+
+		return totalSessionsWithScore > 0 ? totalScore / totalSessionsWithScore : 0;
+	};
+
 	const getBreakdownItems = () => {
+		// Get colors from CSS variables
+		const root = typeof window !== 'undefined' ? getComputedStyle(document.documentElement) : null;
+		const colors = root
+			? [
+					root.getPropertyValue('--primary').trim(),
+					root.getPropertyValue('--primary-light').trim(),
+					root.getPropertyValue('--secondary').trim(),
+					root.getPropertyValue('--warning').trim(),
+					root.getPropertyValue('--success').trim(),
+					root.getPropertyValue('--error').trim(),
+					'#9333ea', // Purple
+					'#0891b2', // Cyan
+					'#d97706', // Amber
+					'#059669', // Emerald
+				]
+			: [];
+
 		return filteredSeries.map((s, index) => ({
 			name: s.name,
 			data: s.data,
-			color: COLORS[index % COLORS.length],
+			color: colors[index % colors.length] || '#053546',
 		}));
 	};
 
@@ -237,20 +259,15 @@ export default function StatisticsPage() {
 			<main className={styles.main} id="main-content">
 				<div className={styles.content}>
 					<StatisticsHeader />
-
 					{series.length === 0 ? (
 						<EmptyState />
 					) : (
 						<>
 							<FilterControls dateRange={dateRange} onDateRangeChange={setDateRange} onDownloadCSV={downloadCSV} />
-
 							<div className={styles.chartSection}>
-								<ArrowsChart data={getArrowsChartData()} series={filteredSeries} colors={COLORS} formatDate={formatDate} />
-
-								<ScoreChart data={getScoreChartData()} series={filteredSeries} colors={COLORS} formatDate={formatDate} />
-
-								<SummaryCards totalCombinations={filteredSeries.length} totalSessions={chartData.length} mostUsed={getMostUsed()} />
-
+								<SummaryCards averageScore={getAverageScore()} totalSessions={chartData.length} mostUsed={getMostUsed()} />
+								<ArrowsChart data={getArrowsChartData()} series={filteredSeries} formatDate={formatDate} />
+								<ScoreChart data={getScoreChartData()} series={filteredSeries} formatDate={formatDate} />
 								<BreakdownSection items={getBreakdownItems()} />
 							</div>
 						</>

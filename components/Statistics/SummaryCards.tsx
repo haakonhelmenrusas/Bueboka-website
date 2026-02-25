@@ -1,18 +1,18 @@
 import styles from './SummaryCards.module.css';
 
 interface SummaryCardsProps {
-	totalCombinations: number;
+	averageScore: number;
 	totalSessions: number;
 	mostUsed: string;
 }
 
-export function SummaryCards({ totalCombinations, totalSessions, mostUsed }: SummaryCardsProps) {
+export function SummaryCards({ averageScore, totalSessions, mostUsed }: SummaryCardsProps) {
 	return (
 		<div className={styles.summaryGrid}>
 			<div className={styles.summaryCard}>
-				<h3 className={styles.summaryTitle}>Totalt antall kombinasjoner</h3>
-				<div className={styles.summaryValue}>{totalCombinations}</div>
-				<p className={styles.summaryText}>Ulike avstand/blink kombinasjoner</p>
+				<h3 className={styles.summaryTitle}>Gjennomsnittlig score</h3>
+				<div className={styles.summaryValue}>{averageScore > 0 ? averageScore.toFixed(1) : '—'}</div>
+				<p className={styles.summaryText}>Per treningsøkt</p>
 			</div>
 
 			<div className={styles.summaryCard}>
