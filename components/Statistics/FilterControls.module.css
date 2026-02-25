@@ -3,10 +3,11 @@
   justify-content: space-between;
   align-items: center;
   gap: var(--space-4);
-  background: var(--card-bg-solid);
+  background: var(--card-bg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-lg);
   padding: var(--space-4);
-  box-shadow: 0 2px 8px var(--dark-08);
+  box-shadow: 0 20px 60px var(--dark-20);
   flex-wrap: wrap;
 }
 

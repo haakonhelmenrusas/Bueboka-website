@@ -5,10 +5,11 @@
 }
 
 .summaryCard {
-  background: var(--card-bg-solid);
+  background: var(--card-bg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-lg);
   padding: var(--space-5);
-  box-shadow: 0 2px 8px var(--dark-08);
+  box-shadow: 0 20px 60px var(--dark-20);
   border-left: 4px solid var(--primary);
 }
 

@@ -5,9 +5,9 @@
 .container {
   min-height: 100vh;
   background: linear-gradient(
-    135deg,
+    180deg,
     var(--page-gradient-start) 0%,
-    var(--page-gradient-mid) 50%,
+    var(--page-gradient-mid) 40%,
     var(--page-gradient-end) 100%
   );
 }
@@ -65,9 +65,11 @@
 }
 
 .emptyState {
-  background: var(--card-bg-solid);
+  background: var(--card-bg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: var(--radius-xl);
   color: var(--text-gray-600);
+  box-shadow: 0 20px 60px var(--dark-20);
 }
 
 .emptyState p {
@@ -80,6 +82,7 @@
     background: rgba(255, 255, 255, 0.05);
     color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   }
 }
 
