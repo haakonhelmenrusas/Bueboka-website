@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useId, useMemo, useState } from 'react';
+import React, {useEffect, useId, useMemo, useState} from 'react';
 import styles from './NumberInput.module.css';
 
 export interface NumberInputProps {
@@ -38,6 +38,10 @@ const clamp = (n: number, min?: number, max?: number) => {
 	if (typeof min === 'number') v = Math.max(min, v);
 	if (typeof max === 'number') v = Math.min(max, v);
 	return v;
+};
+
+const roundToOneDecimal = (n: number): number => {
+	return Math.round(n * 10) / 10;
 };
 
 export const NumberInput: React.FC<NumberInputProps> = ({
@@ -89,14 +93,14 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 	const dec = () => {
 		if (disabled) return;
-		const next = clamp(value - step, min, max);
+		const next = roundToOneDecimal(clamp(value - step, min, max));
 		onChange(next);
 		setDisplayValue(String(next));
 	};
 
 	const inc = () => {
 		if (disabled) return;
-		const next = clamp(value + step, min, max);
+		const next = roundToOneDecimal(clamp(value + step, min, max));
 		onChange(next);
 		setDisplayValue(String(next));
 	};
@@ -116,7 +120,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 		const parsed = Number(raw);
 		if (Number.isNaN(parsed)) return;
-		const next = clamp(parsed, min, max);
+		const next = roundToOneDecimal(clamp(parsed, min, max));
 		onChange(next);
 		// If clamping changed the value, reflect it immediately.
 		if (next !== parsed) setDisplayValue(String(next));
@@ -132,7 +136,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 				return;
 			}
 			const fallback = typeof min === 'number' ? min : 0;
-			const next = clamp(fallback, min, max);
+			const next = roundToOneDecimal(clamp(fallback, min, max));
 			onChange(next);
 			setDisplayValue(String(next));
 		}
