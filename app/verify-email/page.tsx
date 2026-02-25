@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { CheckCircle, Loader2, XCircle } from 'lucide-react';
 import styles from './page.module.css';
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
@@ -86,5 +86,22 @@ export default function VerifyEmailPage() {
 				)}
 			</div>
 		</div>
+	);
+}
+
+export default function VerifyEmailPage() {
+	return (
+		<Suspense
+			fallback={
+				<div className={styles.container}>
+					<div className={styles.card}>
+						<Loader2 className={styles.iconLoading} size={64} />
+						<h1 className={styles.title}>Laster...</h1>
+					</div>
+				</div>
+			}
+		>
+			<VerifyEmailContent />
+		</Suspense>
 	);
 }
