@@ -37,6 +37,18 @@ export async function POST(request: NextRequest) {
 		const { name, material, length, weight, arrowsCount, diameter, spine, pointType, pointWeight, vanes, nock, notes, isFavorite } =
 			validation.data;
 
+		// Check if user already has 5 arrow sets
+		const existingArrowsCount = await prisma.arrows.count({
+			where: { userId: user.id },
+		});
+
+		if (existingArrowsCount >= 5) {
+			return NextResponse.json(
+				{ error: 'Du kan maks ha 5 pilsett. Slett et eksisterende pilsett for å legge til et nytt.' },
+				{ status: 400 }
+			);
+		}
+
 		const makeFavorite = Boolean(isFavorite);
 
 		const arrows = await prisma.$transaction(async (tx) => {

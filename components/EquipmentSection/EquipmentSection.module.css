@@ -49,10 +49,39 @@
 	color: var(--text-gray-800);
 }
 
+.limitMessage {
+	font-size: 0.875rem;
+	color: var(--text-gray-600);
+	margin-bottom: var(--space-3);
+	font-style: italic;
+}
+
 .list {
 	display: grid;
 	gap: var(--space-4);
 	width: 100%;
+	max-height: 240px; /* Approximately 3 items (3 * 72px + gaps) */
+	overflow-y: auto;
+	padding-right: var(--space-2);
+}
+
+/* Custom scrollbar styling */
+.list::-webkit-scrollbar {
+	width: 6px;
+}
+
+.list::-webkit-scrollbar-track {
+	background: var(--background);
+	border-radius: var(--radius-base);
+}
+
+.list::-webkit-scrollbar-thumb {
+	background: var(--primary-20);
+	border-radius: var(--radius-base);
+}
+
+.list::-webkit-scrollbar-thumb:hover {
+	background: var(--primary-30);
 }
 
 .item {

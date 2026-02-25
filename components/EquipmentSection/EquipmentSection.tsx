@@ -116,8 +116,16 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 					<div>
 						<div className={styles.subHeaderRow}>
 							<div className={styles.subTitle}>Piler</div>
-							<Button label="Nye piler" onClick={onCreateArrows} icon={<ArrowUpRight size={18} />} width={140} size="small" />
+							<Button
+								label="Nye piler"
+								onClick={onCreateArrows}
+								icon={<ArrowUpRight size={18} />}
+								width={140}
+								size="small"
+								disabled={arrows.length >= 5}
+							/>
 						</div>
+						{arrows.length >= 5 && <div className={styles.limitMessage}>Maksimalt 5 pilsett tillatt</div>}
 						<div className={styles.list} role="list">
 							{arrows && arrows.length > 0 ? (
 								arrows.map((a) => (
