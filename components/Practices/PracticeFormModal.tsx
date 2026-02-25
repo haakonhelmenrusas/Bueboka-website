@@ -272,14 +272,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const submitLabel = isEditMode ? 'Lagre endringer' : 'Lagre trening';
 
 	return (
-		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div
-				className={styles.modal}
-				onClick={(e) => e.stopPropagation()}
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="practice-form-title"
-			>
+		<div className={styles.overlay} role="presentation">
+			<div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="practice-form-title">
 				<div className={styles.header}>
 					<h3 id="practice-form-title" className={styles.title}>
 						{title}
