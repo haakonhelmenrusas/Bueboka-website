@@ -41,6 +41,8 @@
   font-weight: 550;
   font-size: 0.9rem;
   white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
 }
 
 .detailIcon {
@@ -53,6 +55,10 @@
 
 .detailText {
   line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
 }
 
 .hideOnMobile {

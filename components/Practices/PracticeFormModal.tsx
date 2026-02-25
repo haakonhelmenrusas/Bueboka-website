@@ -313,7 +313,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						label="Sted"
 						value={location}
 						onChange={(e) => setLocation(e.target.value)}
-						helpText="F.eks. Oslo"
+						helpText={`F.eks. Oslo (${location.length}/64 tegn)`}
+						maxLength={64}
 						containerClassName={styles.field}
 					/>
 					{environment === Environment.OUTDOOR ? (
@@ -405,9 +406,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							variant="standard"
 							buttonType="outline"
 							width="100%"
-							disabled={rounds.length >= 5}
+							disabled={rounds.length >= 8}
 						/>
-						{rounds.length >= 5 && <p className={styles.limitMessage}>Maksimalt 5 runder er tillatt</p>}
+						{rounds.length >= 8 && <p className={styles.limitMessage}>Maksimalt 8 runder er tillatt</p>}
 					</div>
 					<div className={styles.arrowsWithoutScoreSection}>
 						<NumberInput
@@ -448,7 +449,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						value={notes}
 						onChange={(e) => setNotes(e.target.value)}
 						placeholder="Hvordan gikk treningen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
-						helpText="Dine tanker og observasjoner om treningen"
+						helpText={`Dine tanker og observasjoner om treningen (${notes.length}/500 tegn)`}
+						maxLength={500}
 						containerClassName={styles.field}
 					/>
 					{error && <div className={styles.error}>{error}</div>}

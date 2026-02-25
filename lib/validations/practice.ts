@@ -20,7 +20,15 @@ export const PracticeCategoryEnum = z.enum(['FELT', 'JAKT_3D', 'SKIVE', 'ANNET']
 // Round input schema
 export const RoundInputSchema = z.object({
 	distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional(),
-	targetType: z.string().optional(),
+	targetType: z
+		.string()
+		.refine((val) => {
+			if (!val) return true; // Optional field
+			// Valid target types
+			const validTypes = ['40cm', '60cm', '80cm', '122cm', '3-spot', 'vertical-3-spot'];
+			return validTypes.includes(val);
+		}, 'Ugyldig blinktype')
+		.optional(),
 	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional(),
 	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
 });
@@ -29,15 +37,15 @@ export const RoundInputSchema = z.object({
 export const createPracticeSchema = z
 	.object({
 		date: z.string().min(1, 'Dato er påkrevd'),
-		location: z.string().max(200, 'Sted må være mindre enn 200 tegn').optional().nullable(),
+		location: z.string().max(64, 'Sted må være mindre enn 64 tegn').optional().nullable(),
 		environment: EnvironmentEnum,
 		weather: z.array(WeatherConditionEnum).optional().default([]),
 		practiceType: PracticeTypeEnum.optional().default('TRENING'),
 		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE'),
-		notes: z.string().max(2000, 'Notater må være mindre enn 2000 tegn').optional().nullable(),
+		notes: z.string().max(500, 'Notater må være mindre enn 500 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
-		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(5, 'Maksimalt 5 runder er tillatt'),
-		arrowsWithoutScore: z.number().int().min(0).max(1000, 'Maksimalt 1000 piler uten scoring').optional().nullable(),
+		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(8, 'Maksimalt 8 runder er tillatt'),
+		arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),
 	})

@@ -155,6 +155,9 @@
   font-weight: 700;
   color: var(--text-dark);
   text-align: right;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .statSubtext {
@@ -267,6 +270,10 @@
   color: var(--text-gray-700);
   line-height: 1.6;
   white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 /* Actions */
