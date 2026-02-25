@@ -1,4 +1,4 @@
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styles from './ScoreChart.module.css';
 import { useEffect, useState } from 'react';
 
@@ -40,7 +40,7 @@ export function ScoreChart({ data, series, formatDate }: ScoreChartProps) {
 			<p className={styles.chartSubtitle}>Total score per økt gruppert etter avstand og blinktype</p>
 
 			<ResponsiveContainer width="100%" height={400}>
-				<LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+				<BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 					<XAxis dataKey="date" tickFormatter={formatDate} stroke="#6b7280" style={{ fontSize: '0.875rem' }} />
 					<YAxis
@@ -62,18 +62,9 @@ export function ScoreChart({ data, series, formatDate }: ScoreChartProps) {
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
 					{series.map((s, index) => (
-						<Line
-							key={s.name}
-							type="monotone"
-							dataKey={`${s.name}_score`}
-							stroke={colors[index % colors.length] || '#053546'}
-							strokeWidth={2}
-							dot={{ r: 4 }}
-							activeDot={{ r: 6 }}
-							name={s.name}
-						/>
+						<Bar key={s.name} dataKey={`${s.name}_score`} fill={colors[index % colors.length] || '#053546'} name={s.name} barSize={40} />
 					))}
-				</LineChart>
+				</BarChart>
 			</ResponsiveContainer>
 		</div>
 	);
