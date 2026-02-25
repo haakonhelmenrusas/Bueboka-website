@@ -1,50 +1,28 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect } from 'react';
 
-type Theme = 'light' | 'dark';
+type Theme = 'light';
 
 interface ThemeContextType {
 	theme: Theme;
-	toggleTheme: () => void;
+	// toggleTheme removed - will be added back when dark mode is implemented
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-	const [theme, setTheme] = useState<Theme>('light');
-	const [mounted, setMounted] = useState(false);
+	const theme: Theme = 'light';
 
-	// Load theme from localStorage on mount
+	// Apply light theme to document
 	useEffect(() => {
-		const savedTheme = localStorage.getItem('theme') as Theme | null;
-		const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-		// Priority: localStorage > system preference > default (light)
-		const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
-		setTheme(initialTheme);
-		setMounted(true);
+		const root = document.documentElement;
+		root.setAttribute('data-theme', 'light');
+		// Clear any previously saved theme preference
+		localStorage.removeItem('theme');
 	}, []);
 
-	// Apply theme to document
-	useEffect(() => {
-		if (!mounted) return;
-
-		const root = document.documentElement;
-		root.setAttribute('data-theme', theme);
-		localStorage.setItem('theme', theme);
-	}, [theme, mounted]);
-
-	const toggleTheme = () => {
-		setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
-	};
-
-	// Prevent flash of unstyled content
-	if (!mounted) {
-		return null;
-	}
-
-	return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+	return <ThemeContext.Provider value={{ theme }}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme() {
