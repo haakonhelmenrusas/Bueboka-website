@@ -13,17 +13,6 @@
   margin: 0 0 var(--space-6) 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  .breakdownSection {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  }
-
-  .sectionTitle {
-    color: #4db8e8;
-  }
-}
 
 .breakdownGrid {
   display: grid;
@@ -38,12 +27,6 @@
   border: 1px solid var(--border-gray);
 }
 
-@media (prefers-color-scheme: dark) {
-  .breakdownCard {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.15);
-  }
-}
 
 .breakdownHeader {
   display: flex;
@@ -89,19 +72,6 @@
   font-weight: 700;
 }
 
-@media (prefers-color-scheme: dark) {
-  .breakdownTitle {
-    color: rgba(255, 255, 255, 0.95);
-  }
-
-  .breakdownLabel {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .breakdownValue {
-    color: rgba(255, 255, 255, 0.95);
-  }
-}
 
 @media (max-width: 768px) {
   .breakdownGrid {

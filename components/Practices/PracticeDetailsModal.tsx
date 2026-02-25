@@ -26,6 +26,7 @@ export interface PracticeDetails {
 	id: string;
 	date: string; // ISO
 	arrowsShot?: number;
+	arrowsWithoutScore?: number | null;
 	location?: string | null;
 	environment: Environment;
 	weather: WeatherCondition[];
@@ -244,6 +245,13 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						</div>
 					)}
 				</div>
+				{practice.arrowsWithoutScore && practice.arrowsWithoutScore > 0 && (
+					<div className={styles.statCardFull}>
+						<BowArrow size={20} className={styles.statIcon} fill="currentColor" />
+						<div className={styles.statLabel}>Piler uten scoring</div>
+						<div className={styles.statValue}>{practice.arrowsWithoutScore} piler</div>
+					</div>
+				)}
 				{practice.ends && practice.ends.length > 0 && (
 					<div className={styles.roundsSection}>
 						<h4 className={styles.sectionTitle}>

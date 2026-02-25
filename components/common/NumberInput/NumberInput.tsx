@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useId, useMemo, useState} from 'react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
 import styles from './NumberInput.module.css';
 
 export interface NumberInputProps {

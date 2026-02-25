@@ -27,7 +27,7 @@ import { EquipmentSection } from './EquipmentSection/EquipmentSection';
 import { Checkbox } from './common/Checkbox/Checkbox';
 import { PracticesSection } from './PracticesSection/PracticesSection';
 import { ConfirmModal } from './common/ConfirmModal/ConfirmModal';
-import { ThemeToggle } from './ThemeToggle/ThemeToggle';
+// import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 import { Accordion } from './common/Accordion/Accordion';
 import { FullPageLoader } from './common/FullPageLoader/FullPageLoader';
 import { SightMarksSection } from './SightMarks/SightMarksSection';
@@ -67,7 +67,7 @@ export {
 	Checkbox,
 	PracticesSection,
 	ConfirmModal,
-	ThemeToggle,
+	// ThemeToggle,
 	Accordion,
 	FullPageLoader,
 	SightMarksSection,

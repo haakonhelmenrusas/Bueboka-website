@@ -12,16 +12,6 @@
   );
 }
 
-@media (prefers-color-scheme: dark) {
-  .container {
-    background: linear-gradient(
-      135deg,
-      #001a23 0%,
-      #002a38 50%,
-      #003d4d 100%
-    );
-  }
-}
 
 .main {
   padding: calc(var(--space-14) + 60px) var(--space-6) var(--space-8);
@@ -52,11 +42,6 @@
   font-size: 1.125rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .loader {
-    color: rgba(255, 255, 255, 0.95);
-  }
-}
 
 .error {
   color: var(--error-light);
@@ -77,14 +62,6 @@
   font-size: 1.125rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .emptyState {
-    background: rgba(255, 255, 255, 0.05);
-    color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-  }
-}
 
 /* ===================================
    CHART SECTION CONTAINER

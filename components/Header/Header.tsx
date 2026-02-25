@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
-import { ThemeToggle } from '@/components';
+// import { ThemeToggle } from '@/components';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 
 export function Header() {
@@ -186,7 +186,7 @@ export function Header() {
 							</button>
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
-									<ThemeToggle />
+									{/* <ThemeToggle /> */}
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<Settings size={16} />
 										<span>Innstillinger</span>

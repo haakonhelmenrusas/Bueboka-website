@@ -28,28 +28,11 @@ const getChartColors = (): string[] => {
 };
 
 export function ArrowsChart({ data, series, formatDate }: ArrowsChartProps) {
-	const [isDark, setIsDark] = useState(false);
 	const [colors, setColors] = useState<string[]>([]);
 
 	useEffect(() => {
-		// Check if dark mode is active
-		const darkModeQuery = window.matchMedia('(prefers-color-scheme: dark)');
-		setIsDark(darkModeQuery.matches);
-
-		const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
-		darkModeQuery.addEventListener('change', handler);
-
-		// Get colors from CSS variables
 		setColors(getChartColors());
-
-		return () => darkModeQuery.removeEventListener('change', handler);
 	}, []);
-
-	const gridColor = isDark ? '#374151' : '#e5e7eb';
-	const axisColor = isDark ? '#9ca3af' : '#6b7280';
-	const tooltipBg = isDark ? '#1f2937' : '#ffffff';
-	const tooltipBorder = isDark ? '#4b5563' : '#d1d5db';
-	const tooltipTextColor = isDark ? '#f3f4f6' : '#111827';
 
 	return (
 		<div className={styles.chartCard}>
@@ -58,23 +41,23 @@ export function ArrowsChart({ data, series, formatDate }: ArrowsChartProps) {
 
 			<ResponsiveContainer width="100%" height={400}>
 				<LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-					<CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
-					<XAxis dataKey="date" tickFormatter={formatDate} stroke={axisColor} style={{ fontSize: '0.875rem' }} />
+					<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+					<XAxis dataKey="date" tickFormatter={formatDate} stroke="#6b7280" style={{ fontSize: '0.875rem' }} />
 					<YAxis
-						stroke={axisColor}
+						stroke="#6b7280"
 						style={{ fontSize: '0.875rem' }}
-						label={{ value: 'Antall piler', angle: -90, position: 'insideLeft', fill: axisColor }}
+						label={{ value: 'Antall piler', angle: -90, position: 'insideLeft', fill: '#6b7280' }}
 					/>
 					<Tooltip
 						contentStyle={{
-							backgroundColor: tooltipBg,
-							border: `1px solid ${tooltipBorder}`,
+							backgroundColor: '#ffffff',
+							border: '1px solid #d1d5db',
 							borderRadius: '8px',
 							padding: '12px',
-							color: tooltipTextColor,
+							color: '#111827',
 						}}
-						labelStyle={{ color: tooltipTextColor }}
-						itemStyle={{ color: tooltipTextColor }}
+						labelStyle={{ color: '#111827' }}
+						itemStyle={{ color: '#111827' }}
 						labelFormatter={(label) => `Dato: ${formatDate(label as string)}`}
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
