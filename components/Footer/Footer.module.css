@@ -45,8 +45,6 @@
 	justify-content: center;
 	gap: var(--space-3); /* space-x-3 */
 	margin-bottom: var(--space-10); /* mb-8 */
-	cursor: pointer;
-	text-decoration: none;
 }
 
 .pressable {
