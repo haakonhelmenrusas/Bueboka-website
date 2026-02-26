@@ -128,10 +128,16 @@
 	margin: 0 auto;
 	width: 100%;
 	max-width: 28rem; /* ~max-w-md */
-	display: flex;
+	display: none; /* Hide on mobile by default */
 	align-items: flex-end;
 	justify-content: center;
 	gap: 24px;
+}
+
+@media (min-width: 769px) {
+	.right {
+		display: flex; /* Show on tablet and desktop */
+	}
 }
 
 .phoneCard {
