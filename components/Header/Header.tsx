@@ -137,7 +137,7 @@ export function Header() {
 									</Link>
 								)}
 								<button
-									name="Profile menu"
+									aria-label="Åpne profil menu"
 									className={`${styles.profileMenuButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 									onClick={toggleProfileMenu}
 									aria-haspopup="true"
@@ -178,6 +178,7 @@ export function Header() {
 							<button
 								className={`${styles.profileMenuButton} ${styles.mobileProfileButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 								onClick={toggleProfileMenu}
+								aria-labelledby="Åpne profil menu"
 								aria-haspopup="true"
 								aria-expanded={profileMenuOpen}
 							>
