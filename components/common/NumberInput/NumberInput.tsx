@@ -12,6 +12,7 @@ export interface NumberInputProps {
 	step?: number;
 	disabled?: boolean;
 	required?: boolean;
+	optional?: boolean;
 	helpText?: React.ReactNode;
 	errorMessage?: string;
 	/** Optional unit label, e.g. "m", "kg". */
@@ -53,6 +54,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 	step = 1,
 	disabled,
 	required,
+	optional,
 	helpText,
 	errorMessage,
 	unit,
@@ -155,6 +157,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 			<label className={styles.label} htmlFor={inputId}>
 				{label}
 				{required ? <span className={styles.required}>*</span> : null}
+				{optional ? <span className={styles.optional}>(valgfritt)</span> : null}
 			</label>
 
 			{helpText ? (

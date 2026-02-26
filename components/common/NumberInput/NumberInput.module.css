@@ -19,6 +19,12 @@
 	font-weight: 800;
 }
 
+.optional {
+	font-size: 0.8125rem;
+	font-weight: 400;
+	color: var(--text-gray-600);
+}
+
 .control {
 	display: grid;
 	grid-template-columns: 38px 1fr 38px;

@@ -388,12 +388,13 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 										containerClassName={styles.roundField}
 									/>
 									<NumberInput
-										label="Score (valgfritt)"
+										label="Score"
 										value={round.roundScore}
 										onChange={(v) => updateRound(index, 'roundScore', v)}
 										min={0}
 										step={1}
 										startEmpty={true}
+										optional
 										containerClassName={styles.roundField}
 									/>
 								</div>
@@ -412,13 +413,14 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 					</div>
 					<div className={styles.arrowsWithoutScoreSection}>
 						<NumberInput
-							label="Piler uten scoring (valgfritt)"
+							label="Piler uten scoring"
 							value={arrowsWithoutScore}
 							onChange={setArrowsWithoutScore}
 							min={0}
 							max={1000}
 							step={1}
 							startEmpty={true}
+							optional
 							helpText="Antall piler skutt uten å føre score"
 							containerClassName={styles.narrowInput}
 						/>
