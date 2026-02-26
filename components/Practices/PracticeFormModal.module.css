@@ -150,7 +150,7 @@
 
 .roundInputs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 1.5fr 1fr 1fr; /* Give more space to Blink (2nd column) */
   gap: var(--space-4);
 }
 

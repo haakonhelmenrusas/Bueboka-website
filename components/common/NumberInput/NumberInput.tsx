@@ -17,6 +17,8 @@ export interface NumberInputProps {
 	errorMessage?: string;
 	/** Optional unit label, e.g. "m", "kg". */
 	unit?: string;
+	/** Hide the stepper buttons (-/+) for a cleaner input appearance */
+	hideSteppers?: boolean;
 	/**
 	 * How to treat empty input. Defaults to "clamp" (turns empty into min/0).
 	 * Use "ignore" to keep value unchanged when input is cleared.
@@ -58,6 +60,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 	helpText,
 	errorMessage,
 	unit,
+	hideSteppers,
 	emptyBehavior = 'clamp',
 	startEmpty = false,
 	name,
@@ -144,6 +147,15 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		}
 	};
 
+	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+		if (disabled) return;
+		// Clear "0" on focus to prevent extra 0 when typing
+		if (displayValue === '0' || (startEmpty && value === 0)) {
+			setDisplayValue('');
+			e.target.select(); // Select any remaining text
+		}
+	};
+
 	const numericForBounds = (() => {
 		const parsed = Number(displayValue);
 		return displayValue === '' || Number.isNaN(parsed) ? value : parsed;
@@ -166,10 +178,14 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 				</div>
 			) : null}
 
-			<div className={`${styles.control} ${disabled ? styles.disabled : ''} ${errorMessage ? styles.error : ''}`}>
-				<button type="button" className={styles.stepper} onClick={dec} disabled={disabled || atMin} aria-label={`Decrease ${label}`}>
-					−
-				</button>
+			<div
+				className={`${styles.control} ${hideSteppers ? styles.noSteppers : ''} ${disabled ? styles.disabled : ''} ${errorMessage ? styles.error : ''}`}
+			>
+				{!hideSteppers && (
+					<button type="button" className={styles.stepper} onClick={dec} disabled={disabled || atMin} aria-label={`Decrease ${label}`}>
+						−
+					</button>
+				)}
 
 				<div className={styles.inputWrap}>
 					<input
@@ -181,6 +197,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						value={displayValue}
 						onChange={handleInputChange}
 						onBlur={handleBlur}
+						onFocus={handleFocus}
 						min={min}
 						max={max}
 						step={step}
@@ -193,9 +210,11 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 					{rightAddon ? <span className={styles.rightAddon}>{rightAddon}</span> : null}
 				</div>
 
-				<button type="button" className={styles.stepper} onClick={inc} disabled={disabled || atMax} aria-label={`Increase ${label}`}>
-					+
-				</button>
+				{!hideSteppers && (
+					<button type="button" className={styles.stepper} onClick={inc} disabled={disabled || atMax} aria-label={`Increase ${label}`}>
+						+
+					</button>
+				)}
 			</div>
 
 			{errorMessage ? (

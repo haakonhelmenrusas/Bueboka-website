@@ -41,6 +41,10 @@
 	outline-offset: 2px;
 }
 
+.control.noSteppers {
+	grid-template-columns: 1fr;
+}
+
 .stepper {
 	border: none;
 	background: var(--primary-06);
