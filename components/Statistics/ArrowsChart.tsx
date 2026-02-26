@@ -62,7 +62,7 @@ export function ArrowsChart({ data, series, formatDate }: ArrowsChartProps) {
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
 					{series.map((s, index) => (
-						<Bar key={s.name} dataKey={s.name} fill={colors[index % colors.length] || '#053546'} name={s.name} barSize={40} />
+						<Bar key={s.name} dataKey={s.name} fill={colors[index % colors.length] || '#053546'} name={s.name} barSize={8} />
 					))}
 				</BarChart>
 			</ResponsiveContainer>
