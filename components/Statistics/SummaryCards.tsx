@@ -10,19 +10,19 @@ export function SummaryCards({ averageScore, totalSessions, mostUsed }: SummaryC
 	return (
 		<div className={styles.summaryGrid}>
 			<div className={styles.summaryCard}>
-				<h3 className={styles.summaryTitle}>Gjennomsnittlig score</h3>
+				<h2 className={styles.summaryTitle}>Gjennomsnittlig score</h2>
 				<div className={styles.summaryValue}>{averageScore > 0 ? averageScore.toFixed(1) : '—'}</div>
 				<p className={styles.summaryText}>Per treningsøkt</p>
 			</div>
 
 			<div className={styles.summaryCard}>
-				<h3 className={styles.summaryTitle}>Total treningsøkter</h3>
+				<h2 className={styles.summaryTitle}>Total treningsøkter</h2>
 				<div className={styles.summaryValue}>{totalSessions}</div>
 				<p className={styles.summaryText}>Registrerte økter</p>
 			</div>
 
 			<div className={styles.summaryCard}>
-				<h3 className={styles.summaryTitle}>Mest brukt</h3>
+				<h2 className={styles.summaryTitle}>Mest brukt</h2>
 				<div className={styles.summaryValue}>{mostUsed}</div>
 				<p className={styles.summaryText}>Hyppigst trent kombinasjon</p>
 			</div>

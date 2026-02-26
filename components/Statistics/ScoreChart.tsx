@@ -36,7 +36,7 @@ export function ScoreChart({ data, series, formatDate }: ScoreChartProps) {
 
 	return (
 		<div className={styles.chartCard}>
-			<h2 className={styles.chartTitle}>Score over tid</h2>
+			<h3 className={styles.chartTitle}>Score over tid</h3>
 			<p className={styles.chartSubtitle}>Total score per økt gruppert etter avstand og blinktype</p>
 
 			<ResponsiveContainer width="100%" height={400}>

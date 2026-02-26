@@ -36,7 +36,7 @@ export function ArrowsChart({ data, series, formatDate }: ArrowsChartProps) {
 
 	return (
 		<div className={styles.chartCard}>
-			<h2 className={styles.chartTitle}>Piler skutt over tid</h2>
+			<h3 className={styles.chartTitle}>Piler skutt over tid</h3>
 			<p className={styles.chartSubtitle}>Gruppert etter avstand og blinktype</p>
 
 			<ResponsiveContainer width="100%" height={400}>
