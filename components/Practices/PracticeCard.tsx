@@ -1,12 +1,11 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
-import { ArrowRight, BowArrow, Home, MapPin, Star, Target, Trees, Wind } from 'lucide-react';
+import { ArrowRight, BowArrow, ChevronRight, Home, MapPin, Star, Target, Trees, Wind } from 'lucide-react';
 
 export interface PracticeCardProps {
 	id: string;
 	date: string; // ISO string
 	arrowsShot: number;
-	totalScore?: number;
 	location?: string | null;
 	environment?: string | null;
 	rating?: number | null;
@@ -36,7 +35,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	id,
 	date,
 	arrowsShot,
-	totalScore,
 	location,
 	environment,
 	rating,
@@ -56,13 +54,9 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	const roundText = roundTypeName ? (extraRoundEnv ? `${roundTypeName} • ${extraRoundEnv}` : roundTypeName) : null;
 	const envText = formatEnvironment(environment);
 
-	// Use totalScore if available, otherwise fallback to arrowsShot for backwards compatibility
-	const displayScore = totalScore ?? arrowsShot;
-
 	// Build accessible label
 	const ariaLabel = [
 		`Trening fra ${formattedDate}`,
-		`${displayScore} poeng`,
 		`${arrowsShot} piler skutt`,
 		rating && `Vurdering: ${rating}/10`,
 		roundText && `Runde: ${roundText}`,
@@ -74,7 +68,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		.join(', ');
 
 	return (
-		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={ariaLabel}>
+		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={`${ariaLabel}. Klikk for å se detaljer`}>
 			<div className={styles.main}>
 				<div className={styles.date}>{formattedDate}</div>
 				{rating ? (
@@ -125,9 +119,8 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						<span className={styles.detailText}>{arrowsName}</span>
 					</div>
 				) : null}
-				<div className={styles.arrowsCount}>
-					<span className={styles.arrowsNumber}>{displayScore}</span>
-					<span className={styles.arrowsLabel}>Score</span>
+				<div className={styles.openIcon}>
+					<ChevronRight size={20} aria-hidden="true" />
 				</div>
 			</div>
 		</button>

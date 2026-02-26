@@ -65,24 +65,19 @@
   display: inline-flex;
 }
 
-.arrowsCount {
+.openIcon {
   display: inline-flex;
-  align-items: baseline;
-  gap: var(--space-2);
+  align-items: center;
+  justify-content: center;
   flex: 0 0 auto;
   margin-left: auto;
+  color: var(--text-gray-600);
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.arrowsNumber {
-  font-size: 1.25rem;
-  font-weight: 900;
-  color: var(--text-gray-700);
-}
-
-.arrowsLabel {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-gray-700);
+.card:hover .openIcon {
+  color: var(--primary);
+  transform: translateX(4px);
 }
 
 @media (max-width: 700px) {

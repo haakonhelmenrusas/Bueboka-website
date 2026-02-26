@@ -38,7 +38,6 @@ export async function GET(request: Request) {
 				select: {
 					id: true,
 					date: true,
-					totalScore: true,
 					location: true,
 					environment: true,
 					bow: { select: { name: true } },
@@ -67,7 +66,6 @@ export async function GET(request: Request) {
 			return {
 				id: p.id,
 				date: p.date,
-				totalScore: p.totalScore,
 				arrowsShot,
 				location: p.location ?? null,
 				environment: p.environment ?? null,

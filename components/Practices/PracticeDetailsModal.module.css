@@ -95,7 +95,7 @@
 
 .scoreValue {
   font-size: 2.5rem;
-  font-weight: 900;
+  font-weight: 600;
   line-height: 1;
   margin-bottom: var(--space-2);
 }
@@ -207,6 +207,10 @@
   color: var(--text-dark);
   text-align: center;
   width: 100%;
+}
+
+.roundScoreNumber {
+  font-weight: 600;
 }
 
 .roundMeta {

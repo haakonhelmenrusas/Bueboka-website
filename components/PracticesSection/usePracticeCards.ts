@@ -7,7 +7,6 @@ export type PracticeCardItem = {
 	id: string;
 	date: string;
 	arrowsShot: number;
-	totalScore?: number;
 	location?: string | null;
 	environment?: string | null;
 	bowName?: string | null;
