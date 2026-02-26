@@ -125,6 +125,9 @@ export default function SettingsPage() {
 												<li>
 													<strong>Langbue</strong>: Historisk bue med lang profil, skytes uten moderne hjelpemidler.
 												</li>
+												<li>
+													<strong>Tradisjonell</strong>: Buer som følger historiske design, ofte håndlaget.
+												</li>
 											</ul>
 										</div>
 									),
@@ -168,7 +171,7 @@ export default function SettingsPage() {
 												Ja! Du kan bruke både nettsiden og mobilappen vår — med samme innlogging. Dataen din synkroniseres automatisk, slik
 												at du alltid har alt tilgjengelig uansett plattform.
 											</p>
-											<p>Tips: Aktiver mørk modus for en behagelig opplevelse på kveldstid. Du kan bytte tema i menyen oppe til høyre.</p>
+											<p>Tips: Register dine siktemerker og treninger ute i på banen og få en fin oversikt på laptopen på kvelden.</p>
 										</div>
 									),
 								},

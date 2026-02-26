@@ -137,6 +137,7 @@ export function Header() {
 									</Link>
 								)}
 								<button
+									name="Profile menu"
 									className={`${styles.profileMenuButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 									onClick={toggleProfileMenu}
 									aria-haspopup="true"
