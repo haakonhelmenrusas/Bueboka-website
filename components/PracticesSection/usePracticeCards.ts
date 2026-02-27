@@ -28,6 +28,7 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 	const [total, setTotal] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const inFlightRef = useRef(false);
+	const pageRef = useRef(1); // Track current page with ref
 
 	const totalPages = useMemo(() => Math.max(1, Math.ceil(total / pageSize)), [total, pageSize]);
 	const showPagination = total > pageSize;
@@ -42,7 +43,9 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 				if (!res.ok) return;
 				const data = (await res.json()) as PracticeCardsResponse;
 				setCards(data.practices ?? []);
-				setPage(data.page ?? nextPage);
+				const newPage = data.page ?? nextPage;
+				setPage(newPage);
+				pageRef.current = newPage; // Update ref
 				setTotal(data.total ?? 0);
 			} catch (err) {
 				Sentry.captureException(err, { tags: { area: 'PracticesSection', action: 'fetchPracticeCards' } });
@@ -60,16 +63,18 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 	}, []);
 
 	const reload = useCallback(async () => {
-		await fetchPage(Math.min(page, totalPages));
-	}, [fetchPage, page, totalPages]);
+		await fetchPage(Math.min(pageRef.current, totalPages));
+	}, [fetchPage, totalPages]);
 
-	const goToPrev = useCallback(async () => {
-		await fetchPage(Math.max(1, page - 1));
-	}, [fetchPage, page]);
+	const goToPrev = useCallback(() => {
+		const nextPage = Math.max(1, pageRef.current - 1);
+		fetchPage(nextPage);
+	}, [fetchPage]);
 
-	const goToNext = useCallback(async () => {
-		await fetchPage(Math.min(totalPages, page + 1));
-	}, [fetchPage, page, totalPages]);
+	const goToNext = useCallback(() => {
+		const nextPage = pageRef.current + 1;
+		fetchPage(nextPage);
+	}, [fetchPage]);
 
 	const removeLocal = useCallback(
 		async (id: string) => {
@@ -80,12 +85,12 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 			});
 			setTotal((prev) => Math.max(0, prev - 1));
 
-			if (prevCount === 1 && page > 1) {
-				await fetchPage(page - 1);
+			if (prevCount === 1 && pageRef.current > 1) {
+				await fetchPage(pageRef.current - 1);
 				return;
 			}
 		},
-		[fetchPage, page]
+		[fetchPage]
 	);
 
 	return {
