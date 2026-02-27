@@ -1,12 +1,6 @@
 import 'dotenv/config';
 
-import {
-	BowType,
-	Environment,
-	Material,
-	PrismaClient,
-	WeatherCondition
-} from '@/prisma/prisma/generated/prisma-client/client';
+import { BowType, Environment, Material, PrismaClient, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 function assertEnv() {
