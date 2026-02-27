@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 import { ThemeProvider } from '@/lib/ThemeProvider';
+import { FeedbackProvider } from '@/lib/FeedbackProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
 	return (
 		<html lang="no-nb">
 			<body className={inter.className}>
-				<ThemeProvider>{children}</ThemeProvider>
+				<ThemeProvider>
+					<FeedbackProvider>{children}</FeedbackProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	);

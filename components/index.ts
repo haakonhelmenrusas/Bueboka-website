@@ -36,6 +36,7 @@ import { SocialAuthButtons } from '@/components/common/SocialAuthButtons/SocialA
 import { Tooltip } from './common/Tooltip/Tooltip';
 import { Privacy } from './Privacy/Privacy';
 import { CallToAction } from './CallToAction/CallToAction';
+import { FeedbackModal } from './FeedbackModal/FeedbackModal';
 
 export {
 	Header,
@@ -76,6 +77,7 @@ export {
 	Tooltip,
 	Privacy,
 	CallToAction,
+	FeedbackModal,
 };
 
 export * from './common/StatsSummary/StatsSummary';

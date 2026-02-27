@@ -23,11 +23,10 @@ export async function GET() {
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const roundTypes = await prisma.roundType.findMany({
-			orderBy: [{ environment: 'asc' }, { name: 'asc' }],
+			orderBy: [{ name: 'asc' }],
 			select: {
 				id: true,
 				name: true,
-				environment: true,
 				distanceMeters: true,
 				targetType: true,
 				numberArrows: true,

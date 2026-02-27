@@ -81,7 +81,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		if (firstRound && (firstRound.distanceMeters || firstRound.targetType || firstRound.numberArrows)) {
 			const existingRoundType = await prisma.roundType.findFirst({
 				where: {
-					environment: environment as Environment,
 					distanceMeters: firstRound.distanceMeters || null,
 				},
 			});
@@ -99,7 +98,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				const newRoundType = await prisma.roundType.create({
 					data: {
 						name: `${firstRound.distanceMeters || 0}m - ${firstRound.targetType || 'Custom'}`,
-						environment: environment as Environment,
 						distanceMeters: firstRound.distanceMeters || null,
 						targetType: targetTypeJson,
 						numberArrows: firstRound.numberArrows || null,

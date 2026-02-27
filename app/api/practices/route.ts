@@ -72,10 +72,9 @@ export async function POST(request: NextRequest) {
 			// Try to find existing round type
 			const existingRoundType = await prisma.roundType.findFirst({
 				where: {
-					environment: environment as Environment,
 					distanceMeters: firstRound.distanceMeters || null,
 					// Note: targetType is JSON, so we can't easily match on it
-					// For now, we'll just match on distance and environment
+					// For now, we'll just match on distance
 				},
 			});
 
@@ -93,7 +92,6 @@ export async function POST(request: NextRequest) {
 				const newRoundType = await prisma.roundType.create({
 					data: {
 						name: `${firstRound.distanceMeters || 0}m - ${firstRound.targetType || 'Custom'}`,
-						environment: environment as Environment,
 						distanceMeters: firstRound.distanceMeters || null,
 						targetType: targetTypeJson,
 						numberArrows: firstRound.numberArrows || null,

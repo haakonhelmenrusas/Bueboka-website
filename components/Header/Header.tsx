@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
-import { CircleUserRound, LogOut, Menu, Settings, X } from 'lucide-react';
+import { CircleUserRound, LogOut, Menu, MessageSquare, Settings, X } from 'lucide-react';
 import styles from './Header.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -10,10 +10,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
 // import { ThemeToggle } from '@/components';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
+import { useFeedback } from '@/lib/FeedbackProvider';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+	const { openFeedback } = useFeedback();
 	const { data: session } = useSession();
 	const router = useRouter();
 	const pathname = usePathname();
@@ -53,6 +55,12 @@ export function Header() {
 
 	const handleSettingsClick = () => {
 		router.push('/settings');
+		closeProfileMenu();
+		closeMobileMenu();
+	};
+
+	const handleFeedbackClick = () => {
+		openFeedback();
 		closeProfileMenu();
 		closeMobileMenu();
 	};
@@ -189,6 +197,10 @@ export function Header() {
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
 									{/* <ThemeToggle /> */}
+									<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
+										<MessageSquare size={16} />
+										<span>Gi tilbakemelding</span>
+									</button>
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<Settings size={16} />
 										<span>Innstillinger</span>
