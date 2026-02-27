@@ -251,6 +251,38 @@ export default function SettingsPage() {
 											<strong>Sikker lagring</strong>: All data krypteres og lagres sikkert i samsvar med moderne sikkerhetsstandarder.
 										</div>
 									</li>
+									<li className={styles.privacyItem}>
+										<span className={styles.privacyIcon}>
+											<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+												<path d="M2 17l10 5 10-5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+												<path d="M2 12l10 5 10-5" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+											</svg>
+										</span>
+										<div>
+											<strong>Analyse og forbedring</strong>: Vi bruker{' '}
+											<a
+												href="https://clarity.microsoft.com/"
+												target="_blank"
+												rel="noopener noreferrer"
+												style={{ color: 'var(--primary)', textDecoration: 'underline' }}
+											>
+												Microsoft Clarity
+											</a>{' '}
+											for å forstå hvordan nettsiden brukes. Dette hjelper oss med å forbedre brukeropplevelsen. Clarity kan registrere
+											økten din, inkludert musebevegelser, klikk og rulling. Ingen personlig identifiserbar informasjon samles inn uten ditt
+											samtykke. Les mer om{' '}
+											<a
+												href="https://privacy.microsoft.com/privacystatement"
+												target="_blank"
+												rel="noopener noreferrer"
+												style={{ color: 'var(--primary)', textDecoration: 'underline' }}
+											>
+												Microsofts personvernerklæring
+											</a>
+											.
+										</div>
+									</li>
 								</ul>
 								<p className={styles.privacyFooter}>
 									Hvis du har spørsmål om hvordan vi håndterer dataene dine, ta gjerne kontakt med oss.
