@@ -1,7 +1,6 @@
 [build]
   command = "npm run prisma:generate && npm run build"
   publish = ".next"
-  functions = "netlify/functions"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -71,9 +70,4 @@
   [headers.values]
     Cache-Control = "public, s-maxage=10, stale-while-revalidate=59"
 
-# Enable faster function execution
-[functions]
-  node_bundler = "esbuild"
-  # Increase function timeout for database operations
-  timeout = 10
 
