@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { roundTypesCache } from '@/lib/cache';
 
 async function getCurrentUser() {
 	try {
@@ -22,6 +23,20 @@ export async function GET() {
 		const user = await getCurrentUser();
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+		// Check cache first
+		const cacheKey = 'round-types:all';
+		const cached = roundTypesCache.get(cacheKey);
+		if (cached) {
+			return NextResponse.json(
+				{ roundTypes: cached },
+				{
+					headers: {
+						'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+					},
+				}
+			);
+		}
+
 		const roundTypes = await prisma.roundType.findMany({
 			orderBy: [{ name: 'asc' }],
 			select: {
@@ -35,7 +50,17 @@ export async function GET() {
 			},
 		});
 
-		return NextResponse.json({ roundTypes });
+		// Store in cache
+		roundTypesCache.set(cacheKey, roundTypes);
+
+		return NextResponse.json(
+			{ roundTypes },
+			{
+				headers: {
+					'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+				},
+			}
+		);
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'round-types', method: 'GET' },

@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { statsCache } from '@/lib/cache';
 
 async function getCurrentUser() {
 	try {
@@ -22,6 +23,17 @@ export async function GET() {
 		const user = await getCurrentUser();
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		// Check cache first
+		const cacheKey = `stats:detailed:${user.id}`;
+		const cached = statsCache.get(cacheKey);
+		if (cached) {
+			return NextResponse.json(cached, {
+				headers: {
+					'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=300',
+				},
+			});
 		}
 
 		// Fetch all practices with their ends
@@ -91,7 +103,16 @@ export async function GET() {
 			data,
 		}));
 
-		return NextResponse.json({ series });
+		const result = { series };
+
+		// Store in cache
+		statsCache.set(cacheKey, result);
+
+		return NextResponse.json(result, {
+			headers: {
+				'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=300',
+			},
+		});
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'stats/detailed', method: 'GET' },

@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { statsCache } from '@/lib/cache';
 
 async function getCurrentUser() {
 	try {
@@ -28,12 +29,22 @@ export async function GET() {
 		const user = await getCurrentUser();
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+		// Check cache first
+		const cacheKey = `stats:summary:${user.id}`;
+		const cached = statsCache.get(cacheKey);
+		if (cached) {
+			return NextResponse.json(cached, {
+				headers: {
+					'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=300',
+				},
+			});
+		}
+
 		const now = new Date();
 		const from7 = startOfDay(new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000));
 		const from30 = startOfDay(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
 
 		// Count arrows shot from ends
-		// Each practice creates ends with the arrows shot per round
 		const [overallEnds, last7Ends, last30Ends] = await Promise.all([
 			prisma.end.aggregate({
 				where: {
@@ -55,11 +66,20 @@ export async function GET() {
 			}),
 		]);
 
-		return NextResponse.json({
+		const result = {
 			stats: {
 				last7Days: overallNumber(last7Ends._sum.arrows),
 				last30Days: overallNumber(last30Ends._sum.arrows),
 				overall: overallNumber(overallEnds._sum.arrows),
+			},
+		};
+
+		// Store in cache
+		statsCache.set(cacheKey, result);
+
+		return NextResponse.json(result, {
+			headers: {
+				'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=300',
 			},
 		});
 	} catch (error) {

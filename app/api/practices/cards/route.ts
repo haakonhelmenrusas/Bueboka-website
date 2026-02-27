@@ -29,7 +29,9 @@ export async function GET(request: Request) {
 		const skip = (page - 1) * pageSize;
 
 		const [total, practices] = await prisma.$transaction([
-			prisma.practice.count({ where: { userId: user.id } }),
+			prisma.practice.count({
+				where: { userId: user.id },
+			}),
 			prisma.practice.findMany({
 				where: { userId: user.id },
 				orderBy: { date: 'desc' },
@@ -77,7 +79,14 @@ export async function GET(request: Request) {
 			};
 		});
 
-		return NextResponse.json({ practices: cards, page, pageSize, total });
+		return NextResponse.json(
+			{ practices: cards, page, pageSize, total },
+			{
+				headers: {
+					'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120',
+				},
+			}
+		);
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'practices/cards', method: 'GET' },

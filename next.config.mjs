@@ -2,7 +2,14 @@ import { withSentryConfig } from '@sentry/nextjs';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	// Performance optimizations
+	compress: true,
+	poweredByHeader: false,
+
+	// Optimize images
 	images: {
+		formats: ['image/avif', 'image/webp'],
+		minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
 		remotePatterns: [
 			{
 				protocol: 'https',
@@ -15,6 +22,51 @@ const nextConfig = {
 				pathname: '/**',
 			},
 		],
+	},
+
+	// Enable React strict mode for better development experience
+	reactStrictMode: true,
+
+	// Optimize production builds
+	swcMinify: true,
+
+	// Configure headers for better caching
+	async headers() {
+		return [
+			{
+				source: '/:path*',
+				headers: [
+					{
+						key: 'X-DNS-Prefetch-Control',
+						value: 'on',
+					},
+					{
+						key: 'X-Frame-Options',
+						value: 'SAMEORIGIN',
+					},
+				],
+			},
+			{
+				// Cache static assets
+				source: '/assets/:path*',
+				headers: [
+					{
+						key: 'Cache-Control',
+						value: 'public, max-age=31536000, immutable',
+					},
+				],
+			},
+			{
+				// Cache Next.js static files
+				source: '/_next/static/:path*',
+				headers: [
+					{
+						key: 'Cache-Control',
+						value: 'public, max-age=31536000, immutable',
+					},
+				],
+			},
+		];
 	},
 };
 
