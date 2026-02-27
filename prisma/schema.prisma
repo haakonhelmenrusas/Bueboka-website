@@ -156,17 +156,16 @@ model Practice {
 }
 
 model RoundType {
-  id                 String      @id @default(cuid())
+  id                 String     @id @default(cuid())
   name               String
   Practice           Practice[]
-  environment        Environment
   distanceMeters     Int?
   targetType         Json?
   numberArrows       Int?
   arrowsWithoutScore Int?
   roundScore         Int?
-  createdAt          DateTime    @default(now())
-  updatedAt          DateTime    @updatedAt
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
 
   @@map("round_types")
 }

@@ -40,9 +40,10 @@ export async function GET(request: Request) {
 					date: true,
 					location: true,
 					environment: true,
+					rating: true,
 					bow: { select: { name: true } },
 					arrows: { select: { name: true } },
-					roundType: { select: { name: true, environment: true } },
+					roundType: { select: { name: true } },
 					ends: { select: { arrows: true, distanceMeters: true, targetSizeCm: true } },
 				},
 			}),
@@ -69,10 +70,10 @@ export async function GET(request: Request) {
 				arrowsShot,
 				location: p.location ?? null,
 				environment: p.environment ?? null,
+				rating: p.rating ?? null,
 				bowName: p.bow?.name ?? null,
 				arrowsName: p.arrows?.name ?? null,
 				roundTypeName,
-				roundTypeEnvironment: p.roundType?.environment ?? null,
 			};
 		});
 

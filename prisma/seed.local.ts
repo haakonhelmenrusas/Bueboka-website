@@ -1,6 +1,12 @@
 import 'dotenv/config';
 
-import { BowType, Environment, Material, PrismaClient, WeatherCondition } from '@/prisma/prisma/generated/prisma-client/client';
+import {
+	BowType,
+	Environment,
+	Material,
+	PrismaClient,
+	WeatherCondition
+} from '@/prisma/prisma/generated/prisma-client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 
 function assertEnv() {
@@ -32,7 +38,6 @@ async function main() {
 	// 1) Ensure RoundTypes exist (import-less to avoid TS path issues in seed runners)
 	const roundTypesSpec: Array<{
 		name: string;
-		environment: Environment;
 		distanceMeters?: number | null;
 		targetType?: { sizeCm: number; type: string; scoringZones?: number } | null;
 		numberArrows?: number | null;
@@ -40,7 +45,6 @@ async function main() {
 	}> = [
 		{
 			name: '18m',
-			environment: 'INDOOR',
 			distanceMeters: 18,
 			targetType: { sizeCm: 40, type: '40cm', scoringZones: 10 },
 			numberArrows: 60,
@@ -48,16 +52,14 @@ async function main() {
 		},
 		{
 			name: '25m',
-			environment: 'INDOOR',
 			distanceMeters: 25,
 			targetType: { sizeCm: 60, type: '60cm', scoringZones: 10 },
 			numberArrows: 60,
 			arrowsWithoutScore: 0,
 		},
-		{ name: 'Veggbane', environment: 'INDOOR' },
+		{ name: 'Veggbane' },
 		{
 			name: '30m',
-			environment: 'OUTDOOR',
 			distanceMeters: 30,
 			targetType: { sizeCm: 80, type: '80cm', scoringZones: 10 },
 			numberArrows: 72,
@@ -65,7 +67,6 @@ async function main() {
 		},
 		{
 			name: '50m',
-			environment: 'OUTDOOR',
 			distanceMeters: 50,
 			targetType: { sizeCm: 122, type: '122cm', scoringZones: 10 },
 			numberArrows: 72,
@@ -73,18 +74,17 @@ async function main() {
 		},
 		{
 			name: '70m',
-			environment: 'OUTDOOR',
 			distanceMeters: 70,
 			targetType: { sizeCm: 122, type: '122cm', scoringZones: 10 },
 			numberArrows: 72,
 			arrowsWithoutScore: 0,
 		},
-		{ name: 'Felt', environment: 'OUTDOOR' },
-		{ name: '3D', environment: 'OUTDOOR' },
+		{ name: 'Felt' },
+		{ name: '3D' },
 	];
 
 	for (const rt of roundTypesSpec) {
-		const existing = await prisma.roundType.findFirst({ where: { name: rt.name, environment: rt.environment } });
+		const existing = await prisma.roundType.findFirst({ where: { name: rt.name } });
 		if (existing) {
 			await prisma.roundType.update({
 				where: { id: existing.id },
@@ -99,7 +99,6 @@ async function main() {
 			await prisma.roundType.create({
 				data: {
 					name: rt.name,
-					environment: rt.environment,
 					distanceMeters: rt.distanceMeters ?? null,
 					targetType: rt.targetType ?? undefined,
 					numberArrows: rt.numberArrows ?? null,
@@ -195,8 +194,7 @@ async function main() {
 	for (let i = 0; i < 14; i++) {
 		const env = i % 3 === 0 ? Environment.INDOOR : Environment.OUTDOOR;
 		const date = isoDaysAgo(i);
-		const envRoundTypes = roundTypes.filter((r) => r.environment === env);
-		const roundType = envRoundTypes.length ? pick(envRoundTypes) : null;
+		const roundType = roundTypes.length ? pick(roundTypes) : null;
 		const arrowsPerEnd = 6;
 		const endsCount = env === Environment.INDOOR ? 10 : 6;
 		// Mix of training and competition practices (80% training, 20% competition)

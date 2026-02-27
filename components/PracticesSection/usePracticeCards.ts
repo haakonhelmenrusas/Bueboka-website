@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import * as Sentry from '@sentry/nextjs';
 
 export type PracticeCardItem = {
@@ -9,10 +9,10 @@ export type PracticeCardItem = {
 	arrowsShot: number;
 	location?: string | null;
 	environment?: string | null;
+	rating?: number | null;
 	bowName?: string | null;
 	arrowsName?: string | null;
 	roundTypeName?: string | null;
-	roundTypeEnvironment?: string | null;
 };
 
 interface PracticeCardsResponse {

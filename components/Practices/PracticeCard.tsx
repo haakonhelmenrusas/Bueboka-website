@@ -12,7 +12,6 @@ export interface PracticeCardProps {
 	bowName?: string | null;
 	arrowsName?: string | null;
 	roundTypeName?: string | null;
-	roundTypeEnvironment?: string | null;
 	onClick?: (id: string) => void;
 }
 
@@ -41,7 +40,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	bowName,
 	arrowsName,
 	roundTypeName,
-	roundTypeEnvironment,
 	onClick,
 }) => {
 	const formattedDate = new Date(date).toLocaleDateString('nb-NO', {
@@ -50,8 +48,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		day: 'numeric',
 	});
 
-	const extraRoundEnv = formatEnvironment(roundTypeEnvironment);
-	const roundText = roundTypeName ? (extraRoundEnv ? `${roundTypeName} • ${extraRoundEnv}` : roundTypeName) : null;
 	const envText = formatEnvironment(environment);
 
 	// Build accessible label
@@ -59,7 +55,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		`Trening fra ${formattedDate}`,
 		`${arrowsShot} piler skutt`,
 		rating && `Vurdering: ${rating}/10`,
-		roundText && `Runde: ${roundText}`,
+		roundTypeName && `Runde: ${roundTypeName}`,
 		location && `Sted: ${location}`,
 		bowName && `Bue: ${bowName}`,
 		arrowsName && `Piler: ${arrowsName}`,
@@ -71,53 +67,92 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={`${ariaLabel}. Klikk for å se detaljer`}>
 			<div className={styles.main}>
 				<div className={styles.date}>{formattedDate}</div>
+				<span className={styles.separator} aria-hidden="true">
+					|
+				</span>
+				<div className={styles.detailItem}>
+					<span className={styles.detailIcon} aria-hidden="true">
+						<Target size={14} />
+					</span>
+					<span className={styles.detailText}>{arrowsShot} piler</span>
+				</div>
 				{rating ? (
-					<div className={styles.detailItem}>
-						<span className={styles.detailIcon} aria-hidden="true">
-							<Star size={14} />
+					<>
+						<span className={styles.separator} aria-hidden="true">
+							|
 						</span>
-						<span className={styles.detailText}>{rating}/10</span>
-					</div>
+						<div className={styles.detailItem}>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<Star size={14} />
+							</span>
+							<span className={styles.detailText}>{rating}/10</span>
+						</div>
+					</>
 				) : null}
-				{roundText ? (
-					<div className={styles.detailItem}>
-						<span className={styles.detailIcon} aria-hidden="true">
-							<Target size={14} />
+				{roundTypeName ? (
+					<>
+						<span className={styles.separator} aria-hidden="true">
+							|
 						</span>
-						<span className={styles.detailText}>{roundText}</span>
-					</div>
+						<div className={styles.detailItem}>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<Target size={14} />
+							</span>
+							<span className={styles.detailText}>{roundTypeName}</span>
+						</div>
+					</>
 				) : null}
 				{location ? (
-					<div className={styles.detailItem}>
-						<span className={styles.detailIcon} aria-hidden="true">
-							<MapPin size={14} />
+					<>
+						<span className={styles.separator} aria-hidden="true">
+							|
 						</span>
-						<span className={styles.detailText}>{location}</span>
-					</div>
+						<div className={styles.detailItem}>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<MapPin size={14} />
+							</span>
+							<span className={styles.detailText}>{location}</span>
+						</div>
+					</>
 				) : null}
 				{envText ? (
-					<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-						<span className={styles.detailIcon} aria-hidden="true">
-							{envIcon(environment)}
+					<>
+						<span className={styles.separator} aria-hidden="true">
+							|
 						</span>
-						<span className={styles.detailText}>{envText}</span>
-					</div>
+						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
+							<span className={styles.detailIcon} aria-hidden="true">
+								{envIcon(environment)}
+							</span>
+							<span className={styles.detailText}>{envText}</span>
+						</div>
+					</>
 				) : null}
 				{bowName ? (
-					<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-						<span className={styles.detailIcon} aria-hidden="true">
-							<BowArrow size={14} />
+					<>
+						<span className={styles.separator} aria-hidden="true">
+							|
 						</span>
-						<span className={styles.detailText}>{bowName}</span>
-					</div>
+						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<BowArrow size={14} />
+							</span>
+							<span className={styles.detailText}>{bowName}</span>
+						</div>
+					</>
 				) : null}
 				{arrowsName ? (
-					<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-						<span className={styles.detailIcon} aria-hidden="true">
-							<ArrowRight size={14} />
+					<>
+						<span className={styles.separator} aria-hidden="true">
+							|
 						</span>
-						<span className={styles.detailText}>{arrowsName}</span>
-					</div>
+						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<ArrowRight size={14} />
+							</span>
+							<span className={styles.detailText}>{arrowsName}</span>
+						</div>
+					</>
 				) : null}
 				<div className={styles.openIcon}>
 					<ChevronRight size={20} aria-hidden="true" />
