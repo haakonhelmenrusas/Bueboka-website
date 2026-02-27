@@ -49,12 +49,10 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 				return;
 			}
 
-			setMessage({ type: 'success', text: 'Takk for tilbakemeldingen!' });
-			setTimeout(() => {
-				setRating(0);
-				setFeedback('');
-				onClose();
-			}, 1500);
+			// Successfully submitted - close modal immediately
+			setRating(0);
+			setFeedback('');
+			onClose();
 		} catch (error) {
 			setMessage({ type: 'error', text: 'En feil oppstod. Prøv igjen senere.' });
 		} finally {
