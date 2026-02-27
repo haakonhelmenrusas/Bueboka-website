@@ -37,6 +37,7 @@ import { Tooltip } from './common/Tooltip/Tooltip';
 import { Privacy } from './Privacy/Privacy';
 import { CallToAction } from './CallToAction/CallToAction';
 import { FeedbackModal } from './FeedbackModal/FeedbackModal';
+import { Bueboka2Announcement } from './Bueboka2Announcement/Bueboka2Announcement';
 
 export {
 	Header,
@@ -78,6 +79,7 @@ export {
 	Privacy,
 	CallToAction,
 	FeedbackModal,
+	Bueboka2Announcement,
 };
 
 export * from './common/StatsSummary/StatsSummary';
