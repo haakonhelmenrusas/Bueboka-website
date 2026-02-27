@@ -83,7 +83,11 @@ export async function GET(request: Request) {
 			{ practices: cards, page, pageSize, total },
 			{
 				headers: {
-					'Cache-Control': 'private, no-cache, no-store, must-revalidate',
+					// Private cache (not shared on edge), revalidate after 10 seconds
+					// This allows some caching to improve performance while keeping data fresh
+					'Cache-Control': 'private, max-age=10, must-revalidate',
+					// Include page in the cache key via Vary header
+					Vary: 'Cookie',
 				},
 			}
 		);
