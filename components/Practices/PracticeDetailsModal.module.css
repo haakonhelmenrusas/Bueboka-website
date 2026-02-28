@@ -231,18 +231,6 @@
     align-items: center;
 }
 
-.roundScore {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--text-dark);
-    text-align: center;
-    width: 100%;
-}
-
-.roundScoreNumber {
-    font-weight: 600;
-}
-
 .roundMeta {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));

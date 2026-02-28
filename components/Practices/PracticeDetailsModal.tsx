@@ -259,11 +259,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 								const scoreSum = end.roundScore ?? (Array.isArray(end.scores) ? end.scores.reduce((s, v) => s + v, 0) : 0);
 								return (
 									<div key={end.id} className={styles.roundCard}>
-										{scoreSum > 0 && (
-											<div className={styles.roundScore}>
-												<span className={styles.roundScoreNumber}>{scoreSum}</span> poeng
-											</div>
-										)}
 										<div className={styles.roundMeta}>
 											{end.distanceMeters && (
 												<div className={styles.roundMetaItem}>
@@ -281,6 +276,12 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 												<div className={styles.roundMetaItem}>
 													<span className={styles.roundMetaLabel}>Piler</span>
 													<span className={styles.roundMetaValue}>{arrows} stk</span>
+												</div>
+											)}
+											{scoreSum > 0 && (
+												<div className={styles.roundMetaItem}>
+													<span className={styles.roundMetaLabel}>Poeng</span>
+													<span className={styles.roundMetaValue}>{scoreSum}</span>
 												</div>
 											)}
 										</div>
