@@ -66,15 +66,6 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 				if (!res.ok) return;
 				const data = (await res.json()) as PracticeCardsResponse;
 
-				// Debug log in development
-				if (process.env.NODE_ENV === 'development' && data.practices.length > 0) {
-					console.log('[PracticeCards] Sample practice data:', {
-						practiceType: data.practices[0].practiceType,
-						totalScore: data.practices[0].totalScore,
-						hasAllFields: !!(data.practices[0].practiceType && data.practices[0].totalScore !== undefined),
-					});
-				}
-
 				// Store in cache
 				pageCache.set(cacheKey, { data, timestamp: Date.now() });
 

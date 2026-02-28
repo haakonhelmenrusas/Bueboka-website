@@ -108,9 +108,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 		totalScore = practice.totalScore;
 	} else if (practice.ends) {
 		totalScore = practice.ends.reduce((sum, end) => {
-			// @ts-ignore - roundScore might exist on end
 			if (end.roundScore !== undefined) {
-				// @ts-ignore
 				const score = end.roundScore;
 				return sum + (score !== null && score !== undefined ? score : 0);
 			}

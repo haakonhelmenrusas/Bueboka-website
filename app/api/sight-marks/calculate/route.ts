@@ -52,7 +52,6 @@ export async function POST(request: NextRequest) {
 
 		// Call external sight mark calculation service
 		const ballisticsUrl = process.env.BALLISTICS_SERVICE_URL || 'http://localhost:8000';
-		console.log('[SightMarks Calculate] Payload:', JSON.stringify(payload, null, 2));
 
 		const response = await fetch(`${ballisticsUrl}/calculate/sight-marks`, {
 			method: 'POST',
@@ -60,8 +59,6 @@ export async function POST(request: NextRequest) {
 			body: JSON.stringify(payload),
 			signal: AbortSignal.timeout(30000), // 30 second timeout
 		});
-
-		console.log('[SightMarks Calculate] External service response status:', response.status);
 
 		if (!response.ok) {
 			const errorText = await response.text();
@@ -74,7 +71,6 @@ export async function POST(request: NextRequest) {
 		}
 
 		const result: MarksResult = await response.json();
-		console.log('[SightMarks Calculate] ✅ Calculation successful! Result:', JSON.stringify(result, null, 2));
 		return NextResponse.json(result);
 	} catch (error) {
 		Sentry.captureException(error, {

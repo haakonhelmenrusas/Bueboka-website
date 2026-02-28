@@ -179,7 +179,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			// Load last used distance and target from localStorage
 			const lastDistance = localStorage.getItem('bueboka_last_distance');
 			const lastTarget = localStorage.getItem('bueboka_last_target');
-			console.log('Last used distance:', lastDistance);
 			setRounds([
 				{
 					distanceMeters: lastDistance ? parseFloat(lastDistance) : 0,
