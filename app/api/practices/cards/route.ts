@@ -43,6 +43,8 @@ export async function GET(request: Request) {
 					location: true,
 					environment: true,
 					rating: true,
+					practiceType: true,
+					totalScore: true,
 					bow: { select: { name: true } },
 					arrows: { select: { name: true } },
 					roundType: { select: { name: true } },
@@ -73,6 +75,8 @@ export async function GET(request: Request) {
 				location: p.location ?? null,
 				environment: p.environment ?? null,
 				rating: p.rating ?? null,
+				practiceType: p.practiceType ?? 'TRENING',
+				totalScore: p.totalScore ?? null,
 				bowName: p.bow?.name ?? null,
 				arrowsName: p.arrows?.name ?? null,
 				roundTypeName,
@@ -83,9 +87,9 @@ export async function GET(request: Request) {
 			{ practices: cards, page, pageSize, total },
 			{
 				headers: {
-					// Private cache (not shared on edge), revalidate after 10 seconds
-					// This allows some caching to improve performance while keeping data fresh
-					'Cache-Control': 'private, max-age=10, must-revalidate',
+					// In development, don't cache. In production, cache for 10 seconds.
+					'Cache-Control':
+						process.env.NODE_ENV === 'development' ? 'no-store, no-cache, must-revalidate' : 'private, max-age=10, must-revalidate',
 					// Include page in the cache key via Vary header
 					Vary: 'Cookie',
 				},

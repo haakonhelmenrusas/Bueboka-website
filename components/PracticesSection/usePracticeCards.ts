@@ -10,6 +10,8 @@ export type PracticeCardItem = {
 	location?: string | null;
 	environment?: string | null;
 	rating?: number | null;
+	practiceType?: string | null;
+	totalScore?: number | null;
 	bowName?: string | null;
 	arrowsName?: string | null;
 	roundTypeName?: string | null;
@@ -24,7 +26,7 @@ interface PracticeCardsResponse {
 
 // Simple in-memory cache for the current session
 const pageCache = new Map<string, { data: PracticeCardsResponse; timestamp: number }>();
-const CACHE_TTL = 30000; // 30 seconds
+const CACHE_TTL = 5000; // 5 seconds - short TTL for responsive updates
 
 export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) {
 	const [cards, setCards] = useState<PracticeCardItem[]>([]);
@@ -58,9 +60,20 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 			inFlightRef.current = true;
 			setLoading(true);
 			try {
-				const res = await fetch(`/api/practices/cards?page=${nextPage}&pageSize=${pageSize}`);
+				// Add timestamp to bust browser cache
+				const timestamp = Date.now();
+				const res = await fetch(`/api/practices/cards?page=${nextPage}&pageSize=${pageSize}&_t=${timestamp}`);
 				if (!res.ok) return;
 				const data = (await res.json()) as PracticeCardsResponse;
+
+				// Debug log in development
+				if (process.env.NODE_ENV === 'development' && data.practices.length > 0) {
+					console.log('[PracticeCards] Sample practice data:', {
+						practiceType: data.practices[0].practiceType,
+						totalScore: data.practices[0].totalScore,
+						hasAllFields: !!(data.practices[0].practiceType && data.practices[0].totalScore !== undefined),
+					});
+				}
 
 				// Store in cache
 				pageCache.set(cacheKey, { data, timestamp: Date.now() });
@@ -81,6 +94,8 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 	);
 
 	useEffect(() => {
+		// Clear cache on mount to ensure fresh data
+		pageCache.clear();
 		fetchPage(1);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);

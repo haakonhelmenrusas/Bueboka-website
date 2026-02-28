@@ -10,13 +10,13 @@ import {
 	MoreHorizontal,
 	Navigation,
 	NotebookText,
-	Star,
 	Target,
 	Trash2,
 	Trees,
+	Trophy,
 	X,
 } from 'lucide-react';
-import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
+import type { PracticeCategory, PracticeType, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
@@ -32,7 +32,9 @@ export interface PracticeDetails {
 	weather: WeatherCondition[];
 	notes?: string | null;
 	rating?: number | null;
+	practiceType?: PracticeType | null;
 	practiceCategory?: PracticeCategory | null;
+	totalScore?: number;
 	roundType?: {
 		name: string;
 		distanceMeters?: number | null;
@@ -116,21 +118,34 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 	});
 
 	// Use arrowsShot if available, otherwise fallback to calculating from ends
-	const totalArrows = practice.arrowsShot ?? practice.ends?.reduce((sum, end) => sum + (end.arrows ?? end.scores?.length ?? 0), 0) ?? 0;
+	const totalArrows =
+		practice.arrowsShot ??
+		(practice.ends
+			? practice.ends.reduce((sum, end) => {
+					const arrows = end.arrows ?? end.scores?.length ?? 0;
+					return sum + arrows;
+				}, 0)
+			: 0);
 
-	// Calculate total score from round scores in ends
-	// First check if ends have a roundScore property (from the new structure)
-	// Otherwise fallback to summing individual arrow scores
-	const totalScore =
-		practice.ends?.reduce((sum, end) => {
+	// Use totalScore from practice if available, otherwise calculate from ends
+	let totalScore = 0;
+	if (practice.totalScore !== null && practice.totalScore !== undefined) {
+		totalScore = practice.totalScore;
+	} else if (practice.ends) {
+		totalScore = practice.ends.reduce((sum, end) => {
 			// @ts-ignore - roundScore might exist on end
 			if (end.roundScore !== undefined) {
 				// @ts-ignore
-				return sum + (end.roundScore || 0);
+				const score = end.roundScore;
+				return sum + (score !== null && score !== undefined ? score : 0);
 			}
 			// Fallback to summing scores array
-			return sum + (end.scores?.reduce((s, v) => s + v, 0) || 0);
-		}, 0) || 0;
+			const scoresSum = end.scores?.reduce((s, v) => s + v, 0);
+			return sum + (scoresSum !== null && scoresSum !== undefined ? scoresSum : 0);
+		}, 0);
+	}
+
+	const isCompetition = practice.practiceType === 'KONKURRANSE';
 
 	const handleDelete = async () => {
 		setDeleting(true);
@@ -170,18 +185,31 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						<h3 id="practice-details-title" className={styles.title}>
 							{formattedDate}
 						</h3>
-						<div className={styles.envBadge}>
-							{practice.environment === 'INDOOR' ? (
-								<>
-									<Home size={16} />
-									<span>Inne</span>
-								</>
+						<div className={styles.badges}>
+							{isCompetition ? (
+								<div className={`${styles.badge} ${styles.competitionBadge}`}>
+									<Trophy size={14} />
+									<span>Konkurranse</span>
+								</div>
 							) : (
-								<>
-									<Trees size={16} />
-									<span>Ute</span>
-								</>
+								<div className={`${styles.badge} ${styles.trainingBadge}`}>
+									<Target size={14} />
+									<span>Trening</span>
+								</div>
 							)}
+							<div className={styles.envBadge}>
+								{practice.environment === 'INDOOR' ? (
+									<>
+										<Home size={16} />
+										<span>Inne</span>
+									</>
+								) : (
+									<>
+										<Trees size={16} />
+										<span>Ute</span>
+									</>
+								)}
+							</div>
 						</div>
 					</div>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
@@ -196,13 +224,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 					</div>
 				)}
 				<div className={styles.statsGrid}>
-					{practice.rating && (
-						<div className={styles.statCard}>
-							<Star size={20} className={styles.statIcon} fill="currentColor" />
-							<div className={styles.statLabel}>Vurdering</div>
-							<div className={styles.statValue}>{practice.rating}/10</div>
-						</div>
-					)}
 					{practice.practiceCategory && (
 						<div className={styles.statCard}>
 							{practiceCategoryIcons[practice.practiceCategory] && (

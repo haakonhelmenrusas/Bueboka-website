@@ -12,7 +12,9 @@ export function usePracticeDetails() {
 		setLoading(true);
 		setError(null);
 		try {
-			const res = await fetch(`/api/practices/${id}/details`);
+			// Add timestamp to bust cache
+			const timestamp = Date.now();
+			const res = await fetch(`/api/practices/${id}/details?_t=${timestamp}`);
 			if (!res.ok) {
 				setError('Kunne ikke hente trening');
 				return null;

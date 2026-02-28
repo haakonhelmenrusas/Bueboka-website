@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
-import { ArrowRight, BowArrow, ChevronRight, Home, MapPin, Star, Target, Trees, Wind } from 'lucide-react';
+import { ArrowRight, BowArrow, ChevronRight, Home, MapPin, Star, Target, Trees, Trophy, Wind } from 'lucide-react';
 
 export interface PracticeCardProps {
 	id: string;
@@ -8,7 +8,8 @@ export interface PracticeCardProps {
 	arrowsShot: number;
 	location?: string | null;
 	environment?: string | null;
-	rating?: number | null;
+	practiceType?: string | null;
+	totalScore?: number | null;
 	bowName?: string | null;
 	arrowsName?: string | null;
 	roundTypeName?: string | null;
@@ -36,7 +37,8 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	arrowsShot,
 	location,
 	environment,
-	rating,
+	practiceType,
+	totalScore,
 	bowName,
 	arrowsName,
 	roundTypeName,
@@ -52,9 +54,9 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 
 	// Build accessible label
 	const ariaLabel = [
-		`Trening fra ${formattedDate}`,
+		`${practiceType === 'KONKURRANSE' ? 'Konkurranse' : 'Trening'} fra ${formattedDate}`,
 		`${arrowsShot} piler skutt`,
-		rating && `Vurdering: ${rating}/10`,
+		totalScore && `Score: ${totalScore}`,
 		roundTypeName && `Runde: ${roundTypeName}`,
 		location && `Sted: ${location}`,
 		bowName && `Bue: ${bowName}`,
@@ -63,10 +65,26 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		.filter(Boolean)
 		.join(', ');
 
+	const isCompetition = practiceType === 'KONKURRANSE';
+
 	return (
 		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={`${ariaLabel}. Klikk for å se detaljer`}>
 			<div className={styles.main}>
 				<div className={styles.date}>{formattedDate}</div>
+				<span className={styles.separator} aria-hidden="true">
+					|
+				</span>
+				{isCompetition ? (
+					<div className={`${styles.badge} ${styles.competitionBadge}`}>
+						<Trophy size={12} />
+						<span>Konkurranse</span>
+					</div>
+				) : (
+					<div className={`${styles.badge} ${styles.trainingBadge}`}>
+						<Target size={12} />
+						<span>Trening</span>
+					</div>
+				)}
 				<span className={styles.separator} aria-hidden="true">
 					|
 				</span>
@@ -76,7 +94,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 					</span>
 					<span className={styles.detailText}>{arrowsShot} piler</span>
 				</div>
-				{rating ? (
+				{totalScore !== null && totalScore !== undefined && totalScore > 0 ? (
 					<>
 						<span className={styles.separator} aria-hidden="true">
 							|
@@ -85,7 +103,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 							<span className={styles.detailIcon} aria-hidden="true">
 								<Star size={14} />
 							</span>
-							<span className={styles.detailText}>{rating}/10</span>
+							<span className={styles.detailText}>{totalScore} poeng</span>
 						</div>
 					</>
 				) : null}

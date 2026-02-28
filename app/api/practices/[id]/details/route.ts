@@ -46,7 +46,16 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 			arrowsShot: totalArrows,
 		};
 
-		return NextResponse.json({ practice: mappedPractice });
+		return NextResponse.json(
+			{ practice: mappedPractice },
+			{
+				headers: {
+					// In development, don't cache. In production, cache for 10 seconds.
+					'Cache-Control':
+						process.env.NODE_ENV === 'development' ? 'no-store, no-cache, must-revalidate' : 'private, max-age=10, must-revalidate',
+				},
+			}
+		);
 	} catch (error) {
 		Sentry.captureException(error, {
 			tags: { endpoint: 'practices/[id]/details', method: 'GET' },
