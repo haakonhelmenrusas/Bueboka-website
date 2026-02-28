@@ -7,6 +7,7 @@ import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { Environment } from '@/lib/prismaEnums';
 import { updatePracticeSchema } from '@/lib/validations/practice';
 import { formatZodErrors } from '@/lib/validations/helpers';
+import { statsCache } from '@/lib/cache';
 
 async function getCurrentUser() {
 	try {
@@ -170,6 +171,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			arrowsShot: totalArrows,
 		};
 
+		// Invalidate stats caches for this user
+		statsCache.delete(`stats:detailed:${user.id}`);
+		statsCache.delete(`stats:summary:${user.id}`);
+
 		return NextResponse.json(mappedPractice);
 	} catch (error) {
 		Sentry.captureException(error, {
@@ -219,6 +224,10 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 				where: { id: practiceId },
 			}),
 		]);
+
+		// Invalidate stats caches for this user
+		statsCache.delete(`stats:detailed:${user.id}`);
+		statsCache.delete(`stats:summary:${user.id}`);
 
 		return NextResponse.json({ success: true });
 	} catch (error) {

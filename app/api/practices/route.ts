@@ -7,6 +7,7 @@ import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { Environment } from '@/lib/prismaEnums';
 import { createPracticeSchema } from '@/lib/validations/practice';
 import { formatZodErrors } from '@/lib/validations/helpers';
+import { statsCache } from '@/lib/cache';
 
 async function getCurrentUser() {
 	try {
@@ -149,6 +150,10 @@ export async function POST(request: NextRequest) {
 				arrows: true,
 			},
 		});
+
+		// Invalidate stats caches for this user
+		statsCache.delete(`stats:detailed:${user.id}`);
+		statsCache.delete(`stats:summary:${user.id}`);
 
 		return NextResponse.json({ practice }, { status: 201 });
 	} catch (error) {
