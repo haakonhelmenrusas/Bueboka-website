@@ -3,6 +3,7 @@ import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { Environment } from '@/lib/prismaEnums';
 import { updatePracticeSchema } from '@/lib/validations/practice';
 import { formatZodErrors } from '@/lib/validations/helpers';
@@ -93,15 +94,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 							type: firstRound.targetType,
 							sizeCm: parseInt(firstRound.targetType) || 0,
 						}
-					: undefined;
+					: Prisma.JsonNull;
 
 				const newRoundType = await prisma.roundType.create({
 					data: {
 						name: `${firstRound.distanceMeters || 0}m - ${firstRound.targetType || 'Custom'}`,
-						distanceMeters: firstRound.distanceMeters || null,
+						distanceMeters: firstRound.distanceMeters ?? null,
 						targetType: targetTypeJson,
-						numberArrows: firstRound.numberArrows || null,
-						roundScore: firstRound.roundScore || null,
+						numberArrows: firstRound.numberArrows ?? null,
+						roundScore: firstRound.roundScore ?? null,
 					},
 				});
 				roundTypeId = newRoundType.id;

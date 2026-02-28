@@ -29,7 +29,7 @@ export const RoundInputSchema = z.object({
 			return validTypes.includes(val);
 		}, 'Ugyldig blinktype')
 		.optional(),
-	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional(),
+	numberArrows: z.number().int().min(1, 'Minst 1 pil er påkrevd').max(10000, 'Maksimalt 10000 piler per runde'),
 	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
 });
 

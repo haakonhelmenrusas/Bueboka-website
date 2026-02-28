@@ -205,7 +205,7 @@ export default function MyPage() {
 							<p className={styles.summarySubtitle}>{summarySubtitle}</p>
 							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
 							<div className={styles.statsButtonContainer}>
-								<Button label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} width={240} buttonType="outline" />
+								<Button label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} width={240} />
 							</div>
 						</div>
 					</div>

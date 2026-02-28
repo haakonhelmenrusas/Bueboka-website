@@ -121,6 +121,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		{ value: '122cm', label: '122cm' },
 		{ value: '3-spot', label: '3-spot' },
 		{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
+		{ value: 'animal', label: 'Dyr' },
+		{ value: 'other', label: 'Annet' },
+		{ value: 'halmmatte', label: 'Halmmatte' },
 	];
 
 	// Initialize form based on mode
@@ -163,7 +166,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setBowId(practice.bowId || '');
 			setArrowsId(practice.arrowsId || '');
 		} else {
-			// Create mode: reset to defaults
+			// Create mode: reset to defaults and load last used distance/target
 			setDate(new Date().toISOString().slice(0, 10));
 			setLocation('');
 			setEnvironment(Environment.INDOOR);
@@ -172,7 +175,19 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setPracticeCategory('SKIVE');
 			setNotes('');
 			setRating(null);
-			setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+
+			// Load last used distance and target from localStorage
+			const lastDistance = localStorage.getItem('bueboka_last_distance');
+			const lastTarget = localStorage.getItem('bueboka_last_target');
+			console.log('Last used distance:', lastDistance);
+			setRounds([
+				{
+					distanceMeters: lastDistance ? parseFloat(lastDistance) : 0,
+					targetType: lastTarget || '',
+					numberArrows: 0,
+					roundScore: 0,
+				},
+			]);
 			setArrowsWithoutScore(0);
 			setBowId('');
 			setArrowsId('');
@@ -226,6 +241,17 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			// Filter out empty rounds (where no values are set)
 			const validRounds = rounds.filter((r) => r.distanceMeters > 0 || r.targetType || r.numberArrows > 0 || r.roundScore > 0);
 
+			// Save last used distance and target to localStorage (from first round)
+			if (validRounds.length > 0) {
+				const firstRound = validRounds[0];
+				if (firstRound.distanceMeters > 0) {
+					localStorage.setItem('bueboka_last_distance', firstRound.distanceMeters.toString());
+				}
+				if (firstRound.targetType) {
+					localStorage.setItem('bueboka_last_target', firstRound.targetType);
+				}
+			}
+
 			await onSave({
 				date: new Date(date).toISOString(),
 				location: location || undefined,
@@ -242,6 +268,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			});
 			onClose();
 		} catch (err) {
+			console.error('Error saving practice:', err);
 			setError(err instanceof Error ? err.message : 'Kunne ikke lagre trening.');
 		} finally {
 			setSubmitting(false);
