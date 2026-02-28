@@ -16,7 +16,7 @@ import { ImageUpload } from './common/ImageUpload/ImageUpload';
 import { ProfileEditModal } from './ProfileEditModal/ProfileEditModal';
 import { PracticeCard } from './Practices/PracticeCard';
 import { PracticesList } from './Practices/PracticesList';
-import { PracticeDetailsModal } from './Practices/PracticeDetailsModal';
+import { PracticeDetailsModal } from './PracticeDetailsModal';
 import { PracticeFormModal } from './Practices/PracticeFormModal';
 import { Select } from './common/Select/Select';
 import { BowModal } from './BowModal/BowModal';
