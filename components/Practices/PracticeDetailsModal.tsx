@@ -21,6 +21,7 @@ import { Environment } from '@/lib/prismaEnums';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
 import { formatWeatherConditions } from '@/lib/weatherUtils';
+import { getArrowMaterialLabel, getBowTypeLabel, getPracticeCategoryLabel } from '@/lib/labels';
 
 export interface PracticeDetails {
 	id: string;
@@ -69,32 +70,6 @@ interface PracticeDetailsModalProps {
 	onEdit?: () => void;
 	onDeleted?: (id: string) => void;
 }
-
-// Bow type translations
-const bowTypeLabels: Record<string, string> = {
-	RECURVE: 'Recurve',
-	COMPOUND: 'Compound',
-	LONGBOW: 'Langbue',
-	BAREBOW: 'Barebow',
-	HORSEBOW: 'Rytterbue',
-	TRADITIONAL: 'Tradisjonell',
-	OTHER: 'Annet',
-};
-
-// Arrow material translations
-const arrowMaterialLabels: Record<string, string> = {
-	KARBON: 'Karbon',
-	ALUMINIUM: 'Aluminium',
-	TREVERK: 'Treverk',
-};
-
-// Practice category translations
-const practiceCategoryLabels: Record<string, string> = {
-	FELT: 'Felt',
-	JAKT_3D: 'Jakt/3D',
-	SKIVE: 'Skive',
-	ANNET: 'Annet',
-};
 
 // Practice category icons
 const practiceCategoryIcons: Record<string, React.ReactNode> = {
@@ -230,7 +205,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 								<div className={styles.statIcon}>{practiceCategoryIcons[practice.practiceCategory]}</div>
 							)}
 							<div className={styles.statLabel}>Kategori</div>
-							<div className={styles.statValue}>{practiceCategoryLabels[practice.practiceCategory] || practice.practiceCategory}</div>
+							<div className={styles.statValue}>{getPracticeCategoryLabel(practice.practiceCategory)}</div>
 						</div>
 					)}
 					{practice.location && (
@@ -252,7 +227,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							<BowArrow size={20} className={styles.statIcon} fill="currentColor" />
 							<div className={styles.statLabel}>Bue</div>
 							<div className={styles.statValue}>
-								{practice.bow.name} • {bowTypeLabels[practice.bow.type] || practice.bow.type}
+								{practice.bow.name} • {getBowTypeLabel(practice.bow.type)}
 							</div>
 						</div>
 					)}
@@ -261,7 +236,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							<Navigation size={20} className={styles.statIcon} fill="currentColor" />
 							<div className={styles.statLabel}>Piler</div>
 							<div className={styles.statValue}>
-								{practice.arrows.name} • {arrowMaterialLabels[practice.arrows.material] || practice.arrows.material}
+								{practice.arrows.name} • {getArrowMaterialLabel(practice.arrows.material)}
 							</div>
 						</div>
 					)}

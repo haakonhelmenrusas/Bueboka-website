@@ -3,6 +3,7 @@
 import React from 'react';
 import { Checkbox, Input, NumberInput, Select, TextArea, Tooltip } from '@/components';
 import styles from './BowForm.module.css';
+import { BOW_TYPE_OPTIONS } from '@/lib/labels';
 
 export type BowType = 'RECURVE' | 'COMPOUND' | 'LONGBOW' | 'BAREBOW' | 'HORSEBOW' | 'TRADITIONAL' | 'OTHER';
 
@@ -20,16 +21,6 @@ interface BowFormProps {
 	initialValues: BowFormValues;
 	onSubmit: (values: BowFormValues) => Promise<void>;
 }
-
-const bowTypeOptions = [
-	{ value: 'RECURVE', label: 'Recurve' },
-	{ value: 'COMPOUND', label: 'Compound' },
-	{ value: 'LONGBOW', label: 'Langbue' },
-	{ value: 'BAREBOW', label: 'Barebow' },
-	{ value: 'HORSEBOW', label: 'Rytterbue' },
-	{ value: 'TRADITIONAL', label: 'Tradisjonell' },
-	{ value: 'OTHER', label: 'Annet' },
-] as const;
 
 export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 	const [name, setName] = React.useState(initialValues.name);
@@ -61,7 +52,7 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 		>
 			<div className={styles.row}>
 				<Input label="Navn på bue" value={name} onChange={(e) => setName(e.target.value)} helpText="Gi buen et navn" required />
-				<Select label="Type" value={type} onChange={(v) => setType(v as BowType)} options={bowTypeOptions.map((o) => ({ ...o }))} />
+				<Select label="Type" value={type} onChange={(v) => setType(v as BowType)} options={BOW_TYPE_OPTIONS.map((o) => ({ ...o }))} />
 			</div>
 
 			<div className={styles.numberRow}>

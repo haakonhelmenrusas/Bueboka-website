@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Checkbox, Input, NumberInput, Select } from '@/components';
+import { ARROW_MATERIAL_OPTIONS } from '@/lib/labels';
 
 export type ArrowMaterial = 'KARBON' | 'ALUMINIUM' | 'TREVERK';
 
@@ -20,12 +21,6 @@ interface ArrowsFormProps {
 	initialValues?: Partial<ArrowsFormValues>;
 	onSubmit: (values: ArrowsFormValues) => Promise<void>;
 }
-
-const materialOptions = [
-	{ value: 'KARBON', label: 'Karbon' },
-	{ value: 'ALUMINIUM', label: 'Aluminium' },
-	{ value: 'TREVERK', label: 'Treverk' },
-] as const;
 
 export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 	const [name, setName] = useState(initialValues?.name ?? '');
@@ -90,7 +85,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					label="Materiale"
 					value={material}
 					onChange={(v) => setMaterial(v as ArrowMaterial)}
-					options={materialOptions.map((o) => ({ ...o }))}
+					options={ARROW_MATERIAL_OPTIONS.map((o) => ({ ...o }))}
 				/>
 				<NumberInput
 					label="Diameter (mm)"
