@@ -1,8 +1,9 @@
-import { Crosshair, Footprints, MoreHorizontal, Target } from 'lucide-react';
+import React from 'react';
+import { Crosshair, Footprints, Target } from 'lucide-react';
 
 export const PRACTICE_CATEGORY_ICONS: Record<string, React.ReactNode> = {
-	FELT: <Crosshair size={20} />,
+	SKIVE_INDOOR: <Target size={20} />,
+	SKIVE_OUTDOOR: <Target size={20} />,
 	JAKT_3D: <Footprints size={20} />,
-	SKIVE: <Target size={20} />,
-	ANNET: <MoreHorizontal size={20} />,
+	FELT: <Crosshair size={20} />,
 };

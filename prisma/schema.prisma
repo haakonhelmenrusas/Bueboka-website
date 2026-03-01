@@ -137,7 +137,7 @@ model Practice {
   environment        Environment
   weather            WeatherCondition[]
   practiceType       PracticeType       @default(TRENING)
-  practiceCategory   PracticeCategory   @default(SKIVE)
+  practiceCategory   PracticeCategory   @default(SKIVE_INDOOR)
   arrowsWithoutScore Int?
   roundTypeId        String?
   bowId              String?
@@ -177,6 +177,8 @@ model End {
   scores         Int[]
   roundScore     Int?
   distanceMeters Int?
+  distanceFrom   Int?
+  distanceTo     Int?
   targetSizeCm   Int?
   arrowsPerEnd   Int?
   createdAt      DateTime @default(now())
@@ -289,8 +291,8 @@ enum PracticeType {
 }
 
 enum PracticeCategory {
-  FELT
+  SKIVE_INDOOR
+  SKIVE_OUTDOOR
   JAKT_3D
-  SKIVE
-  ANNET
+  FELT
 }

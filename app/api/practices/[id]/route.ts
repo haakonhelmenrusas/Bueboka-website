@@ -125,12 +125,16 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				}
 			}
 
+			const roundAny = round as any;
+
 			return {
 				practiceId: practiceId,
 				arrows: round.numberArrows || 0,
 				scores: [],
 				roundScore: round.roundScore || null,
 				distanceMeters: round.distanceMeters || null,
+				distanceFrom: roundAny.distanceFrom || null,
+				distanceTo: roundAny.distanceTo || null,
 				targetSizeCm,
 			};
 		});
@@ -149,7 +153,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				environment: environment as Environment,
 				weather: weather || [],
 				practiceType: practiceType || 'TRENING',
-				practiceCategory: practiceCategory || 'SKIVE',
+				practiceCategory: practiceCategory || 'SKIVE_INDOOR',
 				notes: notes || null,
 				rating: rating ?? null,
 				arrowsWithoutScore: arrowsWithoutScore ?? null,

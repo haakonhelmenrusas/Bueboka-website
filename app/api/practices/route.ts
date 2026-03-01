@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
 			environment: environment as Environment,
 			weather: weather || [],
 			practiceType: practiceType || 'TRENING',
-			practiceCategory: practiceCategory || 'SKIVE',
+			practiceCategory: practiceCategory || 'SKIVE_INDOOR',
 			notes: notes || null,
 			rating: rating ?? null,
 			arrowsWithoutScore: arrowsWithoutScore ?? null,
@@ -125,11 +125,15 @@ export async function POST(request: NextRequest) {
 						}
 					}
 
+					const roundAny = round as any;
+
 					return {
 						arrows: round.numberArrows || 0,
 						scores: [],
 						roundScore: round.roundScore || null,
 						distanceMeters: round.distanceMeters || null,
+						distanceFrom: roundAny.distanceFrom || null,
+						distanceTo: roundAny.distanceTo || null,
 						targetSizeCm,
 					};
 				}),

@@ -22,10 +22,10 @@ export const ARROW_MATERIAL_LABELS: Record<string, string> = {
 
 // Practice category translations
 export const PRACTICE_CATEGORY_LABELS: Record<string, string> = {
-	FELT: 'Felt',
+	SKIVE_INDOOR: 'Skive innendørs',
+	SKIVE_OUTDOOR: 'Skive utendørs',
 	JAKT_3D: 'Jakt/3D',
-	SKIVE: 'Skive',
-	ANNET: 'Annet',
+	FELT: 'Felt',
 };
 
 // Practice type translations

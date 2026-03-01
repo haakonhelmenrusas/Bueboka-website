@@ -36,10 +36,10 @@ export const PracticeType = {
 export type PracticeType = (typeof PracticeType)[keyof typeof PracticeType];
 
 export const PracticeCategory = {
-	FELT: 'FELT',
+	SKIVE_INDOOR: 'SKIVE_INDOOR',
+	SKIVE_OUTDOOR: 'SKIVE_OUTDOOR',
 	JAKT_3D: 'JAKT_3D',
-	SKIVE: 'SKIVE',
-	ANNET: 'ANNET',
+	FELT: 'FELT',
 } as const;
 
 export type PracticeCategory = (typeof PracticeCategory)[keyof typeof PracticeCategory];

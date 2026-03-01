@@ -6,7 +6,7 @@ describe('Practice Validation Schema', () => {
 		environment: 'INDOOR' as const,
 		weather: [],
 		practiceType: 'TRENING' as const,
-		practiceCategory: 'SKIVE' as const,
+		practiceCategory: 'SKIVE_INDOOR' as const,
 	};
 
 	describe('Rounds validation', () => {

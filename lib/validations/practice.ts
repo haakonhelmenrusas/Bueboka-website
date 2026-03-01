@@ -15,17 +15,19 @@ export const WeatherConditionEnum = z.enum([
 	'OTHER',
 ]);
 export const PracticeTypeEnum = z.enum(['TRENING', 'KONKURRANSE']);
-export const PracticeCategoryEnum = z.enum(['FELT', 'JAKT_3D', 'SKIVE', 'ANNET']);
+export const PracticeCategoryEnum = z.enum(['SKIVE_INDOOR', 'SKIVE_OUTDOOR', 'JAKT_3D', 'FELT']);
 
 // Round input schema
 export const RoundInputSchema = z.object({
 	distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional(),
+	distanceFrom: z.number().int().min(0).max(1000, 'Fra-avstand må være mindre enn 1000 meter').optional(),
+	distanceTo: z.number().int().min(0).max(1000, 'Til-avstand må være mindre enn 1000 meter').optional(),
 	targetType: z
 		.string()
 		.refine((val) => {
 			if (!val) return true; // Optional field
 			// Valid target types
-			const validTypes = ['40cm', '60cm', '80cm', '122cm', '3-spot', 'vertical-3-spot'];
+			const validTypes = ['40cm', '60cm', '80cm', '122cm', '3-spot', 'vertical-3-spot', 'animal', 'other', 'halmmatte'];
 			return validTypes.includes(val);
 		}, 'Ugyldig blinktype')
 		.optional(),
@@ -41,7 +43,7 @@ export const createPracticeSchema = z
 		environment: EnvironmentEnum,
 		weather: z.array(WeatherConditionEnum).optional().default([]),
 		practiceType: PracticeTypeEnum.optional().default('TRENING'),
-		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE'),
+		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE_INDOOR'),
 		notes: z.string().max(500, 'Notater må være mindre enn 500 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
 		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(8, 'Maksimalt 8 runder er tillatt'),

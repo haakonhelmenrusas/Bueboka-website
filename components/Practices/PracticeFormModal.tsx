@@ -13,7 +13,6 @@ import {
 	Crosshair,
 	Footprints,
 	Home,
-	MoreHorizontal,
 	Navigation,
 	Sparkles,
 	Sun,
@@ -43,7 +42,9 @@ const getWeatherSelectOptions = () => [
 ];
 
 export interface RoundInput {
-	distanceMeters: number;
+	distanceMeters?: number; // For SKIVE categories
+	distanceFrom?: number; // For JAKT_3D and FELT categories
+	distanceTo?: number; // For JAKT_3D and FELT categories
 	targetType: string;
 	numberArrows: number;
 	roundScore: number;
@@ -103,7 +104,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
 	const [weather, setWeather] = useState<WeatherCondition[]>([]);
 	const [practiceType, setPracticeType] = useState<PracticeType>('TRENING');
-	const [practiceCategory, setPracticeCategory] = useState<PracticeCategory>('SKIVE');
+	const [practiceCategory, setPracticeCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
 	const [notes, setNotes] = useState('');
 	const [rating, setRating] = useState<number | null>(null);
 	const [rounds, setRounds] = useState<RoundInput[]>([{ distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
@@ -137,7 +138,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setEnvironment(practice.environment);
 			setWeather(practice.weather || []);
 			setPracticeType(practice.practiceType || 'TRENING');
-			setPracticeCategory(practice.practiceCategory || 'SKIVE');
+			setPracticeCategory(practice.practiceCategory || 'SKIVE_INDOOR');
 			setNotes(practice.notes || '');
 			setRating(practice.rating ?? null);
 
@@ -148,7 +149,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 					const targetType = end.targetSizeCm ? `${end.targetSizeCm}cm` : '';
 
 					return {
-						distanceMeters: end.distanceMeters || 0,
+						distanceMeters: end.distanceMeters || undefined,
+						distanceFrom: (end as any).distanceFrom || undefined,
+						distanceTo: (end as any).distanceTo || undefined,
 						targetType: targetType,
 						numberArrows: end.arrows || 0,
 						roundScore: end.roundScore || 0,
@@ -172,7 +175,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setEnvironment(Environment.INDOOR);
 			setWeather([]);
 			setPracticeType('TRENING');
-			setPracticeCategory('SKIVE');
+			setPracticeCategory('SKIVE_INDOOR');
 			setNotes('');
 			setRating(null);
 
@@ -217,7 +220,12 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 
 	// Helper functions for managing rounds
 	const addRound = () => {
-		setRounds([...rounds, { distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+		const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
+		if (isRangeCategory) {
+			setRounds([...rounds, { distanceFrom: 0, distanceTo: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+		} else {
+			setRounds([...rounds, { distanceMeters: 0, targetType: '', numberArrows: 0, roundScore: 0 }]);
+		}
 	};
 
 	const updateRound = (index: number, field: keyof RoundInput, value: number | string) => {
@@ -238,12 +246,16 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		setError(null);
 		try {
 			// Filter out empty rounds (where no values are set)
-			const validRounds = rounds.filter((r) => r.distanceMeters > 0 || r.targetType || r.numberArrows > 0 || r.roundScore > 0);
+			const validRounds = rounds.filter((r) => {
+				const hasDistance =
+					(r.distanceMeters && r.distanceMeters > 0) || (r.distanceFrom && r.distanceFrom > 0) || (r.distanceTo && r.distanceTo > 0);
+				return hasDistance || r.targetType || r.numberArrows > 0 || r.roundScore > 0;
+			});
 
 			// Save last used distance and target to localStorage (from first round)
 			if (validRounds.length > 0) {
 				const firstRound = validRounds[0];
-				if (firstRound.distanceMeters > 0) {
+				if (firstRound.distanceMeters && firstRound.distanceMeters > 0) {
 					localStorage.setItem('bueboka_last_distance', firstRound.distanceMeters.toString());
 				}
 				if (firstRound.targetType) {
@@ -283,10 +295,10 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		{ value: 'KONKURRANSE', label: 'Konkurranse' },
 	];
 	const practiceCategoryOptions = [
-		{ value: 'FELT', label: 'Felt', icon: <Crosshair size={16} /> },
+		{ value: 'SKIVE_INDOOR', label: 'Skive innendørs', icon: <Target size={16} /> },
+		{ value: 'SKIVE_OUTDOOR', label: 'Skive utendørs', icon: <Target size={16} /> },
 		{ value: 'JAKT_3D', label: 'Jakt/3D', icon: <Footprints size={16} /> },
-		{ value: 'SKIVE', label: 'Skive', icon: <Target size={16} /> },
-		{ value: 'ANNET', label: 'Annet', icon: <MoreHorizontal size={16} /> },
+		{ value: 'FELT', label: 'Felt', icon: <Crosshair size={16} /> },
 	];
 	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}`, icon: <BowArrow size={16} /> }));
 	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}`, icon: <Navigation size={16} /> }));
@@ -376,58 +388,89 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 					</div>
 					<div className={styles.roundsSection}>
 						<h4 className={styles.sectionTitle}>Runder</h4>
-						{rounds.map((round, index) => (
-							<div key={index} className={styles.roundCard}>
-								<div className={styles.roundHeader}>
-									<span className={styles.roundNumber}>Runde {index + 1}</span>
-									{rounds.length > 1 && (
-										<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
-											<X size={16} />
-										</button>
-									)}
+						{rounds.map((round, index) => {
+							const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
+
+							return (
+								<div key={index} className={styles.roundCard}>
+									<div className={styles.roundHeader}>
+										<span className={styles.roundNumber}>Runde {index + 1}</span>
+										{rounds.length > 1 && (
+											<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
+												<X size={16} />
+											</button>
+										)}
+									</div>
+									<div className={styles.roundInputs}>
+										{isRangeCategory ? (
+											<>
+												<NumberInput
+													label="Fra"
+													value={round.distanceFrom || 0}
+													onChange={(v) => updateRound(index, 'distanceFrom', v)}
+													min={0}
+													step={1}
+													startEmpty={true}
+													hideSteppers
+													unit="m"
+													containerClassName={styles.roundField}
+												/>
+												<NumberInput
+													label="Til"
+													value={round.distanceTo || 0}
+													onChange={(v) => updateRound(index, 'distanceTo', v)}
+													min={0}
+													step={1}
+													startEmpty={true}
+													hideSteppers
+													unit="m"
+													containerClassName={styles.roundField}
+												/>
+											</>
+										) : (
+											<NumberInput
+												label="Avstand"
+												value={round.distanceMeters || 0}
+												onChange={(v) => updateRound(index, 'distanceMeters', v)}
+												min={0}
+												step={1}
+												startEmpty={true}
+												hideSteppers
+												unit="m"
+												containerClassName={styles.roundField}
+											/>
+										)}
+										<Select
+											label="Blink"
+											value={round.targetType}
+											onChange={(v) => updateRound(index, 'targetType', v as string)}
+											placeholderLabel="Velg"
+											options={targetTypeOptions}
+											containerClassName={styles.roundField}
+										/>
+										<NumberInput
+											label="Piler"
+											value={round.numberArrows}
+											onChange={(v) => updateRound(index, 'numberArrows', v)}
+											min={0}
+											step={1}
+											startEmpty={true}
+											containerClassName={styles.roundField}
+										/>
+										<NumberInput
+											label="Score"
+											value={round.roundScore}
+											onChange={(v) => updateRound(index, 'roundScore', v)}
+											min={0}
+											step={1}
+											startEmpty={true}
+											optional
+											containerClassName={styles.roundField}
+										/>
+									</div>
 								</div>
-								<div className={styles.roundInputs}>
-									<NumberInput
-										label="Avstand"
-										value={round.distanceMeters}
-										onChange={(v) => updateRound(index, 'distanceMeters', v)}
-										min={0}
-										step={1}
-										startEmpty={true}
-										hideSteppers
-										unit="m"
-										containerClassName={styles.roundField}
-									/>
-									<Select
-										label="Blink"
-										value={round.targetType}
-										onChange={(v) => updateRound(index, 'targetType', v as string)}
-										placeholderLabel="Velg"
-										options={targetTypeOptions}
-										containerClassName={styles.roundField}
-									/>
-									<NumberInput
-										label="Piler"
-										value={round.numberArrows}
-										onChange={(v) => updateRound(index, 'numberArrows', v)}
-										min={0}
-										step={1}
-										startEmpty={true}
-										containerClassName={styles.roundField}
-									/>
-									<NumberInput
-										label="Score"
-										value={round.roundScore}
-										onChange={(v) => updateRound(index, 'roundScore', v)}
-										min={0}
-										step={1}
-										startEmpty={true}
-										optional
-										containerClassName={styles.roundField}
-									/>
-								</div>
-							</div>
-						))}
+							);
+						})}
 						<Button
 							type="button"
 							label="+ Legg til runde"
