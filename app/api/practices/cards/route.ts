@@ -28,12 +28,19 @@ export async function GET(request: Request) {
 		const pageSize = Math.min(50, Math.max(1, pageSizeRaw));
 		const skip = (page - 1) * pageSize;
 
+		// Filter by practice type: 'all', 'TRENING', or 'KONKURRANSE'
+		const filterType = url.searchParams.get('filter') ?? 'all';
+		const whereClause: any = { userId: user.id };
+		if (filterType === 'TRENING' || filterType === 'KONKURRANSE') {
+			whereClause.practiceType = filterType;
+		}
+
 		const [total, practices] = await prisma.$transaction([
 			prisma.practice.count({
-				where: { userId: user.id },
+				where: whereClause,
 			}),
 			prisma.practice.findMany({
-				where: { userId: user.id },
+				where: whereClause,
 				orderBy: { date: 'desc' },
 				skip,
 				take: pageSize,

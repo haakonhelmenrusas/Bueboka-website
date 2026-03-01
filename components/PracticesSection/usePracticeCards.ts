@@ -28,11 +28,14 @@ interface PracticeCardsResponse {
 const pageCache = new Map<string, { data: PracticeCardsResponse; timestamp: number }>();
 const CACHE_TTL = 5000; // 5 seconds - short TTL for responsive updates
 
+export type PracticeFilterType = 'all' | 'TRENING' | 'KONKURRANSE';
+
 export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) {
 	const [cards, setCards] = useState<PracticeCardItem[]>([]);
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
 	const [loading, setLoading] = useState(false);
+	const [filter, setFilter] = useState<PracticeFilterType>('all');
 	const inFlightRef = useRef(false);
 	const pageRef = useRef(1);
 
@@ -40,11 +43,11 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 	const showPagination = total > pageSize;
 
 	const fetchPage = useCallback(
-		async (nextPage: number, skipCache = false) => {
+		async (nextPage: number, skipCache = false, currentFilter: PracticeFilterType = 'all') => {
 			if (inFlightRef.current) return;
 
 			// Check cache first (unless explicitly skipping)
-			const cacheKey = `page-${nextPage}-size-${pageSize}`;
+			const cacheKey = `page-${nextPage}-size-${pageSize}-filter-${currentFilter}`;
 			if (!skipCache) {
 				const cached = pageCache.get(cacheKey);
 				if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
@@ -62,7 +65,8 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 			try {
 				// Add timestamp to bust browser cache
 				const timestamp = Date.now();
-				const res = await fetch(`/api/practices/cards?page=${nextPage}&pageSize=${pageSize}&_t=${timestamp}`);
+				const filterParam = currentFilter !== 'all' ? `&filter=${currentFilter}` : '';
+				const res = await fetch(`/api/practices/cards?page=${nextPage}&pageSize=${pageSize}${filterParam}&_t=${timestamp}`);
 				if (!res.ok) return;
 				const data = (await res.json()) as PracticeCardsResponse;
 
@@ -87,25 +91,34 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 	useEffect(() => {
 		// Clear cache on mount to ensure fresh data
 		pageCache.clear();
-		fetchPage(1);
+		fetchPage(1, false, filter);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	// Re-fetch when filter changes
+	useEffect(() => {
+		pageCache.clear();
+		setPage(1);
+		pageRef.current = 1;
+		fetchPage(1, true, filter);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [filter]);
 
 	const reload = useCallback(async () => {
 		// Clear cache and force refresh
 		pageCache.clear();
-		await fetchPage(Math.min(pageRef.current, totalPages), true);
-	}, [fetchPage, totalPages]);
+		await fetchPage(Math.min(pageRef.current, totalPages), true, filter);
+	}, [fetchPage, totalPages, filter]);
 
 	const goToPrev = useCallback(() => {
 		const nextPage = Math.max(1, pageRef.current - 1);
-		fetchPage(nextPage);
-	}, [fetchPage]);
+		fetchPage(nextPage, false, filter);
+	}, [fetchPage, filter]);
 
 	const goToNext = useCallback(() => {
 		const nextPage = pageRef.current + 1;
-		fetchPage(nextPage);
-	}, [fetchPage]);
+		fetchPage(nextPage, false, filter);
+	}, [fetchPage, filter]);
 
 	const removeLocal = useCallback(
 		async (id: string) => {
@@ -120,11 +133,11 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 			pageCache.clear();
 
 			if (prevCount === 1 && pageRef.current > 1) {
-				await fetchPage(pageRef.current - 1, true);
+				await fetchPage(pageRef.current - 1, true, filter);
 				return;
 			}
 		},
-		[fetchPage]
+		[fetchPage, filter]
 	);
 
 	return {
@@ -135,6 +148,8 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 		loading,
 		totalPages,
 		showPagination,
+		filter,
+		setFilter,
 		fetchPage,
 		reload,
 		goToPrev,

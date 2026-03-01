@@ -85,5 +85,6 @@ export {
 export * from './common/StatsSummary/StatsSummary';
 export * from './PracticesSection/usePracticeDetails';
 export * from './PracticesSection/useRoundTypes';
+export * from './PracticesSection/usePracticeCards';
 export * from './WhatsNewModal/WhatsNewModal';
 export * from './WhatsNewModal/useWhatsNew';
