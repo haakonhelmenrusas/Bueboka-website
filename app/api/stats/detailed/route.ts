@@ -51,7 +51,10 @@ export async function GET() {
 		}
 
 		// Group data by distance + target combination
-		const groupedData = new Map<string, Array<{ date: string; arrows: number; score: number }>>();
+		const groupedData = new Map<
+			string,
+			Array<{ date: string; arrows: number; score: number; practiceType: string; practiceCategory: string }>
+		>();
 
 		for (const practice of practices) {
 			// Skip practices without ends
@@ -73,6 +76,9 @@ export async function GET() {
 				continue;
 			}
 
+			const practiceType = practice.practiceType || 'TRENING';
+			const practiceCategory = practice.practiceCategory || 'SKIVE_INDOOR';
+
 			for (const end of practice.ends) {
 				try {
 					const distance = typeof end.distanceMeters === 'number' ? end.distanceMeters : 0;
@@ -90,6 +96,8 @@ export async function GET() {
 						date: dateStr,
 						arrows,
 						score,
+						practiceType,
+						practiceCategory,
 					});
 				} catch (endError) {
 					// Skip invalid end data

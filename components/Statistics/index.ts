@@ -6,4 +6,4 @@ export { SummaryCards } from './SummaryCards';
 export { BreakdownSection } from './BreakdownSection';
 export { EmptyState } from './EmptyState';
 
-export type { DateRange, Series, SeriesData } from './types';
+export type { DateRange, Series, SeriesData, PracticeCategory } from './types';

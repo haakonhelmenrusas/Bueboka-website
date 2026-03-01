@@ -10,6 +10,7 @@ import {
 	type DateRange,
 	EmptyState,
 	FilterControls,
+	type PracticeCategory,
 	ScoreChart,
 	type Series,
 	StatisticsHeader,
@@ -27,6 +28,7 @@ export default function StatisticsPage() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [dateRange, setDateRange] = useState<DateRange>('all');
+	const [selectedCategory, setSelectedCategory] = useState<PracticeCategory>('all');
 	const router = useRouter();
 
 	useEffect(() => {
@@ -118,7 +120,7 @@ export default function StatisticsPage() {
 
 	const chartData = getChartData();
 
-	// Filter chart data to only include points with arrows > 0
+	// Filter chart data to only include points with arrows > 0 and by selected category
 	const getArrowsChartData = () => {
 		return chartData
 			.map((point) => {
@@ -126,7 +128,11 @@ export default function StatisticsPage() {
 				let hasArrows = false;
 
 				filteredSeries.forEach((s) => {
-					if (point[s.name] > 0) {
+					// Filter by category if not 'all'
+					const seriesData = s.data.find((d) => d.date === point.date);
+					const matchesCategory = selectedCategory === 'all' || seriesData?.practiceCategory === selectedCategory;
+
+					if (point[s.name] > 0 && matchesCategory) {
 						filteredPoint[s.name] = point[s.name];
 						hasArrows = true;
 					}
@@ -137,24 +143,42 @@ export default function StatisticsPage() {
 			.filter((point) => point !== null);
 	};
 
-	// Filter chart data to only include points with scores > 0
+	// Calculate average score per arrow grouped by practice type (training vs competition)
 	const getScoreChartData = () => {
-		return chartData
-			.map((point) => {
-				const filteredPoint: any = { date: point.date };
-				let hasScore = false;
+		// Group by date and practice type
+		const dateMap = new Map<string, { training: { score: number; arrows: number }; competition: { score: number; arrows: number } }>();
 
-				filteredSeries.forEach((s) => {
-					const scoreKey = `${s.name}_score`;
-					if (point[scoreKey] > 0) {
-						filteredPoint[scoreKey] = point[scoreKey];
-						hasScore = true;
+		filteredSeries.forEach((s) => {
+			s.data.forEach((d) => {
+				if (d.score > 0 && d.arrows > 0) {
+					if (!dateMap.has(d.date)) {
+						dateMap.set(d.date, {
+							training: { score: 0, arrows: 0 },
+							competition: { score: 0, arrows: 0 },
+						});
 					}
-				});
 
-				return hasScore ? filteredPoint : null;
-			})
-			.filter((point) => point !== null);
+					const entry = dateMap.get(d.date)!;
+					if (d.practiceType === 'KONKURRANSE') {
+						entry.competition.score += d.score;
+						entry.competition.arrows += d.arrows;
+					} else {
+						entry.training.score += d.score;
+						entry.training.arrows += d.arrows;
+					}
+				}
+			});
+		});
+
+		// Convert to array and calculate averages
+		return Array.from(dateMap.entries())
+			.map(([date, data]) => ({
+				date,
+				training_avg: data.training.arrows > 0 ? data.training.score / data.training.arrows : null,
+				competition_avg: data.competition.arrows > 0 ? data.competition.score / data.competition.arrows : null,
+			}))
+			.filter((point) => point.training_avg !== null || point.competition_avg !== null)
+			.sort((a, b) => a.date.localeCompare(b.date));
 	};
 
 	const formatDate = (dateString: string) => {
@@ -266,8 +290,14 @@ export default function StatisticsPage() {
 							<FilterControls dateRange={dateRange} onDateRangeChange={setDateRange} onDownloadCSV={downloadCSV} />
 							<div className={styles.chartSection}>
 								<SummaryCards averageScore={getAverageScore()} totalSessions={chartData.length} mostUsed={getMostUsed()} />
-								<ArrowsChart data={getArrowsChartData()} series={filteredSeries} formatDate={formatDate} />
-								<ScoreChart data={getScoreChartData()} series={filteredSeries} formatDate={formatDate} />
+								<ArrowsChart
+									data={getArrowsChartData()}
+									series={filteredSeries}
+									formatDate={formatDate}
+									selectedCategory={selectedCategory}
+									onCategoryChange={setSelectedCategory}
+								/>
+								<ScoreChart data={getScoreChartData()} formatDate={formatDate} />
 								<BreakdownSection items={getBreakdownItems()} />
 							</div>
 						</>

@@ -1,34 +1,25 @@
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styles from './ScoreChart.module.css';
 import { useEffect, useState } from 'react';
 
 interface ScoreChartProps {
 	data: any[];
-	series: Array<{ name: string }>;
 	formatDate: (date: string) => string;
 }
 
 // Generate colors from CSS variables
-const getChartColors = (): string[] => {
-	if (typeof window === 'undefined') return [];
+const getChartColors = (): { training: string; competition: string } => {
+	if (typeof window === 'undefined') return { training: '#053546', competition: '#e63946' };
 
 	const root = getComputedStyle(document.documentElement);
-	return [
-		root.getPropertyValue('--primary').trim(),
-		root.getPropertyValue('--primary-light').trim(),
-		root.getPropertyValue('--secondary').trim(),
-		root.getPropertyValue('--warning').trim(),
-		root.getPropertyValue('--success').trim(),
-		root.getPropertyValue('--error').trim(),
-		'#9333ea', // Purple
-		'#0891b2', // Cyan
-		'#d97706', // Amber
-		'#059669', // Emerald
-	];
+	return {
+		training: root.getPropertyValue('--primary').trim() || '#053546',
+		competition: root.getPropertyValue('--error').trim() || '#e63946',
+	};
 };
 
-export function ScoreChart({ data, series, formatDate }: ScoreChartProps) {
-	const [colors, setColors] = useState<string[]>([]);
+export function ScoreChart({ data, formatDate }: ScoreChartProps) {
+	const [colors, setColors] = useState<{ training: string; competition: string }>({ training: '#053546', competition: '#e63946' });
 
 	useEffect(() => {
 		setColors(getChartColors());
@@ -36,17 +27,18 @@ export function ScoreChart({ data, series, formatDate }: ScoreChartProps) {
 
 	return (
 		<div className={styles.chartCard}>
-			<h3 className={styles.chartTitle}>Score over tid</h3>
-			<p className={styles.chartSubtitle}>Total score per økt gruppert etter avstand og blinktype</p>
+			<h3 className={styles.chartTitle}>Gjennomsnittlig score per pil over tid</h3>
+			<p className={styles.chartSubtitle}>Trening vs. Konkurranse</p>
 
 			<ResponsiveContainer width="100%" height={400}>
-				<BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+				<LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
 					<XAxis dataKey="date" tickFormatter={formatDate} stroke="#6b7280" style={{ fontSize: '0.875rem' }} />
 					<YAxis
 						stroke="#6b7280"
 						style={{ fontSize: '0.875rem' }}
-						label={{ value: 'Score', angle: -90, position: 'insideLeft', fill: '#6b7280' }}
+						label={{ value: 'Snitt score per pil', angle: -90, position: 'insideLeft', fill: '#6b7280' }}
+						domain={[0, 'auto']}
 					/>
 					<Tooltip
 						contentStyle={{
@@ -59,12 +51,30 @@ export function ScoreChart({ data, series, formatDate }: ScoreChartProps) {
 						labelStyle={{ color: '#111827' }}
 						itemStyle={{ color: '#111827' }}
 						labelFormatter={(label) => `Dato: ${formatDate(label as string)}`}
+						formatter={(value: any) => [typeof value === 'number' ? value.toFixed(2) : value, '']}
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
-					{series.map((s, index) => (
-						<Bar key={s.name} dataKey={`${s.name}_score`} fill={colors[index % colors.length] || '#053546'} name={s.name} barSize={8} />
-					))}
-				</BarChart>
+					<Line
+						type="monotone"
+						dataKey="training_avg"
+						stroke={colors.training}
+						strokeWidth={2}
+						dot={{ r: 4 }}
+						activeDot={{ r: 6 }}
+						name="Trening"
+						connectNulls
+					/>
+					<Line
+						type="monotone"
+						dataKey="competition_avg"
+						stroke={colors.competition}
+						strokeWidth={2}
+						dot={{ r: 4 }}
+						activeDot={{ r: 6 }}
+						name="Konkurranse"
+						connectNulls
+					/>
+				</LineChart>
 			</ResponsiveContainer>
 		</div>
 	);

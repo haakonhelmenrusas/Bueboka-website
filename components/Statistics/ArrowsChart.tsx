@@ -1,11 +1,15 @@
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styles from './ArrowsChart.module.css';
 import { useEffect, useState } from 'react';
+import { PracticeCategory } from './types';
+import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
 
 interface ArrowsChartProps {
 	data: any[];
 	series: Array<{ name: string }>;
 	formatDate: (date: string) => string;
+	selectedCategory: PracticeCategory;
+	onCategoryChange: (category: PracticeCategory) => void;
 }
 
 // Generate colors from CSS variables
@@ -27,7 +31,7 @@ const getChartColors = (): string[] => {
 	];
 };
 
-export function ArrowsChart({ data, series, formatDate }: ArrowsChartProps) {
+export function ArrowsChart({ data, series, formatDate, selectedCategory, onCategoryChange }: ArrowsChartProps) {
 	const [colors, setColors] = useState<string[]>([]);
 
 	useEffect(() => {
@@ -36,8 +40,29 @@ export function ArrowsChart({ data, series, formatDate }: ArrowsChartProps) {
 
 	return (
 		<div className={styles.chartCard}>
-			<h3 className={styles.chartTitle}>Piler skutt over tid</h3>
-			<p className={styles.chartSubtitle}>Gruppert etter avstand og blinktype</p>
+			<div className={styles.chartHeader}>
+				<div>
+					<h3 className={styles.chartTitle}>Piler skutt over tid</h3>
+					<p className={styles.chartSubtitle}>Gruppert etter avstand og blinktype</p>
+				</div>
+				<div className={styles.filterGroup}>
+					<label htmlFor="category-filter" className={styles.filterLabel}>
+						Kategori:
+					</label>
+					<select
+						id="category-filter"
+						className={styles.filterSelect}
+						value={selectedCategory}
+						onChange={(e) => onCategoryChange(e.target.value as PracticeCategory)}
+					>
+						<option value="all">Alle kategorier</option>
+						<option value="SKIVE_INDOOR">{PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR}</option>
+						<option value="SKIVE_OUTDOOR">{PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR}</option>
+						<option value="JAKT_3D">{PRACTICE_CATEGORY_LABELS.JAKT_3D}</option>
+						<option value="FELT">{PRACTICE_CATEGORY_LABELS.FELT}</option>
+					</select>
+				</div>
+			</div>
 
 			<ResponsiveContainer width="100%" height={400}>
 				<BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
