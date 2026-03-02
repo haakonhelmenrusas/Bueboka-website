@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './CompetitionFormModal.module.css';
-import { Trophy, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, Checkbox, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
@@ -250,141 +250,205 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 		<div className={styles.overlay} onClick={onClose}>
 			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 				<div className={styles.header}>
-					<h2>{mode === 'edit' ? 'Rediger konkurranse' : 'Legg til konkurranse'}</h2>
+					<h3 className={styles.title}>{mode === 'edit' ? 'Rediger konkurranse' : 'Legg til konkurranse'}</h3>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={24} />
+						<X size={20} />
 					</button>
 				</div>
+
 				<form onSubmit={handleSubmit} className={styles.form}>
 					{error && <div className={styles.error}>{error}</div>}
-					<div className={styles.section}>
-						<h3>
-							<Trophy size={20} /> Grunnleggende informasjon
-						</h3>
-						<Input
-							label="Navn på konkurransen"
-							value={name}
-							onChange={(e) => setName(e.target.value)}
-							required
-							helpText="F.eks. 'NM Innendørs 2026'"
-						/>
-						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required />
-						<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} helpText="Hvor konkurransen ble avholdt" />
-						<Input
-							label="Arrangør"
-							value={organizerName}
-							onChange={(e) => setOrganizerName(e.target.value)}
-							helpText="Klubb eller organisasjon som arrangerte"
-						/>
-					</div>
-					<div className={styles.section}>
-						<h3>Resultater</h3>
-						<div className={styles.row}>
-							<NumberInput
-								label="Plassering"
-								value={placement ?? 0}
-								onChange={(val) => setPlacement(val || null)}
-								onEmpty={() => setPlacement(null)}
-								min={1}
-								helpText="Din plassering"
-								startEmpty
-							/>
-							<NumberInput
-								label="Antall deltakere"
-								value={numberOfParticipants ?? 0}
-								onChange={(val) => setNumberOfParticipants(val || null)}
-								onEmpty={() => setNumberOfParticipants(null)}
-								min={1}
-								helpText="Totalt antall"
-								startEmpty
-							/>
-						</div>
-						<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
-					</div>
-					<div className={styles.section}>
-						<h3>Miljø og kategori</h3>
-						<Select label="Miljø" value={environment} onChange={(val) => setEnvironment(val as Environment)} options={environmentOptions} />
+
+					{/* Basic Info */}
+					<Input
+						label="Navn på konkurransen"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+						required
+						helpText="F.eks. 'NM Innendørs 2026'"
+						containerClassName={styles.field}
+					/>
+
+					<div className={`${styles.row} ${styles.alignBottom}`}>
+						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
 						<Select
 							label="Kategori"
 							value={practiceCategory}
 							onChange={(val) => setPracticeCategory(val as PracticeCategory)}
 							options={practiceCategoryOptions}
+							containerClassName={styles.field}
 						/>
+					</div>
+
+					<div className={styles.row}>
+						<Select
+							label="Miljø"
+							value={environment}
+							onChange={(val) => setEnvironment(val as Environment)}
+							options={environmentOptions}
+							containerClassName={styles.field}
+						/>
+						<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
+					</div>
+
+					<Input
+						label="Arrangør"
+						value={organizerName}
+						onChange={(e) => setOrganizerName(e.target.value)}
+						helpText="Klubb eller organisasjon som arrangerte"
+						containerClassName={styles.field}
+					/>
+
+					{environment === Environment.OUTDOOR ? (
 						<Select
 							label="Værforhold"
 							value={weather}
 							onChange={(val) => setWeather(val as WeatherCondition[])}
 							options={getWeatherSelectOptions()}
 							multiple
+							maxSelectedLabels={2}
+							placeholderLabel="Velg vær (valgfritt)"
+							helpText="Velg ett eller flere"
+							containerClassName={styles.field}
+						/>
+					) : null}
+
+					{/* Competition Results */}
+					<div className={styles.row}>
+						<NumberInput
+							label="Plassering"
+							value={placement ?? 0}
+							onChange={(val) => setPlacement(val || null)}
+							onEmpty={() => setPlacement(null)}
+							min={1}
+							helpText="Din plassering"
+							startEmpty
+							containerClassName={styles.field}
+						/>
+						<NumberInput
+							label="Antall deltakere"
+							value={numberOfParticipants ?? 0}
+							onChange={(val) => setNumberOfParticipants(val || null)}
+							onEmpty={() => setNumberOfParticipants(null)}
+							min={1}
+							helpText="Totalt antall"
+							startEmpty
+							containerClassName={styles.field}
 						/>
 					</div>
-					<div className={styles.section}>
-						<h3>Runder</h3>
+
+					<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
+
+					{/* Rounds */}
+					<div className={styles.roundsSection}>
+						<h4 className={styles.sectionTitle}>Runder</h4>
+
 						{rounds.map((round, index) => (
-							<div key={index} className={styles.round}>
+							<div key={index} className={styles.roundCard}>
 								<div className={styles.roundHeader}>
-									<span>Runde {round.roundNumber}</span>
+									<span className={styles.roundNumber}>Runde {round.roundNumber}</span>
 									{rounds.length > 1 && (
-										<button type="button" onClick={() => removeRound(index)} className={styles.removeBtn}>
-											Fjern
+										<button type="button" onClick={() => removeRound(index)} className={styles.removeRoundBtn} aria-label="Fjern runde">
+											<X size={16} />
 										</button>
 									)}
 								</div>
-								<div className={styles.row}>
+
+								<div className={styles.roundInputs}>
 									<NumberInput
-										label="Distanse (m)"
+										label="Distanse"
 										value={round.distanceMeters ?? 0}
 										onChange={(val) => updateRound(index, 'distanceMeters', val || undefined)}
 										onEmpty={() => updateRound(index, 'distanceMeters', undefined)}
 										min={1}
 										startEmpty
+										hideSteppers
+										unit="m"
+										containerClassName={styles.roundField}
 									/>
+
 									<NumberInput
-										label="Skive (cm)"
+										label="Skive"
 										value={round.targetSizeCm ?? 0}
 										onChange={(val) => updateRound(index, 'targetSizeCm', val || undefined)}
 										onEmpty={() => updateRound(index, 'targetSizeCm', undefined)}
 										min={1}
 										startEmpty
+										hideSteppers
+										unit="cm"
+										containerClassName={styles.roundField}
 									/>
-								</div>
-								<div className={styles.row}>
+
 									<NumberInput
-										label="Antall piler"
+										label="Piler"
 										value={round.numberArrows}
 										onChange={(val) => updateRound(index, 'numberArrows', val || 0)}
 										min={1}
 										required
+										startEmpty
+										containerClassName={styles.roundField}
 									/>
+
 									<NumberInput
-										label="Poengsum"
+										label="Score"
 										value={round.roundScore}
 										onChange={(val) => updateRound(index, 'roundScore', val || 0)}
 										min={0}
 										required
+										startEmpty
+										containerClassName={styles.roundField}
 									/>
 								</div>
 							</div>
 						))}
-						<Button type="button" label="Legg til runde" onClick={addRound} buttonType="outline" size="small" />
+
+						<Button
+							type="button"
+							label="+ Legg til runde"
+							onClick={addRound}
+							variant="standard"
+							buttonType="outline"
+							width="100%"
+							disabled={rounds.length >= 8}
+						/>
+						{rounds.length >= 8 && <p className={styles.limitMessage}>Maksimalt 8 runder er tillatt</p>}
 					</div>
-					<div className={styles.section}>
-						<h3>Utstyr</h3>
-						<Select label="Bue" value={bowId} onChange={(val) => setBowId(val as string)} options={bowOptions} />
-						<Select label="Piler" value={arrowsId} onChange={(val) => setArrowsId(val as string)} options={arrowsOptions} />
-					</div>
-					<div className={styles.section}>
-						<TextArea
-							label="Notater"
-							value={notes}
-							onChange={(e) => setNotes(e.target.value)}
-							rows={4}
-							helpText="Dine refleksjoner fra konkurransen"
+
+					{/* Equipment */}
+					<div className={styles.row}>
+						<Select
+							label="Bue"
+							value={bowId}
+							onChange={(val) => setBowId(val as string)}
+							options={bowOptions}
+							placeholderLabel="Velg bue (valgfritt)"
+							containerClassName={styles.field}
+						/>
+
+						<Select
+							label="Piler"
+							value={arrowsId}
+							onChange={(val) => setArrowsId(val as string)}
+							options={arrowsOptions}
+							placeholderLabel="Velg piler (valgfritt)"
+							containerClassName={styles.field}
 						/>
 					</div>
+
+					{/* Notes */}
+					<TextArea
+						label="Notater"
+						value={notes}
+						onChange={(e) => setNotes(e.target.value)}
+						placeholder="Hvordan gikk konkurransen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
+						helpText={`Dine refleksjoner fra konkurransen (${notes.length}/500 tegn)`}
+						maxLength={500}
+						containerClassName={styles.field}
+					/>
+
 					<div className={styles.actions}>
-						<Button type="button" label="Avbryt" onClick={onClose} buttonType="outline" disabled={submitting} />
-						<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre'} disabled={submitting} loading={submitting} />
+						<Button type="button" label="Avbryt" onClick={onClose} buttonType="outline" disabled={submitting} width={160} />
+						<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre'} disabled={submitting} loading={submitting} width={180} />
 					</div>
 				</form>
 			</div>
