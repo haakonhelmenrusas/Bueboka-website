@@ -183,7 +183,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			return;
 		}
 
-		const validRounds = rounds.filter((r) => r.numberArrows > 0);
+		const validRounds = rounds.filter((r) => (r.numberArrows ?? 0) > 0 || (r.arrowsWithoutScore ?? 0) > 0);
 		if (validRounds.length === 0) {
 			setError('Minst én runde med piler er påkrevd');
 			return;

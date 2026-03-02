@@ -1,11 +1,12 @@
 import React from 'react';
 import { Home, Target, Trees, Trophy } from 'lucide-react';
-import type { PracticeType } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import styles from './PracticeDetailsModal.module.css';
 
+type PracticeType = 'TRENING' | 'KONKURRANSE';
+
 interface PracticeTypeBadgeProps {
-	practiceType?: PracticeType | null;
+	practiceType?: PracticeType | string | null;
 }
 
 export const PracticeTypeBadge: React.FC<PracticeTypeBadgeProps> = ({ practiceType }) => {

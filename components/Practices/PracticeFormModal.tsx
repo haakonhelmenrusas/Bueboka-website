@@ -212,7 +212,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			const validRounds = rounds.filter((r) => {
 				const hasDistance =
 					(r.distanceMeters && r.distanceMeters > 0) || (r.distanceFrom && r.distanceFrom > 0) || (r.distanceTo && r.distanceTo > 0);
-				return hasDistance || r.targetType || r.numberArrows > 0 || r.roundScore > 0;
+				return hasDistance || r.targetType || (r.numberArrows ?? 0) > 0 || r.roundScore > 0;
 			});
 
 			// Save last used distance and target to localStorage (from first round)

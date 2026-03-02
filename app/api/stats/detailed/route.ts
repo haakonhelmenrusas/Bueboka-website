@@ -76,7 +76,8 @@ export async function GET() {
 				continue;
 			}
 
-			const practiceType = practice.practiceType || 'TRENING';
+			// Practices are always TRENING type (competitions are handled separately)
+			const practiceType = 'TRENING';
 			const practiceCategory = practice.practiceCategory || 'SKIVE_INDOOR';
 
 			for (const end of practice.ends) {

@@ -1,5 +1,7 @@
-import type { PracticeCategory, PracticeType, WeatherCondition } from '@/lib/prismaEnums';
+import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
+
+type PracticeType = 'TRENING' | 'KONKURRANSE';
 
 export type PracticeEnd = {
 	id: string;
