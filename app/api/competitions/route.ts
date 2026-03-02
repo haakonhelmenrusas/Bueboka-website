@@ -55,7 +55,7 @@ export async function GET() {
 
 		// Calculate total arrows for each competition
 		const competitionsWithStats = competitions.map((competition) => {
-			const totalArrows = competition.rounds.reduce((sum, round) => sum + round.arrows, 0);
+			const totalArrows = competition.rounds.reduce((sum, round) => sum + (round.arrows || 0) + (round.arrowsWithoutScore || 0), 0);
 			return {
 				...competition,
 				arrowsShot: totalArrows,
@@ -81,7 +81,8 @@ interface CompetitionRoundInput {
 	roundNumber: number;
 	distanceMeters?: number;
 	targetSizeCm?: number;
-	numberArrows: number;
+	numberArrows?: number;
+	arrowsWithoutScore?: number;
 	roundScore: number;
 	scores?: number[];
 }
@@ -149,7 +150,8 @@ export async function POST(request: Request) {
 				rounds: {
 					create: body.rounds.map((round) => ({
 						roundNumber: round.roundNumber,
-						arrows: round.numberArrows,
+						arrows: round.numberArrows || null,
+						arrowsWithoutScore: round.arrowsWithoutScore || null,
 						scores: round.scores || [],
 						roundScore: round.roundScore || 0,
 						distanceMeters: round.distanceMeters,

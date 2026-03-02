@@ -60,19 +60,29 @@ export async function POST(request: Request) {
 			}),
 		]);
 
+		// Transform practices to ensure arrows field has default value
+		const practicesWithDefaults = practices.map((practice) => ({
+			...practice,
+			ends: practice.ends.map((end) => ({
+				arrows: end.arrows || 0,
+				scores: end.scores,
+				roundScore: end.roundScore,
+			})),
+		}));
+
 		// Transform competitions to practice-like format for achievement checking
 		const competitionsAsPractices = competitions.map((comp) => ({
 			...comp,
 			practiceCategory: comp.practiceCategory,
 			ends: comp.rounds.map((round) => ({
-				arrows: round.arrows,
+				arrows: round.arrows || 0,
 				scores: round.scores,
 				roundScore: round.roundScore,
 			})),
 		}));
 
 		// Merge all activities
-		const allActivities = [...practices, ...(competitionsAsPractices as any)];
+		const allActivities = [...practicesWithDefaults, ...(competitionsAsPractices as any)];
 
 		// Fetch currently unlocked achievements in database
 		const existingAchievements = await prisma.userAchievement.findMany({

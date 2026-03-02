@@ -67,8 +67,8 @@ export async function GET(request: Request, { params }: RouteParams) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
 		}
 
-		// Calculate total arrows
-		const arrowsShot = competition.rounds.reduce((sum, round) => sum + round.arrows, 0);
+		// Calculate total arrows (including both scored and unscored arrows)
+		const arrowsShot = competition.rounds.reduce((sum, round) => sum + (round.arrows || 0) + (round.arrowsWithoutScore || 0), 0);
 
 		return NextResponse.json({
 			competition: {
@@ -94,7 +94,8 @@ interface CompetitionRoundInput {
 	roundNumber: number;
 	distanceMeters?: number;
 	targetSizeCm?: number;
-	numberArrows: number;
+	numberArrows?: number;
+	arrowsWithoutScore?: number;
 	roundScore: number;
 	scores?: number[];
 }
@@ -157,7 +158,8 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 					deleteMany: {},
 					create: body.rounds.map((round) => ({
 						roundNumber: round.roundNumber,
-						arrows: round.numberArrows,
+						arrows: round.numberArrows || null,
+						arrowsWithoutScore: round.arrowsWithoutScore || null,
 						scores: round.scores || [],
 						roundScore: round.roundScore || 0,
 						distanceMeters: round.distanceMeters,

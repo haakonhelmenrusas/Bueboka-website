@@ -21,7 +21,8 @@ export interface CompetitionRoundInput {
 	roundNumber: number;
 	distanceMeters?: number;
 	targetSizeCm?: number;
-	numberArrows: number;
+	numberArrows?: number;
+	arrowsWithoutScore?: number;
 	roundScore: number;
 	scores?: number[];
 }
@@ -100,7 +101,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	const [numberOfParticipants, setNumberOfParticipants] = useState<number | null>(null);
 	const [personalBest, setPersonalBest] = useState(false);
 	const [rounds, setRounds] = useState<CompetitionRoundInput[]>([
-		{ roundNumber: 1, distanceMeters: 18, targetSizeCm: 40, numberArrows: 30, roundScore: 0 },
+		{ roundNumber: 1, distanceMeters: 18, targetSizeCm: 40, numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 },
 	]);
 	const [bowId, setBowId] = useState<string>('');
 	const [arrowsId, setArrowsId] = useState<string>('');
@@ -130,6 +131,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 					distanceMeters: round.distanceMeters || undefined,
 					targetSizeCm: round.targetSizeCm || undefined,
 					numberArrows: round.arrows || 0,
+					arrowsWithoutScore: (round as any).arrowsWithoutScore || 0,
 					roundScore: round.roundScore || 0,
 					scores: round.scores,
 				}));
@@ -151,7 +153,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			setPlacement(null);
 			setNumberOfParticipants(null);
 			setPersonalBest(false);
-			setRounds([{ roundNumber: 1, distanceMeters: 18, targetSizeCm: 40, numberArrows: 30, roundScore: 0 }]);
+			setRounds([{ roundNumber: 1, distanceMeters: 18, targetSizeCm: 40, numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 }]);
 			setBowId('');
 			setArrowsId('');
 		}
@@ -222,6 +224,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				distanceMeters: rounds[rounds.length - 1]?.distanceMeters || 18,
 				targetSizeCm: rounds[rounds.length - 1]?.targetSizeCm || 40,
 				numberArrows: 30,
+				arrowsWithoutScore: 0,
 				roundScore: 0,
 			},
 		]);
@@ -381,11 +384,25 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 
 									<NumberInput
 										label="Piler"
-										value={round.numberArrows}
+										value={round.numberArrows ?? 0}
 										onChange={(val) => updateRound(index, 'numberArrows', val || 0)}
-										min={1}
-										required
+										onEmpty={() => updateRound(index, 'numberArrows', 0)}
+										min={0}
+										optional
 										startEmpty
+										helpText="Ant. piler med score"
+										containerClassName={styles.roundField}
+									/>
+
+									<NumberInput
+										label="Piler u/score"
+										value={round.arrowsWithoutScore ?? 0}
+										onChange={(val) => updateRound(index, 'arrowsWithoutScore', val || 0)}
+										onEmpty={() => updateRound(index, 'arrowsWithoutScore', 0)}
+										min={0}
+										optional
+										startEmpty
+										helpText="Piler uten score"
 										containerClassName={styles.roundField}
 									/>
 

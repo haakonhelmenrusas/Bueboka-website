@@ -42,8 +42,7 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const { date, location, environment, weather, practiceCategory, notes, rating, rounds, arrowsWithoutScore, bowId, arrowsId } =
-			validation.data;
+		const { date, location, environment, weather, practiceCategory, notes, rating, rounds, bowId, arrowsId } = validation.data;
 
 		const parsedDate = new Date(date);
 
@@ -100,7 +99,6 @@ export async function POST(request: NextRequest) {
 			practiceCategory: practiceCategory || 'SKIVE_INDOOR',
 			notes: notes || null,
 			rating: rating ?? null,
-			arrowsWithoutScore: arrowsWithoutScore ?? null,
 			ends: {
 				create: rounds.map((round) => {
 					// Parse targetSizeCm from targetType (e.g., "40cm" -> 40)
@@ -115,7 +113,8 @@ export async function POST(request: NextRequest) {
 					const roundAny = round as any;
 
 					return {
-						arrows: round.numberArrows || 0,
+						arrows: round.numberArrows || null,
+						arrowsWithoutScore: round.arrowsWithoutScore || null,
 						scores: [],
 						roundScore: round.roundScore || null,
 						distanceMeters: round.distanceMeters || null,

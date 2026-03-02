@@ -45,7 +45,21 @@ export async function GET() {
 		const from30 = startOfDay(new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000));
 
 		// Count arrows shot from ends (practices) and competition rounds
-		const [overallEnds, last7Ends, last30Ends, overallCompRounds, last7CompRounds, last30CompRounds] = await Promise.all([
+		// Include both arrows and arrowsWithoutScore
+		const [
+			overallEnds,
+			last7Ends,
+			last30Ends,
+			overallCompRounds,
+			last7CompRounds,
+			last30CompRounds,
+			overallEndsWithoutScore,
+			last7EndsWithoutScore,
+			last30EndsWithoutScore,
+			overallCompRoundsWithoutScore,
+			last7CompRoundsWithoutScore,
+			last30CompRoundsWithoutScore,
+		] = await Promise.all([
 			prisma.end.aggregate({
 				where: {
 					Practice: { userId: user.id },
@@ -82,13 +96,63 @@ export async function GET() {
 				},
 				_sum: { arrows: true },
 			}),
+			// Count arrowsWithoutScore for practices
+			prisma.end.aggregate({
+				where: {
+					Practice: { userId: user.id },
+				},
+				_sum: { arrowsWithoutScore: true },
+			}),
+			prisma.end.aggregate({
+				where: {
+					Practice: { userId: user.id, date: { gte: from7 } },
+				},
+				_sum: { arrowsWithoutScore: true },
+			}),
+			prisma.end.aggregate({
+				where: {
+					Practice: { userId: user.id, date: { gte: from30 } },
+				},
+				_sum: { arrowsWithoutScore: true },
+			}),
+			// Count arrowsWithoutScore for competitions
+			prisma.competitionRound.aggregate({
+				where: {
+					competition: { userId: user.id },
+				},
+				_sum: { arrowsWithoutScore: true },
+			}),
+			prisma.competitionRound.aggregate({
+				where: {
+					competition: { userId: user.id, date: { gte: from7 } },
+				},
+				_sum: { arrowsWithoutScore: true },
+			}),
+			prisma.competitionRound.aggregate({
+				where: {
+					competition: { userId: user.id, date: { gte: from30 } },
+				},
+				_sum: { arrowsWithoutScore: true },
+			}),
 		]);
 
 		const result = {
 			stats: {
-				last7Days: overallNumber(last7Ends._sum.arrows) + overallNumber(last7CompRounds._sum.arrows),
-				last30Days: overallNumber(last30Ends._sum.arrows) + overallNumber(last30CompRounds._sum.arrows),
-				overall: overallNumber(overallEnds._sum.arrows) + overallNumber(overallCompRounds._sum.arrows),
+				last7Days:
+					overallNumber(last7Ends._sum.arrows) +
+					overallNumber(last7CompRounds._sum.arrows) +
+					overallNumber(last7EndsWithoutScore._sum.arrowsWithoutScore) +
+					overallNumber(last7CompRoundsWithoutScore._sum.arrowsWithoutScore),
+				last30Days:
+					overallNumber(last30Ends._sum.arrows) +
+					overallNumber(last30CompRounds._sum.arrows) +
+					overallNumber(last30EndsWithoutScore._sum.arrowsWithoutScore) +
+					overallNumber(last30CompRoundsWithoutScore._sum.arrowsWithoutScore),
+				overall:
+					overallNumber(overallEnds._sum.arrows) +
+					overallNumber(overallCompRounds._sum.arrows) +
+					overallNumber(overallEndsWithoutScore._sum.arrowsWithoutScore) +
+					overallNumber(overallCompRoundsWithoutScore._sum.arrowsWithoutScore),
 			},
 		};
 

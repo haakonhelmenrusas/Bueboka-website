@@ -37,10 +37,16 @@ export async function GET(request: Request) {
 		let practiceCountPromise;
 		let competitionCountPromise;
 
+		// When fetching 'all', we need to get enough records from each type to fill the page after sorting
+		// So we fetch more than needed and then sort/slice
+		const fetchLimit = filterType === 'all' ? pageSize * 2 : pageSize;
+
 		if (filterType === 'all' || filterType === 'TRENING') {
 			practicesPromise = prisma.practice.findMany({
 				where: { userId: user.id },
 				orderBy: { date: 'desc' },
+				skip: filterType === 'TRENING' ? skip : 0,
+				take: fetchLimit,
 				select: {
 					id: true,
 					date: true,
@@ -49,10 +55,10 @@ export async function GET(request: Request) {
 					rating: true,
 					totalScore: true,
 					practiceCategory: true,
-					bow: { select: { name: true } },
+					bow: { select: { name: true, type: true } },
 					arrows: { select: { name: true } },
 					roundType: { select: { name: true } },
-					ends: { select: { arrows: true, distanceMeters: true, targetSizeCm: true } },
+					ends: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
 				},
 			});
 			practiceCountPromise = prisma.practice.count({ where: { userId: user.id } });
@@ -65,6 +71,8 @@ export async function GET(request: Request) {
 			competitionsPromise = prisma.competition.findMany({
 				where: { userId: user.id },
 				orderBy: { date: 'desc' },
+				skip: filterType === 'KONKURRANSE' ? skip : 0,
+				take: fetchLimit,
 				select: {
 					id: true,
 					date: true,
@@ -76,7 +84,7 @@ export async function GET(request: Request) {
 					practiceCategory: true,
 					bow: { select: { name: true } },
 					arrows: { select: { name: true } },
-					rounds: { select: { arrows: true, distanceMeters: true, targetSizeCm: true } },
+					rounds: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
 				},
 			});
 			competitionCountPromise = prisma.competition.count({ where: { userId: user.id } });
@@ -94,7 +102,11 @@ export async function GET(request: Request) {
 
 		// Transform practices to card format
 		const practiceCards = practices.map((p) => {
-			const arrowsShot = p.ends.reduce((sum: number, e: { arrows: number }) => sum + (e.arrows ?? 0), 0);
+			const arrowsShot = p.ends.reduce(
+				(sum: number, e: { arrows: number | null; arrowsWithoutScore: number | null }) =>
+					sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0),
+				0
+			);
 			const combinations = p.ends
 				.filter((e: any) => e.distanceMeters && e.targetSizeCm)
 				.map((e: any) => `${e.distanceMeters}m - ${e.targetSizeCm}cm`)
@@ -118,7 +130,11 @@ export async function GET(request: Request) {
 
 		// Transform competitions to card format
 		const competitionCards = competitions.map((c) => {
-			const arrowsShot = c.rounds.reduce((sum: number, r: { arrows: number }) => sum + (r.arrows ?? 0), 0);
+			const arrowsShot = c.rounds.reduce(
+				(sum: number, r: { arrows: number | null; arrowsWithoutScore: number | null }) =>
+					sum + (r.arrows ?? 0) + (r.arrowsWithoutScore ?? 0),
+				0
+			);
 			const combinations = c.rounds
 				.filter((r: any) => r.distanceMeters && r.targetSizeCm)
 				.map((r: any) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)
@@ -149,7 +165,10 @@ export async function GET(request: Request) {
 
 		// Calculate total and paginate
 		const total = practiceCount + competitionCount;
-		const paginatedCards = allCards.slice(skip, skip + pageSize);
+
+		// If filter is 'all', we need to paginate the merged results
+		// Otherwise, results are already paginated from the database query
+		const paginatedCards = filterType === 'all' ? allCards.slice(skip, skip + pageSize) : allCards;
 
 		return NextResponse.json(
 			{ practices: paginatedCards, page, pageSize, total },

@@ -131,23 +131,22 @@ model Arrows {
 }
 
 model Practice {
-  id                 String             @id @default(cuid())
-  userId             String
-  date               DateTime           @default(now())
-  notes              String?
-  totalScore         Int
-  rating             Int?
-  location           String?
-  environment        Environment
-  weather            WeatherCondition[]
-  practiceCategory   PracticeCategory   @default(SKIVE_INDOOR)
-  arrowsWithoutScore Int?
-  roundTypeId        String?
-  bowId              String?
-  arrowsId           String?
-  ends               End[]
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
+  id               String             @id @default(cuid())
+  userId           String
+  date             DateTime           @default(now())
+  notes            String?
+  totalScore       Int
+  rating           Int?
+  location         String?
+  environment      Environment
+  weather          WeatherCondition[]
+  practiceCategory PracticeCategory   @default(SKIVE_INDOOR)
+  roundTypeId      String?
+  bowId            String?
+  arrowsId         String?
+  ends             End[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   // Relation fields
   user      User       @relation(fields: [userId], references: [id])
@@ -176,18 +175,19 @@ model RoundType {
 }
 
 model End {
-  id             String   @id @default(cuid())
-  practiceId     String
-  arrows         Int
-  scores         Int[]
-  roundScore     Int?
-  distanceMeters Int?
-  distanceFrom   Int?
-  distanceTo     Int?
-  targetSizeCm   Int?
-  arrowsPerEnd   Int?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  practiceId         String
+  arrows             Int?
+  arrowsWithoutScore Int?
+  scores             Int[]
+  roundScore         Int?
+  distanceMeters     Int?
+  distanceFrom       Int?
+  distanceTo         Int?
+  targetSizeCm       Int?
+  arrowsPerEnd       Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   // Relation fields
   Practice Practice @relation(fields: [practiceId], references: [id])
@@ -227,21 +227,21 @@ model Competition {
 }
 
 model CompetitionRound {
-  id             String   @id @default(cuid())
-  competitionId  String
-  roundNumber    Int
-  arrows         Int
-  scores         Int[]
-  roundScore     Int?
-  distanceMeters Int?
-  targetSizeCm   Int?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                 String   @id @default(cuid())
+  competitionId      String
+  roundNumber        Int
+  arrows             Int?
+  arrowsWithoutScore Int?
+  scores             Int[]
+  roundScore         Int?
+  distanceMeters     Int?
+  targetSizeCm       Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 
   // Relation fields
   competition Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
 
-  @@index([competitionId])
   @@map("competition_rounds")
 }
 

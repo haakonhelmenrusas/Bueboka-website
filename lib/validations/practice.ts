@@ -30,7 +30,8 @@ export const RoundInputSchema = z.object({
 			return validTypes.includes(val);
 		}, 'Ugyldig blinktype')
 		.optional(),
-	numberArrows: z.number().int().min(1, 'Minst 1 pil er påkrevd').max(10000, 'Maksimalt 10000 piler per runde'),
+	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional(),
+	arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional(),
 	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
 });
 
@@ -45,7 +46,6 @@ export const createPracticeSchema = z
 		notes: z.string().max(500, 'Notater må være mindre enn 500 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
 		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(8, 'Maksimalt 8 runder er tillatt'),
-		arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),
 	})
