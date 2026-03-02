@@ -45,7 +45,7 @@ export const createPracticeSchema = z
 		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE_INDOOR'),
 		notes: z.string().max(500, 'Notater må være mindre enn 500 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
-		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(8, 'Maksimalt 8 runder er tillatt'),
+		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(20, 'Maksimalt 20 runder er tillatt'),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),
 	})

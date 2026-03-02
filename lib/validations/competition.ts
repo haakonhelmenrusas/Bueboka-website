@@ -25,7 +25,7 @@ export const createCompetitionSchema = z.object({
 	placement: z.number().int().min(1).optional().nullable(),
 	numberOfParticipants: z.number().int().min(1).optional().nullable(),
 	personalBest: z.boolean().optional().default(false),
-	rounds: z.array(CompetitionRoundInputSchema).min(1, 'Minst én runde er påkrevd').max(8, 'Maksimalt 8 runder er tillatt'),
+	rounds: z.array(CompetitionRoundInputSchema).min(1, 'Minst én runde er påkrevd').max(20, 'Maksimalt 20 runder er tillatt'),
 	bowId: z.string().optional().nullable(),
 	arrowsId: z.string().optional().nullable(),
 });

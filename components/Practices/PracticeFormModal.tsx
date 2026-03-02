@@ -270,7 +270,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 					</button>
 				</div>
 				<form className={styles.form} onSubmit={handleSubmit}>
-					<div className={`${styles.row} ${styles.alignBottom}`}>
+					<div className={styles.row}>
 						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
 						<Select
 							label="Kategori"
@@ -390,6 +390,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											options={targetTypeOptions}
 											containerClassName={styles.roundField}
 										/>
+									</div>
+									<div className={styles.row}>
 										<NumberInput
 											label="Piler"
 											value={round.numberArrows || 0}
@@ -433,9 +435,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							variant="standard"
 							buttonType="outline"
 							width="100%"
-							disabled={rounds.length >= 8}
+							disabled={rounds.length >= 20}
 						/>
-						{rounds.length >= 8 && <p className={styles.limitMessage}>Maksimalt 8 runder er tillatt</p>}
+						{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
 					</div>
 					<div className={styles.ratingSection}>
 						<div className={styles.ratingLabel}>

@@ -48,7 +48,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 			</header>
 			<div className={styles.buttonGroup}>
 				<Button label="Rediger" onClick={onEdit} icon={<Edit size={18} />} size="normal" buttonType="outline" />
-				<Button label="Mine Merker" onClick={handleAchievementsClick} icon={<Trophy size={18} />} size="normal" buttonType="filled" />
+				<Button label="Mine prestasjoner" onClick={handleAchievementsClick} icon={<Trophy size={18} />} size="normal" buttonType="filled" />
 			</div>
 		</section>
 	);

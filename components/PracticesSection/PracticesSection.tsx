@@ -8,7 +8,7 @@ import styles from './PracticesSection.module.css';
 interface PracticesSectionProps {
 	onCreate: () => void;
 	onCreateCompetition?: () => void;
-	onSelectPractice: (id: string) => void;
+	onSelectPractice: (id: string, practiceType?: string) => void;
 	reloadKey?: string | number;
 	deletedPracticeId?: string | null;
 }

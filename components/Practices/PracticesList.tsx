@@ -4,7 +4,7 @@ import { PracticeCard, PracticeCardProps } from './PracticeCard';
 
 export interface PracticesListProps {
 	practices: PracticeCardProps[];
-	onSelectPractice?: (id: string) => void;
+	onSelectPractice?: (id: string, practiceType?: string) => void;
 }
 
 export const PracticesList: React.FC<PracticesListProps> = ({ practices, onSelectPractice }) => {
@@ -18,7 +18,7 @@ export const PracticesList: React.FC<PracticesListProps> = ({ practices, onSelec
 				) : (
 					practices.map((practice) => (
 						<div key={practice.id} role="listitem">
-							<PracticeCard {...practice} onClick={onSelectPractice} />
+							<PracticeCard {...practice} onClick={(id) => onSelectPractice?.(id, practice.practiceType || undefined)} />
 						</div>
 					))
 				)}

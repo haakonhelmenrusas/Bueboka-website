@@ -246,8 +246,8 @@ export default function MyPage() {
 		await fetchStats();
 	};
 
-	const handleSelectPractice = async (id: string) => {
-		const full = await fetchPracticeDetails(id);
+	const handleSelectPractice = async (id: string, practiceType?: string) => {
+		const full = await fetchPracticeDetails(id, practiceType);
 		if (full) {
 			setSelectedPractice(full);
 			setPracticeModalOpen(true);

@@ -12,7 +12,7 @@ async function getCurrentUser() {
 		const session = await auth.api.getSession({ headers: headerObj });
 		return session?.user || null;
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'practices/[id]/details', where: 'getCurrentUser' } });
+		Sentry.captureException(error, { tags: { endpoint: 'competitions/[id]/details', where: 'getCurrentUser' } });
 		return null;
 	}
 }
@@ -25,30 +25,29 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 		const { id } = await params;
 		if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 });
 
-		const practice = await prisma.practice.findFirst({
+		const competition = await prisma.competition.findFirst({
 			where: { id, userId: user.id },
 			include: {
-				ends: { orderBy: { createdAt: 'asc' } },
+				rounds: { orderBy: { roundNumber: 'asc' } },
 				bow: true,
 				arrows: true,
-				roundType: true,
 			},
 		});
 
-		if (!practice) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+		if (!competition) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-		// Calculate total arrows shot from ends (including both arrows and arrowsWithoutScore)
-		const totalArrows = practice.ends?.reduce((sum, end) => sum + (end.arrows || 0) + (end.arrowsWithoutScore || 0), 0) || 0;
+		// Calculate total arrows shot from rounds (including both arrows and arrowsWithoutScore)
+		const totalArrows = competition.rounds?.reduce((sum, round) => sum + (round.arrows || 0) + (round.arrowsWithoutScore || 0), 0) || 0;
 
 		// Map calculated arrowsShot for frontend compatibility
-		const mappedPractice = {
-			...practice,
+		const mappedCompetition = {
+			...competition,
 			arrowsShot: totalArrows,
-			practiceType: 'TRENING', // Add practiceType for frontend
+			practiceType: 'KONKURRANSE', // Add practiceType for frontend
 		};
 
 		return NextResponse.json(
-			{ practice: mappedPractice },
+			{ practice: mappedCompetition },
 			{
 				headers: {
 					// In development, don't cache. In production, cache for 10 seconds.
@@ -59,9 +58,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 		);
 	} catch (error) {
 		Sentry.captureException(error, {
-			tags: { endpoint: 'practices/[id]/details', method: 'GET' },
-			extra: { message: 'Error fetching practice details' },
+			tags: { endpoint: 'competitions/[id]/details', method: 'GET' },
+			extra: { message: 'Error fetching competition details' },
 		});
-		return NextResponse.json({ error: 'Failed to fetch practice details' }, { status: 500 });
+		return NextResponse.json({ error: 'Failed to fetch competition details' }, { status: 500 });
 	}
 }

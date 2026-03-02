@@ -272,7 +272,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						containerClassName={styles.field}
 					/>
 
-					<div className={`${styles.row} ${styles.alignBottom}`}>
+					<div className={styles.row}>
 						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
 						<Select
 							label="Kategori"
@@ -381,7 +381,9 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										unit="cm"
 										containerClassName={styles.roundField}
 									/>
+								</div>
 
+								<div className={styles.row}>
 									<NumberInput
 										label="Piler"
 										value={round.numberArrows ?? 0}
@@ -426,9 +428,9 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							variant="standard"
 							buttonType="outline"
 							width="100%"
-							disabled={rounds.length >= 8}
+							disabled={rounds.length >= 20}
 						/>
-						{rounds.length >= 8 && <p className={styles.limitMessage}>Maksimalt 8 runder er tillatt</p>}
+						{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
 					</div>
 
 					{/* Equipment */}
