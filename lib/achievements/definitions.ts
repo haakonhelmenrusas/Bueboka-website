@@ -9,7 +9,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	// ===== MILESTONE ACHIEVEMENTS =====
 	{
 		id: 'first-practice',
-		name: 'Første Skudd',
+		name: 'Første skudd',
 		description: 'Registrer din første treningsøkt',
 		category: 'MILESTONE',
 		rarity: 'COMMON',
@@ -23,7 +23,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'practices-10',
-		name: 'På God Vei',
+		name: 'På god vei',
 		description: 'Registrer 10 treningsøkter',
 		category: 'MILESTONE',
 		rarity: 'COMMON',
@@ -38,7 +38,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'practices-50',
-		name: 'Dedikert Skytter',
+		name: 'Dedikert skytter',
 		description: 'Registrer 50 treningsøkter',
 		category: 'MILESTONE',
 		rarity: 'UNCOMMON',
@@ -53,7 +53,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'practices-100',
-		name: 'Århundrets Skytter',
+		name: 'Århundrets skytter',
 		description: 'Registrer 100 treningsøkter',
 		category: 'MILESTONE',
 		rarity: 'RARE',
@@ -85,7 +85,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	// ===== STREAK ACHIEVEMENTS =====
 	{
 		id: 'streak-3',
-		name: 'I Gang',
+		name: 'I gang',
 		description: 'Tren 3 dager på rad',
 		category: 'STREAK',
 		rarity: 'COMMON',
@@ -100,7 +100,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'streak-7',
-		name: 'Uke-Kriger',
+		name: 'Uke-kriger',
 		description: 'Tren 5 dager i løpet av en uke',
 		category: 'STREAK',
 		rarity: 'UNCOMMON',
@@ -115,7 +115,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'streak-30',
-		name: 'Månedens Mester',
+		name: 'Månedens mester',
 		description: 'Tren 15 dager i løpet av en måned',
 		category: 'STREAK',
 		rarity: 'RARE',
@@ -147,7 +147,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	// ===== ARROW COUNT ACHIEVEMENTS =====
 	{
 		id: 'arrows-1000',
-		name: 'Tusen Skudd',
+		name: 'Tusen skudd',
 		description: 'Skyt 1000 piler totalt',
 		category: 'DEDICATION',
 		rarity: 'COMMON',
@@ -162,7 +162,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'arrows-5000',
-		name: 'Pil-Veteran',
+		name: 'Pil-veteran',
 		description: 'Skyt 5000 piler totalt',
 		category: 'DEDICATION',
 		rarity: 'UNCOMMON',
@@ -177,7 +177,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'arrows-10000',
-		name: 'Ti Tusen Piler',
+		name: 'Ti tusen piler',
 		description: 'Skyt 10,000 piler totalt',
 		category: 'DEDICATION',
 		rarity: 'RARE',
@@ -192,7 +192,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'arrows-50000',
-		name: 'Pil-Legende',
+		name: 'Pil-legende',
 		description: 'Skyt 50,000 piler totalt',
 		category: 'DEDICATION',
 		rarity: 'LEGENDARY',
@@ -222,38 +222,8 @@ export const ACHIEVEMENTS: Achievement[] = [
 		},
 	},
 	{
-		id: 'high-average-8',
-		name: 'Høyt Nivå',
-		description: 'Oppnå et snitt på 8.0 per pil i en økt',
-		category: 'PERFORMANCE',
-		rarity: 'UNCOMMON',
-		tier: 'SILVER',
-		icon: 'TrendingUp',
-		points: 50,
-		requirements: {
-			type: 'SCORE_AVERAGE',
-			value: 8.0,
-			comparator: 'GREATER_OR_EQUAL',
-		},
-	},
-	{
-		id: 'high-average-9',
-		name: 'Eksepsjonell',
-		description: 'Oppnå et snitt på 9.0 per pil i en økt',
-		category: 'PERFORMANCE',
-		rarity: 'EPIC',
-		tier: 'PLATINUM',
-		icon: 'Sparkles',
-		points: 200,
-		requirements: {
-			type: 'SCORE_AVERAGE',
-			value: 9.0,
-			comparator: 'GREATER_OR_EQUAL',
-		},
-	},
-	{
 		id: 'big-session',
-		name: 'Maraton-Økt',
+		name: 'Maraton-økt',
 		description: 'Skyt 200+ piler i én treningsøkt',
 		category: 'DEDICATION',
 		rarity: 'UNCOMMON',
@@ -316,7 +286,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	// ===== EXPLORATION ACHIEVEMENTS =====
 	{
 		id: 'all-categories',
-		name: 'Allsidig Skytter',
+		name: 'Allsidig skytter',
 		description: 'Tren i alle fire kategorier',
 		category: 'EXPLORATION',
 		rarity: 'UNCOMMON',
@@ -331,7 +301,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: 'indoor-specialist',
-		name: 'Innendørs-Spesialist',
+		name: 'Innendørs-spesialist',
 		description: 'Registrer 50 innendørs treningsøkter',
 		category: 'EXPLORATION',
 		rarity: 'UNCOMMON',
@@ -363,7 +333,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 	{
 		id: '3d-hunter',
-		name: '3D Jeger',
+		name: '3D jeger',
 		description: 'Registrer 50 3D/jakt treningsøkter',
 		category: 'EXPLORATION',
 		rarity: 'UNCOMMON',
@@ -397,7 +367,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	// ===== SPECIAL/FUN ACHIEVEMENTS =====
 	{
 		id: 'weather-warrior',
-		name: 'Været Stopper Meg Ikke',
+		name: 'Været stopper meg ikke',
 		description: 'Tren i regn eller vind',
 		category: 'SPECIAL',
 		rarity: 'UNCOMMON',
@@ -439,7 +409,7 @@ export const ACHIEVEMENTS: Achievement[] = [
 	},
 ];
 
-// Helper to get achievement by ID
+// ...existing code...
 export function getAchievementById(id: string): Achievement | undefined {
 	return ACHIEVEMENTS.find((a) => a.id === id);
 }
