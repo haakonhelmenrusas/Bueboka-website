@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X } from 'lucide-react';
+import { LuX } from 'react-icons/lu';
 import styles from './ConfirmModal.module.css';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 
@@ -43,8 +43,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 					<h3 id="confirm-title" className={styles.title}>
 						{title}
 					</h3>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk" disabled={isLoading}>
-						<X size={20} />
+					<button className={styles.closeButton} onClick={onCancel} aria-label="Lukk">
+						<LuX size={20} />
 					</button>
 				</div>
 

@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import styles from './Sponsor.module.css';
 import { ContactForm } from '@/components';
 import Image from 'next/image';
@@ -38,7 +38,7 @@ export function Sponsors() {
 							<p className={styles.cardDesc}>{sponsor.description}</p>
 							<a href={sponsor.website} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.scaleOnHover}`}>
 								<span>Besøk nettside</span>
-								<ExternalLink className={styles.linkIconSm} aria-hidden="true" />
+								<ArrowTopRightOnSquareIcon className={styles.linkIconSm} aria-hidden="true" />
 								<span className="sr-only">(åpnes i ny fane)</span>
 							</a>
 						</div>

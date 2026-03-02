@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import styles from './Accordion.module.css';
-import { ChevronDown } from 'lucide-react';
 
 export interface AccordionItem {
 	id: string;
@@ -36,7 +35,7 @@ export function Accordion({ items, defaultOpenId }: AccordionProps) {
 								{item.icon && <span className={styles.titleIcon}>{item.icon}</span>}
 								<span className={styles.title}>{item.title}</span>
 							</span>
-							<ChevronDown className={`${styles.chevron} ${isOpen ? styles.open : ''}`} size={18} />
+							<LuChevronDown size={16} className={`${styles.chevron} ${isOpen ? styles.open : ''}`} />
 						</button>
 						<div
 							id={`accordion-${item.id}-panel`}

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Crosshair, Footprints, Target } from 'lucide-react';
+import { ArrowsPointingOutIcon, FireIcon } from '@heroicons/react/24/outline';
 
 export const PRACTICE_CATEGORY_ICONS: Record<string, React.ReactNode> = {
-	SKIVE_INDOOR: <Target size={20} />,
-	SKIVE_OUTDOOR: <Target size={20} />,
-	JAKT_3D: <Footprints size={20} />,
-	FELT: <Crosshair size={20} />,
+	SKIVE_INDOOR: <FireIcon className="w-5 h-5" />,
+	SKIVE_OUTDOOR: <FireIcon className="w-5 h-5" />,
+	JAKT_3D: <ArrowsPointingOutIcon className="w-5 h-5" />,
+	FELT: <ArrowsPointingOutIcon className="w-5 h-5" />,
 };

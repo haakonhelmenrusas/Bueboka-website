@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Trash2, X } from 'lucide-react';
+import { LuTrash2, LuX } from 'react-icons/lu';
 import styles from './ArrowsModal.module.css';
 import { ArrowsForm, ArrowsFormValues } from '@/components/ProfileEditModal/ArrowsForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -130,7 +130,7 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 						{editingArrows ? 'Rediger piler' : 'Legg til piler'}
 					</h2>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={22} />
+						<LuX size={22} />
 					</button>
 				</div>
 
@@ -158,13 +158,13 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 					<div className={styles.actions}>
 						{editingArrows ? (
 							<Button
-								label={deleting ? 'Sletter...' : 'Slett pilsett'}
+								label={deleting ? 'Sletter...' : 'Slett piler'}
 								onClick={handleDelete}
 								disabled={loading || deleting}
 								buttonType="outline"
 								variant="warning"
-								width={180}
-								icon={<Trash2 size={18} />}
+								width={170}
+								icon={<LuTrash2 size={18} />}
 							/>
 						) : null}
 						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" width={160} />

@@ -1,45 +1,30 @@
-import {
-	Cloud,
-	CloudDrizzle,
-	CloudFog,
-	CloudRain,
-	CloudSnow,
-	CloudSun,
-	Footprints,
-	Home,
-	Sparkles,
-	Sun,
-	Target,
-	Trees,
-	Wind,
-	Zap,
-} from 'lucide-react';
+import { LuCloud, LuHouse, LuSparkles, LuSun, LuTarget, LuTrees, LuZap } from 'react-icons/lu';
 
 export const getWeatherSelectOptions = () => [
-	{ value: 'SUN', label: 'Sol', icon: <Sun size={16} /> },
-	{ value: 'CLOUDED', label: 'Skyet', icon: <Cloud size={16} /> },
-	{ value: 'CLEAR', label: 'Klarvær', icon: <Sparkles size={16} /> },
-	{ value: 'RAIN', label: 'Regn', icon: <CloudRain size={16} /> },
-	{ value: 'WIND', label: 'Vind', icon: <Wind size={16} /> },
-	{ value: 'SNOW', label: 'Snø', icon: <CloudSnow size={16} /> },
-	{ value: 'FOG', label: 'Tåke', icon: <CloudFog size={16} /> },
-	{ value: 'THUNDER', label: 'Torden', icon: <Zap size={16} /> },
-	{ value: 'CHANGING_CONDITIONS', label: 'Skiftende forhold', icon: <CloudDrizzle size={16} /> },
-	{ value: 'OTHER', label: 'Annet', icon: <CloudSun size={16} /> },
+	{ value: 'SUN', label: 'Sol', icon: <LuSun size={16} /> },
+	{ value: 'CLOUDED', label: 'Skyet', icon: <LuCloud size={16} /> },
+	{ value: 'CLEAR', label: 'Klarvær', icon: <LuSparkles size={16} /> },
+	{ value: 'RAIN', label: 'Regn', icon: <LuCloud size={16} /> },
+	{ value: 'WIND', label: 'Vind', icon: <LuCloud size={16} /> },
+	{ value: 'SNOW', label: 'Snø', icon: <LuCloud size={16} /> },
+	{ value: 'FOG', label: 'Tåke', icon: <LuCloud size={16} /> },
+	{ value: 'THUNDER', label: 'Torden', icon: <LuZap size={16} /> },
+	{ value: 'CHANGING_CONDITIONS', label: 'Skiftende forhold', icon: <LuCloud size={16} /> },
+	{ value: 'OTHER', label: 'Annet', icon: <LuCloud size={16} /> },
 ];
 
 // Shared environment options
 export const getEnvironmentOptions = () => [
-	{ value: 'INDOOR', label: 'Inne', icon: <Home size={16} /> },
-	{ value: 'OUTDOOR', label: 'Ute', icon: <Trees size={16} /> },
+	{ value: 'INDOOR', label: 'Inne', icon: <LuHouse size={16} /> },
+	{ value: 'OUTDOOR', label: 'Ute', icon: <LuTrees size={16} /> },
 ];
 
 // Shared practice category options
 export const getPracticeCategoryOptions = () => [
-	{ value: 'SKIVE_INDOOR', label: 'Skive innendørs', icon: <Target size={16} /> },
-	{ value: 'SKIVE_OUTDOOR', label: 'Skive utendørs', icon: <Target size={16} /> },
-	{ value: 'JAKT_3D', label: 'Jakt/3D', icon: <Footprints size={16} /> },
-	{ value: 'FELT', label: 'Felt', icon: <Trees size={16} /> },
+	{ value: 'SKIVE_INDOOR', label: 'Skive innendørs', icon: <LuTarget size={16} /> },
+	{ value: 'SKIVE_OUTDOOR', label: 'Skive utendørs', icon: <LuTarget size={16} /> },
+	{ value: 'JAKT_3D', label: 'Jakt/3D', icon: <LuTrees size={16} /> },
+	{ value: 'FELT', label: 'Felt', icon: <LuTrees size={16} /> },
 ];
 
 // Shared types

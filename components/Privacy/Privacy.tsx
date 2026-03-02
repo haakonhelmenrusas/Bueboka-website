@@ -1,4 +1,4 @@
-import { Key, Shield, Target } from 'lucide-react';
+import { LuKey, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './Privacy.module.css';
 
 export function Privacy() {
@@ -18,27 +18,21 @@ export function Privacy() {
 					<div className={styles.grid}>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '0ms' }}>
 							<div className={styles.iconBox} aria-hidden="true">
-								<Shield className={styles.icon} />
+								<LuShield className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>100% personvern</h3>
-							<p className={styles.cardText}>
-								Vi deler eller selger aldri dataene dine til tredjeparter. Din informasjon forblir privat og tilhører kun deg. All data
-								krypteres og lagres sikkert i samsvar med GDPR.
-							</p>
+							// ...existing code...
 						</div>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '160ms' }}>
 							<div className={styles.iconBox} aria-hidden="true">
-								<Target className={styles.icon} />
+								<LuTarget className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>Kun til appens drift</h3>
-							<p className={styles.cardText}>
-								Vi bruker dataene dine utelukkende til å drive appen og gi deg den beste brukeropplevelsen. Ingen analyse, ingen
-								markedsføring, ingen annen bruk.
-							</p>
+							// ...existing code...
 						</div>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '320ms' }}>
 							<div className={styles.iconBox} aria-hidden="true">
-								<Key className={styles.icon} />
+								<LuKey className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>Din kontroll</h3>
 							<p className={styles.cardText}>

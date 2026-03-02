@@ -1,4 +1,4 @@
-import { Cloud, CloudRain, CloudSnow, CloudSun, Cloudy, HelpCircle, Sun, Wind, Zap } from 'lucide-react';
+import { LuCloud, LuHelpCircle, LuSparkles, LuSun, LuZap } from 'react-icons/lu';
 import { WeatherCondition } from './prismaEnums';
 
 export const weatherOptions: WeatherCondition[] = [
@@ -27,17 +27,17 @@ export const weatherLabels: Record<WeatherCondition, string> = {
 	[WeatherCondition.OTHER]: 'Annet',
 };
 
-export const weatherIcons: Record<WeatherCondition, React.ComponentType<{ size?: number; className?: string }>> = {
-	[WeatherCondition.SUN]: Sun,
-	[WeatherCondition.CLOUDED]: Cloudy,
-	[WeatherCondition.CLEAR]: CloudSun,
-	[WeatherCondition.RAIN]: CloudRain,
-	[WeatherCondition.WIND]: Wind,
-	[WeatherCondition.SNOW]: CloudSnow,
-	[WeatherCondition.FOG]: Cloud,
-	[WeatherCondition.THUNDER]: Zap,
-	[WeatherCondition.CHANGING_CONDITIONS]: CloudSun,
-	[WeatherCondition.OTHER]: HelpCircle,
+export const weatherIcons: Record<WeatherCondition, React.ComponentType<{ size?: number }>> = {
+	[WeatherCondition.SUN]: LuSun,
+	[WeatherCondition.CLOUDED]: LuCloud,
+	[WeatherCondition.CLEAR]: LuSparkles,
+	[WeatherCondition.RAIN]: LuCloud,
+	[WeatherCondition.WIND]: LuCloud,
+	[WeatherCondition.SNOW]: LuCloud,
+	[WeatherCondition.FOG]: LuCloud,
+	[WeatherCondition.THUNDER]: LuZap,
+	[WeatherCondition.CHANGING_CONDITIONS]: LuCloud,
+	[WeatherCondition.OTHER]: LuHelpCircle,
 };
 
 /**

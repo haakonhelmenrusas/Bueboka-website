@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
-import { ArrowRight, BowArrow, ChevronRight, Home, MapPin, Star, Target, Trees, Trophy, Wind } from 'lucide-react';
+import { LuChevronRight, LuHouse, LuMapPin, LuStar, LuTarget, LuTrees, LuTrophy, LuWind } from 'react-icons/lu';
 
 export interface PracticeCardProps {
 	id: string;
@@ -26,9 +26,9 @@ function formatEnvironment(env?: string | null) {
 
 function envIcon(env?: string | null) {
 	const normalized = (env ?? '').toLowerCase();
-	if (normalized === 'inne' || normalized === 'indoor') return <Home size={14} />;
-	if (normalized === 'ute' || normalized === 'outdoor') return <Trees size={14} />;
-	return <Wind size={14} />;
+	if (normalized === 'inne' || normalized === 'indoor') return <LuHouse size={14} />;
+	if (normalized === 'ute' || normalized === 'outdoor') return <LuTrees size={14} />;
+	return <LuWind size={14} />;
 }
 
 export const PracticeCard: React.FC<PracticeCardProps> = ({
@@ -76,12 +76,12 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 				</span>
 				{isCompetition ? (
 					<div className={`${styles.badge} ${styles.competitionBadge}`}>
-						<Trophy size={12} />
+						<LuTrophy size={12} />
 						<span>Konkurranse</span>
 					</div>
 				) : (
 					<div className={`${styles.badge} ${styles.trainingBadge}`}>
-						<Target size={12} />
+						<LuTarget size={12} />
 						<span>Trening</span>
 					</div>
 				)}
@@ -90,7 +90,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 				</span>
 				<div className={styles.detailItem}>
 					<span className={styles.detailIcon} aria-hidden="true">
-						<Target size={14} />
+						<LuTarget size={14} />
 					</span>
 					<span className={styles.detailText}>{arrowsShot} piler</span>
 				</div>
@@ -101,7 +101,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						</span>
 						<div className={styles.detailItem}>
 							<span className={styles.detailIcon} aria-hidden="true">
-								<Star size={14} />
+								<LuStar size={14} fill="currentColor" />
 							</span>
 							<span className={styles.detailText}>{totalScore} poeng</span>
 						</div>
@@ -114,7 +114,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						</span>
 						<div className={styles.detailItem}>
 							<span className={styles.detailIcon} aria-hidden="true">
-								<Target size={14} />
+								<LuTarget size={14} />
 							</span>
 							<span className={styles.detailText}>{roundTypeName}</span>
 						</div>
@@ -127,7 +127,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						</span>
 						<div className={styles.detailItem}>
 							<span className={styles.detailIcon} aria-hidden="true">
-								<MapPin size={14} />
+								<LuMapPin size={14} />
 							</span>
 							<span className={styles.detailText}>{location}</span>
 						</div>
@@ -153,7 +153,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						</span>
 						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
 							<span className={styles.detailIcon} aria-hidden="true">
-								<BowArrow size={14} />
+								<LuTarget size={14} />
 							</span>
 							<span className={styles.detailText}>{bowName}</span>
 						</div>
@@ -166,14 +166,14 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						</span>
 						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
 							<span className={styles.detailIcon} aria-hidden="true">
-								<ArrowRight size={14} />
+								<LuChevronRight size={14} />
 							</span>
-							<span className={styles.detailText}>{arrowsName}</span>
+							<span className="sr-only">Se detaljer</span>
 						</div>
 					</>
 				) : null}
 				<div className={styles.openIcon}>
-					<ChevronRight size={20} aria-hidden="true" />
+					<LuChevronRight size={20} aria-hidden="true" />
 				</div>
 			</div>
 		</button>

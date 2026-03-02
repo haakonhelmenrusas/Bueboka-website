@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
-import { CircleUserRound, LogOut, Menu, MessageSquare, Settings, X } from 'lucide-react';
 import styles from './Header.module.css';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,6 +10,7 @@ import * as Sentry from '@sentry/nextjs';
 // import { ThemeToggle } from '@/components';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/lib/FeedbackProvider';
+import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuUser, LuX } from 'react-icons/lu';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -140,7 +140,7 @@ export function Header() {
 												className={styles.userAvatar}
 											/>
 										) : (
-											<CircleUserRound />
+											<LuUser size={32} />
 										)}
 									</Link>
 								)}
@@ -178,7 +178,7 @@ export function Header() {
 							aria-expanded={mobileMenuOpen}
 							aria-controls="mobile-menu"
 						>
-							{mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+							{mobileMenuOpen ? <LuX size={24} /> : <LuMenu size={24} />}
 						</button>
 					)}
 					{session?.user && (
@@ -198,15 +198,15 @@ export function Header() {
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
 									{/* <ThemeToggle /> */}
 									<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
-										<MessageSquare size={16} />
+										<LuMessageSquare size={16} />
 										<span>Gi tilbakemelding</span>
 									</button>
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
-										<Settings size={16} />
+										<LuSettings size={16} />
 										<span>Innstillinger</span>
 									</button>
 									<button className={styles.profileMenuItem} onClick={handleLogout} role="menuitem">
-										<LogOut size={16} />
+										<LuLogOut size={16} />
 										<span>Logg ut</span>
 									</button>
 								</div>

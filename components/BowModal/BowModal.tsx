@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Trash2, X } from 'lucide-react';
+import { LuTrash2, LuX } from 'react-icons/lu';
 import styles from './BowModal.module.css';
 import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -135,7 +135,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 						{editingBow ? 'Rediger bue' : 'Legg til bue'}
 					</h2>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={22} />
+						<LuX size={22} />
 					</button>
 				</div>
 
@@ -153,7 +153,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 								buttonType="outline"
 								variant="warning"
 								width={170}
-								icon={<Trash2 size={18} />}
+								icon={<LuTrash2 size={18} />}
 							/>
 						) : null}
 						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" width={160} />

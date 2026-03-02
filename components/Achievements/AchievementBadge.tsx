@@ -4,29 +4,6 @@
  */
 
 import React from 'react';
-import {
-	Activity,
-	ArrowRight,
-	Award,
-	CloudRain,
-	Compass,
-	Crosshair,
-	Crown,
-	Flame,
-	Footprints,
-	Home,
-	Medal,
-	Moon,
-	Mountain,
-	Sparkles,
-	Star,
-	Sunrise,
-	Target,
-	Trees,
-	TrendingUp,
-	Trophy,
-	Zap,
-} from 'lucide-react';
 import { AchievementProgress } from '@/lib/achievements/types';
 import styles from './AchievementBadge.module.css';
 
@@ -37,33 +14,33 @@ interface AchievementBadgeProps {
 }
 
 // Icon mapping
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-	Target,
-	Award,
-	Trophy,
-	Crown,
-	Flame,
-	Zap,
-	Star,
-	ArrowRight,
-	Crosshair,
-	TrendingUp,
-	Sparkles,
-	Activity,
-	Medal,
-	Compass,
-	Home,
-	Trees,
-	Footprints,
-	Mountain,
-	CloudRain,
-	Sunrise,
-	Moon,
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+	Target: LuFlame,
+	Award: LuTrophy,
+	Trophy: LuTrophy,
+	Crown: LuTrophy,
+	Flame: LuFlame,
+	Zap: LuZap,
+	Star: LuStar,
+	ArrowRight: LuChevronRight,
+	Crosshair: LuFlame,
+	TrendingUp: LuTrendingUp,
+	Sparkles: LuSparkles,
+	Activity: LuZap,
+	Medal: LuTrophy,
+	Compass: LuCompass,
+	Home: LuHouse,
+	Trees: LuArrowUpRight,
+	Footprints: LuArrowUpRight,
+	Mountain: LuArrowUpRight,
+	CloudRain: LuCloud,
+	Sunrise: LuSun,
+	Moon: LuMoon,
 };
 
 export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, size = 'medium', showProgress = true }) => {
 	const { achievement, percentage, isUnlocked, current, required } = progress;
-	const IconComponent = ICON_MAP[achievement.icon] || Award;
+	const IconComponent = ICON_MAP[achievement.icon] || LuTrophy;
 
 	const sizeClass = {
 		small: styles.small,
@@ -97,7 +74,7 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 			aria-label={`${achievement.name}: ${achievement.description}. ${isUnlocked ? 'Låst opp' : `${percentage}% ferdig`}`}
 		>
 			<div className={styles.iconContainer}>
-				<IconComponent className={styles.icon} size={iconSize} />
+				<IconComponent className={styles.icon} />
 				{achievement.tier && <div className={styles.tierBadge}>{achievement.tier}</div>}
 			</div>
 
@@ -118,7 +95,7 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 
 				{isUnlocked && (
 					<div className={styles.unlockedBadge}>
-						<Star size={14} />
+						<LuStar size={14} />
 						<span>Låst opp!</span>
 					</div>
 				)}

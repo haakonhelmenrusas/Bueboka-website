@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './ProfileCard.module.css';
-import { Edit, Trophy, User } from 'lucide-react';
+import { LuPencil, LuTrophy, LuUser } from 'react-icons/lu';
 import { Button } from '@/components';
 
 export interface ProfileCardProps {
@@ -38,7 +38,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 					/>
 				) : (
 					<div className={styles.avatarPlaceholder} aria-hidden="true">
-						<User size={56} strokeWidth={1.5} />
+						<LuUser size={56} strokeWidth={1.5} />
 					</div>
 				)}
 			</div>
@@ -47,8 +47,14 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 				<p className={styles.meta}>{displayClub}</p>
 			</header>
 			<div className={styles.buttonGroup}>
-				<Button label="Rediger" onClick={onEdit} icon={<Edit size={18} />} size="normal" buttonType="outline" />
-				<Button label="Mine prestasjoner" onClick={handleAchievementsClick} icon={<Trophy size={18} />} size="normal" buttonType="filled" />
+				<Button label="Rediger" onClick={onEdit} icon={<LuPencil size={18} />} size="normal" buttonType="outline" />
+				<Button
+					label="Mine prestasjoner"
+					onClick={handleAchievementsClick}
+					icon={<LuTrophy size={18} />}
+					size="normal"
+					buttonType="filled"
+				/>
 			</div>
 		</section>
 	);

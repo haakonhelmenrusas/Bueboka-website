@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { AlertCircle, X } from 'lucide-react';
+import { LuAlertCircle, LuX } from 'react-icons/lu';
 import styles from './EmailVerificationBanner.module.css';
 
 interface EmailVerificationBannerProps {
@@ -53,7 +53,7 @@ export function EmailVerificationBanner({ userEmail, emailVerified }: EmailVerif
 	return (
 		<div className={styles.banner}>
 			<div className={styles.content}>
-				<AlertCircle size={18} className={styles.icon} />
+				<LuAlertCircle size={18} />
 				<div className={styles.textContainer}>
 					<p className={styles.text}>E-posten din er ikke bekreftet.</p>
 					<button className={styles.link} onClick={handleResend} disabled={sending}>
@@ -63,7 +63,7 @@ export function EmailVerificationBanner({ userEmail, emailVerified }: EmailVerif
 				</div>
 			</div>
 			<button className={styles.closeButton} onClick={() => setDismissed(true)} aria-label="Lukk varsel">
-				<X size={14} />
+				<LuX size={14} />
 			</button>
 		</div>
 	);

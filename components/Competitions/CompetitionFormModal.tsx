@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './CompetitionFormModal.module.css';
-import { X } from 'lucide-react';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, Checkbox, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
@@ -254,8 +253,8 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
 				<div className={styles.header}>
 					<h3 className={styles.title}>{mode === 'edit' ? 'Rediger konkurranse' : 'Legg til konkurranse'}</h3>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={20} />
+					<button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+						<LuX size={20} />
 					</button>
 				</div>
 
@@ -352,7 +351,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 									<span className={styles.roundNumber}>Runde {round.roundNumber}</span>
 									{rounds.length > 1 && (
 										<button type="button" onClick={() => removeRound(index)} className={styles.removeRoundBtn} aria-label="Fjern runde">
-											<X size={16} />
+											<LuX size={16} />
 										</button>
 									)}
 								</div>

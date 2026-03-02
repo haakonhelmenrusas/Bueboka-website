@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './PracticeFormModal.module.css';
-import { X } from 'lucide-react';
+import { LuX } from 'react-icons/lu';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
@@ -265,8 +265,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 					<h3 id="practice-form-title" className={styles.title}>
 						{title}
 					</h3>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={20} />
+					<button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+						<LuX size={20} />
 					</button>
 				</div>
 				<form className={styles.form} onSubmit={handleSubmit}>
@@ -339,7 +339,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 										<span className={styles.roundNumber}>Runde {index + 1}</span>
 										{rounds.length > 1 && (
 											<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
-												<X size={16} />
+												<LuX size={16} />
 											</button>
 										)}
 									</div>

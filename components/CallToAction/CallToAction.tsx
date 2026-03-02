@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, BarChart3, Target, Zap } from 'lucide-react';
+import { BoltIcon, ChartBarIcon, ChevronRightIcon, FireIcon } from '@heroicons/react/24/outline';
 import styles from './CallToAction.module.css';
 
 export function CallToAction() {
@@ -20,21 +20,21 @@ export function CallToAction() {
 					<div className={styles.featuresGrid}>
 						<div className={`${styles.featureCard} ${styles.reveal}`} style={{ animationDelay: '0ms' }}>
 							<div className={styles.featureIcon} aria-hidden="true">
-								<Zap />
+								<BoltIcon className="w-6 h-6" />
 							</div>
 							<h3 className={styles.featureTitle}>Kom i gang på sekunder</h3>
 							<p className={styles.featureText}>Registrer deg med e-post eller Google og begynn å logge treningsøkter med en gang.</p>
 						</div>
 						<div className={`${styles.featureCard} ${styles.reveal}`} style={{ animationDelay: '120ms' }}>
 							<div className={styles.featureIcon} aria-hidden="true">
-								<BarChart3 />
+								<ChartBarIcon className="w-6 h-6" />
 							</div>
 							<h3 className={styles.featureTitle}>Følg din fremgang</h3>
 							<p className={styles.featureText}>Se detaljert statistikk over treningsøktene dine og følg utviklingen over tid.</p>
 						</div>
 						<div className={`${styles.featureCard} ${styles.reveal}`} style={{ animationDelay: '240ms' }}>
 							<div className={styles.featureIcon} aria-hidden="true">
-								<Target />
+								<FireIcon className="w-6 h-6" />
 							</div>
 							<h3 className={styles.featureTitle}>Optimaliser skytingen</h3>
 							<p className={styles.featureText}>Administrer utstyr, registrer siktemerker, og få innsikt som forbedrer nøyaktigheten.</p>
@@ -44,7 +44,7 @@ export function CallToAction() {
 					<div className={`${styles.ctaBlock} ${styles.reveal}`} style={{ animationDelay: '360ms' }}>
 						<Link href="/ny-bruker" className={styles.ctaButton}>
 							Opprett bruker
-							<ArrowRight className={styles.ctaIcon} aria-hidden="true" />
+							<ChevronRightIcon className={styles.ctaIcon} aria-hidden="true" />
 						</Link>
 						<p className={styles.ctaSubtext}>Gratis å bruke. Ingen kredittkort nødvendig.</p>
 						<p className={styles.existingUser}>

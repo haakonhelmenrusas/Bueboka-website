@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback } from 'react';
-import { HelpCircle } from 'lucide-react';
+import { LuHelpCircle } from 'react-icons/lu';
 import styles from './Tooltip.module.css';
 import { useClickOutside, useEscapeKey } from '@/lib/hooks';
 
@@ -57,7 +57,7 @@ export function Tooltip({ text, label = 'Vis hjelpetekst', trigger }: TooltipPro
 				</span>
 			) : (
 				<button type="button" className={styles.button} aria-label={label} aria-expanded={open} onClick={handleToggleClick}>
-					<HelpCircle size={16} />
+					<LuHelpCircle size={16} />
 				</button>
 			)}
 

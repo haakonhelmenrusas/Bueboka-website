@@ -7,29 +7,21 @@
 
 import React, { useEffect } from 'react';
 import {
-	Activity,
-	ArrowRight,
-	Award,
-	CloudRain,
-	Compass,
-	Crosshair,
-	Crown,
-	Flame,
-	Footprints,
-	Home,
-	Medal,
-	Moon,
-	Mountain,
-	Sparkles,
-	Star,
-	Sunrise,
-	Target,
-	Trees,
-	TrendingUp,
-	Trophy,
-	X,
-	Zap,
-} from 'lucide-react';
+	LuArrowUpRight,
+	LuChevronRight,
+	LuCloud,
+	LuCompass,
+	LuFlame,
+	LuHouse,
+	LuMoon,
+	LuSparkles,
+	LuStar,
+	LuSun,
+	LuTrendingUp,
+	LuTrophy,
+	LuX,
+	LuZap,
+} from 'react-icons/lu';
 import { Achievement } from '@/lib/achievements/types';
 import { Button } from '@/components';
 import styles from './AchievementUnlockModal.module.css';
@@ -41,28 +33,28 @@ interface AchievementUnlockModalProps {
 }
 
 // Icon mapping
-const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
-	Target,
-	Award,
-	Trophy,
-	Crown,
-	Flame,
-	Zap,
-	Star,
-	ArrowRight,
-	Crosshair,
-	TrendingUp,
-	Sparkles,
-	Activity,
-	Medal,
-	Compass,
-	Home,
-	Trees,
-	Footprints,
-	Mountain,
-	CloudRain,
-	Sunrise,
-	Moon,
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+	Target: LuFlame,
+	Award: LuTrophy,
+	Trophy: LuTrophy,
+	Crown: LuTrophy,
+	Flame: LuFlame,
+	Zap: LuZap,
+	Star: LuStar,
+	ArrowRight: LuChevronRight,
+	Crosshair: LuFlame,
+	TrendingUp: LuTrendingUp,
+	Sparkles: LuSparkles,
+	Activity: LuZap,
+	Medal: LuTrophy,
+	Compass: LuCompass,
+	Home: LuHouse,
+	Trees: LuArrowUpRight,
+	Footprints: LuArrowUpRight,
+	Mountain: LuArrowUpRight,
+	CloudRain: LuCloud,
+	Sunrise: LuSun,
+	Moon: LuMoon,
 };
 
 export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ achievements, onClose, onViewAll }) => {
@@ -98,7 +90,7 @@ export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ 
 		<div className={styles.modal} onClick={handleBackdropClick}>
 			<div className={styles.modalContent}>
 				<button className={styles.closeButton} onClick={onClose} aria-label="Lukk" type="button">
-					<X size={24} />
+					<LuX className="w-6 h-6" />
 				</button>
 
 				<div className={styles.header}>
@@ -109,11 +101,11 @@ export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ 
 
 				<div className={styles.achievementList}>
 					{achievements.map((achievement) => {
-						const IconComponent = ICON_MAP[achievement.icon] || Trophy;
+						const IconComponent = ICON_MAP[achievement.icon] || TrophyIcon;
 						return (
 							<div key={achievement.id} className={styles.achievementItem}>
 								<div className={styles.achievementIcon}>
-									<IconComponent size={32} />
+									<IconComponent className="w-8 h-8" />
 								</div>
 								<div className={styles.achievementContent}>
 									<h3 className={styles.achievementName}>{achievement.name}</h3>
@@ -127,7 +119,15 @@ export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ 
 
 				<div className={styles.footer}>
 					<Button label="Lukk" onClick={onClose} size="normal" buttonType="outline" />
-					{onViewAll && <Button label="Se Alle Merker" onClick={onViewAll} size="normal" buttonType="filled" icon={<Trophy size={18} />} />}
+					{onViewAll && (
+						<Button
+							label="Se Alle Merker"
+							onClick={onViewAll}
+							size="normal"
+							buttonType="filled"
+							icon={<TrophyIcon className="w-4 h-4" />}
+						/>
+					)}
 				</div>
 
 				{totalPoints > 0 && (

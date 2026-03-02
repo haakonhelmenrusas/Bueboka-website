@@ -1,4 +1,4 @@
-import { ExternalLink } from 'lucide-react';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import Image from 'next/image';
 import styles from './Contributors.module.css';
@@ -69,7 +69,7 @@ export function Contributors() {
 							{contributor.website && (
 								<a href={contributor.website} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.scaleOnHover}`}>
 									<span>Besøk nettside</span>
-									<ExternalLink className={styles.externalIcon} aria-hidden="true" />
+									<ArrowTopRightOnSquareIcon className={styles.externalIcon} aria-hidden="true" />
 									<span className="sr-only">(åpnes i ny fane)</span>
 								</a>
 							)}

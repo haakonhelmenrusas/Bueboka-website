@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useRef, useState } from 'react';
-import { Camera, Trash2, Upload, User } from 'lucide-react';
 import styles from './ImageUpload.module.css';
 import Image from 'next/image';
 
@@ -69,11 +68,11 @@ export function ImageUpload({ currentImage, onImageChange, disabled }: ImageUplo
 						<Image src={preview} alt="Forhåndsvisning av profilbilde" width={120} height={120} className={styles.image} />
 						<div className={styles.actions}>
 							<button type="button" onClick={handleClick} disabled={disabled} className={styles.changeButton} aria-label="Endre bilde">
-								<Camera size={16} />
+								<CameraIcon className="w-4 h-4" />
 								<span>Endre</span>
 							</button>
 							<button type="button" onClick={handleRemove} disabled={disabled} className={styles.removeButton} aria-label="Fjern bilde">
-								<Trash2 size={16} />
+								<TrashIcon className="w-4 h-4" />
 								<span>Fjern</span>
 							</button>
 						</div>
@@ -81,10 +80,10 @@ export function ImageUpload({ currentImage, onImageChange, disabled }: ImageUplo
 				) : (
 					<div className={styles.placeholder}>
 						<div className={styles.placeholderIcon}>
-							<User size={48} strokeWidth={1.5} />
+							<UserIcon className="w-12 h-12 stroke-1" />
 						</div>
 						<button type="button" onClick={handleClick} disabled={disabled} className={styles.uploadButton}>
-							<Upload size={16} />
+							<ArrowUpTrayIcon className="w-4 h-4" />
 							<span>Last opp bilde</span>
 						</button>
 					</div>

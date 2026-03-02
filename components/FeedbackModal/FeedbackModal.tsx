@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Star, X } from 'lucide-react';
+import { LuX } from 'react-icons/lu';
 import styles from './FeedbackModal.module.css';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
@@ -84,8 +84,8 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 					<h2 id="feedback-modal-title" className={styles.title}>
 						Gi tilbakemelding
 					</h2>
-					<button className={styles.closeBtn} onClick={handleClose} aria-label="Lukk" disabled={loading}>
-						<X size={22} />
+					<button type="button" className={styles.closeButton} onClick={onClose} aria-label="Lukk tilbakemeldingsskjema">
+						<LuX size={22} />
 					</button>
 				</div>
 
@@ -105,7 +105,7 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 									onMouseLeave={() => setHoveredRating(0)}
 									aria-label={`Gi ${star} stjerner`}
 								>
-									<Star size={32} fill={star <= (hoveredRating || rating) ? 'currentColor' : 'none'} />
+									<LuStar size={32} fill={star <= (hoveredRating || rating) ? 'currentColor' : 'none'} />
 								</button>
 							))}
 						</div>

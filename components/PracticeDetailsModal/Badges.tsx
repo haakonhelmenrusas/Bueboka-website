@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Target, Trees, Trophy } from 'lucide-react';
+import { ArrowsPointingOutIcon, FireIcon, HomeIcon, TrophyIcon } from '@heroicons/react/24/outline';
 import { Environment } from '@/lib/prismaEnums';
 import styles from './PracticeDetailsModal.module.css';
 
@@ -13,12 +13,12 @@ export const PracticeTypeBadge: React.FC<PracticeTypeBadgeProps> = ({ practiceTy
 	const isCompetition = practiceType === 'KONKURRANSE';
 	return isCompetition ? (
 		<div className={`${styles.badge} ${styles.competitionBadge}`}>
-			<Trophy size={14} />
+			<TrophyIcon className="w-3.5 h-3.5" />
 			<span>Konkurranse</span>
 		</div>
 	) : (
 		<div className={`${styles.badge} ${styles.trainingBadge}`}>
-			<Target size={14} />
+			<FireIcon className="w-3.5 h-3.5" />
 			<span>Trening</span>
 		</div>
 	);
@@ -32,12 +32,12 @@ export const EnvironmentBadge: React.FC<EnvironmentBadgeProps> = ({ environment 
 	<div className={styles.envBadge}>
 		{environment === 'INDOOR' ? (
 			<>
-				<Home size={16} />
+				<HomeIcon className="w-4 h-4" />
 				<span>Inne</span>
 			</>
 		) : (
 			<>
-				<Trees size={16} />
+				<ArrowsPointingOutIcon className="w-4 h-4" />
 				<span>Ute</span>
 			</>
 		)}

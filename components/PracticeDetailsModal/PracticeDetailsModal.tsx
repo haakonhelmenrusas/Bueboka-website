@@ -1,5 +1,4 @@
 import React from 'react';
-import { BowArrow, CloudSun, MapPin, Navigation, NotebookText, Target, Trash2, X } from 'lucide-react';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';
 import { formatWeatherConditions } from '@/lib/weatherUtils';
@@ -68,7 +67,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						</div>
 					</div>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={24} />
+						<XMarkIcon className="w-6 h-6" />
 					</button>
 				</div>
 
@@ -90,20 +89,20 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							value={getPracticeCategoryLabel(practice.practiceCategory)}
 						/>
 					)}
-					{practice.location && <StatCard icon={<MapPin size={20} fill="currentColor" />} label="Sted" value={practice.location} />}
+					{practice.location && <StatCard icon={<MapPinIcon className="w-5 h-5" />} label="Sted" value={practice.location} />}
 					{practice.weather?.length > 0 && (
-						<StatCard icon={<CloudSun size={20} fill="currentColor" />} label="Vær" value={formatWeatherConditions(practice.weather)} />
+						<StatCard icon={<CloudIcon className="w-5 h-5" />} label="Vær" value={formatWeatherConditions(practice.weather)} />
 					)}
 					{practice.bow && (
 						<StatCard
-							icon={<BowArrow size={20} fill="currentColor" />}
+							icon={<FireIcon className="w-5 h-5" />}
 							label="Bue"
 							value={`${practice.bow.name} • ${getBowTypeLabel(practice.bow.type)}`}
 						/>
 					)}
 					{practice.arrows && (
 						<StatCard
-							icon={<Navigation size={20} fill="currentColor" />}
+							icon={<CompassIcon className="w-5 h-5" />}
 							label="Piler"
 							value={`${practice.arrows.name} • ${getArrowMaterialLabel(practice.arrows.material)}`}
 						/>
@@ -113,7 +112,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				{/* Arrows Without Score */}
 				{practice.arrowsWithoutScore && practice.arrowsWithoutScore > 0 && (
 					<div className={styles.statCardFull}>
-						<BowArrow size={20} className={styles.statIcon} fill="currentColor" />
+						<FireIcon className="w-5 h-5" />
 						<div className={styles.statLabel}>Piler uten scoring</div>
 						<div className={styles.statValue}>{practice.arrowsWithoutScore} piler</div>
 					</div>
@@ -138,7 +137,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				{practice.notes && (
 					<div className={styles.notesSection}>
 						<h4 className={styles.sectionTitle}>
-							<NotebookText size={20} />
+							<DocumentTextIcon className="w-5 h-5" />
 							Notater
 						</h4>
 						<div className={styles.notesContent}>{practice.notes}</div>
@@ -159,7 +158,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						variant="warning"
 						buttonType="outline"
 						disabled={deleting}
-						icon={<Trash2 size={18} />}
+						icon={<TrashIcon className="w-4 h-4" />}
 					/>
 				</div>
 			</div>

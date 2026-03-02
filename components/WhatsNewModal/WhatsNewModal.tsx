@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './WhatsNewModal.module.css';
-import { ArrowRight, BarChart3, BowArrow, Check, Target, TrendingUp, X } from 'lucide-react';
+import { ChartBarIcon, CheckIcon, ChevronRightIcon, FireIcon, TrendingUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 
@@ -32,7 +32,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 				<div className={styles.welcomeContent}>
 					<div className={styles.heroSection}>
 						<div className={styles.heroIcon}>
-							<Target size={64} strokeWidth={1.5} />
+							<FireIcon className="w-16 h-16 stroke-1" />
 						</div>
 						<p className={styles.heroText}>
 							Bueboka hjelper deg å holde oversikt over treningene dine, følge din utvikling, og forbedre skytingen din.
@@ -41,21 +41,21 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 					<div className={styles.featureGrid}>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
-								<BowArrow size={28} />
+								<FireIcon className="w-7 h-7" />
 							</div>
 							<h4>Registrer treninger</h4>
 							<p>Logg alle treningene dine med detaljer om bue, piler, distanse og score</p>
 						</div>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
-								<BarChart3 size={28} />
+								<ChartBarIcon className="w-7 h-7" />
 							</div>
 							<h4>Se statistikk</h4>
 							<p>Få innsikt i din utvikling med detaljerte grafer og trender</p>
 						</div>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
-								<TrendingUp size={28} />
+								<TrendingUpIcon className="w-7 h-7" />
 							</div>
 							<h4>Følg fremgang</h4>
 							<p>Hold oversikt over din forbedring over tid</p>
@@ -106,28 +106,28 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 			content: (
 				<div className={styles.tipsContent}>
 					<div className={styles.tipItem}>
-						<Check size={20} className={styles.tipIcon} />
+						<CheckIcon className="w-5 h-5" />
 						<div>
 							<strong>Vurder treningene dine</strong>
 							<p>Bruk vurderingsskalaen (1-10) for å evaluere hvordan økten gikk</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
-						<Check size={20} className={styles.tipIcon} />
+						<CheckIcon className="w-5 h-5" />
 						<div>
 							<strong>Skriv notater</strong>
 							<p>Legg til notater om hva som fungerte bra og hva som kan forbedres</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
-						<Check size={20} className={styles.tipIcon} />
+						<CheckIcon className="w-5 h-5" />
 						<div>
 							<strong>Vær konsistent</strong>
 							<p>Logg alle treningene dine for å få best mulig oversikt over utviklingen</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
-						<Check size={20} className={styles.tipIcon} />
+						<CheckIcon className="w-5 h-5" />
 						<div>
 							<strong>Eksporter dataene dine</strong>
 							<p>Du kan laste ned statistikken din som CSV for videre analyse</p>
@@ -159,7 +159,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 		<div className={styles.overlay} onClick={onClose} role="presentation">
 			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
 				<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-					<X size={24} />
+					<XMarkIcon className="w-6 h-6" />
 				</button>
 
 				<div className={styles.content}>
@@ -188,7 +188,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 							<Button
 								label={isLastStep ? 'Kom i gang!' : 'Neste'}
 								onClick={handleNext}
-								icon={<ArrowRight size={18} />}
+								icon={<ChevronRightIcon className="w-4 h-4" />}
 								iconPosition="right"
 								width={isLastStep ? 160 : 120}
 							/>

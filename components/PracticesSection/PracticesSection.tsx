@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { Button, PracticesList, usePracticeCards } from '@/components';
-import { Plus, Trophy } from 'lucide-react';
 import styles from './PracticesSection.module.css';
 
 interface PracticesSectionProps {
@@ -64,8 +63,8 @@ export function PracticesSection({ onCreate, onCreateCompetition, onSelectPracti
 					</button>
 				</div>
 				<div className={styles.actionButtons}>
-					<Button label="Ny trening" onClick={onCreate} icon={<Plus size={18} />} />
-					{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<Trophy size={18} />} />}
+					<Button label="Ny trening" onClick={onCreate} icon={<LuPlus size={18} />} />
+					{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<LuTrophy size={18} />} />}
 				</div>
 			</div>
 
