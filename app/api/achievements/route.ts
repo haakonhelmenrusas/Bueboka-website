@@ -62,6 +62,7 @@ export async function GET() {
 		// Transform practices to ensure arrows field has default value
 		const practicesWithDefaults = practices.map((practice) => ({
 			...practice,
+			practiceType: 'TRENING',
 			ends: practice.ends.map((end) => ({
 				arrows: end.arrows || 0,
 				scores: end.scores,
@@ -72,6 +73,7 @@ export async function GET() {
 		// Transform competitions to practice-like format for achievement checking
 		const competitionsAsPractices = competitions.map((comp) => ({
 			...comp,
+			practiceType: 'KONKURRANSE',
 			practiceCategory: comp.practiceCategory,
 			ends: comp.rounds.map((round) => ({
 				arrows: round.arrows || 0,
