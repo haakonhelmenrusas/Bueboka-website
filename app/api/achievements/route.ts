@@ -1,0 +1,106 @@
+import { NextResponse } from 'next/server';
+import { headers } from 'next/headers';
+import * as Sentry from '@sentry/nextjs';
+import { auth } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
+import { checkAllAchievements } from '@/lib/achievements/checker';
+
+async function getCurrentUser() {
+	try {
+		const reqHeaders = await headers();
+		const headerObj: Record<string, string> = {};
+		for (const [key, value] of reqHeaders) headerObj[key] = value;
+		const session = await auth.api.getSession({ headers: headerObj });
+		return session?.user || null;
+	} catch (error) {
+		Sentry.captureException(error, { tags: { endpoint: 'achievements', where: 'getCurrentUser' } });
+		return null;
+	}
+}
+
+/**
+ * GET /api/achievements
+ * Returns all achievements with user's progress
+ */
+export async function GET() {
+	try {
+		const user = await getCurrentUser();
+		if (!user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+		}
+
+		// Fetch user's practices
+		const practices = await prisma.practice.findMany({
+			where: { userId: user.id },
+			include: {
+				ends: {
+					select: {
+						arrows: true,
+						scores: true,
+						roundScore: true,
+					},
+				},
+			},
+			orderBy: { date: 'desc' },
+		});
+
+		// Fetch user's unlocked achievements
+		const unlockedAchievements = await prisma.userAchievement.findMany({
+			where: { userId: user.id },
+			select: {
+				achievementId: true,
+				unlockedAt: true,
+				progress: true,
+			},
+		});
+
+		const unlockedIds = unlockedAchievements.map((a) => a.achievementId);
+
+		// Check all achievements and calculate progress
+		// Pass autoUnlock=false so achievements are only marked as unlocked if they're in the database
+		const achievementProgress = checkAllAchievements(practices, unlockedIds, false);
+
+		// Merge with unlock timestamps
+		const achievementsWithData = achievementProgress.map((progress) => {
+			const unlockData = unlockedAchievements.find((u) => u.achievementId === progress.achievement.id);
+			return {
+				...progress,
+				unlockedAt: unlockData?.unlockedAt || null,
+			};
+		});
+
+		// Calculate summary statistics based on actual unlocked achievements
+		const actuallyUnlocked = achievementsWithData.filter((a) => a.isUnlocked);
+
+		const summary = {
+			totalUnlocked: actuallyUnlocked.length,
+			totalPoints: actuallyUnlocked.reduce((sum, a) => sum + a.achievement.points, 0),
+			totalAchievements: achievementProgress.length,
+			completionPercentage: Math.round((actuallyUnlocked.length / achievementProgress.length) * 100),
+		};
+
+		return NextResponse.json(
+			{
+				achievements: achievementsWithData,
+				summary,
+			},
+			{
+				headers: {
+					'Cache-Control': 'private, max-age=60, must-revalidate',
+				},
+			}
+		);
+	} catch (error) {
+		Sentry.captureException(error, {
+			tags: { endpoint: 'achievements', method: 'GET' },
+			extra: { message: 'Error fetching achievements' },
+		});
+
+		return NextResponse.json(
+			{
+				error: 'Failed to fetch achievements',
+			},
+			{ status: 500 }
+		);
+	}
+}

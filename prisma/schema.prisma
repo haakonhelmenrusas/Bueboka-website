@@ -26,6 +26,7 @@ model User {
   bowSpecifications BowSpecification[]
   sightMarks        SightMark[]
   sightMarkResults  SightMarkResult[]
+  achievements      UserAchievement[]  @relation("UserAchievements")
 
   @@map("user")
 }
@@ -243,6 +244,24 @@ model SightMarkResult {
   sightMark SightMark @relation(fields: [sightMarkId], references: [id], onDelete: Cascade)
 
   @@map("sight_mark_results")
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+  progress      Int      @default(0)
+  notified      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation fields
+  user User @relation("UserAchievements", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@map("user_achievements")
 }
 
 enum Material {

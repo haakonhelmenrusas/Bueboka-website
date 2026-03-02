@@ -1,155 +1,151 @@
 .button {
-	/* Default tokens (can be overridden by modifier classes / inline CSS variables) */
-	--btn-bg: var(--primary);
-	--btn-color: var(--btn-text-light);
-	--btn-border-color: transparent;
-	--btn-padding: 8px 24px;
-	--btn-height: 40px;
-	--btn-font-size: 16px;
+    /* Default tokens (can be overridden by modifier classes / inline CSS variables) */
+    --btn-bg: var(--primary);
+    --btn-color: var(--btn-text-light);
+    --btn-border-color: transparent;
+    --btn-padding: 8px 24px;
+    --btn-height: 40px;
+    --btn-font-size: 16px;
 
-	appearance: none;
-	border: 1px solid var(--btn-border-color);
-	background: var(--btn-bg);
-	color: var(--btn-color);
+    appearance: none;
+    border: 1px solid var(--btn-border-color);
+    background: var(--btn-bg);
+    color: var(--btn-color);
 
-	padding: var(--btn-padding);
-	height: var(--btn-height);
-	font-size: var(--btn-font-size);
-	border-radius: var(--radius-base);
+    padding: var(--btn-padding);
+    height: var(--btn-height);
+    font-size: var(--btn-font-size);
+    border-radius: var(--radius-base);
 
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 
-	cursor: pointer;
-	opacity: 1;
+    cursor: pointer;
+    opacity: 1;
 
-	transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease, opacity 0.2s;
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease, opacity 0.2s;
 }
 
 .button:disabled {
-	cursor: not-allowed;
-	opacity: 0.6;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 /* Sizes */
 .small {
-	--btn-height: 28px;
-	--btn-padding: 4px 16px;
-	--btn-font-size: 14px;
+    --btn-height: 28px;
+    --btn-padding: 4px 16px;
+    --btn-font-size: 14px;
 }
 
 .normal {
-	--btn-height: 42px;
-	--btn-padding: 8px 24px;
-	--btn-font-size: 16px;
+    --btn-height: 42px;
+    --btn-padding: 8px 24px;
+    --btn-font-size: 16px;
 }
 
 /* Types */
 .filled {
-	--btn-border-color: transparent;
+    --btn-border-color: transparent;
 }
 
 .outline {
-	--btn-bg: var(--transparent);
-	--btn-border-color: var(--btn-bg);
+    --btn-bg: var(--transparent);
+    --btn-border-color: var(--btn-bg);
 }
 
 /* Variants */
 .standard {
-	--btn-bg: var(--primary);
-	--btn-color: var(--btn-text-light);
+    --btn-bg: var(--primary);
+    --btn-color: var(--btn-text-light);
 }
 
 .standard.outline {
-	--btn-color: var(--primary);
-	--btn-border-color: var(--primary);
+    --btn-color: var(--primary);
+    --btn-border-color: var(--primary);
 }
 
 .warning {
-	--btn-bg: var(--error);
-	--btn-color: var(--btn-text-light);
+    --btn-bg: var(--error);
+    --btn-color: var(--btn-text-light);
 }
 
 .warning.outline {
-	--btn-bg: var(--transparent);
-	--btn-color: var(--error);
-	--btn-border-color: var(--error);
+    --btn-bg: var(--transparent);
+    --btn-color: var(--error);
+    --btn-border-color: var(--error);
 }
 
 /* Dark mode overrides */
 [data-theme='dark'] .standard {
-	--btn-bg: var(--btn-text-light);
-	--btn-color: var(--primary-dark);
+    --btn-bg: var(--btn-text-light);
+    --btn-color: var(--primary-dark);
 }
 
 [data-theme='dark'] .standard.outline {
-	--btn-color: var(--primary-light);
-	--btn-border-color: var(--primary-light);
+    --btn-color: var(--primary-light);
+    --btn-border-color: var(--primary-light);
 }
 
 [data-theme='dark'] .warning {
-	--btn-bg: var(--error);
-	--btn-color: var(--btn-text-light);
+    --btn-bg: var(--error);
+    --btn-color: var(--btn-text-light);
 }
 
 [data-theme='dark'] .warning.outline {
-	--btn-color: var(--error-light);
-	--btn-border-color: var(--error-light);
+    --btn-color: var(--error-light);
+    --btn-border-color: var(--error-light);
 }
 
 .button:hover:not(:disabled) {
-	background-color: var(--secondary);
-	color: var(--btn-text-light);
-	border-color: rgba(255, 255, 255, 0.35);
-	transform: translateY(-1px);
+    background-color: var(--secondary);
+    color: var(--btn-text-light);
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 [data-theme='dark'] .button:hover:not(:disabled) {
-	background-color: var(--primary);
-	color: var(--btn-text-light);
-	border-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--primary);
+    color: var(--btn-text-light);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .warning:hover:not(:disabled) {
-	background-color: var(--error-light);
-	border-color: var(--error-light);
+    background-color: var(--error-light);
+    border-color: var(--error-light);
 }
 
 .warning.outline:hover:not(:disabled) {
-	background-color: var(--error-bg);
-	color: var(--error-light);
-	border-color: var(--error-light);
+    background-color: var(--error-bg);
+    color: var(--error-light);
+    border-color: var(--error-light);
 }
 
 [data-theme='dark'] .warning.outline:hover:not(:disabled) {
-	background-color: rgba(239, 68, 68, 0.2);
+    background-color: rgba(239, 68, 68, 0.2);
 }
 
-.button:active:not(:disabled) {
-	transform: translateY(0);
-}
 
 .button:hover:not(:disabled) svg {
-	color: currentColor;
+    color: currentColor;
 }
 
 .spinner {
-	display: inline-block;
-	border: 2px solid var(--white-20);
-	border-top-color: var(--white-85);
-	border-radius: var(--radius-circle);
-	animation: spin 0.8s linear infinite;
+    display: inline-block;
+    border: 2px solid var(--white-20);
+    border-top-color: var(--white-85);
+    border-radius: var(--radius-circle);
+    animation: spin 0.8s linear infinite;
 }
 
 [data-theme='dark'] .spinner {
-	border: 2px solid rgba(249, 250, 251, 0.25);
-	border-top-color: var(--btn-text-light);
+    border: 2px solid rgba(249, 250, 251, 0.25);
+    border-top-color: var(--btn-text-light);
 }
 
 @keyframes spin {
-	to {
-		transform: rotate(360deg);
-	}
+    to {
+        transform: rotate(360deg);
+    }
 }

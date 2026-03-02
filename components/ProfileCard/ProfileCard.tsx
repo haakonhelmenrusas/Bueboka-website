@@ -2,8 +2,9 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import styles from './ProfileCard.module.css';
-import { Edit, User } from 'lucide-react';
+import { Edit, Trophy, User } from 'lucide-react';
 import { Button } from '@/components';
 
 export interface ProfileCardProps {
@@ -17,6 +18,11 @@ export interface ProfileCardProps {
 export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, onEdit }) => {
 	const displayName = name || email;
 	const displayClub = club || 'Ingen klubb oppgitt';
+	const router = useRouter();
+
+	const handleAchievementsClick = () => {
+		router.push('/achievements');
+	};
 
 	return (
 		<section className={styles.card} aria-label="Profil">
@@ -40,7 +46,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 				<h2 className={styles.name}>{displayName}</h2>
 				<p className={styles.meta}>{displayClub}</p>
 			</header>
-			<Button label="Rediger" onClick={onEdit} icon={<Edit size={18} />} size="small" buttonType="outline" />
+			<div className={styles.buttonGroup}>
+				<Button label="Rediger" onClick={onEdit} icon={<Edit size={18} />} size="normal" buttonType="outline" />
+				<Button label="Mine Merker" onClick={handleAchievementsClick} icon={<Trophy size={18} />} size="normal" buttonType="filled" />
+			</div>
 		</section>
 	);
 };

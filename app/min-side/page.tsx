@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import {
+	AchievementUnlockModal,
 	ArrowsModal,
 	BowModal,
 	Button,
@@ -25,6 +26,7 @@ import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData
 import * as Sentry from '@sentry/nextjs';
 import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
+import type { Achievement } from '@/lib/achievements/types';
 
 export default function MyPage() {
 	const [profile, setProfile] = useState<User | null>(null);
@@ -42,6 +44,8 @@ export default function MyPage() {
 	const [stats, setStats] = useState<StatsResponse['stats']>({ last7Days: 0, last30Days: 0, overall: 0 });
 	const [practiceReloadKey, setPracticeReloadKey] = useState(0);
 	const [deletedPracticeId, setDeletedPracticeId] = useState<string | null>(null);
+	const [achievementModalOpen, setAchievementModalOpen] = useState(false);
+	const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
 	const { fetchPracticeDetails } = usePracticeDetails();
 	const { bows, arrows } = useEquipmentData();
 	const { hasSeenWhatsNew, isLoading: whatsNewLoading, markAsSeen } = useWhatsNew();
@@ -134,6 +138,28 @@ export default function MyPage() {
 			setPracticeFormOpen(false);
 			if (isEditMode) {
 				setSelectedPractice(null);
+			}
+
+			// Check for newly unlocked achievements (only for new practices, not edits)
+			if (!isEditMode) {
+				try {
+					const achievementRes = await fetch('/api/achievements/check', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+					});
+
+					if (achievementRes.ok) {
+						const achievementData = await achievementRes.json();
+						if (achievementData.newAchievements && achievementData.newAchievements.length > 0) {
+							setUnlockedAchievements(achievementData.newAchievements);
+							setAchievementModalOpen(true);
+						}
+					}
+				} catch (achievementErr) {
+					// Don't fail the whole operation if achievement check fails
+					console.error('Failed to check achievements:', achievementErr);
+					Sentry.captureException(achievementErr, { tags: { page: 'min-side', action: 'check-achievements' } });
+				}
 			}
 		} catch (err) {
 			Sentry.captureException(err, { tags: { page: 'min-side', action: isEditMode ? 'edit-practice' : 'create-practice' } });
@@ -338,6 +364,16 @@ export default function MyPage() {
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
 			/>
 			<WhatsNewModal open={whatsNewOpen} onClose={handleWhatsNewClose} />
+			{achievementModalOpen && unlockedAchievements.length > 0 && (
+				<AchievementUnlockModal
+					achievements={unlockedAchievements}
+					onClose={() => setAchievementModalOpen(false)}
+					onViewAll={() => {
+						setAchievementModalOpen(false);
+						router.push('/achievements');
+					}}
+				/>
+			)}
 		</div>
 	);
 }
