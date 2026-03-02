@@ -42,20 +42,8 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const {
-			date,
-			location,
-			environment,
-			weather,
-			practiceType,
-			practiceCategory,
-			notes,
-			rating,
-			rounds,
-			arrowsWithoutScore,
-			bowId,
-			arrowsId,
-		} = validation.data;
+		const { date, location, environment, weather, practiceCategory, notes, rating, rounds, arrowsWithoutScore, bowId, arrowsId } =
+			validation.data;
 
 		const parsedDate = new Date(date);
 
@@ -109,7 +97,6 @@ export async function POST(request: NextRequest) {
 			location: location || null,
 			environment: environment as Environment,
 			weather: weather || [],
-			practiceType: practiceType || 'TRENING',
 			practiceCategory: practiceCategory || 'SKIVE_INDOOR',
 			notes: notes || null,
 			rating: rating ?? null,

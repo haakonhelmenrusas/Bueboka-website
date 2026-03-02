@@ -30,20 +30,49 @@ export async function POST(request: Request) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		// Fetch all user's practices with ends
-		const practices = await prisma.practice.findMany({
-			where: { userId: user.id },
-			include: {
-				ends: {
-					select: {
-						arrows: true,
-						scores: true,
-						roundScore: true,
+		// Fetch all user's practices and competitions with ends/rounds
+		const [practices, competitions] = await Promise.all([
+			prisma.practice.findMany({
+				where: { userId: user.id },
+				include: {
+					ends: {
+						select: {
+							arrows: true,
+							scores: true,
+							roundScore: true,
+						},
 					},
 				},
-			},
-			orderBy: { date: 'desc' },
-		});
+				orderBy: { date: 'desc' },
+			}),
+			prisma.competition.findMany({
+				where: { userId: user.id },
+				include: {
+					rounds: {
+						select: {
+							arrows: true,
+							scores: true,
+							roundScore: true,
+						},
+					},
+				},
+				orderBy: { date: 'desc' },
+			}),
+		]);
+
+		// Transform competitions to practice-like format for achievement checking
+		const competitionsAsPractices = competitions.map((comp) => ({
+			...comp,
+			practiceCategory: comp.practiceCategory,
+			ends: comp.rounds.map((round) => ({
+				arrows: round.arrows,
+				scores: round.scores,
+				roundScore: round.roundScore,
+			})),
+		}));
+
+		// Merge all activities
+		const allActivities = [...practices, ...(competitionsAsPractices as any)];
 
 		// Fetch currently unlocked achievements in database
 		const existingAchievements = await prisma.userAchievement.findMany({
@@ -55,8 +84,8 @@ export async function POST(request: Request) {
 
 		const existingAchievementIds = existingAchievements.map((a) => a.achievementId);
 
-		// Check what achievements should be unlocked based on current practice data
-		const newlyUnlocked = getNewlyUnlockedAchievements(practices, existingAchievementIds);
+		// Check what achievements should be unlocked based on current activity data
+		const newlyUnlocked = getNewlyUnlockedAchievements(allActivities, existingAchievementIds);
 
 		// These are truly NEW - they weren't in the database before
 		const justUnlockedIds = newlyUnlocked.map((a) => a.id);
@@ -76,7 +105,7 @@ export async function POST(request: Request) {
 
 		// Get achievements that are close to being unlocked (80%+)
 		const allUnlockedIds = [...existingAchievementIds, ...justUnlockedIds];
-		const almostUnlocked = getAlmostUnlockedAchievements(practices, allUnlockedIds);
+		const almostUnlocked = getAlmostUnlockedAchievements(allActivities, allUnlockedIds);
 
 		return NextResponse.json({
 			newAchievements: newlyUnlocked, // Only the ones that were just unlocked

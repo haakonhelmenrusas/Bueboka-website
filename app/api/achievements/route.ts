@@ -29,20 +29,49 @@ export async function GET() {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		// Fetch user's practices
-		const practices = await prisma.practice.findMany({
-			where: { userId: user.id },
-			include: {
-				ends: {
-					select: {
-						arrows: true,
-						scores: true,
-						roundScore: true,
+		// Fetch user's practices and competitions
+		const [practices, competitions] = await Promise.all([
+			prisma.practice.findMany({
+				where: { userId: user.id },
+				include: {
+					ends: {
+						select: {
+							arrows: true,
+							scores: true,
+							roundScore: true,
+						},
 					},
 				},
-			},
-			orderBy: { date: 'desc' },
-		});
+				orderBy: { date: 'desc' },
+			}),
+			prisma.competition.findMany({
+				where: { userId: user.id },
+				include: {
+					rounds: {
+						select: {
+							arrows: true,
+							scores: true,
+							roundScore: true,
+						},
+					},
+				},
+				orderBy: { date: 'desc' },
+			}),
+		]);
+
+		// Transform competitions to practice-like format for achievement checking
+		const competitionsAsPractices = competitions.map((comp) => ({
+			...comp,
+			practiceCategory: comp.practiceCategory,
+			ends: comp.rounds.map((round) => ({
+				arrows: round.arrows,
+				scores: round.scores,
+				roundScore: round.roundScore,
+			})),
+		}));
+
+		// Merge practices and competitions
+		const allActivities = [...practices, ...(competitionsAsPractices as any)];
 
 		// Fetch user's unlocked achievements
 		const unlockedAchievements = await prisma.userAchievement.findMany({
@@ -58,7 +87,7 @@ export async function GET() {
 
 		// Check all achievements and calculate progress
 		// Pass autoUnlock=false so achievements are only marked as unlocked if they're in the database
-		const achievementProgress = checkAllAchievements(practices, unlockedIds, false);
+		const achievementProgress = checkAllAchievements(allActivities, unlockedIds, false);
 
 		// Merge with unlock timestamps
 		const achievementsWithData = achievementProgress.map((progress) => {

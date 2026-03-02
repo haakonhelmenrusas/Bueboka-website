@@ -28,13 +28,6 @@ export const WeatherCondition = {
 
 export type WeatherCondition = (typeof WeatherCondition)[keyof typeof WeatherCondition];
 
-export const PracticeType = {
-	TRENING: 'TRENING',
-	KONKURRANSE: 'KONKURRANSE',
-} as const;
-
-export type PracticeType = (typeof PracticeType)[keyof typeof PracticeType];
-
 export const PracticeCategory = {
 	SKIVE_INDOOR: 'SKIVE_INDOOR',
 	SKIVE_OUTDOOR: 'SKIVE_OUTDOOR',

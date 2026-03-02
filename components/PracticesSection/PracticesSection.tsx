@@ -2,17 +2,19 @@
 
 import { useEffect } from 'react';
 import { Button, PracticesList, usePracticeCards } from '@/components';
-import { Plus } from 'lucide-react';
+import { Plus, Trophy } from 'lucide-react';
 import styles from './PracticesSection.module.css';
 
 interface PracticesSectionProps {
 	onCreate: () => void;
+	onCreateCompetition?: () => void;
 	onSelectPractice: (id: string) => void;
 	reloadKey?: string | number;
 	deletedPracticeId?: string | null;
 }
 
-export function PracticesSection({ onCreate, onSelectPractice, reloadKey, deletedPracticeId }: PracticesSectionProps) {
+export function PracticesSection({ onCreate, onCreateCompetition, onSelectPractice, reloadKey, deletedPracticeId }: PracticesSectionProps) {
+	// ...existing code...
 	const { cards, page, totalPages, showPagination, loading, filter, setFilter, goToPrev, goToNext, fetchPage, removeLocal } =
 		usePracticeCards({
 			pageSize: 10,
@@ -34,32 +36,37 @@ export function PracticesSection({ onCreate, onSelectPractice, reloadKey, delete
 		<section className={styles.practicesSection}>
 			<div className={styles.practicesHeader}>
 				<h2 className={styles.sectionTitle}>Treninger og konkurranser</h2>
-				<Button label="Ny trening" onClick={onCreate} icon={<Plus size={18} />} width={164} buttonStyle={{ marginLeft: 'auto' }} />
 			</div>
 
-			{/* Filter controls */}
+			{/* Filter controls with action buttons */}
 			<div className={styles.filterContainer}>
-				<button
-					className={`${styles.filterButton} ${filter === 'all' ? styles.filterButtonActive : ''}`}
-					onClick={() => setFilter('all')}
-					type="button"
-				>
-					Alle
-				</button>
-				<button
-					className={`${styles.filterButton} ${filter === 'TRENING' ? styles.filterButtonActive : ''}`}
-					onClick={() => setFilter('TRENING')}
-					type="button"
-				>
-					Treninger
-				</button>
-				<button
-					className={`${styles.filterButton} ${filter === 'KONKURRANSE' ? styles.filterButtonActive : ''}`}
-					onClick={() => setFilter('KONKURRANSE')}
-					type="button"
-				>
-					Konkurranser
-				</button>
+				<div className={styles.filterButtons}>
+					<button
+						className={`${styles.filterButton} ${filter === 'all' ? styles.filterButtonActive : ''}`}
+						onClick={() => setFilter('all')}
+						type="button"
+					>
+						Alle
+					</button>
+					<button
+						className={`${styles.filterButton} ${filter === 'TRENING' ? styles.filterButtonActive : ''}`}
+						onClick={() => setFilter('TRENING')}
+						type="button"
+					>
+						Treninger
+					</button>
+					<button
+						className={`${styles.filterButton} ${filter === 'KONKURRANSE' ? styles.filterButtonActive : ''}`}
+						onClick={() => setFilter('KONKURRANSE')}
+						type="button"
+					>
+						Konkurranser
+					</button>
+				</div>
+				<div className={styles.actionButtons}>
+					<Button label="Ny trening" onClick={onCreate} icon={<Plus size={18} />} />
+					{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<Trophy size={18} />} />}
+				</div>
 			</div>
 
 			<div className={styles.practicesList}>

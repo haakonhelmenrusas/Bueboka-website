@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// Environment, Weather, and PracticeType enums matching Prisma schema
+// Environment, Weather, and PracticeCategory enums matching Prisma schema
 export const EnvironmentEnum = z.enum(['INDOOR', 'OUTDOOR']);
 export const WeatherConditionEnum = z.enum([
 	'SUN',
@@ -14,7 +14,6 @@ export const WeatherConditionEnum = z.enum([
 	'CHANGING_CONDITIONS',
 	'OTHER',
 ]);
-export const PracticeTypeEnum = z.enum(['TRENING', 'KONKURRANSE']);
 export const PracticeCategoryEnum = z.enum(['SKIVE_INDOOR', 'SKIVE_OUTDOOR', 'JAKT_3D', 'FELT']);
 
 // Round input schema
@@ -35,14 +34,13 @@ export const RoundInputSchema = z.object({
 	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
 });
 
-// Schema for creating a practice
+// Schema for creating a practice (training session only)
 export const createPracticeSchema = z
 	.object({
 		date: z.string().min(1, 'Dato er påkrevd'),
 		location: z.string().max(64, 'Sted må være mindre enn 64 tegn').optional().nullable(),
 		environment: EnvironmentEnum,
 		weather: z.array(WeatherConditionEnum).optional().default([]),
-		practiceType: PracticeTypeEnum.optional().default('TRENING'),
 		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE_INDOOR'),
 		notes: z.string().max(500, 'Notater må være mindre enn 500 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),

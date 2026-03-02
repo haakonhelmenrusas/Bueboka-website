@@ -28,52 +28,78 @@ export async function GET(request: Request) {
 		const pageSize = Math.min(50, Math.max(1, pageSizeRaw));
 		const skip = (page - 1) * pageSize;
 
-		// Filter by practice type: 'all', 'TRENING', or 'KONKURRANSE'
+		// Filter by type: 'all', 'TRENING', or 'KONKURRANSE'
 		const filterType = url.searchParams.get('filter') ?? 'all';
-		const whereClause: any = { userId: user.id };
-		if (filterType === 'TRENING' || filterType === 'KONKURRANSE') {
-			whereClause.practiceType = filterType;
-		}
 
-		const [total, practices] = await prisma.$transaction([
-			prisma.practice.count({
-				where: whereClause,
-			}),
-			prisma.practice.findMany({
-				where: whereClause,
+		// Fetch practices and competitions separately based on filter
+		let practicesPromise;
+		let competitionsPromise;
+		let practiceCountPromise;
+		let competitionCountPromise;
+
+		if (filterType === 'all' || filterType === 'TRENING') {
+			practicesPromise = prisma.practice.findMany({
+				where: { userId: user.id },
 				orderBy: { date: 'desc' },
-				skip,
-				take: pageSize,
 				select: {
 					id: true,
 					date: true,
 					location: true,
 					environment: true,
 					rating: true,
-					practiceType: true,
 					totalScore: true,
+					practiceCategory: true,
 					bow: { select: { name: true } },
 					arrows: { select: { name: true } },
 					roundType: { select: { name: true } },
 					ends: { select: { arrows: true, distanceMeters: true, targetSizeCm: true } },
 				},
-			}),
+			});
+			practiceCountPromise = prisma.practice.count({ where: { userId: user.id } });
+		} else {
+			practicesPromise = Promise.resolve([]);
+			practiceCountPromise = Promise.resolve(0);
+		}
+
+		if (filterType === 'all' || filterType === 'KONKURRANSE') {
+			competitionsPromise = prisma.competition.findMany({
+				where: { userId: user.id },
+				orderBy: { date: 'desc' },
+				select: {
+					id: true,
+					date: true,
+					name: true,
+					location: true,
+					environment: true,
+					totalScore: true,
+					placement: true,
+					practiceCategory: true,
+					bow: { select: { name: true } },
+					arrows: { select: { name: true } },
+					rounds: { select: { arrows: true, distanceMeters: true, targetSizeCm: true } },
+				},
+			});
+			competitionCountPromise = prisma.competition.count({ where: { userId: user.id } });
+		} else {
+			competitionsPromise = Promise.resolve([]);
+			competitionCountPromise = Promise.resolve(0);
+		}
+
+		const [practices, competitions, practiceCount, competitionCount] = await Promise.all([
+			practicesPromise,
+			competitionsPromise,
+			practiceCountPromise,
+			competitionCountPromise,
 		]);
 
-		type PracticeRow = (typeof practices)[number];
-
-		const cards = practices.map((p: PracticeRow) => {
-			// Calculate arrows shot
+		// Transform practices to card format
+		const practiceCards = practices.map((p) => {
 			const arrowsShot = p.ends.reduce((sum: number, e: { arrows: number }) => sum + (e.arrows ?? 0), 0);
-
-			// Get unique distance/target combinations from ends
 			const combinations = p.ends
-				.filter((e) => e.distanceMeters && e.targetSizeCm)
-				.map((e) => `${e.distanceMeters}m - ${e.targetSizeCm}cm`)
-				.filter((value, index, self) => self.indexOf(value) === index); // unique values
-
-			// Create display text: show first combination or fallback to roundType name
-			const roundTypeName = combinations.length > 0 ? combinations[0] : (p.roundType?.name ?? null);
+				.filter((e: any) => e.distanceMeters && e.targetSizeCm)
+				.map((e: any) => `${e.distanceMeters}m - ${e.targetSizeCm}cm`)
+				.filter((value, index, self) => self.indexOf(value) === index);
+			const roundTypeName = combinations.length > 0 ? combinations[0] : ((p.roundType?.name as string) ?? null);
 
 			return {
 				id: p.id,
@@ -82,7 +108,7 @@ export async function GET(request: Request) {
 				location: p.location ?? null,
 				environment: p.environment ?? null,
 				rating: p.rating ?? null,
-				practiceType: p.practiceType ?? 'TRENING',
+				practiceType: 'TRENING' as const,
 				totalScore: p.totalScore ?? null,
 				bowName: p.bow?.name ?? null,
 				arrowsName: p.arrows?.name ?? null,
@@ -90,14 +116,47 @@ export async function GET(request: Request) {
 			};
 		});
 
+		// Transform competitions to card format
+		const competitionCards = competitions.map((c) => {
+			const arrowsShot = c.rounds.reduce((sum: number, r: { arrows: number }) => sum + (r.arrows ?? 0), 0);
+			const combinations = c.rounds
+				.filter((r: any) => r.distanceMeters && r.targetSizeCm)
+				.map((r: any) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)
+				.filter((value, index, self) => self.indexOf(value) === index);
+			const roundTypeName = combinations.length > 0 ? combinations[0] : null;
+
+			return {
+				id: c.id,
+				date: c.date,
+				arrowsShot,
+				location: c.location ?? null,
+				environment: c.environment ?? null,
+				rating: null, // Competitions don't have ratings
+				practiceType: 'KONKURRANSE' as const,
+				totalScore: c.totalScore ?? null,
+				bowName: c.bow?.name ?? null,
+				arrowsName: c.arrows?.name ?? null,
+				roundTypeName,
+				competitionName: c.name,
+				placement: c.placement ?? null,
+			};
+		});
+
+		// Merge and sort by date
+		const allCards = [...practiceCards, ...competitionCards].sort((a, b) => {
+			return new Date(b.date).getTime() - new Date(a.date).getTime();
+		});
+
+		// Calculate total and paginate
+		const total = practiceCount + competitionCount;
+		const paginatedCards = allCards.slice(skip, skip + pageSize);
+
 		return NextResponse.json(
-			{ practices: cards, page, pageSize, total },
+			{ practices: paginatedCards, page, pageSize, total },
 			{
 				headers: {
-					// In development, don't cache. In production, cache for 10 seconds.
 					'Cache-Control':
 						process.env.NODE_ENV === 'development' ? 'no-store, no-cache, must-revalidate' : 'private, max-age=10, must-revalidate',
-					// Include page in the cache key via Vary header
 					Vary: 'Cookie',
 				},
 			}

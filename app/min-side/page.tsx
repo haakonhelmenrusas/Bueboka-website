@@ -8,6 +8,7 @@ import {
 	ArrowsModal,
 	BowModal,
 	Button,
+	CompetitionFormModal,
 	EquipmentSection,
 	Header,
 	PracticeDetailsModal,
@@ -25,6 +26,7 @@ import { MyPageSkeleton } from './Skeleton';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import * as Sentry from '@sentry/nextjs';
 import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
+import { CompetitionFormInput } from '@/components/Competitions/CompetitionFormModal';
 import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
 import type { Achievement } from '@/lib/achievements/types';
 
@@ -36,6 +38,9 @@ export default function MyPage() {
 	const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
 	const [practiceFormOpen, setPracticeFormOpen] = useState(false);
 	const [practiceFormMode, setPracticeFormMode] = useState<'create' | 'edit'>('create');
+	const [competitionFormOpen, setCompetitionFormOpen] = useState(false);
+	const [competitionFormMode, setCompetitionFormMode] = useState<'create' | 'edit'>('create');
+	const [selectedCompetition, setSelectedCompetition] = useState<any>(null);
 	const [profileModalOpen, setProfileModalOpen] = useState(false);
 	const [bowModalOpen, setBowModalOpen] = useState(false);
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
@@ -167,6 +172,73 @@ export default function MyPage() {
 		}
 	};
 
+	const handleSaveCompetition = async (input: CompetitionFormInput) => {
+		const isEditMode = competitionFormMode === 'edit';
+		const url = isEditMode && selectedCompetition ? `/api/competitions/${selectedCompetition.id}` : '/api/competitions';
+		const method = isEditMode ? 'PATCH' : 'POST';
+
+		try {
+			const res = await fetch(url, {
+				method,
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(input),
+			});
+
+			if (!res.ok) {
+				let details: any = null;
+				try {
+					details = await res.json();
+				} catch {
+					// ignore
+				}
+
+				let errMsg: string = `Kunne ikke ${isEditMode ? 'oppdatere' : 'lagre'} konkurranse`;
+				const fieldErrors = details && typeof details === 'object' ? (details as any).fieldErrors : undefined;
+				if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
+					const msgs = Object.entries(fieldErrors)
+						.map(([field, msg]) => `${field}: ${msg}`)
+						.join('\n');
+					errMsg = `Manglende/ugyldige felt:\n${msgs}`;
+				} else if (details && typeof details === 'object' && (details as any).error) {
+					errMsg = (details as any).error;
+				}
+
+				return Promise.reject(new Error(errMsg));
+			}
+
+			setPracticeReloadKey((k) => k + 1);
+			await fetchStats();
+			setCompetitionFormOpen(false);
+			if (isEditMode) {
+				setSelectedCompetition(null);
+			}
+
+			// Check for newly unlocked achievements (only for new competitions, not edits)
+			if (!isEditMode) {
+				try {
+					const achievementRes = await fetch('/api/achievements/check', {
+						method: 'POST',
+						headers: { 'Content-Type': 'application/json' },
+					});
+
+					if (achievementRes.ok) {
+						const achievementData = await achievementRes.json();
+						if (achievementData.newAchievements && achievementData.newAchievements.length > 0) {
+							setUnlockedAchievements(achievementData.newAchievements);
+							setAchievementModalOpen(true);
+						}
+					}
+				} catch (achievementErr) {
+					console.error('Failed to check achievements:', achievementErr);
+					Sentry.captureException(achievementErr, { tags: { page: 'min-side', action: 'check-achievements' } });
+				}
+			}
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'min-side', action: isEditMode ? 'edit-competition' : 'create-competition' } });
+			throw err;
+		}
+	};
+
 	const handlePracticeDeleted = async (id: string) => {
 		setDeletedPracticeId(id);
 		setSelectedPractice((prev) => (prev?.id === id ? null : prev));
@@ -256,6 +328,10 @@ export default function MyPage() {
 				onCreate={() => {
 					setPracticeFormMode('create');
 					setPracticeFormOpen(true);
+				}}
+				onCreateCompetition={() => {
+					setCompetitionFormMode('create');
+					setCompetitionFormOpen(true);
 				}}
 				onSelectPractice={handleSelectPractice}
 				reloadKey={practiceReloadKey}
@@ -350,13 +426,46 @@ export default function MyPage() {
 								location: selectedPractice.location,
 								environment: selectedPractice.environment,
 								weather: selectedPractice.weather,
-								practiceType: (selectedPractice as any).practiceType,
 								practiceCategory: (selectedPractice as any).practiceCategory,
 								notes: selectedPractice.notes,
 								rating: (selectedPractice as any).rating,
 								bowId: selectedPractice.bowId,
 								arrowsId: selectedPractice.arrowsId,
 								ends: selectedPractice.ends,
+							}
+						: undefined
+				}
+				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
+				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
+			/>
+			<CompetitionFormModal
+				open={competitionFormOpen}
+				mode={competitionFormMode}
+				onClose={() => {
+					setCompetitionFormOpen(false);
+					if (competitionFormMode === 'edit') {
+						setSelectedCompetition(null);
+					}
+				}}
+				onSave={handleSaveCompetition}
+				competition={
+					competitionFormMode === 'edit' && selectedCompetition
+						? {
+								id: selectedCompetition.id,
+								date: selectedCompetition.date,
+								name: selectedCompetition.name,
+								location: selectedCompetition.location,
+								organizerName: selectedCompetition.organizerName,
+								environment: selectedCompetition.environment,
+								weather: selectedCompetition.weather,
+								practiceCategory: selectedCompetition.practiceCategory,
+								notes: selectedCompetition.notes,
+								placement: selectedCompetition.placement,
+								numberOfParticipants: selectedCompetition.numberOfParticipants,
+								personalBest: selectedCompetition.personalBest,
+								bowId: selectedCompetition.bowId,
+								arrowsId: selectedCompetition.arrowsId,
+								rounds: selectedCompetition.rounds,
 							}
 						: undefined
 				}

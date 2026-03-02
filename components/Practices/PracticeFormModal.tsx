@@ -2,44 +2,18 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './PracticeFormModal.module.css';
-import {
-	BowArrow,
-	Cloud,
-	CloudDrizzle,
-	CloudFog,
-	CloudRain,
-	CloudSnow,
-	CloudSun,
-	Crosshair,
-	Footprints,
-	Home,
-	Navigation,
-	Sparkles,
-	Sun,
-	Target,
-	Trees,
-	Wind,
-	X,
-	Zap,
-} from 'lucide-react';
-import type { PracticeCategory, PracticeType, WeatherCondition } from '@/lib/prismaEnums';
+import { X } from 'lucide-react';
+import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
-
-// Weather select options
-const getWeatherSelectOptions = () => [
-	{ value: 'SUN', label: 'Sol', icon: <Sun size={16} /> },
-	{ value: 'CLOUDED', label: 'Skyet', icon: <Cloud size={16} /> },
-	{ value: 'CLEAR', label: 'Klarvær', icon: <Sparkles size={16} /> },
-	{ value: 'RAIN', label: 'Regn', icon: <CloudRain size={16} /> },
-	{ value: 'WIND', label: 'Vind', icon: <Wind size={16} /> },
-	{ value: 'SNOW', label: 'Snø', icon: <CloudSnow size={16} /> },
-	{ value: 'FOG', label: 'Tåke', icon: <CloudFog size={16} /> },
-	{ value: 'THUNDER', label: 'Torden', icon: <Zap size={16} /> },
-	{ value: 'CHANGING_CONDITIONS', label: 'Skiftende forhold', icon: <CloudDrizzle size={16} /> },
-	{ value: 'OTHER', label: 'Annet', icon: <CloudSun size={16} /> },
-];
+import {
+	getArrowsOptions,
+	getBowOptions,
+	getEnvironmentOptions,
+	getPracticeCategoryOptions,
+	getWeatherSelectOptions,
+} from '@/lib/formUtils';
 
 export interface RoundInput {
 	distanceMeters?: number; // For SKIVE categories
@@ -55,7 +29,6 @@ export interface PracticeFormInput {
 	location?: string;
 	environment: Environment;
 	weather: WeatherCondition[];
-	practiceType: PracticeType;
 	practiceCategory: PracticeCategory;
 	notes?: string;
 	rating?: number;
@@ -77,7 +50,6 @@ interface PracticeFormModalProps {
 		location?: string | null;
 		environment: Environment;
 		weather: WeatherCondition[];
-		practiceType?: PracticeType | null;
 		practiceCategory?: PracticeCategory | null;
 		notes?: string | null;
 		rating?: number | null;
@@ -103,7 +75,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const [location, setLocation] = useState('');
 	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
 	const [weather, setWeather] = useState<WeatherCondition[]>([]);
-	const [practiceType, setPracticeType] = useState<PracticeType>('TRENING');
 	const [practiceCategory, setPracticeCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
 	const [notes, setNotes] = useState('');
 	const [rating, setRating] = useState<number | null>(null);
@@ -127,17 +98,14 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		{ value: 'halmmatte', label: 'Halmmatte' },
 	];
 
-	// Initialize form based on mode
 	useEffect(() => {
 		if (!open) return;
 
 		if (mode === 'edit' && practice) {
-			// Edit mode: prefill with practice data
 			setDate(practice.date.split('T')[0]);
 			setLocation(practice.location || '');
 			setEnvironment(practice.environment);
 			setWeather(practice.weather || []);
-			setPracticeType(practice.practiceType || 'TRENING');
 			setPracticeCategory(practice.practiceCategory || 'SKIVE_INDOOR');
 			setNotes(practice.notes || '');
 			setRating(practice.rating ?? null);
@@ -169,17 +137,14 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			setBowId(practice.bowId || '');
 			setArrowsId(practice.arrowsId || '');
 		} else {
-			// Create mode: reset to defaults and load last used distance/target
 			setDate(new Date().toISOString().slice(0, 10));
 			setLocation('');
 			setEnvironment(Environment.INDOOR);
 			setWeather([]);
-			setPracticeType('TRENING');
 			setPracticeCategory('SKIVE_INDOOR');
 			setNotes('');
 			setRating(null);
 
-			// Load last used distance and target from localStorage
 			const lastDistance = localStorage.getItem('bueboka_last_distance');
 			const lastTarget = localStorage.getItem('bueboka_last_target');
 			setRounds([
@@ -211,7 +176,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		}
 	}, [open, mode, bows, arrows, bowId, arrowsId]);
 
-	// Clear weather when switching to indoor
 	useEffect(() => {
 		if (environment !== Environment.OUTDOOR) {
 			setWeather([]);
@@ -268,7 +232,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 				location: location || undefined,
 				environment,
 				weather,
-				practiceType,
 				practiceCategory,
 				notes: notes || undefined,
 				rating: rating ?? undefined,
@@ -286,28 +249,16 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		}
 	};
 
-	const environmentOptions = [
-		{ value: Environment.INDOOR, label: 'Inne', icon: <Home size={16} /> },
-		{ value: Environment.OUTDOOR, label: 'Ute', icon: <Trees size={16} /> },
-	];
-	const practiceTypeOptions = [
-		{ value: 'TRENING', label: 'Trening' },
-		{ value: 'KONKURRANSE', label: 'Konkurranse' },
-	];
-	const practiceCategoryOptions = [
-		{ value: 'SKIVE_INDOOR', label: 'Skive innendørs', icon: <Target size={16} /> },
-		{ value: 'SKIVE_OUTDOOR', label: 'Skive utendørs', icon: <Target size={16} /> },
-		{ value: 'JAKT_3D', label: 'Jakt/3D', icon: <Footprints size={16} /> },
-		{ value: 'FELT', label: 'Felt', icon: <Crosshair size={16} /> },
-	];
-	const bowOptions = bows.map((b) => ({ value: b.id, label: `${b.name} • ${b.type}`, icon: <BowArrow size={16} /> }));
-	const arrowsOptions = arrows.map((a) => ({ value: a.id, label: `${a.name} • ${a.material}`, icon: <Navigation size={16} /> }));
-
 	if (!open) return null;
 
 	const isEditMode = mode === 'edit';
 	const title = isEditMode ? 'Rediger trening' : 'Ny trening';
 	const submitLabel = isEditMode ? 'Lagre endringer' : 'Lagre trening';
+
+	const environmentOptions = getEnvironmentOptions();
+	const practiceCategoryOptions = getPracticeCategoryOptions();
+	const bowOptions = getBowOptions(bows);
+	const arrowsOptions = getArrowsOptions(arrows);
 
 	return (
 		<div className={styles.overlay} role="presentation">
@@ -321,17 +272,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 					</button>
 				</div>
 				<form className={styles.form} onSubmit={handleSubmit}>
-					<div className={styles.row}>
+					<div className={`${styles.row} ${styles.alignBottom}`}>
 						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
-						<Select
-							label="Type"
-							value={practiceType}
-							onChange={(v) => setPracticeType(v as PracticeType)}
-							options={practiceTypeOptions}
-							containerClassName={styles.field}
-						/>
-					</div>
-					<div className={styles.row}>
 						<Select
 							label="Kategori"
 							value={practiceCategory}
@@ -339,6 +281,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							options={practiceCategoryOptions}
 							containerClassName={styles.field}
 						/>
+					</div>
+					<div className={styles.row}>
 						<Select
 							label="Miljø"
 							value={environment}
@@ -346,15 +290,15 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							options={environmentOptions}
 							containerClassName={styles.field}
 						/>
+						<Input
+							label="Sted"
+							value={location}
+							onChange={(e) => setLocation(e.target.value)}
+							helpText={`F.eks. Oslo (${location.length}/64 tegn)`}
+							maxLength={64}
+							containerClassName={styles.field}
+						/>
 					</div>
-					<Input
-						label="Sted"
-						value={location}
-						onChange={(e) => setLocation(e.target.value)}
-						helpText={`F.eks. Oslo (${location.length}/64 tegn)`}
-						maxLength={64}
-						containerClassName={styles.field}
-					/>
 					{environment === Environment.OUTDOOR ? (
 						<Select
 							label="Vær"
