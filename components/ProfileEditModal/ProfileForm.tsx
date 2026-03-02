@@ -37,7 +37,7 @@ export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: Prof
 			<Input label="Klubb" value={club} onChange={(e) => setClub(e.target.value)} helpText="Navnet på klubben din" />
 
 			<div className={styles.actions}>
-				{onCancel && <Button label="Avbryt" onClick={onCancel} disabled={loading} buttonType="outline" width={160} />}
+				{onCancel && <Button label="Avbryt" onClick={onCancel} disabled={loading} buttonType="outline" width={160} type="button" />}
 				<Button label={loading ? 'Lagrer...' : 'Lagre'} type="submit" disabled={loading} loading={loading} width={180} />
 			</div>
 		</form>
