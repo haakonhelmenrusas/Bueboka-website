@@ -1,7 +1,9 @@
 import React from 'react';
-import { ArrowsPointingOutIcon, FireIcon, HomeIcon, TrophyIcon } from '@heroicons/react/24/outline';
+import { LuHouse, LuMaximize2 } from 'react-icons/lu';
 import { Environment } from '@/lib/prismaEnums';
 import styles from './PracticeDetailsModal.module.css';
+import { GiArcher } from 'react-icons/gi';
+import { CiTrophy } from 'react-icons/ci';
 
 type PracticeType = 'TRENING' | 'KONKURRANSE';
 
@@ -13,12 +15,12 @@ export const PracticeTypeBadge: React.FC<PracticeTypeBadgeProps> = ({ practiceTy
 	const isCompetition = practiceType === 'KONKURRANSE';
 	return isCompetition ? (
 		<div className={`${styles.badge} ${styles.competitionBadge}`}>
-			<TrophyIcon className="w-3.5 h-3.5" />
+			<CiTrophy className="w-3.5 h-3.5" />
 			<span>Konkurranse</span>
 		</div>
 	) : (
 		<div className={`${styles.badge} ${styles.trainingBadge}`}>
-			<FireIcon className="w-3.5 h-3.5" />
+			<GiArcher className="w-3.5 h-3.5" />
 			<span>Trening</span>
 		</div>
 	);
@@ -32,12 +34,12 @@ export const EnvironmentBadge: React.FC<EnvironmentBadgeProps> = ({ environment 
 	<div className={styles.envBadge}>
 		{environment === 'INDOOR' ? (
 			<>
-				<HomeIcon className="w-4 h-4" />
+				<LuHouse className="w-4 h-4" />
 				<span>Inne</span>
 			</>
 		) : (
 			<>
-				<ArrowsPointingOutIcon className="w-4 h-4" />
+				<LuMaximize2 className="w-4 h-4" />
 				<span>Ute</span>
 			</>
 		)}

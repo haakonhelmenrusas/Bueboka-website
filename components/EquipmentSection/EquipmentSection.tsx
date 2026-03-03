@@ -2,12 +2,13 @@
 
 import React from 'react';
 import styles from './EquipmentSection.module.css';
-import { ArrowUpRight, BowArrow, Star } from 'lucide-react';
 import { Button } from '@/components';
 import type { Arrow, Bow } from '@/lib/types';
 import { useEquipmentData } from './useEquipmentData';
+import { GiArrowhead, GiBowArrow } from 'react-icons/gi';
 import { formatOneDecimal } from '@/lib/format';
 import { getArrowMaterialLabel, getBowTypeLabel } from '@/lib/labels';
+import { PiStar } from 'react-icons/pi';
 
 export interface EquipmentSectionProps {
 	/** If provided, the component becomes controlled and will not fetch its own data */
@@ -52,7 +53,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 					<div>
 						<div className={styles.subHeaderRow}>
 							<h3 className={styles.subTitle}>Buer</h3>
-							<Button label="Ny bue" onClick={onCreateBow} icon={<BowArrow size={18} />} width={160} />
+							<Button label="Ny bue" onClick={onCreateBow} icon={<GiBowArrow size={18} />} width={160} />
 						</div>
 						<div className={styles.list} role="list">
 							{bows && bows.length > 0 ? (
@@ -70,14 +71,14 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 												{bow.name}
 												{bow.isFavorite ? (
 													<span className={styles.favorite} aria-hidden="true">
-														<Star size={14} fill="currentColor" />
+														<PiStar size={14} fill="currentColor" />
 													</span>
 												) : null}
 											</div>
 											<div className={styles.itemMeta}>{getBowTypeLabel(bow.type)}</div>
 										</div>
 										<div className={styles.itemIcon} aria-hidden="true">
-											<BowArrow size={18} />
+											<GiBowArrow size={18} />
 										</div>
 									</button>
 								))
@@ -95,7 +96,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 							<Button
 								label="Nye piler"
 								onClick={onCreateArrows}
-								icon={<ArrowUpRight size={18} />}
+								icon={<GiArrowhead size={18} />}
 								width={160}
 								disabled={arrows.length >= 5}
 							/>
@@ -117,7 +118,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 												{a.name}
 												{a.isFavorite ? (
 													<span className={styles.favorite} aria-hidden="true">
-														<Star size={14} fill="currentColor" />
+														<PiStar size={14} fill="currentColor" />
 													</span>
 												) : null}
 											</div>
@@ -128,7 +129,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 											</div>
 										</div>
 										<div className={styles.itemIcon} aria-hidden="true">
-											<ArrowUpRight size={18} />
+											<GiArrowhead size={18} />
 										</div>
 									</button>
 								))

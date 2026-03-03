@@ -15,6 +15,7 @@ import {
 	getPracticeCategoryOptions,
 	getWeatherSelectOptions,
 } from '@/lib/formUtils';
+import { LuX } from 'react-icons/lu';
 
 export interface CompetitionRoundInput {
 	roundNumber: number;

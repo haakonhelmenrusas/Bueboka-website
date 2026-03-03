@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { LuX } from 'react-icons/lu';
 import styles from './ProfileEditModal.module.css';
 import { ProfileForm } from './ProfileForm';
 import { useModalBehavior } from '@/lib/useModalBehavior';
@@ -83,7 +83,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 						Rediger profil
 					</h2>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<X size={24} />
+						<LuX size={24} />
 					</button>
 				</div>
 

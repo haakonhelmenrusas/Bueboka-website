@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { Button, PracticesList, usePracticeCards } from '@/components';
 import styles from './PracticesSection.module.css';
+import { LuPlus, LuTrophy } from 'react-icons/lu';
 
 interface PracticesSectionProps {
 	onCreate: () => void;

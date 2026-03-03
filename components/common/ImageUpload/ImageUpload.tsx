@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 import styles from './ImageUpload.module.css';
 import Image from 'next/image';
+import { LuCamera, LuTrash, LuUpload, LuUser } from 'react-icons/lu';
 
 interface ImageUploadProps {
 	currentImage?: string | null;
@@ -68,11 +69,11 @@ export function ImageUpload({ currentImage, onImageChange, disabled }: ImageUplo
 						<Image src={preview} alt="Forhåndsvisning av profilbilde" width={120} height={120} className={styles.image} />
 						<div className={styles.actions}>
 							<button type="button" onClick={handleClick} disabled={disabled} className={styles.changeButton} aria-label="Endre bilde">
-								<CameraIcon className="w-4 h-4" />
+								<LuCamera className="w-4 h-4" />
 								<span>Endre</span>
 							</button>
 							<button type="button" onClick={handleRemove} disabled={disabled} className={styles.removeButton} aria-label="Fjern bilde">
-								<TrashIcon className="w-4 h-4" />
+								<LuTrash className="w-4 h-4" />
 								<span>Fjern</span>
 							</button>
 						</div>
@@ -80,10 +81,10 @@ export function ImageUpload({ currentImage, onImageChange, disabled }: ImageUplo
 				) : (
 					<div className={styles.placeholder}>
 						<div className={styles.placeholderIcon}>
-							<UserIcon className="w-12 h-12 stroke-1" />
+							<LuUser className="w-12 h-12 stroke-1" />
 						</div>
 						<button type="button" onClick={handleClick} disabled={disabled} className={styles.uploadButton}>
-							<ArrowUpTrayIcon className="w-4 h-4" />
+							<LuUpload className="w-4 h-4" />
 							<span>Last opp bilde</span>
 						</button>
 					</div>

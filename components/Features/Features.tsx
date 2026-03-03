@@ -1,20 +1,20 @@
-import { ChartBar, Target, ToolCase } from 'lucide-react';
+import { LuBriefcase, LuChartBar, LuTarget } from 'react-icons/lu';
 import styles from './Features.module.css';
 
 export function Features() {
 	const features = [
 		{
-			icon: <Target className={styles.icon} aria-hidden="true" />,
+			icon: <LuTarget className={styles.icon} aria-hidden="true" />,
 			title: 'Registering av trening',
 			description: 'Hold detaljerte oversikter over skytesesjonene dine og følg forbedringen over tid.',
 		},
 		{
-			icon: <ChartBar className={styles.icon} aria-hidden="true" />,
+			icon: <LuChartBar className={styles.icon} aria-hidden="true" />,
 			title: 'Beregning siktemerker',
 			description: 'Skyt, legg inn og få dine siktemerker beregnet.',
 		},
 		{
-			icon: <ToolCase className={styles.icon} aria-hidden="true" />,
+			icon: <LuBriefcase className={styles.icon} aria-hidden="true" />,
 			title: 'Full kontroll på utstyr',
 			description: 'Lagre din profil med klubb, buer og pilsett.',
 		},

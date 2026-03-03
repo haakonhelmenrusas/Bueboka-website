@@ -1,8 +1,3 @@
-/**
- * Achievement Unlock Modal Component
- * Displays a celebration modal when achievements are unlocked
- */
-
 'use client';
 
 import React, { useEffect } from 'react';
@@ -25,6 +20,7 @@ import {
 import { Achievement } from '@/lib/achievements/types';
 import { Button } from '@/components';
 import styles from './AchievementUnlockModal.module.css';
+import { CiTrophy } from 'react-icons/ci';
 
 interface AchievementUnlockModalProps {
 	achievements: Achievement[];
@@ -101,7 +97,7 @@ export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ 
 
 				<div className={styles.achievementList}>
 					{achievements.map((achievement) => {
-						const IconComponent = ICON_MAP[achievement.icon] || TrophyIcon;
+						const IconComponent = ICON_MAP[achievement.icon] || CiTrophy;
 						return (
 							<div key={achievement.id} className={styles.achievementItem}>
 								<div className={styles.achievementIcon}>
@@ -120,13 +116,7 @@ export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ 
 				<div className={styles.footer}>
 					<Button label="Lukk" onClick={onClose} size="normal" buttonType="outline" />
 					{onViewAll && (
-						<Button
-							label="Se Alle Merker"
-							onClick={onViewAll}
-							size="normal"
-							buttonType="filled"
-							icon={<TrophyIcon className="w-4 h-4" />}
-						/>
+						<Button label="Se Alle Merker" onClick={onViewAll} size="normal" buttonType="filled" icon={<LuTrophy className="w-4 h-4" />} />
 					)}
 				</div>
 

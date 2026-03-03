@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { NumberInput } from './NumberInput';
+import { NumberInput } from '@/components';
 
 function Harness(props: Partial<React.ComponentProps<typeof NumberInput>>) {
 	const [value, setValue] = React.useState(props.value ?? 0);

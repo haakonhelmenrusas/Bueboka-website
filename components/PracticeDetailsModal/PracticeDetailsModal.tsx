@@ -10,6 +10,9 @@ import { EnvironmentBadge, PracticeTypeBadge } from './Badges';
 import { StatCard } from './StatCard';
 import { RoundCard } from './RoundCard';
 import styles from './PracticeDetailsModal.module.css';
+import { LuCloud, LuCompass, LuMapPin, LuTarget, LuTrash, LuX } from 'react-icons/lu';
+import { GiArcher, GiBrokenArrow } from 'react-icons/gi';
+import { CgNotes } from 'react-icons/cg';
 
 export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose, onEdit, onDeleted }) => {
 	useModalBehavior({ open, onClose });
@@ -67,11 +70,9 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						</div>
 					</div>
 					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<XMarkIcon className="w-6 h-6" />
+						<LuX className="w-6 h-6" />
 					</button>
 				</div>
-
-				{/* Total Score Card */}
 				{totalScore > 0 && (
 					<div className={styles.scoreCard}>
 						<div className={styles.scoreLabel}>Total Score</div>
@@ -79,8 +80,6 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						<div className={styles.scoreSubtext}>{totalArrows} piler skutt</div>
 					</div>
 				)}
-
-				{/* Stats Grid */}
 				<div className={styles.statsGrid}>
 					{practice.practiceCategory && (
 						<StatCard
@@ -89,40 +88,36 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 							value={getPracticeCategoryLabel(practice.practiceCategory)}
 						/>
 					)}
-					{practice.location && <StatCard icon={<MapPinIcon className="w-5 h-5" />} label="Sted" value={practice.location} />}
+					{practice.location && <StatCard icon={<LuMapPin className="w-5 h-5" />} label="Sted" value={practice.location} />}
 					{practice.weather?.length > 0 && (
-						<StatCard icon={<CloudIcon className="w-5 h-5" />} label="Vær" value={formatWeatherConditions(practice.weather)} />
+						<StatCard icon={<LuCloud className="w-5 h-5" />} label="Vær" value={formatWeatherConditions(practice.weather)} />
 					)}
 					{practice.bow && (
 						<StatCard
-							icon={<FireIcon className="w-5 h-5" />}
+							icon={<GiArcher className="w-5 h-5" />}
 							label="Bue"
 							value={`${practice.bow.name} • ${getBowTypeLabel(practice.bow.type)}`}
 						/>
 					)}
 					{practice.arrows && (
 						<StatCard
-							icon={<CompassIcon className="w-5 h-5" />}
+							icon={<LuCompass className="w-5 h-5" />}
 							label="Piler"
 							value={`${practice.arrows.name} • ${getArrowMaterialLabel(practice.arrows.material)}`}
 						/>
 					)}
 				</div>
-
-				{/* Arrows Without Score */}
 				{practice.arrowsWithoutScore && practice.arrowsWithoutScore > 0 && (
 					<div className={styles.statCardFull}>
-						<FireIcon className="w-5 h-5" />
+						<GiBrokenArrow className="w-5 h-5" />
 						<div className={styles.statLabel}>Piler uten scoring</div>
 						<div className={styles.statValue}>{practice.arrowsWithoutScore} piler</div>
 					</div>
 				)}
-
-				{/* Rounds Section */}
 				{practice.ends && practice.ends.length > 0 && (
 					<div className={styles.roundsSection}>
 						<h4 className={styles.sectionTitle}>
-							<Target size={20} />
+							<LuTarget size={20} />
 							Runder
 						</h4>
 						<div className={styles.roundsList}>
@@ -132,22 +127,16 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						</div>
 					</div>
 				)}
-
-				{/* Notes Section */}
 				{practice.notes && (
 					<div className={styles.notesSection}>
 						<h4 className={styles.sectionTitle}>
-							<DocumentTextIcon className="w-5 h-5" />
+							<CgNotes className="w-5 h-5" />
 							Notater
 						</h4>
 						<div className={styles.notesContent}>{practice.notes}</div>
 					</div>
 				)}
-
-				{/* Error Message */}
 				{deleteError && <div className={styles.errorBox}>{deleteError}</div>}
-
-				{/* Actions */}
 				<div className={styles.actions}>
 					<Button label="Lukk" buttonType="outline" onClick={onClose} width={140} disabled={deleting} />
 					{onEdit && <Button label="Rediger" onClick={onEdit} width={140} disabled={deleting} />}
@@ -158,7 +147,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						variant="warning"
 						buttonType="outline"
 						disabled={deleting}
-						icon={<TrashIcon className="w-4 h-4" />}
+						icon={<LuTrash className="w-4 h-4" />}
 					/>
 				</div>
 			</div>

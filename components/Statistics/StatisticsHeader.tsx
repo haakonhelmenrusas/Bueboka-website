@@ -1,4 +1,4 @@
-import { ArrowLeft } from 'lucide-react';
+import { LuArrowLeft } from 'react-icons/lu';
 import { useRouter } from 'next/navigation';
 import styles from './StatisticsHeader.module.css';
 
@@ -8,7 +8,7 @@ export function StatisticsHeader() {
 	return (
 		<>
 			<button className={styles.backButton} onClick={() => router.push('/min-side')}>
-				<ArrowLeft size={20} />
+				<LuArrowLeft size={20} />
 				Tilbake til Min side
 			</button>
 

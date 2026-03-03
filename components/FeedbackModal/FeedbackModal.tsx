@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { LuX } from 'react-icons/lu';
+import { LuStar, LuX } from 'react-icons/lu';
 import styles from './FeedbackModal.module.css';
 import { useModalBehavior } from '@/lib/useModalBehavior';
 import { Button } from '@/components';

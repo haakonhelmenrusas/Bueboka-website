@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { signIn } from '@/lib/auth-client';
 import { Button, Input, SocialAuthButtons } from '@/components';
 import { validateLoginForm } from '@/lib/validations/authValidation';
-import { BarChart3, Target, TrendingUp } from 'lucide-react';
+import { LuChartBar, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import styles from './page.module.css';
 
 export default function SignInPage() {
@@ -86,15 +86,15 @@ export default function SignInPage() {
 						</p>
 						<ul className={styles.brandFeatures} aria-label="Hovedfunksjoner">
 							<li className={styles.feature}>
-								<BarChart3 size={32} className={styles.featureIcon} aria-hidden="true" />
+								<LuChartBar size={32} className={styles.featureIcon} aria-hidden="true" />
 								<span>Detaljert statistikk</span>
 							</li>
 							<li className={styles.feature}>
-								<Target size={32} className={styles.featureIcon} aria-hidden="true" />
+								<LuTarget size={32} className={styles.featureIcon} aria-hidden="true" />
 								<span>Siktemerke-beregning</span>
 							</li>
 							<li className={styles.feature}>
-								<TrendingUp size={32} className={styles.featureIcon} aria-hidden="true" />
+								<LuTrendingUp size={32} className={styles.featureIcon} aria-hidden="true" />
 								<span>Følg din utvikling</span>
 							</li>
 						</ul>

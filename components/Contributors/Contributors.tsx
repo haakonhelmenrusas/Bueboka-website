@@ -1,6 +1,6 @@
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import Image from 'next/image';
+import { LuExternalLink } from 'react-icons/lu';
 import styles from './Contributors.module.css';
 
 export function Contributors() {
@@ -69,7 +69,7 @@ export function Contributors() {
 							{contributor.website && (
 								<a href={contributor.website} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.scaleOnHover}`}>
 									<span>Besøk nettside</span>
-									<ArrowTopRightOnSquareIcon className={styles.externalIcon} aria-hidden="true" />
+									<LuExternalLink className={styles.externalIcon} aria-hidden="true" />
 									<span className="sr-only">(åpnes i ny fane)</span>
 								</a>
 							)}

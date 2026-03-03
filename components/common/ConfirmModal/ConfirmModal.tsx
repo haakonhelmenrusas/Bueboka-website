@@ -43,7 +43,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 					<h3 id="confirm-title" className={styles.title}>
 						{title}
 					</h3>
-					<button className={styles.closeButton} onClick={onCancel} aria-label="Lukk">
+					<button className={styles.closeButton} onClick={onClose} aria-label="Lukk">
 						<LuX size={20} />
 					</button>
 				</div>

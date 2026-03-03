@@ -2,9 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './WhatsNewModal.module.css';
-import { ChartBarIcon, CheckIcon, ChevronRightIcon, FireIcon, TrendingUpIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { LuChevronRight } from 'react-icons/lu';
 import { Button } from '@/components';
 import { useModalBehavior } from '@/lib/useModalBehavior';
+import { LiaFireAltSolid } from 'react-icons/lia';
+import { PiChartBarLight, PiCheckSquareLight } from 'react-icons/pi';
+import { IoMdTrendingUp } from 'react-icons/io';
+import { HiOutlineXMark } from 'react-icons/hi2';
 
 interface WhatsNewModalProps {
 	open: boolean;
@@ -32,7 +36,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 				<div className={styles.welcomeContent}>
 					<div className={styles.heroSection}>
 						<div className={styles.heroIcon}>
-							<FireIcon className="w-16 h-16 stroke-1" />
+							<LiaFireAltSolid className="w-16 h-16 stroke-1" />
 						</div>
 						<p className={styles.heroText}>
 							Bueboka hjelper deg å holde oversikt over treningene dine, følge din utvikling, og forbedre skytingen din.
@@ -41,21 +45,21 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 					<div className={styles.featureGrid}>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
-								<FireIcon className="w-7 h-7" />
+								<LiaFireAltSolid className="w-7 h-7" />
 							</div>
 							<h4>Registrer treninger</h4>
 							<p>Logg alle treningene dine med detaljer om bue, piler, distanse og score</p>
 						</div>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
-								<ChartBarIcon className="w-7 h-7" />
+								<PiChartBarLight className="w-7 h-7" />
 							</div>
 							<h4>Se statistikk</h4>
 							<p>Få innsikt i din utvikling med detaljerte grafer og trender</p>
 						</div>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
-								<TrendingUpIcon className="w-7 h-7" />
+								<IoMdTrendingUp className="w-7 h-7" />
 							</div>
 							<h4>Følg fremgang</h4>
 							<p>Hold oversikt over din forbedring over tid</p>
@@ -106,28 +110,28 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 			content: (
 				<div className={styles.tipsContent}>
 					<div className={styles.tipItem}>
-						<CheckIcon className="w-5 h-5" />
+						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
 							<strong>Vurder treningene dine</strong>
 							<p>Bruk vurderingsskalaen (1-10) for å evaluere hvordan økten gikk</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
-						<CheckIcon className="w-5 h-5" />
+						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
 							<strong>Skriv notater</strong>
 							<p>Legg til notater om hva som fungerte bra og hva som kan forbedres</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
-						<CheckIcon className="w-5 h-5" />
+						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
 							<strong>Vær konsistent</strong>
 							<p>Logg alle treningene dine for å få best mulig oversikt over utviklingen</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
-						<CheckIcon className="w-5 h-5" />
+						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
 							<strong>Eksporter dataene dine</strong>
 							<p>Du kan laste ned statistikken din som CSV for videre analyse</p>
@@ -159,7 +163,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 		<div className={styles.overlay} onClick={onClose} role="presentation">
 			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
 				<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-					<XMarkIcon className="w-6 h-6" />
+					<HiOutlineXMark className="w-6 h-6" />
 				</button>
 
 				<div className={styles.content}>
@@ -188,7 +192,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 							<Button
 								label={isLastStep ? 'Kom i gang!' : 'Neste'}
 								onClick={handleNext}
-								icon={<ChevronRightIcon className="w-4 h-4" />}
+								icon={<LuChevronRight className="w-4 h-4" />}
 								iconPosition="right"
 								width={isLastStep ? 160 : 120}
 							/>

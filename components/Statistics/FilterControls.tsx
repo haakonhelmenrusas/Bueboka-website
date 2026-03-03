@@ -1,5 +1,5 @@
-import { Download } from 'lucide-react';
 import styles from './FilterControls.module.css';
+import { LuDownload } from 'react-icons/lu';
 
 type DateRange = 'all' | '7days' | '30days' | '90days';
 
@@ -43,7 +43,7 @@ export function FilterControls({ dateRange, onDateRangeChange, onDownloadCSV }: 
 			</div>
 
 			<button className={styles.downloadButton} onClick={onDownloadCSV}>
-				<Download size={18} />
+				<LuDownload size={18} />
 				Last ned CSV
 			</button>
 		</div>

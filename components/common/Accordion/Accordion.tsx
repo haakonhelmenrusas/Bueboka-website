@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from './Accordion.module.css';
+import { LuChevronDown } from 'react-icons/lu';
 
 export interface AccordionItem {
 	id: string;

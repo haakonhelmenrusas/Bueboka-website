@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './StatsSummary.module.css';
-import { LuBarChart3, LuCalendarDays, LuTrendingUp } from 'react-icons/lu';
+import { LuCalendarDays, LuChartBar, LuTrendingUp } from 'react-icons/lu';
 
 export type StatsSummaryProps = {
 	last7Days: number;
@@ -27,7 +27,7 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Day
 		<div className={styles.grid}>
 			<StatCard title="Siste 7 dager" value={last7Days} icon={<LuCalendarDays size={18} />} />
 			<StatCard title="Siste 30 dager" value={last30Days} icon={<LuTrendingUp size={18} />} />
-			<StatCard title="Totalt" value={overall} icon={<LuBarChart3 size={18} />} />
+			<StatCard title="Totalt" value={overall} icon={<LuChartBar size={18} />} />
 		</div>
 	);
 };

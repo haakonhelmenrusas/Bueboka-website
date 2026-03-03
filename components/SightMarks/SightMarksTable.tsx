@@ -1,6 +1,6 @@
 import styles from './SightMarksTable.module.css';
 import { SightMark } from '@/types/SightMarks';
-import { Trash2 } from 'lucide-react';
+import { LuTrash2 } from 'react-icons/lu';
 import { Button } from '@/components/common/Button/Button';
 
 interface SightMarksTableProps {
@@ -46,7 +46,7 @@ export function SightMarksTable({ sightMarks, onDelete, isDeleting = false }: Si
 							<td className={styles.actions}>
 								<Button
 									label="Slett"
-									icon={<Trash2 size={16} />}
+									icon={<LuTrash2 size={16} />}
 									onClick={() => handleDelete(sightMark.id)}
 									size="small"
 									disabled={isDeleting}

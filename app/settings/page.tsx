@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Accordion, ConfirmModal, EmailVerificationBanner, Header } from '@/components';
 import { signOut, useSession } from '@/lib/auth-client';
-import { ArrowLeft, Key, Lock, Shield, Target } from 'lucide-react';
+import { LuArrowLeft, LuKey, LuLock, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './page.module.css';
 
 export default function SettingsPage() {
@@ -70,7 +70,7 @@ export default function SettingsPage() {
 				<div className={styles.container}>
 					<div className={styles.header}>
 						<button className={styles.backButton} onClick={handleBackClick} aria-label="Tilbake">
-							<ArrowLeft size={20} />
+							<LuArrowLeft size={20} />
 						</button>
 						<h1 className={styles.title}>Innstillinger</h1>
 					</div>
@@ -219,7 +219,7 @@ export default function SettingsPage() {
 								<ul className={styles.privacyList}>
 									<li className={styles.privacyItem}>
 										<span className={styles.privacyIcon}>
-											<Lock size={18} />
+											<LuLock size={18} />
 										</span>
 										<div>
 											<strong>Aldri delt eller solgt</strong>: Vi deler eller selger aldri dataene dine til tredjeparter. Din informasjon
@@ -228,7 +228,7 @@ export default function SettingsPage() {
 									</li>
 									<li className={styles.privacyItem}>
 										<span className={styles.privacyIcon}>
-											<Target size={18} />
+											<LuTarget size={18} />
 										</span>
 										<div>
 											<strong>Kun til appens drift</strong>: Vi bruker kun dataene dine til å drive appen og gi deg den beste
@@ -237,7 +237,7 @@ export default function SettingsPage() {
 									</li>
 									<li className={styles.privacyItem}>
 										<span className={styles.privacyIcon}>
-											<Key size={18} />
+											<LuKey size={18} />
 										</span>
 										<div>
 											<strong>Din kontroll</strong>: Du kan når som helst slette kontoen din og all tilhørende data.
@@ -245,7 +245,7 @@ export default function SettingsPage() {
 									</li>
 									<li className={styles.privacyItem}>
 										<span className={styles.privacyIcon}>
-											<Shield size={18} />
+											<LuShield size={18} />
 										</span>
 										<div>
 											<strong>Sikker lagring</strong>: All data krypteres og lagres sikkert i samsvar med moderne sikkerhetsstandarder.

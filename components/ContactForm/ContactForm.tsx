@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send } from 'lucide-react';
+import { LuSend } from 'react-icons/lu';
 import styles from './ContactForm.module.css';
 import { Button, Input, TextArea } from '@/components';
 
@@ -100,7 +100,7 @@ export function ContactForm() {
 				<Button
 					type="submit"
 					label={status === 'submitting' ? 'Sender…' : 'Send melding'}
-					icon={<Send size={16} />}
+					icon={<LuSend size={16} />}
 					loading={status === 'submitting'}
 				/>
 

@@ -1,4 +1,4 @@
-import { ArrowPathIcon, BoltIcon, ChevronRightIcon, CloudIcon, DevicePhoneMobileIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { LuArrowBigRightDash, LuBolt, LuChevronRight, LuCloud, LuSmartphone, LuSparkles } from 'react-icons/lu';
 import styles from './Bueboka2Announcement.module.css';
 
 export function Bueboka2Announcement() {
@@ -6,7 +6,7 @@ export function Bueboka2Announcement() {
 		<section className={styles.section} aria-label="Bueboka 2.0 Announcement">
 			<div className={styles.container}>
 				<div className={styles.badge}>
-					<SparklesIcon className="w-4 h-4" />
+					<LuSparkles className="w-4 h-4" />
 					<span>Nyheter</span>
 				</div>
 
@@ -22,7 +22,7 @@ export function Bueboka2Announcement() {
 					<div className={styles.features}>
 						<div className={styles.feature}>
 							<div className={styles.featureIcon}>
-								<BoltIcon className="w-6 h-6" />
+								<LuBolt className="w-6 h-6" />
 							</div>
 							<div className={styles.featureContent}>
 								<h3 className={styles.featureTitle}>Lynrask opplevelse</h3>
@@ -34,7 +34,7 @@ export function Bueboka2Announcement() {
 
 						<div className={styles.feature}>
 							<div className={styles.featureIcon}>
-								<CloudIcon className="w-6 h-6" />
+								<LuCloud className="w-6 h-6" />
 							</div>
 							<div className={styles.featureContent}>
 								<h3 className={styles.featureTitle}>Skybasert og synkronisert</h3>
@@ -46,7 +46,7 @@ export function Bueboka2Announcement() {
 
 						<div className={styles.feature}>
 							<div className={styles.featureIcon}>
-								<ArrowPathIcon className="w-6 h-6" />
+								<LuArrowBigRightDash className="w-6 h-6" />
 							</div>
 							<div className={styles.featureContent}>
 								<h3 className={styles.featureTitle}>Moderne grensesnitt</h3>
@@ -59,7 +59,7 @@ export function Bueboka2Announcement() {
 
 					<div className={styles.upgradeNotice}>
 						<div className={styles.upgradeIcon}>
-							<DevicePhoneMobileIcon className="w-8 h-8" />
+							<LuSmartphone className="w-8 h-8" />
 						</div>
 						<div className={styles.upgradeContent}>
 							<h3 className={styles.upgradeTitle}>Viktig for mobilapp-brukere</h3>
@@ -80,7 +80,7 @@ export function Bueboka2Announcement() {
 					<div className={styles.cta}>
 						<a href="/ny-bruker" className={styles.primaryButton}>
 							Kom i gang med Bueboka 2.0
-							<ChevronRightIcon className="w-5 h-5" />
+							<LuChevronRight className="w-5 h-5" />
 						</a>
 						<a href="/logg-inn" className={styles.secondaryButton}>
 							Logg inn

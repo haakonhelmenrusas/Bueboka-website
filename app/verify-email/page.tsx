@@ -2,7 +2,7 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { CheckCircle, Loader2, XCircle } from 'lucide-react';
+import { LuCircle, LuCircleCheck, LuLoader, LuLoaderPinwheel } from 'react-icons/lu';
 import styles from './page.module.css';
 
 function VerifyEmailContent() {
@@ -60,7 +60,7 @@ function VerifyEmailContent() {
 			<div className={styles.card}>
 				{status === 'loading' && (
 					<>
-						<Loader2 className={styles.iconLoading} size={64} />
+						<LuLoader className={styles.iconLoading} size={64} />
 						<h1 className={styles.title}>Bekrefter e-postadresse...</h1>
 						<p className={styles.message}>Vennligst vent.</p>
 					</>
@@ -68,7 +68,7 @@ function VerifyEmailContent() {
 
 				{status === 'success' && (
 					<>
-						<CheckCircle className={styles.iconSuccess} size={64} />
+						<LuCircleCheck className={styles.iconSuccess} size={64} />
 						<h1 className={styles.title}>E-post bekreftet!</h1>
 						<p className={styles.message}>{message}</p>
 					</>
@@ -76,7 +76,7 @@ function VerifyEmailContent() {
 
 				{status === 'error' && (
 					<>
-						<XCircle className={styles.iconError} size={64} />
+						<LuCircle className={styles.iconError} size={64} />
 						<h1 className={styles.title}>Bekreftelse feilet</h1>
 						<p className={styles.message}>{message}</p>
 						<button className={styles.button} onClick={() => router.push('/logg-inn')}>
@@ -95,7 +95,7 @@ export default function VerifyEmailPage() {
 			fallback={
 				<div className={styles.container}>
 					<div className={styles.card}>
-						<Loader2 className={styles.iconLoading} size={64} />
+						<LuLoaderPinwheel className={styles.iconLoading} size={64} />
 						<h1 className={styles.title}>Laster...</h1>
 					</div>
 				</div>

@@ -1,4 +1,4 @@
-import { Github } from 'lucide-react';
+import { LuGithub } from 'react-icons/lu';
 import { AppStoreBadge } from '@/components';
 import React from 'react';
 import styles from './Footer.module.css';
@@ -24,7 +24,7 @@ export function Footer() {
 							target="_blank"
 							className={`${styles.ctaBtn} ${styles.pressable}`}
 						>
-							<Github className={styles.icon} />
+							<LuGithub className={styles.icon} />
 							<span>GitHub</span>
 						</a>
 					</div>

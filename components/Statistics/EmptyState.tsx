@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { BarChart3, Calendar, Target, TrendingUp } from 'lucide-react';
+import { LuCalendar, LuChartBar, LuChartBarDecreasing, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import styles from './EmptyState.module.css';
 import { Button } from '@/components';
 
@@ -13,17 +13,17 @@ export function EmptyState() {
 		<div className={styles.container}>
 			<div className={styles.graphic}>
 				<div className={styles.iconCircle}>
-					<BarChart3 size={64} className={styles.mainIcon} />
+					<LuChartBar size={64} className={styles.mainIcon} />
 				</div>
 				<div className={styles.floatingIcons}>
 					<div className={`${styles.floatingIcon} ${styles.icon1}`}>
-						<Target size={24} />
+						<LuTarget size={24} />
 					</div>
 					<div className={`${styles.floatingIcon} ${styles.icon2}`}>
-						<TrendingUp size={24} />
+						<LuTrendingUp size={24} />
 					</div>
 					<div className={`${styles.floatingIcon} ${styles.icon3}`}>
-						<Calendar size={24} />
+						<LuCalendar size={24} />
 					</div>
 				</div>
 			</div>
@@ -35,7 +35,7 @@ export function EmptyState() {
 				<div className={styles.features}>
 					<div className={styles.feature}>
 						<div className={styles.featureIcon}>
-							<BarChart3 size={20} />
+							<LuChartBarDecreasing size={20} />
 						</div>
 						<div className={styles.featureText}>
 							<strong>Følg fremgangen</strong>
@@ -44,7 +44,7 @@ export function EmptyState() {
 					</div>
 					<div className={styles.feature}>
 						<div className={styles.featureIcon}>
-							<Target size={20} />
+							<LuTarget size={20} />
 						</div>
 						<div className={styles.featureText}>
 							<strong>Sammenlign distanser</strong>
@@ -53,7 +53,7 @@ export function EmptyState() {
 					</div>
 					<div className={styles.feature}>
 						<div className={styles.featureIcon}>
-							<TrendingUp size={20} />
+							<LuTrendingUp size={20} />
 						</div>
 						<div className={styles.featureText}>
 							<strong>Se trender</strong>

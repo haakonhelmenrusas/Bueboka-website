@@ -1,4 +1,4 @@
-import { LuCloud, LuHelpCircle, LuSparkles, LuSun, LuZap } from 'react-icons/lu';
+import { LuCircleHelp, LuCloud, LuSparkles, LuSun, LuZap } from 'react-icons/lu';
 import { WeatherCondition } from './prismaEnums';
 
 export const weatherOptions: WeatherCondition[] = [
@@ -37,7 +37,7 @@ export const weatherIcons: Record<WeatherCondition, React.ComponentType<{ size?:
 	[WeatherCondition.FOG]: LuCloud,
 	[WeatherCondition.THUNDER]: LuZap,
 	[WeatherCondition.CHANGING_CONDITIONS]: LuCloud,
-	[WeatherCondition.OTHER]: LuHelpCircle,
+	[WeatherCondition.OTHER]: LuCircleHelp,
 };
 
 /**

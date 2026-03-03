@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Trophy } from 'lucide-react';
+import { LuArrowLeft, LuTrophy } from 'react-icons/lu';
 import { Button, Header } from '@/components';
 import { AchievementBadge } from '@/components/Achievements/AchievementBadge';
 import { AchievementProgress } from '@/lib/achievements/types';
@@ -110,12 +110,12 @@ export default function AchievementsPage() {
 			<div className={styles.page}>
 				<div className={styles.container}>
 					<div className={styles.backButtonContainer}>
-						<Button label="Tilbake" onClick={() => router.back()} icon={<ArrowLeft size={18} />} size="small" buttonType="outline" />
+						<Button label="Tilbake" onClick={() => router.back()} icon={<LuArrowLeft size={18} />} size="small" buttonType="outline" />
 					</div>
 
 					<div className={styles.header}>
 						<h1 className={styles.title}>
-							<Trophy size={40} />
+							<LuTrophy size={40} />
 							Mine Merker
 						</h1>
 						<p className={styles.subtitle}>Lås opp merker ved å trene og delta i konkurranser</p>

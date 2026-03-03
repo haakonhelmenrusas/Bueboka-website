@@ -1,9 +1,19 @@
-/**
- * Achievement Badge Component
- * Displays a single achievement with icon, name, progress, and status
- */
-
 import React from 'react';
+import {
+	LuArrowUpRight,
+	LuChevronRight,
+	LuCloud,
+	LuCompass,
+	LuFlame,
+	LuHouse,
+	LuMoon,
+	LuSparkles,
+	LuStar,
+	LuSun,
+	LuTrendingUp,
+	LuTrophy,
+	LuZap,
+} from 'react-icons/lu';
 import { AchievementProgress } from '@/lib/achievements/types';
 import styles from './AchievementBadge.module.css';
 
@@ -65,8 +75,6 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 				DIAMOND: styles.tierDiamond,
 			}[achievement.tier]
 		: '';
-
-	const iconSize = size === 'small' ? 24 : size === 'large' ? 40 : 32;
 
 	return (
 		<div
