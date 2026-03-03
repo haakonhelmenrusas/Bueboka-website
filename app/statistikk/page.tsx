@@ -14,7 +14,6 @@ import {
 	ScoreChart,
 	type Series,
 	StatisticsHeader,
-	SummaryCards,
 } from '@/components/Statistics';
 import { exportToCSV } from '@/lib/csvExport';
 import styles from './page.module.css';
@@ -206,30 +205,6 @@ export default function StatisticsPage() {
 		exportToCSV(headers, rows, filename);
 	};
 
-	const getMostUsed = () => {
-		if (filteredSeries.length === 0) return 'N/A';
-		return filteredSeries.reduce((prev, curr) => (prev.data.length > curr.data.length ? prev : curr)).name;
-	};
-
-	const getAverageScore = (): number => {
-		if (!filteredSeries.length) return 0;
-
-		// Calculate total score and total sessions across all series
-		let totalScore = 0;
-		let totalSessionsWithScore = 0;
-
-		filteredSeries.forEach((s) => {
-			s.data.forEach((d) => {
-				if (d.score > 0) {
-					totalScore += d.score;
-					totalSessionsWithScore++;
-				}
-			});
-		});
-
-		return totalSessionsWithScore > 0 ? totalScore / totalSessionsWithScore : 0;
-	};
-
 	const getBreakdownItems = () => {
 		// Get colors from CSS variables
 		const root = typeof window !== 'undefined' ? getComputedStyle(document.documentElement) : null;
@@ -289,7 +264,6 @@ export default function StatisticsPage() {
 						<>
 							<FilterControls dateRange={dateRange} onDateRangeChange={setDateRange} onDownloadCSV={downloadCSV} />
 							<div className={styles.chartSection}>
-								<SummaryCards averageScore={getAverageScore()} totalSessions={chartData.length} mostUsed={getMostUsed()} />
 								<ArrowsChart
 									data={getArrowsChartData()}
 									series={filteredSeries}
