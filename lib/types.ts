@@ -81,7 +81,11 @@ export interface Practice {
 		scores: number[];
 		arrowsPerEnd?: number | null;
 		distanceMeters?: number | null;
+		distanceFrom?: number | null;
+		distanceTo?: number | null;
 		targetSizeCm?: number | null;
+		arrowsWithoutScore?: number | null;
+		roundScore?: number | null;
 	}>;
 }
 

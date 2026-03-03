@@ -60,7 +60,10 @@ interface PracticeFormModalProps {
 			id: string;
 			arrows: number;
 			distanceMeters?: number | null;
+			distanceFrom?: number | null;
+			distanceTo?: number | null;
 			targetSizeCm?: number | null;
+			arrowsWithoutScore?: number | null;
 			roundScore?: number | null;
 		}>;
 	};
@@ -119,11 +122,11 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 
 					return {
 						distanceMeters: end.distanceMeters || undefined,
-						distanceFrom: (end as any).distanceFrom || undefined,
-						distanceTo: (end as any).distanceTo || undefined,
+						distanceFrom: end.distanceFrom || undefined,
+						distanceTo: end.distanceTo || undefined,
 						targetType: targetType,
 						numberArrows: end.arrows || 0,
-						arrowsWithoutScore: (end as any).arrowsWithoutScore || 0,
+						arrowsWithoutScore: end.arrowsWithoutScore || 0,
 						roundScore: end.roundScore || 0,
 					};
 				});

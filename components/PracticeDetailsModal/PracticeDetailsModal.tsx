@@ -34,7 +34,10 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 		setDeleting(true);
 		setDeleteError(null);
 		try {
-			const res = await fetch(`/api/practices/${practice.id}`, { method: 'DELETE' });
+			// Use the correct endpoint based on practice type
+			const endpoint = practice.practiceType === 'KONKURRANSE' ? `/api/competitions/${practice.id}` : `/api/practices/${practice.id}`;
+
+			const res = await fetch(endpoint, { method: 'DELETE' });
 			if (!res.ok) {
 				const details = await res.json().catch(() => null);
 				setDeleteError(details?.error || 'Kunne ikke slette trening.');
