@@ -88,9 +88,9 @@ model Bow {
   practice          Practice[]
   competitions      Competition[]
   type              BowType
-  eyeToNock         Int?
-  aimMeasure        Int?
-  eyeToSight        Int?
+  eyeToNock         Float?
+  aimMeasure        Float?
+  eyeToSight        Float?
   notes             String?
   isFavorite        Boolean            @default(false)
   createdAt         DateTime           @default(now())

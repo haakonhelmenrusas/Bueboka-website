@@ -43,8 +43,12 @@ const clamp = (n: number, min?: number, max?: number) => {
 	return v;
 };
 
-const roundToOneDecimal = (n: number): number => {
-	return Math.round(n * 10) / 10;
+const roundToStep = (n: number, step: number): number => {
+	// Determine decimal places from step
+	const stepStr = step.toString();
+	const decimals = stepStr.includes('.') ? stepStr.split('.')[1].length : 0;
+	const multiplier = Math.pow(10, decimals);
+	return Math.round(n * multiplier) / multiplier;
 };
 
 export const NumberInput: React.FC<NumberInputProps> = ({
@@ -98,14 +102,14 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 	const dec = () => {
 		if (disabled) return;
-		const next = roundToOneDecimal(clamp(value - step, min, max));
+		const next = roundToStep(clamp(value - step, min, max), step);
 		onChange(next);
 		setDisplayValue(String(next));
 	};
 
 	const inc = () => {
 		if (disabled) return;
-		const next = roundToOneDecimal(clamp(value + step, min, max));
+		const next = roundToStep(clamp(value + step, min, max), step);
 		onChange(next);
 		setDisplayValue(String(next));
 	};
@@ -125,7 +129,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 		const parsed = Number(raw);
 		if (Number.isNaN(parsed)) return;
-		const next = roundToOneDecimal(clamp(parsed, min, max));
+		const next = roundToStep(clamp(parsed, min, max), step);
 		onChange(next);
 		// If clamping changed the value, reflect it immediately.
 		if (next !== parsed) setDisplayValue(String(next));
@@ -141,7 +145,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 				return;
 			}
 			const fallback = typeof min === 'number' ? min : 0;
-			const next = roundToOneDecimal(clamp(fallback, min, max));
+			const next = roundToStep(clamp(fallback, min, max), step);
 			onChange(next);
 			setDisplayValue(String(next));
 		}
