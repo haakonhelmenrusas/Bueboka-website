@@ -9,6 +9,7 @@ import { GiArrowhead, GiBowArrow } from 'react-icons/gi';
 import { formatOneDecimal } from '@/lib/format';
 import { getArrowMaterialLabel, getBowTypeLabel } from '@/lib/labels';
 import { PiStar } from 'react-icons/pi';
+import { EquipmentListSkeleton } from './EquipmentSkeleton';
 
 export interface EquipmentSectionProps {
 	/** If provided, the component becomes controlled and will not fetch its own data */
@@ -41,6 +42,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
 	const bows = managed ? equipment.bows : (bowsProp ?? []);
 	const arrows = managed ? equipment.arrows : (arrowsProp ?? []);
+	const isLoading = managed && equipment.loading;
 
 	return (
 		<section className={styles.section} aria-label="Utstyr">
@@ -56,7 +58,9 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 							<Button label="Ny bue" onClick={onCreateBow} icon={<GiBowArrow size={18} />} width={160} />
 						</div>
 						<div className={styles.list} role="list">
-							{bows && bows.length > 0 ? (
+							{isLoading ? (
+								<EquipmentListSkeleton count={2} />
+							) : bows && bows.length > 0 ? (
 								bows.map((bow) => (
 									<button
 										key={bow.id}
@@ -103,7 +107,9 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 						</div>
 						{arrows.length >= 5 && <div className={styles.limitMessage}>Maksimalt 5 pilsett tillatt</div>}
 						<div className={styles.list} role="list">
-							{arrows && arrows.length > 0 ? (
+							{isLoading ? (
+								<EquipmentListSkeleton count={2} />
+							) : arrows && arrows.length > 0 ? (
 								arrows.map((a) => (
 									<button
 										key={a.id}
