@@ -7,13 +7,14 @@ export interface TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextArea
 	label: string;
 	helpText?: string;
 	errorMessage?: string;
+	optional?: boolean;
 	containerClassName?: string;
 	labelClassName?: string;
 	textAreaClassName?: string;
 }
 
 export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
-	({ label, helpText, errorMessage, containerClassName, labelClassName, textAreaClassName, id, ...props }, ref) => {
+	({ label, helpText, errorMessage, optional, containerClassName, labelClassName, textAreaClassName, id, ...props }, ref) => {
 		const autoId = useId();
 		const textAreaId = id ?? `textarea-${autoId}`;
 		const describedById = useMemo(() => {
@@ -27,6 +28,7 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
 			<div className={`${styles.container} ${containerClassName || ''}`}>
 				<label htmlFor={textAreaId} className={`${styles.label} ${labelClassName || ''}`}>
 					{label}
+					{optional ? <span className={styles.optional}> (valgfritt)</span> : null}
 				</label>
 
 				{helpText ? (
