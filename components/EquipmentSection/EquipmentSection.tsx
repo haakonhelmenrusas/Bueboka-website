@@ -96,7 +96,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 							<Button
 								label="Nye piler"
 								onClick={onCreateArrows}
-								icon={<GiArrowhead size={18} />}
+								icon={<GiArrowhead size={18} style={{ transform: 'rotate(225deg)' }} />}
 								width={160}
 								disabled={arrows.length >= 5}
 							/>
@@ -129,7 +129,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 											</div>
 										</div>
 										<div className={styles.itemIcon} aria-hidden="true">
-											<GiArrowhead size={18} />
+											<GiArrowhead size={18} style={{ transform: 'rotate(225deg)' }} />
 										</div>
 									</button>
 								))

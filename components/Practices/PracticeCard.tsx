@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
 import { LuChevronRight, LuHouse, LuMapPin, LuStar, LuTarget, LuTrees, LuTrophy, LuWind } from 'react-icons/lu';
+import { GiArrowhead } from 'react-icons/gi';
 
 export interface PracticeCardProps {
 	id: string;
@@ -166,9 +167,9 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						</span>
 						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
 							<span className={styles.detailIcon} aria-hidden="true">
-								<LuChevronRight size={14} />
+								<GiArrowhead size={14} style={{ transform: 'rotate(225deg)' }} />
 							</span>
-							<span className="sr-only">Se detaljer</span>
+							<span className={styles.detailText}>{arrowsName}</span>
 						</div>
 					</>
 				) : null}
