@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Checkbox, Input, NumberInput, Select } from '@/components';
 import { ARROW_MATERIAL_OPTIONS } from '@/lib/labels';
+import styles from './ArrowsForm.module.css';
 
 export type ArrowMaterial = 'KARBON' | 'ALUMINIUM' | 'TREVERK';
 
@@ -61,6 +62,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 	return (
 		<form
 			id="arrows-form"
+			className={styles.form}
 			onSubmit={async (e) => {
 				e.preventDefault();
 				const trimmedName = name.trim();
@@ -72,20 +74,36 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 				await onSubmit({ name: trimmedName, material, arrowsCount, diameter, length, weight, spine, isFavorite });
 			}}
 		>
-			<div
-				style={{
-					marginTop: 14,
-					display: 'grid',
-					gridTemplateColumns: '1fr 1fr',
-					gap: 'var(--space-6)',
-					alignItems: 'end',
-				}}
-			>
+			<div className={styles.row}>
+				<Input
+					label="Navn på piler"
+					value={name}
+					onChange={(e) => {
+						setName(e.target.value);
+						if (nameError) setNameError('');
+					}}
+					required
+					error={Boolean(nameError)}
+					errorMessage={nameError}
+				/>
 				<Select
 					label="Materiale"
 					value={material}
 					onChange={(v) => setMaterial(v as ArrowMaterial)}
 					options={ARROW_MATERIAL_OPTIONS.map((o) => ({ ...o }))}
+				/>
+			</div>
+			<div className={styles.grid}>
+				<NumberInput
+					label="Antall piler"
+					value={arrowsCount ?? 0}
+					onChange={(v) => setArrowsCount(v)}
+					onEmpty={() => setArrowsCount(null)}
+					min={0}
+					step={1}
+					startEmpty
+					emptyBehavior="ignore"
+					optional
 				/>
 				<NumberInput
 					label="Diameter (mm)"
@@ -96,24 +114,10 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					step={1}
 					startEmpty
 					emptyBehavior="ignore"
+					optional
 				/>
 			</div>
-
-			<div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)', alignItems: 'end' }}>
-				<NumberInput
-					label="Antall piler"
-					value={arrowsCount ?? 0}
-					onChange={(v) => setArrowsCount(v)}
-					onEmpty={() => setArrowsCount(null)}
-					min={0}
-					step={1}
-					startEmpty
-					emptyBehavior="ignore"
-				/>
-				<Input label="Spine" value={spine} onChange={(e) => setSpine(e.target.value)} />
-			</div>
-
-			<div style={{ marginTop: 12, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-6)', alignItems: 'end' }}>
+			<div className={styles.grid}>
 				<NumberInput
 					label="Lengde (cm)"
 					value={length ?? 0}
@@ -123,6 +127,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					step={1}
 					startEmpty
 					emptyBehavior="ignore"
+					optional
 				/>
 				<NumberInput
 					label="Vekt (gram)"
@@ -133,27 +138,13 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					step={1}
 					startEmpty
 					emptyBehavior="ignore"
+					optional
 				/>
 			</div>
-
-			<div style={{ marginTop: 12 }}>
-				<Input
-					label="Navn på piler"
-					value={name}
-					onChange={(e) => {
-						setName(e.target.value);
-						if (nameError) setNameError('');
-					}}
-					required
-					helpText="Gi pilene et navn du kjenner igjen"
-					error={Boolean(nameError)}
-					errorMessage={nameError}
-				/>
+			<div className={styles.grid}>
+				<Input label="Spine" value={spine} onChange={(e) => setSpine(e.target.value)} optional />
 			</div>
-
-			<div style={{ marginTop: 12 }}>
-				<Checkbox label="Favorittpiler" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittpilsett" />
-			</div>
+			<Checkbox label="Favorittpiler" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittpilsett" />
 		</form>
 	);
 }
