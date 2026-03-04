@@ -20,7 +20,7 @@ import { LuX } from 'react-icons/lu';
 export interface CompetitionRoundInput {
 	roundNumber: number;
 	distanceMeters?: number;
-	targetSizeCm?: number;
+	targetType: string; // Changed from targetSizeCm to match practice form
 	numberArrows?: number;
 	arrowsWithoutScore?: number;
 	roundScore: number;
@@ -89,6 +89,19 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 }) => {
 	useModalBehavior({ open, onClose });
 
+	// Target type options - same as practice form
+	const targetTypeOptions = [
+		{ value: '40cm', label: '40cm' },
+		{ value: '60cm', label: '60cm' },
+		{ value: '80cm', label: '80cm' },
+		{ value: '122cm', label: '122cm' },
+		{ value: '3-spot', label: '3-spot' },
+		{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
+		{ value: 'animal', label: 'Dyr' },
+		{ value: 'other', label: 'Annet' },
+		{ value: 'halmmatte', label: 'Halmmatte' },
+	];
+
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [name, setName] = useState('');
 	const [location, setLocation] = useState('');
@@ -101,7 +114,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	const [numberOfParticipants, setNumberOfParticipants] = useState<number | null>(null);
 	const [personalBest, setPersonalBest] = useState(false);
 	const [rounds, setRounds] = useState<CompetitionRoundInput[]>([
-		{ roundNumber: 1, distanceMeters: 18, targetSizeCm: 40, numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 },
+		{ roundNumber: 1, distanceMeters: 18, targetType: '40cm', numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 },
 	]);
 	const [bowId, setBowId] = useState<string>('');
 	const [arrowsId, setArrowsId] = useState<string>('');
@@ -129,7 +142,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				const extractedRounds = competition.rounds.map((round) => ({
 					roundNumber: round.roundNumber,
 					distanceMeters: round.distanceMeters || undefined,
-					targetSizeCm: round.targetSizeCm || undefined,
+					targetType: round.targetSizeCm ? `${round.targetSizeCm}cm` : '',
 					numberArrows: round.arrows || 0,
 					arrowsWithoutScore: (round as any).arrowsWithoutScore || 0,
 					roundScore: round.roundScore || 0,
@@ -153,7 +166,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			setPlacement(null);
 			setNumberOfParticipants(null);
 			setPersonalBest(false);
-			setRounds([{ roundNumber: 1, distanceMeters: 18, targetSizeCm: 40, numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 }]);
+			setRounds([{ roundNumber: 1, distanceMeters: 18, targetType: '40cm', numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 }]);
 			setBowId('');
 			setArrowsId('');
 		}
@@ -222,7 +235,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			{
 				roundNumber: rounds.length + 1,
 				distanceMeters: rounds[rounds.length - 1]?.distanceMeters || 18,
-				targetSizeCm: rounds[rounds.length - 1]?.targetSizeCm || 40,
+				targetType: rounds[rounds.length - 1]?.targetType || '40cm',
 				numberArrows: 30,
 				arrowsWithoutScore: 0,
 				roundScore: 0,
@@ -258,11 +271,8 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						<LuX size={20} />
 					</button>
 				</div>
-
 				<form onSubmit={handleSubmit} className={styles.form}>
 					{error && <div className={styles.error}>{error}</div>}
-
-					{/* Basic Info */}
 					<Input
 						label="Navn på konkurransen"
 						value={name}
@@ -271,7 +281,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						helpText="F.eks. 'NM Innendørs 2026'"
 						containerClassName={styles.field}
 					/>
-
 					<div className={styles.row}>
 						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
 						<Select
@@ -282,7 +291,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							containerClassName={styles.field}
 						/>
 					</div>
-
 					<div className={styles.row}>
 						<Select
 							label="Miljø"
@@ -293,15 +301,14 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						/>
 						<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
 					</div>
-
 					<Input
 						label="Arrangør"
+						optional
 						value={organizerName}
 						onChange={(e) => setOrganizerName(e.target.value)}
 						helpText="Klubb eller organisasjon som arrangerte"
 						containerClassName={styles.field}
 					/>
-
 					{environment === Environment.OUTDOOR ? (
 						<Select
 							label="Værforhold"
@@ -315,8 +322,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							containerClassName={styles.field}
 						/>
 					) : null}
-
-					{/* Competition Results */}
 					<div className={styles.row}>
 						<NumberInput
 							label="Plassering"
@@ -326,6 +331,8 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							min={1}
 							helpText="Din plassering"
 							startEmpty
+							optional
+							hideSteppers
 							containerClassName={styles.field}
 						/>
 						<NumberInput
@@ -336,16 +343,14 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							min={1}
 							helpText="Totalt antall"
 							startEmpty
+							optional
+							hideSteppers
 							containerClassName={styles.field}
 						/>
 					</div>
-
 					<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
-
-					{/* Rounds */}
 					<div className={styles.roundsSection}>
 						<h4 className={styles.sectionTitle}>Runder</h4>
-
 						{rounds.map((round, index) => (
 							<div key={index} className={styles.roundCard}>
 								<div className={styles.roundHeader}>
@@ -356,7 +361,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										</button>
 									)}
 								</div>
-
 								<div className={styles.roundInputs}>
 									<NumberInput
 										label="Distanse"
@@ -369,20 +373,17 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										unit="m"
 										containerClassName={styles.roundField}
 									/>
-
-									<NumberInput
+									<Select
 										label="Skive"
-										value={round.targetSizeCm ?? 0}
-										onChange={(val) => updateRound(index, 'targetSizeCm', val || undefined)}
-										onEmpty={() => updateRound(index, 'targetSizeCm', undefined)}
-										min={1}
-										startEmpty
-										hideSteppers
-										unit="cm"
+										value={round.targetType}
+										onChange={(val) => updateRound(index, 'targetType', val as string)}
+										options={targetTypeOptions}
+										placeholderLabel="Velg skive"
+										searchable
+										searchPlaceholder="Søk etter skive..."
 										containerClassName={styles.roundField}
 									/>
 								</div>
-
 								<div className={styles.row}>
 									<NumberInput
 										label="Piler"
@@ -390,7 +391,8 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onChange={(val) => updateRound(index, 'numberArrows', val || 0)}
 										onEmpty={() => updateRound(index, 'numberArrows', 0)}
 										min={0}
-										optional
+										hideSteppers
+										required
 										startEmpty
 										helpText="Ant. piler med score"
 										containerClassName={styles.roundField}
@@ -403,6 +405,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onEmpty={() => updateRound(index, 'arrowsWithoutScore', 0)}
 										min={0}
 										optional
+										hideSteppers
 										startEmpty
 										helpText="Piler uten score"
 										containerClassName={styles.roundField}
@@ -414,6 +417,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onChange={(val) => updateRound(index, 'roundScore', val || 0)}
 										min={0}
 										required
+										hideSteppers
 										startEmpty
 										containerClassName={styles.roundField}
 									/>

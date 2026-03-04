@@ -93,7 +93,8 @@ export async function GET(request: Request, { params }: RouteParams) {
 interface CompetitionRoundInput {
 	roundNumber: number;
 	distanceMeters?: number;
-	targetSizeCm?: number;
+	targetType?: string; // Changed to accept targetType string (e.g., "40cm")
+	targetSizeCm?: number; // Keep for backward compatibility
 	numberArrows?: number;
 	arrowsWithoutScore?: number;
 	roundScore: number;
@@ -156,15 +157,26 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 			roundsUpdate = {
 				rounds: {
 					deleteMany: {},
-					create: body.rounds.map((round) => ({
-						roundNumber: round.roundNumber,
-						arrows: round.numberArrows || null,
-						arrowsWithoutScore: round.arrowsWithoutScore || null,
-						scores: round.scores || [],
-						roundScore: round.roundScore || 0,
-						distanceMeters: round.distanceMeters,
-						targetSizeCm: round.targetSizeCm,
-					})),
+					create: body.rounds.map((round) => {
+						// Parse targetSizeCm from targetType (e.g., "40cm" -> 40) or use existing targetSizeCm
+						let targetSizeCm = round.targetSizeCm || null;
+						if (!targetSizeCm && round.targetType) {
+							const parsed = parseInt(round.targetType);
+							if (!isNaN(parsed)) {
+								targetSizeCm = parsed;
+							}
+						}
+
+						return {
+							roundNumber: round.roundNumber,
+							arrows: round.numberArrows || null,
+							arrowsWithoutScore: round.arrowsWithoutScore || null,
+							scores: round.scores || [],
+							roundScore: round.roundScore || 0,
+							distanceMeters: round.distanceMeters,
+							targetSizeCm,
+						};
+					}),
 				},
 			};
 		}

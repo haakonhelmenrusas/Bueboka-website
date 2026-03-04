@@ -386,7 +386,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											/>
 										)}
 										<Select
-											label="Blink"
+											label="Skive"
 											value={round.targetType}
 											onChange={(v) => updateRound(index, 'targetType', v as string)}
 											placeholderLabel="Velg"
