@@ -3,6 +3,7 @@ import styles from './ArrowsChart.module.css';
 import { useEffect, useState } from 'react';
 import { PracticeCategory } from './types';
 import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
+import { Select } from '@/components';
 
 interface ArrowsChartProps {
 	data: any[];
@@ -37,6 +38,15 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 	useEffect(() => {
 		setColors(getChartColors());
 	}, []);
+
+	// Category options for Select component
+	const categoryOptions = [
+		{ value: 'all', label: 'Alle kategorier' },
+		{ value: 'SKIVE_INDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR },
+		{ value: 'SKIVE_OUTDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR },
+		{ value: 'JAKT_3D', label: PRACTICE_CATEGORY_LABELS.JAKT_3D },
+		{ value: 'FELT', label: PRACTICE_CATEGORY_LABELS.FELT },
+	];
 
 	// Extract all unique series names from data (including session suffixes like "18m - 40cm (Økt 1)")
 	const allSeriesNames = new Set<string>();
@@ -88,21 +98,13 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 					<p className={styles.chartSubtitle}>Gruppert etter avstand og blinktype</p>
 				</div>
 				<div className={styles.filterGroup}>
-					<label htmlFor="category-filter" className={styles.filterLabel}>
-						Kategori:
-					</label>
-					<select
-						id="category-filter"
-						className={styles.filterSelect}
+					<Select
+						label="Kategori"
+						options={categoryOptions}
 						value={selectedCategory}
-						onChange={(e) => onCategoryChange(e.target.value as PracticeCategory)}
-					>
-						<option value="all">Alle kategorier</option>
-						<option value="SKIVE_INDOOR">{PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR}</option>
-						<option value="SKIVE_OUTDOOR">{PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR}</option>
-						<option value="JAKT_3D">{PRACTICE_CATEGORY_LABELS.JAKT_3D}</option>
-						<option value="FELT">{PRACTICE_CATEGORY_LABELS.FELT}</option>
-					</select>
+						onChange={(value) => onCategoryChange(value as PracticeCategory)}
+						containerClassName={styles.filterSelect}
+					/>
 				</div>
 			</div>
 
