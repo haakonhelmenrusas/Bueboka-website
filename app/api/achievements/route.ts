@@ -41,6 +41,11 @@ export async function GET() {
 							roundScore: true,
 						},
 					},
+					bow: {
+						select: {
+							type: true,
+						},
+					},
 				},
 				orderBy: { date: 'desc' },
 			}),
@@ -52,6 +57,11 @@ export async function GET() {
 							arrows: true,
 							scores: true,
 							roundScore: true,
+						},
+					},
+					bow: {
+						select: {
+							type: true,
 						},
 					},
 				},

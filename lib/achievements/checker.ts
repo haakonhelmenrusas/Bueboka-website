@@ -13,6 +13,10 @@ interface PracticeData {
 	practiceType?: string | null;
 	practiceCategory?: string | null;
 	weather?: any;
+	bowId?: string | null;
+	bow?: {
+		type: string;
+	} | null;
 	ends?: Array<{
 		arrows: number;
 		scores?: number[];
@@ -27,6 +31,9 @@ interface UserStats {
 	currentStreak: number;
 	practicesByCategory: Record<string, number>;
 	hasCompetitionWin?: boolean;
+	bowTypesUsed: Set<string>;
+	practicesByBowType: Record<string, number>;
+	arrowsByBowType: Record<string, number>;
 }
 
 /**
@@ -44,17 +51,31 @@ export function calculateUserStats(practices: PracticeData[]): UserStats {
 			JAKT_3D: 0,
 			FELT: 0,
 		},
+		bowTypesUsed: new Set<string>(),
+		practicesByBowType: {},
+		arrowsByBowType: {},
 	};
 
-	// Calculate total arrows
+	// Calculate total arrows and bow statistics
 	practices.forEach((practice) => {
+		let practiceArrows = 0;
+
 		if (practice.ends && Array.isArray(practice.ends)) {
-			stats.totalArrows += practice.ends.reduce((sum: number, end: any) => sum + (end.arrows || 0), 0);
+			practiceArrows = practice.ends.reduce((sum: number, end: any) => sum + (end.arrows || 0), 0);
+			stats.totalArrows += practiceArrows;
 		}
 
 		// Count practices by category
 		if (practice.practiceCategory && stats.practicesByCategory.hasOwnProperty(practice.practiceCategory)) {
 			stats.practicesByCategory[practice.practiceCategory]++;
+		}
+
+		// Track bow type usage
+		const bowType = practice.bow?.type;
+		if (bowType) {
+			stats.bowTypesUsed.add(bowType);
+			stats.practicesByBowType[bowType] = (stats.practicesByBowType[bowType] || 0) + 1;
+			stats.arrowsByBowType[bowType] = (stats.arrowsByBowType[bowType] || 0) + practiceArrows;
 		}
 	});
 
@@ -222,6 +243,33 @@ export function checkRequirement(
 			isMet = false;
 			current = 0;
 			required = 1;
+			break;
+
+		case 'BOW_TYPE_COUNT':
+			// Count unique bow types used
+			current = stats.bowTypesUsed.size;
+			required = value as number;
+			isMet = compareValues(current, required, comparator);
+			break;
+
+		case 'BOW_TYPE_PRACTICES':
+			// Count practices with specific bow type
+			const practicesBowType = metadata?.bowType;
+			if (practicesBowType) {
+				current = stats.practicesByBowType[practicesBowType] || 0;
+				required = value as number;
+				isMet = compareValues(current, required, comparator);
+			}
+			break;
+
+		case 'BOW_TYPE_ARROWS':
+			// Count arrows shot with specific bow type
+			const arrowsBowType = metadata?.bowType;
+			if (arrowsBowType) {
+				current = stats.arrowsByBowType[arrowsBowType] || 0;
+				required = value as number;
+				isMet = compareValues(current, required, comparator);
+			}
 			break;
 
 		default:

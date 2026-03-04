@@ -56,7 +56,10 @@ export interface AchievementRequirement {
 		| 'ARROWS_IN_SESSION' // Arrows in single session
 		| 'WEATHER_CONDITION' // Practice in specific weather
 		| 'EARLY_BIRD' // Practice before certain time
-		| 'NIGHT_OWL'; // Practice after certain time
+		| 'NIGHT_OWL' // Practice after certain time
+		| 'BOW_TYPE_COUNT' // Count unique bow types used
+		| 'BOW_TYPE_PRACTICES' // Count practices with specific bow type
+		| 'BOW_TYPE_ARROWS'; // Count arrows shot with specific bow type
 
 	value: number | string | boolean;
 	comparator?: 'EQUALS' | 'GREATER_THAN' | 'LESS_THAN' | 'GREATER_OR_EQUAL';

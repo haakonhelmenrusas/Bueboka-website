@@ -42,6 +42,11 @@ export async function POST(request: Request) {
 							roundScore: true,
 						},
 					},
+					bow: {
+						select: {
+							type: true,
+						},
+					},
 				},
 				orderBy: { date: 'desc' },
 			}),
@@ -53,6 +58,11 @@ export async function POST(request: Request) {
 							arrows: true,
 							scores: true,
 							roundScore: true,
+						},
+					},
+					bow: {
+						select: {
+							type: true,
 						},
 					},
 				},
