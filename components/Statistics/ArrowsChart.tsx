@@ -38,6 +38,48 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 		setColors(getChartColors());
 	}, []);
 
+	// Extract all unique series names from data (including session suffixes like "18m - 40cm (Økt 1)")
+	const allSeriesNames = new Set<string>();
+	data.forEach((point) => {
+		Object.keys(point).forEach((key) => {
+			if (key !== 'date') {
+				allSeriesNames.add(key);
+			}
+		});
+	});
+
+	const seriesArray = Array.from(allSeriesNames);
+
+	// Assign colors - use lighter shades for session 2, 3, etc of same base series
+	const getColorForSeries = (seriesName: string, index: number): string => {
+		if (!colors.length) return '#053546';
+
+		// Check if this is a session-suffixed series
+		const sessionMatch = seriesName.match(/^(.+) \(Økt (\d+)\)$/);
+		if (sessionMatch) {
+			const [, baseName, sessionNum] = sessionMatch;
+			const sessionIndex = parseInt(sessionNum) - 1;
+
+			// Find base series index
+			const baseIndex = series.findIndex((s) => s.name === baseName);
+			const colorIndex = baseIndex >= 0 ? baseIndex : index;
+			const baseColor = colors[colorIndex % colors.length];
+
+			// Make subsequent sessions lighter by adding transparency
+			if (sessionIndex > 0) {
+				const opacity = Math.max(0.5, 1 - sessionIndex * 0.25);
+				const opacityHex = Math.round(opacity * 255)
+					.toString(16)
+					.padStart(2, '0');
+				return `${baseColor}${opacityHex}`;
+			}
+			return baseColor;
+		}
+
+		// Regular series - use normal color
+		return colors[index % colors.length];
+	};
+
 	return (
 		<div className={styles.chartCard}>
 			<div className={styles.chartHeader}>
@@ -65,9 +107,9 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 			</div>
 
 			<ResponsiveContainer width="100%" height={400}>
-				<BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+				<BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 60 }}>
 					<CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-					<XAxis dataKey="date" tickFormatter={formatDate} stroke="#6b7280" style={{ fontSize: '0.875rem' }} />
+					<XAxis dataKey="date" tickFormatter={formatDate} stroke="#6b7280" style={{ fontSize: '0.875rem' }} textAnchor="end" height={80} />
 					<YAxis
 						stroke="#6b7280"
 						style={{ fontSize: '0.875rem' }}
@@ -86,8 +128,15 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 						labelFormatter={(label) => `Dato: ${formatDate(label as string)}`}
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
-					{series.map((s, index) => (
-						<Bar key={s.name} dataKey={s.name} fill={colors[index % colors.length] || '#053546'} name={s.name} barSize={8} />
+					{seriesArray.map((seriesName, index) => (
+						<Bar
+							key={seriesName}
+							dataKey={seriesName}
+							fill={getColorForSeries(seriesName, index)}
+							name={seriesName}
+							stackId="a"
+							barSize={50}
+						/>
 					))}
 				</BarChart>
 			</ResponsiveContainer>

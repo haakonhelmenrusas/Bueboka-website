@@ -45,15 +45,24 @@ export async function GET() {
 			},
 		});
 
-		// Return empty series if no practices found
-		if (!practices || practices.length === 0) {
+		// Fetch all competitions with their rounds
+		const competitions = await prisma.competition.findMany({
+			where: { userId: user.id },
+			orderBy: { date: 'asc' },
+			include: {
+				rounds: true,
+			},
+		});
+
+		// Return empty series if no practices or competitions found
+		if ((!practices || practices.length === 0) && (!competitions || competitions.length === 0)) {
 			return NextResponse.json({ series: [] });
 		}
 
 		// Group data by distance + target combination
 		const groupedData = new Map<
 			string,
-			Array<{ date: string; arrows: number; score: number; practiceType: string; practiceCategory: string }>
+			Array<{ date: string; arrows: number; score: number; practiceType: string; practiceCategory: string; sessionId: string }>
 		>();
 
 		for (const practice of practices) {
@@ -86,22 +95,85 @@ export async function GET() {
 					const target = typeof end.targetSizeCm === 'number' ? end.targetSizeCm : 0;
 					const key = `${distance}m - ${target}cm`;
 
-					const arrows = typeof end.arrows === 'number' ? end.arrows : 0;
+					// Include both arrows with score and arrowsWithoutScore
+					const arrows =
+						(typeof end.arrows === 'number' ? end.arrows : 0) + (typeof end.arrowsWithoutScore === 'number' ? end.arrowsWithoutScore : 0);
 					const score = typeof end.roundScore === 'number' ? end.roundScore : 0;
 
-					if (!groupedData.has(key)) {
-						groupedData.set(key, []);
-					}
+					// Only add if there are arrows
+					if (arrows > 0) {
+						if (!groupedData.has(key)) {
+							groupedData.set(key, []);
+						}
 
-					groupedData.get(key)!.push({
-						date: dateStr,
-						arrows,
-						score,
-						practiceType,
-						practiceCategory,
-					});
+						groupedData.get(key)!.push({
+							date: dateStr,
+							arrows,
+							score,
+							practiceType,
+							practiceCategory,
+							sessionId: practice.id, // Add session ID to track individual sessions
+						});
+					}
 				} catch (endError) {
 					// Skip invalid end data
+				}
+			}
+		}
+
+		// Process competitions
+		for (const competition of competitions) {
+			// Skip competitions without rounds
+			if (!competition.rounds || !Array.isArray(competition.rounds) || competition.rounds.length === 0) {
+				continue;
+			}
+
+			// Convert date to string safely
+			let dateStr: string;
+			try {
+				if (competition.date instanceof Date) {
+					dateStr = competition.date.toISOString().split('T')[0];
+				} else if (typeof competition.date === 'string') {
+					dateStr = new Date(competition.date).toISOString().split('T')[0];
+				} else {
+					continue;
+				}
+			} catch (dateError) {
+				continue;
+			}
+
+			const practiceType = 'KONKURRANSE';
+			const practiceCategory = competition.practiceCategory || 'SKIVE_INDOOR';
+
+			for (const round of competition.rounds) {
+				try {
+					const distance = typeof round.distanceMeters === 'number' ? round.distanceMeters : 0;
+					const target = typeof round.targetSizeCm === 'number' ? round.targetSizeCm : 0;
+					const key = `${distance}m - ${target}cm`;
+
+					// Include both arrows with score and arrowsWithoutScore
+					const arrows =
+						(typeof round.arrows === 'number' ? round.arrows : 0) +
+						(typeof round.arrowsWithoutScore === 'number' ? round.arrowsWithoutScore : 0);
+					const score = typeof round.roundScore === 'number' ? round.roundScore : 0;
+
+					// Only add if there are arrows
+					if (arrows > 0) {
+						if (!groupedData.has(key)) {
+							groupedData.set(key, []);
+						}
+
+						groupedData.get(key)!.push({
+							date: dateStr,
+							arrows,
+							score,
+							practiceType,
+							practiceCategory,
+							sessionId: competition.id, // Add session ID to track individual sessions
+						});
+					}
+				} catch (roundError) {
+					// Skip invalid round data
 				}
 			}
 		}

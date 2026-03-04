@@ -8,6 +8,7 @@ export interface SeriesData {
 	score: number;
 	practiceType: string;
 	practiceCategory: string;
+	sessionId?: string; // ID to track individual sessions on same date
 }
 
 export interface Series {

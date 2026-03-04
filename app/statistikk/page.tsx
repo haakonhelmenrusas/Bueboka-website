@@ -120,26 +120,67 @@ export default function StatisticsPage() {
 	const chartData = getChartData();
 
 	// Filter chart data to only include points with arrows > 0 and by selected category
+	// When multiple sessions on same date, stack them in the same column
 	const getArrowsChartData = () => {
-		return chartData
-			.map((point) => {
-				const filteredPoint: any = { date: point.date };
-				let hasArrows = false;
+		// Group by date, then by session, then by series
+		const dateMap = new Map<string, Map<string, Map<string, number>>>();
 
-				filteredSeries.forEach((s) => {
-					// Filter by category if not 'all'
-					const seriesData = s.data.find((d) => d.date === point.date);
-					const matchesCategory = selectedCategory === 'all' || seriesData?.practiceCategory === selectedCategory;
+		filteredSeries.forEach((s) => {
+			s.data.forEach((d) => {
+				const matchesCategory = selectedCategory === 'all' || d.practiceCategory === selectedCategory;
 
-					if (point[s.name] > 0 && matchesCategory) {
-						filteredPoint[s.name] = point[s.name];
-						hasArrows = true;
+				if (d.arrows > 0 && matchesCategory) {
+					if (!dateMap.has(d.date)) {
+						dateMap.set(d.date, new Map());
 					}
-				});
 
-				return hasArrows ? filteredPoint : null;
-			})
-			.filter((point) => point !== null);
+					const sessionMap = dateMap.get(d.date)!;
+					const sessionId = d.sessionId || 'default';
+
+					if (!sessionMap.has(sessionId)) {
+						sessionMap.set(sessionId, new Map());
+					}
+
+					const seriesMap = sessionMap.get(sessionId)!;
+					seriesMap.set(s.name, (seriesMap.get(s.name) || 0) + d.arrows);
+				}
+			});
+		});
+
+		// Convert to array format for chart
+		// For multiple sessions on same date, create series like "seriesName (Session 1)", "seriesName (Session 2)"
+		const result: any[] = [];
+		const sortedDates = Array.from(dateMap.keys()).sort();
+		const allSeriesWithSessions = new Set<string>();
+
+		sortedDates.forEach((date) => {
+			const sessionMap = dateMap.get(date)!;
+			const sessions = Array.from(sessionMap.entries());
+			const point: any = { date };
+
+			if (sessions.length === 1) {
+				// Single session: use normal series names
+				const [, seriesMap] = sessions[0];
+				seriesMap.forEach((arrows, seriesName) => {
+					point[seriesName] = arrows;
+					allSeriesWithSessions.add(seriesName);
+				});
+			} else {
+				// Multiple sessions: add session suffix to series names
+				sessions.forEach(([sessionId], sessionIndex) => {
+					const seriesMap = sessionMap.get(sessionId)!;
+					seriesMap.forEach((arrows, seriesName) => {
+						const key = `${seriesName} (Økt ${sessionIndex + 1})`;
+						point[key] = arrows;
+						allSeriesWithSessions.add(key);
+					});
+				});
+			}
+
+			result.push(point);
+		});
+
+		return result;
 	};
 
 	// Calculate average score per arrow grouped by practice type (training vs competition)
