@@ -10,8 +10,8 @@ import { EnvironmentBadge, PracticeTypeBadge } from './Badges';
 import { StatCard } from './StatCard';
 import { RoundCard } from './RoundCard';
 import styles from './PracticeDetailsModal.module.css';
-import { LuCloud, LuCompass, LuMapPin, LuTarget, LuTrash, LuX } from 'react-icons/lu';
-import { GiArcher, GiBrokenArrow } from 'react-icons/gi';
+import { LuCloud, LuMapPin, LuTarget, LuTrash, LuX } from 'react-icons/lu';
+import { GiArrowhead, GiBowArrow, GiBrokenArrow } from 'react-icons/gi';
 import { CgNotes } from 'react-icons/cg';
 
 export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose, onEdit, onDeleted }) => {
@@ -97,14 +97,14 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 					)}
 					{practice.bow && (
 						<StatCard
-							icon={<GiArcher className="w-5 h-5" />}
+							icon={<GiBowArrow className="w-5 h-5" />}
 							label="Bue"
 							value={`${practice.bow.name} • ${getBowTypeLabel(practice.bow.type)}`}
 						/>
 					)}
 					{practice.arrows && (
 						<StatCard
-							icon={<LuCompass className="w-5 h-5" />}
+							icon={<GiArrowhead className="w-5 h-5" style={{ transform: 'rotate(225deg)' }} />}
 							label="Piler"
 							value={`${practice.arrows.name} • ${getArrowMaterialLabel(practice.arrows.material)}`}
 						/>
