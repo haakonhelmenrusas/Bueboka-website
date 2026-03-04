@@ -8,6 +8,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	error?: boolean;
 	errorMessage?: string;
 	helpText?: string;
+	optional?: boolean;
 	containerClassName?: string;
 	labelClassName?: string;
 	inputClassName?: string;
@@ -37,7 +38,21 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
  */
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	(
-		{ label, error, errorMessage, helpText, containerClassName, labelClassName, inputClassName, icon, leftAddon, rightAddon, id, ...props },
+		{
+			label,
+			error,
+			errorMessage,
+			helpText,
+			optional,
+			containerClassName,
+			labelClassName,
+			inputClassName,
+			icon,
+			leftAddon,
+			rightAddon,
+			id,
+			...props
+		},
 		ref
 	) => {
 		const autoId = useId();
@@ -55,6 +70,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 			<div className={`${styles.container} ${containerClassName || ''}`}>
 				<label htmlFor={inputId} className={`${styles.label} ${labelClassName || ''}`}>
 					{label}
+					{optional ? <span className={styles.optional}> (valgfritt)</span> : null}
 				</label>
 
 				{helpText ? (
