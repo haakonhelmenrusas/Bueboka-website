@@ -56,7 +56,7 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 			</div>
 
 			<div className={styles.numberRow}>
-				<NumberInput label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={1} />
+				<NumberInput label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} hideSteppers min={0} step={0.1} />
 				<NumberInput
 					label={
 						<span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
@@ -64,12 +64,13 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 							<Tooltip text="Mål hvor langt 5cm er på siktet ditt" label="Hjelp for Målt sikte" />
 						</span>
 					}
+					hideSteppers
 					value={aimMeasure}
 					onChange={setAimMeasure}
 					min={0}
-					step={1}
+					step={0.1}
 				/>
-				<NumberInput label="Øye til sikte (cm)" value={eyeToSight} onChange={setEyeToSight} min={0} step={1} />
+				<NumberInput label="Øye til sikte (cm)" value={eyeToSight} hideSteppers onChange={setEyeToSight} min={0} step={0.1} />
 			</div>
 
 			<Checkbox label="Favorittbue" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittbue" />
