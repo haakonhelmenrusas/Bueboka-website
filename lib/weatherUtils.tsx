@@ -1,19 +1,6 @@
 import { LuCircleHelp, LuCloud, LuSparkles, LuSun, LuZap } from 'react-icons/lu';
 import { WeatherCondition } from './prismaEnums';
 
-export const weatherOptions: WeatherCondition[] = [
-	WeatherCondition.SUN,
-	WeatherCondition.CLOUDED,
-	WeatherCondition.CLEAR,
-	WeatherCondition.RAIN,
-	WeatherCondition.WIND,
-	WeatherCondition.SNOW,
-	WeatherCondition.FOG,
-	WeatherCondition.THUNDER,
-	WeatherCondition.CHANGING_CONDITIONS,
-	WeatherCondition.OTHER,
-];
-
 export const weatherLabels: Record<WeatherCondition, string> = {
 	[WeatherCondition.SUN]: 'Sol',
 	[WeatherCondition.CLOUDED]: 'Overskyet',
@@ -59,18 +46,4 @@ export function getWeatherIcon(condition: WeatherCondition): React.ComponentType
  */
 export function formatWeatherConditions(conditions: WeatherCondition[]): string {
 	return conditions.map((c) => getWeatherLabel(c)).join(', ');
-}
-
-/**
- * Get weather select options with icons and labels
- */
-export function getWeatherSelectOptions() {
-	return weatherOptions.map((w) => {
-		const Icon = getWeatherIcon(w);
-		return {
-			value: w,
-			label: getWeatherLabel(w),
-			icon: <Icon size={16} />,
-		};
-	});
 }

@@ -2,8 +2,8 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
-import { ThemeProvider } from '@/lib/ThemeProvider';
-import { FeedbackProvider } from '@/lib/FeedbackProvider';
+import { ThemeProvider } from '@/context/ThemeProvider';
+import { FeedbackProvider } from '@/context/FeedbackProvider';
 import { ClarityInit } from '@/lib/ClarityInit';
 
 const inter = Inter({ subsets: ['latin'] });

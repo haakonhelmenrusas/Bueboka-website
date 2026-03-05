@@ -31,20 +31,3 @@ export function exportToCSV(headers: string[], rows: (string | number)[][], file
 	// Clean up the URL object
 	URL.revokeObjectURL(url);
 }
-
-/**
- * Format data for CSV export with proper escaping
- * @param value - Value to format
- */
-export function formatCSVValue(value: string | number | null | undefined): string {
-	if (value === null || value === undefined) return '';
-
-	const stringValue = String(value);
-
-	// Escape quotes and wrap in quotes if contains comma, quote, or newline
-	if (stringValue.includes(',') || stringValue.includes('"') || stringValue.includes('\n')) {
-		return `"${stringValue.replace(/"/g, '""')}"`;
-	}
-
-	return stringValue;
-}

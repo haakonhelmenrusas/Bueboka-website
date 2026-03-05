@@ -604,18 +604,3 @@ export const ACHIEVEMENTS: Achievement[] = [
 		},
 	},
 ];
-
-// ...existing code...
-export function getAchievementById(id: string): Achievement | undefined {
-	return ACHIEVEMENTS.find((a) => a.id === id);
-}
-
-// Helper to get achievements by category
-export function getAchievementsByCategory(category: Achievement['category']): Achievement[] {
-	return ACHIEVEMENTS.filter((a) => a.category === category);
-}
-
-// Helper to get achievements by rarity
-export function getAchievementsByRarity(rarity: Achievement['rarity']): Achievement[] {
-	return ACHIEVEMENTS.filter((a) => a.rarity === rarity);
-}

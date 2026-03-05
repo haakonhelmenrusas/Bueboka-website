@@ -66,14 +66,6 @@ export interface AchievementRequirement {
 	metadata?: Record<string, any>; // Additional context
 }
 
-export interface UserAchievement {
-	userId: string;
-	achievementId: string;
-	unlockedAt: Date;
-	progress: number; // Current progress towards achievement
-	notified: boolean; // Whether user has been notified
-}
-
 export interface AchievementProgress {
 	achievement: Achievement;
 	current: number;

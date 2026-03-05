@@ -63,7 +63,3 @@ export function getArrowMaterialLabel(material: string): string {
 export function getPracticeCategoryLabel(category: string): string {
 	return PRACTICE_CATEGORY_LABELS[category] || category;
 }
-
-export function getPracticeTypeLabel(type: string): string {
-	return PRACTICE_TYPE_LABELS[type] || type;
-}
