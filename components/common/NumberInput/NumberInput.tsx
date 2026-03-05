@@ -225,7 +225,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 					</button>
 				)}
 
-				<div className={styles.inputWrap}>
+				<div className={styles.inputWrap} onClick={() => inputRef.current?.focus()}>
 					<input
 						ref={inputRef}
 						id={inputId}
