@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { LuX } from 'react-icons/lu';
 import styles from './ProfileEditModal.module.css';
 import { ProfileForm } from './ProfileForm';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import { ImageUpload } from '@/components/common/ImageUpload/ImageUpload';
 
 interface ProfileEditModalProps {

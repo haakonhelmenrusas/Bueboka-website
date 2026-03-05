@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { LuTrash2, LuX } from 'react-icons/lu';
 import styles from './ArrowsModal.module.css';
 import { ArrowsForm, ArrowsFormValues } from '@/components/ProfileEditModal/ArrowsForm';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import { Button } from '@/components';
 import { emitEquipmentChanged } from '@/lib/events';
 

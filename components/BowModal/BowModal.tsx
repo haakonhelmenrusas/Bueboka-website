@@ -4,7 +4,7 @@ import React from 'react';
 import { LuTrash2, LuX } from 'react-icons/lu';
 import styles from './BowModal.module.css';
 import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import { Button } from '@/components';
 import { emitEquipmentChanged } from '@/lib/events';
 

@@ -55,8 +55,6 @@ export async function GET(request: Request) {
 					rating: true,
 					totalScore: true,
 					practiceCategory: true,
-					bow: { select: { name: true, type: true } },
-					arrows: { select: { name: true } },
 					roundType: { select: { name: true } },
 					ends: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
 				},
@@ -82,8 +80,6 @@ export async function GET(request: Request) {
 					totalScore: true,
 					placement: true,
 					practiceCategory: true,
-					bow: { select: { name: true } },
-					arrows: { select: { name: true } },
 					rounds: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
 				},
 			});
@@ -122,9 +118,8 @@ export async function GET(request: Request) {
 				rating: p.rating ?? null,
 				practiceType: 'TRENING' as const,
 				totalScore: p.totalScore ?? null,
-				bowName: p.bow?.name ?? null,
-				arrowsName: p.arrows?.name ?? null,
 				roundTypeName,
+				practiceCategory: p.practiceCategory ?? null,
 			};
 		});
 
@@ -147,14 +142,13 @@ export async function GET(request: Request) {
 				arrowsShot,
 				location: c.location ?? null,
 				environment: c.environment ?? null,
-				rating: null, // Competitions don't have ratings
+				rating: null,
 				practiceType: 'KONKURRANSE' as const,
 				totalScore: c.totalScore ?? null,
-				bowName: c.bow?.name ?? null,
-				arrowsName: c.arrows?.name ?? null,
 				roundTypeName,
 				competitionName: c.name,
 				placement: c.placement ?? null,
+				practiceCategory: c.practiceCategory ?? null,
 			};
 		});
 

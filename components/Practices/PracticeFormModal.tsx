@@ -6,7 +6,7 @@ import { LuX } from 'react-icons/lu';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import {
 	getArrowsOptions,
 	getBowOptions,

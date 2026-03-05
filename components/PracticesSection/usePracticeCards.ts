@@ -9,12 +9,12 @@ export type PracticeCardItem = {
 	arrowsShot: number;
 	location?: string | null;
 	environment?: string | null;
-	rating?: number | null;
+	rating?: string | null;
 	practiceType?: string | null;
 	totalScore?: number | null;
-	bowName?: string | null;
-	arrowsName?: string | null;
 	roundTypeName?: string | null;
+	practiceCategory?: string | null;
+	competitionName?: string | null;
 };
 
 interface PracticeCardsResponse {

@@ -5,7 +5,7 @@ import styles from './CompetitionFormModal.module.css';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { Button, Checkbox, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import {
 	type ArrowsOption,
 	type EquipmentOption,

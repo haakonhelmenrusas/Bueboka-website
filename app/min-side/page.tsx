@@ -402,8 +402,14 @@ export default function MyPage() {
 				}}
 				onEdit={() => {
 					setPracticeModalOpen(false);
-					setPracticeFormMode('edit');
-					setPracticeFormOpen(true);
+					if (selectedPractice?.practiceType === 'KONKURRANSE') {
+						setSelectedCompetition(selectedPractice);
+						setCompetitionFormMode('edit');
+						setCompetitionFormOpen(true);
+					} else {
+						setPracticeFormMode('edit');
+						setPracticeFormOpen(true);
+					}
 				}}
 				onDeleted={handlePracticeDeleted}
 			/>
@@ -465,7 +471,17 @@ export default function MyPage() {
 								personalBest: selectedCompetition.personalBest,
 								bowId: selectedCompetition.bowId,
 								arrowsId: selectedCompetition.arrowsId,
-								rounds: selectedCompetition.rounds,
+								// Support both rounds (from competition state) and ends (from practice details modal)
+								rounds:
+									selectedCompetition.rounds ??
+									selectedCompetition.ends?.map((e: any, i: number) => ({
+										id: e.id,
+										roundNumber: i + 1,
+										arrows: e.arrows,
+										distanceMeters: e.distanceMeters ?? null,
+										targetSizeCm: e.targetSizeCm ?? null,
+										roundScore: e.roundScore ?? null,
+									})),
 							}
 						: undefined
 				}

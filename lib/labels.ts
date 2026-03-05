@@ -28,12 +28,6 @@ export const PRACTICE_CATEGORY_LABELS: Record<string, string> = {
 	FELT: 'Felt',
 };
 
-// Practice type translations
-export const PRACTICE_TYPE_LABELS: Record<string, string> = {
-	TRENING: 'Trening',
-	KONKURRANSE: 'Konkurranse',
-};
-
 // Select options (for dropdowns/forms)
 export const BOW_TYPE_OPTIONS = [
 	{ value: 'RECURVE', label: 'Recurve' },

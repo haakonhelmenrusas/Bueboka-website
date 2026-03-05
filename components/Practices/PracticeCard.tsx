@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
 import { LuChevronRight, LuHouse, LuMapPin, LuStar, LuTarget, LuTrees, LuTrophy, LuWind } from 'react-icons/lu';
-import { GiArrowhead } from 'react-icons/gi';
 
 export interface PracticeCardProps {
 	id: string;
@@ -11,8 +10,6 @@ export interface PracticeCardProps {
 	environment?: string | null;
 	practiceType?: string | null;
 	totalScore?: number | null;
-	bowName?: string | null;
-	arrowsName?: string | null;
 	roundTypeName?: string | null;
 	onClick?: (id: string) => void;
 }
@@ -40,8 +37,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	environment,
 	practiceType,
 	totalScore,
-	bowName,
-	arrowsName,
 	roundTypeName,
 	onClick,
 }) => {
@@ -60,8 +55,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		totalScore && `Score: ${totalScore}`,
 		roundTypeName && `Runde: ${roundTypeName}`,
 		location && `Sted: ${location}`,
-		bowName && `Bue: ${bowName}`,
-		arrowsName && `Piler: ${arrowsName}`,
 	]
 		.filter(Boolean)
 		.join(', ');
@@ -75,17 +68,19 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 				<span className={styles.separator} aria-hidden="true">
 					|
 				</span>
-				{isCompetition ? (
-					<div className={`${styles.badge} ${styles.competitionBadge}`}>
-						<LuTrophy size={12} />
-						<span>Konkurranse</span>
-					</div>
-				) : (
-					<div className={`${styles.badge} ${styles.trainingBadge}`}>
-						<LuTarget size={12} />
-						<span>Trening</span>
-					</div>
-				)}
+				<div className={styles.badgeGroup}>
+					{isCompetition ? (
+						<div className={`${styles.badge} ${styles.competitionBadge}`}>
+							<LuTrophy size={12} />
+							<span>Konkurranse</span>
+						</div>
+					) : (
+						<div className={`${styles.badge} ${styles.trainingBadge}`}>
+							<LuTarget size={12} />
+							<span>Trening</span>
+						</div>
+					)}
+				</div>
 				<span className={styles.separator} aria-hidden="true">
 					|
 				</span>
@@ -144,32 +139,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 								{envIcon(environment)}
 							</span>
 							<span className={styles.detailText}>{envText}</span>
-						</div>
-					</>
-				) : null}
-				{bowName ? (
-					<>
-						<span className={styles.separator} aria-hidden="true">
-							|
-						</span>
-						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-							<span className={styles.detailIcon} aria-hidden="true">
-								<LuTarget size={14} />
-							</span>
-							<span className={styles.detailText}>{bowName}</span>
-						</div>
-					</>
-				) : null}
-				{arrowsName ? (
-					<>
-						<span className={styles.separator} aria-hidden="true">
-							|
-						</span>
-						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-							<span className={styles.detailIcon} aria-hidden="true">
-								<GiArrowhead size={14} style={{ transform: 'rotate(225deg)' }} />
-							</span>
-							<span className={styles.detailText}>{arrowsName}</span>
 						</div>
 					</>
 				) : null}

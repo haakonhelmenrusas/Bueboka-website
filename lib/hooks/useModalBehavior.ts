@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect } from 'react';
-import { useEscapeKey } from './hooks';
+import { useEscapeKey } from './index';
 
 interface UseModalBehaviorOptions {
 	open: boolean;

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { LuStar, LuX } from 'react-icons/lu';
 import styles from './FeedbackModal.module.css';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import { Button } from '@/components';
 
 interface FeedbackModalProps {

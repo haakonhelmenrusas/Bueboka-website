@@ -39,11 +39,24 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 		// Calculate total arrows shot from rounds (including both arrows and arrowsWithoutScore)
 		const totalArrows = competition.rounds?.reduce((sum, round) => sum + (round.arrows || 0) + (round.arrowsWithoutScore || 0), 0) || 0;
 
+		// Map rounds to ends format for PracticeDetailsModal compatibility
+		const mappedEnds =
+			competition.rounds?.map((round) => ({
+				id: round.id,
+				arrows: round.arrows ?? 0,
+				arrowsWithoutScore: round.arrowsWithoutScore ?? null,
+				distanceMeters: round.distanceMeters ?? null,
+				targetSizeCm: round.targetSizeCm ?? null,
+				scores: [],
+				roundScore: round.roundScore ?? null,
+			})) ?? [];
+
 		// Map calculated arrowsShot for frontend compatibility
 		const mappedCompetition = {
 			...competition,
 			arrowsShot: totalArrows,
-			practiceType: 'KONKURRANSE', // Add practiceType for frontend
+			practiceType: 'KONKURRANSE' as const,
+			ends: mappedEnds,
 		};
 
 		return NextResponse.json(

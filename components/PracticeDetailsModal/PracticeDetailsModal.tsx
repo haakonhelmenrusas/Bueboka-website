@@ -1,5 +1,5 @@
 import React from 'react';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import { Button } from '@/components';
 import { formatWeatherConditions } from '@/lib/weatherUtils';
 import { getArrowMaterialLabel, getBowTypeLabel, getPracticeCategoryLabel } from '@/lib/labels';

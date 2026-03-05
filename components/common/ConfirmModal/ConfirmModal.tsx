@@ -3,7 +3,7 @@
 import React from 'react';
 import { LuX } from 'react-icons/lu';
 import styles from './ConfirmModal.module.css';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 
 export interface ConfirmModalProps {
 	open: boolean;

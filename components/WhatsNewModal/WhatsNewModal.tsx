@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './WhatsNewModal.module.css';
 import { LuChevronRight } from 'react-icons/lu';
 import { Button } from '@/components';
-import { useModalBehavior } from '@/lib/useModalBehavior';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import { LiaFireAltSolid } from 'react-icons/lia';
 import { PiChartBarLight, PiCheckSquareLight } from 'react-icons/pi';
 import { IoMdTrendingUp } from 'react-icons/io';
