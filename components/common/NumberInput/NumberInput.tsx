@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useId, useMemo, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import styles from './NumberInput.module.css';
 
 export interface NumberInputProps {
@@ -20,23 +20,24 @@ export interface NumberInputProps {
 	/** Hide the stepper buttons (-/+) for a cleaner input appearance */
 	hideSteppers?: boolean;
 	/**
-	 * How to treat empty input. Defaults to "clamp" (turns empty into min/0).
-	 * Use "ignore" to keep value unchanged when input is cleared.
+	 * How to treat empty input on blur. Defaults to "clamp" (fills in min or 0).
+	 * Use "ignore" to restore the last numeric value instead.
 	 */
 	emptyBehavior?: 'clamp' | 'ignore';
-	/** If true, the input starts visually empty when the initial value is 0 (better UX for count fields). */
+	/** If true, the input starts visually empty when the initial value is 0. */
 	startEmpty?: boolean;
 	name?: string;
 	id?: string;
 	containerClassName?: string;
 	inputClassName?: string;
-	/** Optional right addon, e.g. a tooltip or icon. */
 	rightAddon?: React.ReactNode;
-	/** Called when the input is cleared to empty string. Useful for nullable numeric fields. */
+	/** Called when the input is cleared. Useful for nullable numeric fields — the
+	 *  field will stay empty rather than filling in min/0. */
 	onEmpty?: () => void;
-	/** Width of the input container (e.g., '120px', '50%', '100%'). Defaults to full width. */
 	width?: string | number;
 }
+
+// --- Pure helpers -----------------------------------------------------------
 
 const clamp = (n: number, min?: number, max?: number) => {
 	let v = n;
@@ -46,12 +47,18 @@ const clamp = (n: number, min?: number, max?: number) => {
 };
 
 const roundToStep = (n: number, step: number): number => {
-	// Determine decimal places from step
 	const stepStr = step.toString();
 	const decimals = stepStr.includes('.') ? stepStr.split('.')[1].length : 0;
 	const multiplier = Math.pow(10, decimals);
 	return Math.round(n * multiplier) / multiplier;
 };
+
+const toDisplay = (value: number) => (Number.isFinite(value) ? String(value) : '');
+
+const initialDisplay = (value: number, startEmpty: boolean) =>
+	startEmpty && value === 0 ? '' : toDisplay(value);
+
+// ----------------------------------------------------------------------------
 
 export const NumberInput: React.FC<NumberInputProps> = ({
 	label,
@@ -79,6 +86,8 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 }) => {
 	const autoId = useId();
 	const inputId = id ?? `number-input-${autoId}`;
+	const inputRef = useRef<HTMLInputElement>(null);
+
 	const describedById = useMemo(() => {
 		const ids: string[] = [];
 		if (helpText) ids.push(`${inputId}-help`);
@@ -86,75 +95,45 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		return ids.length ? ids.join(' ') : undefined;
 	}, [errorMessage, helpText, inputId]);
 
-	// Keep a separate string state so the field can be empty while the stored value remains numeric.
-	const [displayValue, setDisplayValue] = useState<string>(() => {
-		if (startEmpty && value === 0) return '';
-		return Number.isFinite(value) ? String(value) : '';
-	});
+	// The display string is the local source of truth for the input element.
+	const [displayValue, setDisplayValue] = useState(() => initialDisplay(value, startEmpty));
 
-	// Track unit position dynamically
-	const [unitOffset, setUnitOffset] = useState<number>(0);
-	const inputRef = React.useRef<HTMLInputElement>(null);
-
-	// Track first sync so we don't immediately overwrite startEmpty with "0".
-	const didInitRef = React.useRef(false);
+	// Track the previous external value so we only sync in genuine parent-driven changes.
+	const prevValueRef = useRef(value);
 
 	useEffect(() => {
-		if (!didInitRef.current) {
-			didInitRef.current = true;
-			if (startEmpty && value === 0) return;
-		}
-		setDisplayValue(Number.isFinite(value) ? String(value) : '');
-	}, [value, startEmpty]);
+		const prev = prevValueRef.current;
+		prevValueRef.current = value;
 
-	// Calculate unit position based on text width
-	useEffect(() => {
-		if (!unit || !inputRef.current) return;
+		// Same value as before — nothing to sync (avoids overwriting an empty field
+		// e.g. when onEmpty sets the parent to null which renders as 0 via ?? 0).
+		if (value === prev) return;
 
-		const calculateOffset = () => {
-			// Create a hidden span to measure text width
-			const span = document.createElement('span');
-			span.style.visibility = 'hidden';
-			span.style.position = 'absolute';
-			span.style.whiteSpace = 'nowrap';
-			span.style.font = window.getComputedStyle(inputRef.current!).font;
-			span.textContent = displayValue || '0';
-			document.body.appendChild(span);
+		setDisplayValue(toDisplay(value));
+	}, [value]);
 
-			const textWidth = span.offsetWidth;
-			document.body.removeChild(span);
+	// --- Stepper buttons ----------------------------------------------------
 
-			// Position unit 8px to the right of the text
-			setUnitOffset(textWidth / 2 + 8);
-		};
-
-		calculateOffset();
-	}, [displayValue, unit]);
-
-	const dec = () => {
+	const step_ = (delta: number) => {
 		if (disabled) return;
-		const next = roundToStep(clamp(value - step, min, max), step);
+		const next = roundToStep(clamp(value + delta, min, max), step);
 		onChange(next);
 		setDisplayValue(String(next));
 	};
 
-	const inc = () => {
-		if (disabled) return;
-		const next = roundToStep(clamp(value + step, min, max), step);
-		onChange(next);
-		setDisplayValue(String(next));
-	};
+	// --- Input handlers -----------------------------------------------------
 
-	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (disabled) return;
 		const raw = e.target.value;
 		setDisplayValue(raw);
 
 		if (raw === '') {
-			onEmpty?.();
-			if (emptyBehavior === 'ignore') return;
-			const fallback = typeof min === 'number' ? min : 0;
-			onChange(clamp(fallback, min, max));
+			if (onEmpty) {
+				onEmpty();
+			} else if (emptyBehavior === 'clamp') {
+				onChange(clamp(typeof min === 'number' ? min : 0, min, max));
+			}
 			return;
 		}
 
@@ -162,21 +141,21 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		if (Number.isNaN(parsed)) return;
 		const next = roundToStep(clamp(parsed, min, max), step);
 		onChange(next);
-		// If clamping changed the value, reflect it immediately.
 		if (next !== parsed) setDisplayValue(String(next));
 	};
 
 	const handleBlur = () => {
-		if (disabled) return;
-		if (displayValue === '') {
-			onEmpty?.();
-			if (emptyBehavior === 'ignore') {
-				// restore last numeric value on blur
-				setDisplayValue(Number.isFinite(value) ? String(value) : '');
-				return;
-			}
-			const fallback = typeof min === 'number' ? min : 0;
-			const next = roundToStep(clamp(fallback, min, max), step);
+		if (disabled || displayValue !== '') return;
+
+		if (onEmpty) {
+			// Nullable field — keep it empty.
+			onEmpty();
+		} else if (emptyBehavior === 'ignore') {
+			// Restore last committed value.
+			setDisplayValue(toDisplay(value));
+		} else {
+			// clamp: fill in the minimum (or 0).
+			const next = roundToStep(clamp(typeof min === 'number' ? min : 0, min, max), step);
 			onChange(next);
 			setDisplayValue(String(next));
 		}
@@ -184,43 +163,57 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
 		if (disabled) return;
-		// Clear "0" on focus to prevent extra 0 when typing
 		if (displayValue === '0' || (startEmpty && value === 0)) {
 			setDisplayValue('');
-			e.target.select(); // Select any remaining text
+			e.target.select();
 		}
 	};
 
-	const numericForBounds = (() => {
+	// --- Derived display state ----------------------------------------------
+
+	const numericDisplay = (() => {
 		const parsed = Number(displayValue);
 		return displayValue === '' || Number.isNaN(parsed) ? value : parsed;
 	})();
 
-	const atMin = typeof min === 'number' ? numericForBounds <= min : false;
-	const atMax = typeof max === 'number' ? numericForBounds >= max : false;
+	const atMin = typeof min === 'number' && numericDisplay <= min;
+	const atMax = typeof max === 'number' && numericDisplay >= max;
+	const widthStyle = width != null ? (typeof width === 'number' ? `${width}px` : width) : undefined;
 
-	// Convert width to string format
-	const widthStyle = width ? (typeof width === 'number' ? `${width}px` : width) : undefined;
+	// --- Unit label offset (measures text width) ----------------------------
+
+	const [unitOffset, setUnitOffset] = useState(0);
+
+	useEffect(() => {
+		if (!unit || !inputRef.current) return;
+		const span = document.createElement('span');
+		span.style.cssText = 'visibility:hidden;position:absolute;white-space:nowrap';
+		span.style.font = window.getComputedStyle(inputRef.current).font;
+		span.textContent = displayValue || '0';
+		document.body.appendChild(span);
+		setUnitOffset(span.offsetWidth / 2 + 8);
+		document.body.removeChild(span);
+	}, [displayValue, unit]);
+
+	// ------------------------------------------------------------------------
 
 	return (
 		<div className={`${styles.container} ${containerClassName || ''}`} style={widthStyle ? { width: widthStyle } : undefined}>
 			<label className={styles.label} htmlFor={inputId}>
 				{label}
-				{required ? <span className={styles.required}>*</span> : null}
-				{optional ? <span className={styles.optional}>(valgfritt)</span> : null}
+				{required && <span className={styles.required}>*</span>}
+				{optional && <span className={styles.optional}>(valgfritt)</span>}
 			</label>
 
-			{helpText ? (
+			{helpText && (
 				<div id={`${inputId}-help`} className={styles.help}>
 					{helpText}
 				</div>
-			) : null}
+			)}
 
-			<div
-				className={`${styles.control} ${hideSteppers ? styles.noSteppers : ''} ${disabled ? styles.disabled : ''} ${errorMessage ? styles.error : ''}`}
-			>
+			<div className={`${styles.control} ${hideSteppers ? styles.noSteppers : ''} ${disabled ? styles.disabled : ''} ${errorMessage ? styles.error : ''}`}>
 				{!hideSteppers && (
-					<button type="button" className={styles.stepper} onClick={dec} disabled={disabled || atMin} aria-label={`Decrease ${label}`}>
+					<button type="button" className={styles.stepper} onClick={() => step_(-step)} disabled={disabled || atMin} aria-label={`Decrease ${label}`}>
 						−
 					</button>
 				)}
@@ -234,7 +227,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						inputMode="numeric"
 						className={`${styles.input} ${inputClassName || ''}`}
 						value={displayValue}
-						onChange={handleInputChange}
+						onChange={handleChange}
 						onBlur={handleBlur}
 						onFocus={handleFocus}
 						min={min}
@@ -245,26 +238,22 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						aria-invalid={errorMessage ? 'true' : 'false'}
 						aria-describedby={describedById}
 					/>
-					{unit ? (
-						<span className={styles.unit} style={{ transform: `translateX(${unitOffset}px)` }}>
-							{unit}
-						</span>
-					) : null}
-					{rightAddon ? <span className={styles.rightAddon}>{rightAddon}</span> : null}
+					{unit && <span className={styles.unit} style={{ transform: `translateX(${unitOffset}px)` }}>{unit}</span>}
+					{rightAddon && <span className={styles.rightAddon}>{rightAddon}</span>}
 				</div>
 
 				{!hideSteppers && (
-					<button type="button" className={styles.stepper} onClick={inc} disabled={disabled || atMax} aria-label={`Increase ${label}`}>
+					<button type="button" className={styles.stepper} onClick={() => step_(step)} disabled={disabled || atMax} aria-label={`Increase ${label}`}>
 						+
 					</button>
 				)}
 			</div>
 
-			{errorMessage ? (
+			{errorMessage && (
 				<div id={`${inputId}-error`} className={styles.errorMessage}>
 					{errorMessage}
 				</div>
-			) : null}
+			)}
 		</div>
 	);
 };
