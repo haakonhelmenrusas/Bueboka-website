@@ -21,14 +21,20 @@ export function Privacy() {
 								<LuShield className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>100% personvern</h3>
-							// ...existing code...
+							<p className={styles.cardText}>
+								Vi selger aldri dine data. Informasjonen din blir behandlet konfidensielt og lagres sikkert. Bueboka er bygget for
+								bueskyttere, av bueskyttere, ikke for å tjene penger på dataene dine.
+							</p>
 						</div>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '160ms' }}>
 							<div className={styles.iconBox} aria-hidden="true">
 								<LuTarget className={styles.icon} />
 							</div>
 							<h3 className={styles.cardTitle}>Kun til appens drift</h3>
-							// ...existing code...
+							<p className={styles.cardText}>
+								Alle data som samles inn brukes utelukkende til å gi deg en bedre opplevelse av appen. Ingen tredjeparter har tilgang til
+								personopplysningene dine. Vi fokuserer på skyting, ikke salg.
+							</p>
 						</div>
 						<div className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: '320ms' }}>
 							<div className={styles.iconBox} aria-hidden="true">
