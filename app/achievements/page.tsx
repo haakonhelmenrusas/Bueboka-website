@@ -80,7 +80,7 @@ export default function AchievementsPage() {
 				<div className={styles.container}>
 					<div className={styles.loading}>
 						<div className={styles.spinner} />
-						<p>Laster merker...</p>
+						<p>Laster prestasjoner...</p>
 					</div>
 				</div>
 			</>
@@ -112,16 +112,13 @@ export default function AchievementsPage() {
 					<div className={styles.backButtonContainer}>
 						<Button label="Tilbake" onClick={() => router.back()} icon={<LuArrowLeft size={18} />} size="small" buttonType="outline" />
 					</div>
-
 					<div className={styles.header}>
 						<h1 className={styles.title}>
 							<LuTrophy size={40} />
-							Mine Merker
+							Mine prestasjoner
 						</h1>
-						<p className={styles.subtitle}>Lås opp merker ved å trene og delta i konkurranser</p>
+						<p className={styles.subtitle}>Lås opp prestasjoner ved å trene og delta i konkurranser</p>
 					</div>
-
-					{/* Summary Cards */}
 					<div className={styles.summaryGrid}>
 						<div className={styles.summaryCard}>
 							<h3>Låst Opp</h3>
@@ -140,8 +137,6 @@ export default function AchievementsPage() {
 							<p className={styles.value}>{data.summary.totalPoints}</p>
 						</div>
 					</div>
-
-					{/* Filters */}
 					<div className={styles.filters}>
 						<div className={styles.filterGroup}>
 							<span className={styles.filterLabel}>Status:</span>
@@ -166,7 +161,6 @@ export default function AchievementsPage() {
 								</button>
 							</div>
 						</div>
-
 						<div className={styles.filterGroup}>
 							<span className={styles.filterLabel}>Kategori:</span>
 							<div className={styles.filterButtons}>
@@ -202,7 +196,6 @@ export default function AchievementsPage() {
 								</button>
 							</div>
 						</div>
-
 						<div className={styles.filterGroup}>
 							<span className={styles.filterLabel}>Sjeldenhet:</span>
 							<div className={styles.filterButtons}>
@@ -245,8 +238,6 @@ export default function AchievementsPage() {
 							</div>
 						</div>
 					</div>
-
-					{/* Achievement Grid */}
 					{filteredAchievements.length > 0 ? (
 						<div className={styles.achievementGrid}>
 							{filteredAchievements.map((progress) => (
