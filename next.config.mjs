@@ -6,6 +6,14 @@ const nextConfig = {
 	compress: true,
 	poweredByHeader: false,
 
+	// Development optimizations
+	...(process.env.NODE_ENV === 'development' && {
+		experimental: {
+			// Disable caching in development for fast refresh
+			isrMemoryCacheSize: 0,
+		},
+	}),
+
 	// Optimize images
 	images: {
 		formats: ['image/avif', 'image/webp'],
@@ -29,6 +37,30 @@ const nextConfig = {
 
 	// Configure headers for better caching
 	async headers() {
+		// In development, disable caching for fast refresh
+		if (process.env.NODE_ENV === 'development') {
+			return [
+				{
+					source: '/:path*',
+					headers: [
+						{
+							key: 'Cache-Control',
+							value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+						},
+						{
+							key: 'X-DNS-Prefetch-Control',
+							value: 'on',
+						},
+						{
+							key: 'X-Frame-Options',
+							value: 'SAMEORIGIN',
+						},
+					],
+				},
+			];
+		}
+
+		// Production caching
 		return [
 			{
 				source: '/:path*',
