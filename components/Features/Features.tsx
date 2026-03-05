@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { LuBriefcase, LuChartBar, LuTarget } from 'react-icons/lu';
 import styles from './Features.module.css';
 
@@ -49,42 +50,51 @@ export function Features() {
 								<div className={styles.bullet} aria-hidden="true" />
 								<p>Detaljert statistikk ✨</p>
 							</div>
-							<div
-								className={`${styles.tile}`}
-								role="img"
-								aria-label="Statistikk illustrasjon"
-								style={{
-									backgroundImage: `url('https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
-								}}
-							/>
+							<div className={styles.tile} role="img" aria-label="Statistikk illustrasjon">
+								<Image
+									src="https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=800&auto=format&fit=crop"
+									alt=""
+									width={800}
+									height={600}
+									className={styles.tileImg}
+									loading="lazy"
+									unoptimized
+								/>
+							</div>
 						</div>
 						<div>
 							<div className={styles.bulletContainer}>
 								<div className={styles.bullet} aria-hidden="true" />
 								<p>Innlogging med Google ✨</p>
 							</div>
-							<div
-								className={`${styles.tile}`}
-								role="img"
-								aria-label="Google innlogging illustrasjon"
-								style={{
-									backgroundImage: `url('https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMGFuYWx5dGljcyUyMGRhc2hib2FyZHxlbnwxfHx8fDE3NTUxNzUxOTF8MA&ixlib=rb-4.1.0&q=80&w=1080')`,
-								}}
-							/>
+							<div className={styles.tile} role="img" aria-label="Google innlogging illustrasjon">
+								<Image
+									src="https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=webp&w=800&q=80"
+									alt=""
+									width={800}
+									height={600}
+									className={styles.tileImg}
+									loading="lazy"
+									unoptimized
+								/>
+							</div>
 						</div>
 						<div>
 							<div className={styles.bulletContainer}>
 								<div className={styles.bullet} aria-hidden="true" />
 								<p>Snart: Registrering av score</p>
 							</div>
-							<div
-								className={`${styles.tile}`}
-								role="img"
-								aria-label="Score registrering illustrasjon"
-								style={{
-									backgroundImage: `url('https://plus.unsplash.com/premium_photo-1718315730752-eb55b9b6afa8?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
-								}}
-							/>
+							<div className={styles.tile} role="img" aria-label="Score registrering illustrasjon">
+								<Image
+									src="https://plus.unsplash.com/premium_photo-1718315730752-eb55b9b6afa8?q=80&w=800&auto=format&fit=crop"
+									alt=""
+									width={800}
+									height={600}
+									className={styles.tileImg}
+									loading="lazy"
+									unoptimized
+								/>
+							</div>
 						</div>
 					</div>
 				</div>

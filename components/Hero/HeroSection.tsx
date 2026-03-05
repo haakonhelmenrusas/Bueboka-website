@@ -24,8 +24,8 @@ export function HeroSection() {
 							<Image
 								src="/assets/training.jpeg"
 								alt="Bueboka app viser treningsoversikt med registrerte økter"
-								width={300}
-								height={560}
+								width={640}
+								height={1387}
 								className={styles.phoneImg}
 								priority
 							/>
@@ -34,8 +34,8 @@ export function HeroSection() {
 							<Image
 								src="/assets/profile.jpeg"
 								alt="Bueboka app viser brukerprofil med utstyr og statistikk"
-								width={300}
-								height={560}
+								width={640}
+								height={1387}
 								className={styles.phoneImg}
 								priority
 							/>

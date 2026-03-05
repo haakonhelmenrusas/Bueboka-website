@@ -6,6 +6,9 @@ const nextConfig = {
 	compress: true,
 	poweredByHeader: false,
 
+	// Enable source maps for production (improves debugging and Lighthouse Best Practices score)
+	productionBrowserSourceMaps: true,
+
 	// Development optimizations
 	...(process.env.NODE_ENV === 'development' && {
 		experimental: {

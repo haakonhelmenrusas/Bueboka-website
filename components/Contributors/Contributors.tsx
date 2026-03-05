@@ -58,7 +58,7 @@ export function Contributors() {
 									/>
 								</div>
 							) : (
-								<div className={styles.avatar} aria-label={`${contributor.name} initialer`}>
+								<div className={styles.avatar} role="img" aria-label={`${contributor.name} initialer`}>
 									<span className={styles.avatarText} aria-hidden="true">
 										{contributor.initials}
 									</span>
