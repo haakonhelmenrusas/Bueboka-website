@@ -69,9 +69,9 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 				body: JSON.stringify({
 					name: values.name,
 					type: values.type,
-					eyeToNock: values.eyeToNock ? values.eyeToNock : undefined,
-					aimMeasure: values.aimMeasure ? values.aimMeasure : undefined,
-					eyeToSight: values.eyeToSight ? values.eyeToSight : undefined,
+					eyeToNock: values.eyeToNock != null && values.eyeToNock > 0 ? values.eyeToNock : null,
+					aimMeasure: values.aimMeasure != null && values.aimMeasure > 0 ? values.aimMeasure : null,
+					eyeToSight: values.eyeToSight != null && values.eyeToSight > 0 ? values.eyeToSight : null,
 					isFavorite: values.isFavorite,
 					notes: values.notes || undefined,
 				}),
