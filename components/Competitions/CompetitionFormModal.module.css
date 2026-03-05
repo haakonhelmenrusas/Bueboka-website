@@ -71,6 +71,10 @@
     margin-top: var(--space-4);
 }
 
+.numberInput {
+    max-width: 120px;
+}
+
 .row {
     display: grid;
     gap: var(--space-5);
@@ -111,7 +115,7 @@
 }
 
 .roundCard {
-    background: var(--primary-02);
+    background: var(--tertiary);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-lg);
     padding: var(--space-5);
@@ -151,13 +155,12 @@
 }
 
 .roundInputs {
-    display: grid;
-    gap: var(--space-4);
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    display: flex;
+    gap: var(--space-5);
 }
 
 .roundField {
-    min-width: 0;
+    min-width: 200px;
 }
 
 .limitMessage {

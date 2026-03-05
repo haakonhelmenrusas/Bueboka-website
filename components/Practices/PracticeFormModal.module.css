@@ -111,7 +111,7 @@
 }
 
 .roundCard {
-    background: var(--background);
+    background: var(--tertiary);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-lg);
     padding: var(--space-5);

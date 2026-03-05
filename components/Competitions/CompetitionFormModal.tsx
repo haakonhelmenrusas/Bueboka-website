@@ -91,10 +91,10 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 
 	// Target type options - same as practice form
 	const targetTypeOptions = [
-		{ value: '40cm', label: '40cm' },
-		{ value: '60cm', label: '60cm' },
-		{ value: '80cm', label: '80cm' },
-		{ value: '122cm', label: '122cm' },
+		{ value: '40cm', label: '40 cm' },
+		{ value: '60cm', label: '60 cm' },
+		{ value: '80cm', label: '80 cm' },
+		{ value: '122cm', label: '122 cm' },
 		{ value: '3-spot', label: '3-spot' },
 		{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
 		{ value: 'animal', label: 'Dyr' },
@@ -299,7 +299,25 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							options={environmentOptions}
 							containerClassName={styles.field}
 						/>
-						<Input label="Sted" value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
+						<Input label="Sted" optional value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
+					</div>
+					<div className={styles.row}>
+						<Select
+							label="Bue"
+							value={bowId}
+							onChange={(val) => setBowId(val as string)}
+							options={bowOptions}
+							placeholderLabel="Velg bue (valgfritt)"
+							containerClassName={styles.field}
+						/>
+						<Select
+							label="Piler"
+							value={arrowsId}
+							onChange={(val) => setArrowsId(val as string)}
+							options={arrowsOptions}
+							placeholderLabel="Velg piler (valgfritt)"
+							containerClassName={styles.field}
+						/>
 					</div>
 					<Input
 						label="Arrangør"
@@ -333,6 +351,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							startEmpty
 							optional
 							hideSteppers
+							inputClassName={styles.numberInput}
 							containerClassName={styles.field}
 						/>
 						<NumberInput
@@ -363,7 +382,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 								</div>
 								<div className={styles.roundInputs}>
 									<NumberInput
-										label="Distanse"
+										label="Avstand"
 										value={round.distanceMeters ?? 0}
 										onChange={(val) => updateRound(index, 'distanceMeters', val || undefined)}
 										onEmpty={() => updateRound(index, 'distanceMeters', undefined)}
@@ -371,6 +390,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										startEmpty
 										hideSteppers
 										unit="m"
+										width="120px"
 										containerClassName={styles.roundField}
 									/>
 									<Select
@@ -392,12 +412,12 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onEmpty={() => updateRound(index, 'numberArrows', 0)}
 										min={0}
 										hideSteppers
-										required
+										optional
 										startEmpty
+										width="120px"
 										helpText="Ant. piler med score"
 										containerClassName={styles.roundField}
 									/>
-
 									<NumberInput
 										label="Piler u/score"
 										value={round.arrowsWithoutScore ?? 0}
@@ -407,24 +427,24 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										optional
 										hideSteppers
 										startEmpty
+										width="120px"
 										helpText="Piler uten score"
 										containerClassName={styles.roundField}
 									/>
-
 									<NumberInput
 										label="Score"
 										value={round.roundScore}
 										onChange={(val) => updateRound(index, 'roundScore', val || 0)}
 										min={0}
-										required
+										optional
 										hideSteppers
 										startEmpty
+										width="120px"
 										containerClassName={styles.roundField}
 									/>
 								</div>
 							</div>
 						))}
-
 						<Button
 							type="button"
 							label="+ Legg til runde"
@@ -436,29 +456,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						/>
 						{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
 					</div>
-
-					{/* Equipment */}
-					<div className={styles.row}>
-						<Select
-							label="Bue"
-							value={bowId}
-							onChange={(val) => setBowId(val as string)}
-							options={bowOptions}
-							placeholderLabel="Velg bue (valgfritt)"
-							containerClassName={styles.field}
-						/>
-
-						<Select
-							label="Piler"
-							value={arrowsId}
-							onChange={(val) => setArrowsId(val as string)}
-							options={arrowsOptions}
-							placeholderLabel="Velg piler (valgfritt)"
-							containerClassName={styles.field}
-						/>
-					</div>
-
-					{/* Notes */}
 					<TextArea
 						label="Notater"
 						value={notes}
@@ -468,7 +465,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						maxLength={500}
 						containerClassName={styles.field}
 					/>
-
 					<div className={styles.actions}>
 						<Button type="button" label="Avbryt" onClick={onClose} buttonType="outline" disabled={submitting} width={160} />
 						<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre'} disabled={submitting} loading={submitting} width={180} />

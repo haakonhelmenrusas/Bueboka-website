@@ -390,6 +390,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											value={round.targetType}
 											onChange={(v) => updateRound(index, 'targetType', v as string)}
 											placeholderLabel="Velg"
+											searchable
 											options={targetTypeOptions}
 											containerClassName={styles.roundField}
 										/>
@@ -403,6 +404,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											step={1}
 											startEmpty={true}
 											optional
+											hideSteppers
 											helpText="Ant. piler med score"
 											containerClassName={styles.roundField}
 										/>
@@ -414,6 +416,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											step={1}
 											startEmpty={true}
 											optional
+											hideSteppers
 											helpText="Piler uten score"
 											containerClassName={styles.roundField}
 										/>
@@ -425,6 +428,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											step={1}
 											startEmpty={true}
 											optional
+											hideSteppers
 											containerClassName={styles.roundField}
 										/>
 									</div>
