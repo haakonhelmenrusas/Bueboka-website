@@ -36,7 +36,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 			name: editingBow?.name || '',
 			type: (editingBow?.type || 'RECURVE') as BowType,
 			eyeToNock: editingBow?.eyeToNock ?? 0,
-			aimMeasure: editingBow?.aimMeasure ?? 0,
+			aimMeasure: editingBow?.aimMeasure ?? 5,
 			eyeToSight: editingBow?.eyeToSight ?? 0,
 			isFavorite: editingBow?.isFavorite ?? false,
 			notes: editingBow?.notes || '',
@@ -69,9 +69,9 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 				body: JSON.stringify({
 					name: values.name,
 					type: values.type,
-					eyeToNock: values.eyeToNock != null && values.eyeToNock > 0 ? values.eyeToNock : null,
-					aimMeasure: values.aimMeasure != null && values.aimMeasure > 0 ? values.aimMeasure : null,
-					eyeToSight: values.eyeToSight != null && values.eyeToSight > 0 ? values.eyeToSight : null,
+					eyeToNock: values.eyeToNock || null,
+					aimMeasure: values.aimMeasure || null,
+					eyeToSight: values.eyeToSight || null,
 					isFavorite: values.isFavorite,
 					notes: values.notes || undefined,
 				}),
@@ -142,7 +142,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 
 				<div className={styles.form}>
-					<BowForm initialValues={initialValues} onSubmit={handleSubmit} />
+					<BowForm key={editingBow?.id ?? 'new'} initialValues={initialValues} onSubmit={handleSubmit} />
 
 					<div className={styles.actions}>
 						{editingBow ? (
