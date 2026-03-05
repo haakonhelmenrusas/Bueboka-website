@@ -1,6 +1,5 @@
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styles from './ArrowsChart.module.css';
-import { useEffect, useState } from 'react';
 import { PracticeCategory } from './types';
 import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
 import { Select } from '@/components';
@@ -13,31 +12,22 @@ interface ArrowsChartProps {
 	onCategoryChange: (category: PracticeCategory) => void;
 }
 
-// Generate colors from CSS variables
-const getChartColors = (): string[] => {
-	if (typeof window === 'undefined') return [];
-
-	const root = getComputedStyle(document.documentElement);
-	return [
-		root.getPropertyValue('--primary').trim(),
-		root.getPropertyValue('--primary-light').trim(),
-		root.getPropertyValue('--secondary').trim(),
-		root.getPropertyValue('--warning').trim(),
-		root.getPropertyValue('--success').trim(),
-		root.getPropertyValue('--error').trim(),
-		'#9333ea', // Purple
-		'#0891b2', // Cyan
-		'#d97706', // Amber
-		'#059669', // Emerald
-	];
-};
+// Distinct, high-contrast palette for stacked bar segments.
+// Ordered so adjacent entries are maximally different in hue.
+const CHART_COLORS = [
+	'#0c82ac', // app blue
+	'#e05c2a', // orange
+	'#2a9d5c', // green
+	'#c8382e', // red
+	'#7c3aed', // violet
+	'#d4a017', // amber/gold
+	'#0e7a6b', // teal
+	'#d63a8a', // pink
+	'#1d4ed8', // royal blue
+	'#6b7280', // neutral grey
+] as const;
 
 export function ArrowsChart({ data, series, formatDate, selectedCategory, onCategoryChange }: ArrowsChartProps) {
-	const [colors, setColors] = useState<string[]>([]);
-
-	useEffect(() => {
-		setColors(getChartColors());
-	}, []);
 
 	// Category options for Select component
 	const categoryOptions = [
@@ -62,8 +52,6 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 
 	// Assign colors - use lighter shades for session 2, 3, etc of same base series
 	const getColorForSeries = (seriesName: string, index: number): string => {
-		if (!colors.length) return '#053546';
-
 		// Check if this is a session-suffixed series
 		const sessionMatch = seriesName.match(/^(.+) \(Økt (\d+)\)$/);
 		if (sessionMatch) {
@@ -73,7 +61,7 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 			// Find base series index
 			const baseIndex = series.findIndex((s) => s.name === baseName);
 			const colorIndex = baseIndex >= 0 ? baseIndex : index;
-			const baseColor = colors[colorIndex % colors.length];
+			const baseColor = CHART_COLORS[colorIndex % CHART_COLORS.length];
 
 			// Make subsequent sessions lighter by adding transparency
 			if (sessionIndex > 0) {
@@ -87,7 +75,7 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 		}
 
 		// Regular series - use normal color
-		return colors[index % colors.length];
+		return CHART_COLORS[index % CHART_COLORS.length];
 	};
 
 	return (
