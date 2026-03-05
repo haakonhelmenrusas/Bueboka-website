@@ -37,9 +37,10 @@ export async function GET(request: Request) {
 		let practiceCountPromise;
 		let competitionCountPromise;
 
-		// When fetching 'all', we need to get enough records from each type to fill the page after sorting
-		// So we fetch more than needed and then sort/slice
-		const fetchLimit = filterType === 'all' ? pageSize * 2 : pageSize;
+		// When fetching 'all', we need all records up to the current page's end offset
+		// so we can sort them together and slice correctly.
+		// For single-type filters, the DB handles pagination directly.
+		const fetchLimit = filterType === 'all' ? skip + pageSize : pageSize;
 
 		if (filterType === 'all' || filterType === 'TRENING') {
 			practicesPromise = prisma.practice.findMany({
