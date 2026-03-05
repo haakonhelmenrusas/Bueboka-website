@@ -1,140 +1,142 @@
 .container {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
 }
 
 .label {
-	font-weight: 700;
-	color: var(--text-gray-700);
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	line-height: 1.15;
-	min-height: 22px;
+    font-weight: 700;
+    color: var(--text-gray-700);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.15;
+    min-height: 22px;
 }
 
 .required {
-	color: var(--error);
-	font-weight: 800;
+    color: var(--error);
+    font-weight: 800;
 }
 
 .optional {
-	font-size: 0.8125rem;
-	font-weight: 400;
-	color: var(--text-gray-600);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--text-gray-600);
 }
 
 .control {
-	display: grid;
-	grid-template-columns: 38px 1fr 38px;
-	align-items: stretch;
-	border-radius: var(--radius-base);
-	border: 1px solid var(--bg-gray-200);
-	background: var(--card-bg-solid);
-	overflow: hidden;
-	box-shadow: 0 1px 0 var(--dark-02);
+    display: grid;
+    grid-template-columns: 38px 1fr 38px;
+    align-items: stretch;
+    border-radius: var(--radius-base);
+    border: 1px solid var(--bg-gray-200);
+    background: var(--card-bg-solid);
+    overflow: hidden;
+    box-shadow: 0 1px 0 var(--dark-02);
 }
 
 .control:focus-within {
-	outline: 3px solid var(--primary-20);
-	outline-offset: 2px;
+    outline: 3px solid var(--primary-20);
+    outline-offset: 2px;
 }
 
 .control.noSteppers {
-	grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
 }
 
 .stepper {
-	border: none;
-	background: var(--primary-06);
-	color: var(--primary);
-	font-size: 18px;
-	font-weight: 700;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: background 120ms ease, transform 120ms ease;
+    border: none;
+    background: var(--primary-06);
+    color: var(--primary);
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 120ms ease, transform 120ms ease;
 }
 
 .stepper:hover:not(:disabled) {
-	background: var(--primary-08);
+    background: var(--primary-08);
 }
 
 .stepper:active:not(:disabled) {
-	transform: translateY(1px);
+    transform: translateY(1px);
 }
 
 .stepper:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .inputWrap {
-	position: relative;
-	display: flex;
-	align-items: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .input {
-	width: 100%;
-	border: none;
-	outline: none;
-	background: transparent;
-	padding: 10px 12px;
-	font-size: 0.98rem;
-	font-weight: 500;
-	color: var(--text-dark);
-	text-align: center;
-	appearance: textfield;
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 10px 12px;
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    text-align: center;
+    appearance: textfield;
 }
 
 .input:focus,
 .input:focus-visible {
-	outline: none;
+    outline: none;
 }
 
 /* Hide default spinners in WebKit */
 .input::-webkit-outer-spin-button,
 .input::-webkit-inner-spin-button {
-	-webkit-appearance: none;
-	margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .unit {
-	position: absolute;
-	right: 40px;
-	color: var(--text-gray-600);
-	font-weight: 600;
-	pointer-events: none;
+    position: absolute;
+    left: 50%;
+    color: var(--text-gray-600);
+    font-weight: 600;
+    pointer-events: none;
+    white-space: nowrap;
 }
 
 .rightAddon {
-	position: absolute;
-	right: 10px;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+    position: absolute;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .help {
-	color: var(--text-gray-600);
-	font-size: 0.9rem;
-	line-height: 1.2;
-	min-height: 18px;
+    color: var(--text-gray-600);
+    font-size: 0.9rem;
+    line-height: 1.2;
+    min-height: 18px;
 }
 
 .errorMessage {
-	color: var(--error);
-	font-size: 0.95rem;
-	font-weight: 700;
+    color: var(--error);
+    font-size: 0.95rem;
+    font-weight: 700;
 }
 
 .error {
-	border-color: rgba(255, 0, 0, 0.35);
+    border-color: rgba(255, 0, 0, 0.35);
 }
 
 .disabled {
-	opacity: 0.7;
+    opacity: 0.7;
 }

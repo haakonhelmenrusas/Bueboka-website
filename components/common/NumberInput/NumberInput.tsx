@@ -34,6 +34,8 @@ export interface NumberInputProps {
 	rightAddon?: React.ReactNode;
 	/** Called when the input is cleared to empty string. Useful for nullable numeric fields. */
 	onEmpty?: () => void;
+	/** Width of the input container (e.g., '120px', '50%', '100%'). Defaults to full width. */
+	width?: string | number;
 }
 
 const clamp = (n: number, min?: number, max?: number) => {
@@ -73,6 +75,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 	inputClassName,
 	rightAddon,
 	onEmpty,
+	width,
 }) => {
 	const autoId = useId();
 	const inputId = id ?? `number-input-${autoId}`;
@@ -89,6 +92,10 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		return Number.isFinite(value) ? String(value) : '';
 	});
 
+	// Track unit position dynamically
+	const [unitOffset, setUnitOffset] = useState<number>(0);
+	const inputRef = React.useRef<HTMLInputElement>(null);
+
 	// Track first sync so we don't immediately overwrite startEmpty with "0".
 	const didInitRef = React.useRef(false);
 
@@ -99,6 +106,30 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		}
 		setDisplayValue(Number.isFinite(value) ? String(value) : '');
 	}, [value, startEmpty]);
+
+	// Calculate unit position based on text width
+	useEffect(() => {
+		if (!unit || !inputRef.current) return;
+
+		const calculateOffset = () => {
+			// Create a hidden span to measure text width
+			const span = document.createElement('span');
+			span.style.visibility = 'hidden';
+			span.style.position = 'absolute';
+			span.style.whiteSpace = 'nowrap';
+			span.style.font = window.getComputedStyle(inputRef.current!).font;
+			span.textContent = displayValue || '0';
+			document.body.appendChild(span);
+
+			const textWidth = span.offsetWidth;
+			document.body.removeChild(span);
+
+			// Position unit 8px to the right of the text
+			setUnitOffset(textWidth / 2 + 8);
+		};
+
+		calculateOffset();
+	}, [displayValue, unit]);
 
 	const dec = () => {
 		if (disabled) return;
@@ -168,8 +199,11 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 	const atMin = typeof min === 'number' ? numericForBounds <= min : false;
 	const atMax = typeof max === 'number' ? numericForBounds >= max : false;
 
+	// Convert width to string format
+	const widthStyle = width ? (typeof width === 'number' ? `${width}px` : width) : undefined;
+
 	return (
-		<div className={`${styles.container} ${containerClassName || ''}`}>
+		<div className={`${styles.container} ${containerClassName || ''}`} style={widthStyle ? { width: widthStyle } : undefined}>
 			<label className={styles.label} htmlFor={inputId}>
 				{label}
 				{required ? <span className={styles.required}>*</span> : null}
@@ -193,6 +227,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 				<div className={styles.inputWrap}>
 					<input
+						ref={inputRef}
 						id={inputId}
 						name={name}
 						type="number"
@@ -210,7 +245,11 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						aria-invalid={errorMessage ? 'true' : 'false'}
 						aria-describedby={describedById}
 					/>
-					{unit ? <span className={styles.unit}>{unit}</span> : null}
+					{unit ? (
+						<span className={styles.unit} style={{ transform: `translateX(${unitOffset}px)` }}>
+							{unit}
+						</span>
+					) : null}
 					{rightAddon ? <span className={styles.rightAddon}>{rightAddon}</span> : null}
 				</div>
 
