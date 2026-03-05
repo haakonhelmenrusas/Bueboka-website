@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
@@ -31,64 +32,69 @@ export async function GET(request: Request) {
 		// Filter by type: 'all', 'TRENING', or 'KONKURRANSE'
 		const filterType = url.searchParams.get('filter') ?? 'all';
 
-		// Fetch practices and competitions separately based on filter
-		let practicesPromise;
-		let competitionsPromise;
-		let practiceCountPromise;
-		let competitionCountPromise;
-
 		// When fetching 'all', we need all records up to the current page's end offset
 		// so we can sort them together and slice correctly.
 		// For single-type filters, the DB handles pagination directly.
 		const fetchLimit = filterType === 'all' ? skip + pageSize : pageSize;
 
-		if (filterType === 'all' || filterType === 'TRENING') {
-			practicesPromise = prisma.practice.findMany({
-				where: { userId: user.id },
-				orderBy: { date: 'desc' },
-				skip: filterType === 'TRENING' ? skip : 0,
-				take: fetchLimit,
-				select: {
-					id: true,
-					date: true,
-					location: true,
-					environment: true,
-					rating: true,
-					totalScore: true,
-					practiceCategory: true,
-					roundType: { select: { name: true } },
-					ends: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
-				},
-			});
-			practiceCountPromise = prisma.practice.count({ where: { userId: user.id } });
-		} else {
-			practicesPromise = Promise.resolve([]);
-			practiceCountPromise = Promise.resolve(0);
-		}
+		const practiceSelect = {
+			id: true,
+			date: true,
+			location: true,
+			environment: true,
+			rating: true,
+			totalScore: true,
+			practiceCategory: true,
+			roundType: { select: { name: true } },
+			ends: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
+		} satisfies Prisma.PracticeSelect;
 
-		if (filterType === 'all' || filterType === 'KONKURRANSE') {
-			competitionsPromise = prisma.competition.findMany({
-				where: { userId: user.id },
-				orderBy: { date: 'desc' },
-				skip: filterType === 'KONKURRANSE' ? skip : 0,
-				take: fetchLimit,
-				select: {
-					id: true,
-					date: true,
-					name: true,
-					location: true,
-					environment: true,
-					totalScore: true,
-					placement: true,
-					practiceCategory: true,
-					rounds: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
-				},
-			});
-			competitionCountPromise = prisma.competition.count({ where: { userId: user.id } });
-		} else {
-			competitionsPromise = Promise.resolve([]);
-			competitionCountPromise = Promise.resolve(0);
-		}
+		const competitionSelect = {
+			id: true,
+			date: true,
+			name: true,
+			location: true,
+			environment: true,
+			totalScore: true,
+			placement: true,
+			practiceCategory: true,
+			rounds: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
+		} satisfies Prisma.CompetitionSelect;
+
+		type PracticeRow = Prisma.PracticeGetPayload<{ select: typeof practiceSelect }>;
+		type CompetitionRow = Prisma.CompetitionGetPayload<{ select: typeof competitionSelect }>;
+
+		const practicesPromise: Promise<PracticeRow[]> =
+			filterType === 'all' || filterType === 'TRENING'
+				? prisma.practice.findMany({
+						where: { userId: user.id },
+						orderBy: { date: 'desc' },
+						skip: filterType === 'TRENING' ? skip : 0,
+						take: fetchLimit,
+						select: practiceSelect,
+					})
+				: Promise.resolve([]);
+
+		const practiceCountPromise: Promise<number> =
+			filterType === 'all' || filterType === 'TRENING'
+				? prisma.practice.count({ where: { userId: user.id } })
+				: Promise.resolve(0);
+
+		const competitionsPromise: Promise<CompetitionRow[]> =
+			filterType === 'all' || filterType === 'KONKURRANSE'
+				? prisma.competition.findMany({
+						where: { userId: user.id },
+						orderBy: { date: 'desc' },
+						skip: filterType === 'KONKURRANSE' ? skip : 0,
+						take: fetchLimit,
+						select: competitionSelect,
+					})
+				: Promise.resolve([]);
+
+		const competitionCountPromise: Promise<number> =
+			filterType === 'all' || filterType === 'KONKURRANSE'
+				? prisma.competition.count({ where: { userId: user.id } })
+				: Promise.resolve(0);
 
 		const [practices, competitions, practiceCount, competitionCount] = await Promise.all([
 			practicesPromise,
@@ -100,15 +106,17 @@ export async function GET(request: Request) {
 		// Transform practices to card format
 		const practiceCards = practices.map((p) => {
 			const arrowsShot = p.ends.reduce(
-				(sum: number, e: { arrows: number | null; arrowsWithoutScore: number | null }) =>
-					sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0),
+				(sum, e) => sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0),
 				0
 			);
-			const combinations = p.ends
-				.filter((e: any) => e.distanceMeters && e.targetSizeCm)
-				.map((e: any) => `${e.distanceMeters}m - ${e.targetSizeCm}cm`)
-				.filter((value, index, self) => self.indexOf(value) === index);
-			const roundTypeName = combinations.length > 0 ? combinations[0] : ((p.roundType?.name as string) ?? null);
+			const combinations = [
+				...new Set(
+					p.ends
+						.filter((e) => e.distanceMeters && e.targetSizeCm)
+						.map((e) => `${e.distanceMeters}m - ${e.targetSizeCm}cm`)
+				),
+			];
+			const roundTypeName = combinations.length > 0 ? combinations[0] : (p.roundType?.name ?? null);
 
 			return {
 				id: p.id,
@@ -127,14 +135,16 @@ export async function GET(request: Request) {
 		// Transform competitions to card format
 		const competitionCards = competitions.map((c) => {
 			const arrowsShot = c.rounds.reduce(
-				(sum: number, r: { arrows: number | null; arrowsWithoutScore: number | null }) =>
-					sum + (r.arrows ?? 0) + (r.arrowsWithoutScore ?? 0),
+				(sum, r) => sum + (r.arrows ?? 0) + (r.arrowsWithoutScore ?? 0),
 				0
 			);
-			const combinations = c.rounds
-				.filter((r: any) => r.distanceMeters && r.targetSizeCm)
-				.map((r: any) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)
-				.filter((value, index, self) => self.indexOf(value) === index);
+			const combinations = [
+				...new Set(
+					c.rounds
+						.filter((r) => r.distanceMeters && r.targetSizeCm)
+						.map((r) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)
+				),
+			];
 			const roundTypeName = combinations.length > 0 ? combinations[0] : null;
 
 			return {
