@@ -65,36 +65,27 @@
 	/* White with opacity variants */
 	--white-85: rgba(255, 255, 255, 0.85);
 	--white-80: rgba(255, 255, 255, 0.8);
-	--white-75: rgba(255, 255, 255, 0.75);
-	--white-60: rgba(255, 255, 255, 0.6);
 	--white-50: rgba(255, 255, 255, 0.5);
-	--white-40: rgba(255, 255, 255, 0.4);
 	--white-30: rgba(255, 255, 255, 0.3);
 	--white-25: rgba(255, 255, 255, 0.25);
 	--white-20: rgba(255, 255, 255, 0.2);
 	--white-15: rgba(255, 255, 255, 0.15);
 	--white-10: rgba(255, 255, 255, 0.1);
 	--white-08: rgba(255, 255, 255, 0.08);
-	--white-06: rgba(255, 255, 255, 0.06);
-	--white-04: rgba(255, 255, 255, 0.04);
-	--white-02: rgba(255, 255, 255, 0.02);
 
 	/* Dark with opacity variants */
 	--dark-20: rgba(0, 0, 0, 0.2);
 	--dark-25: rgba(2, 8, 23, 0.25);
 	--dark-30: rgba(0, 0, 0, 0.3);
-	--dark-45: rgba(2, 8, 23, 0.45);
 	--dark-50: rgba(0, 0, 0, 0.5);
 	--dark-06: rgba(0, 0, 0, 0.06);
 	--dark-08: rgba(0, 0, 0, 0.08);
 	--dark-05: rgba(0, 0, 0, 0.05);
-	--dark-02: rgba(0, 0, 0, 0.02);
 
 	/* Primary with opacity variants */
 	--primary-06: rgba(5, 53, 70, 0.06);
 	--primary-08: rgba(5, 53, 70, 0.08);
 	--primary-20: rgba(5, 53, 70, 0.2);
-	--primary-02: rgba(5, 53, 70, 0.02);
 	--primary-35: rgba(12, 130, 172, 0.35);
 	--primary-25: rgba(12, 130, 172, 0.25);
 
@@ -177,106 +168,6 @@
 	--radius-3xl: var(--radius-7);
 }
 
-/* Dark mode theme */
-[data-theme='dark'] {
-	/* Primary Brand Colors - adjusted for dark mode */
-	--primary: #0c82ac;
-	--primary-dark: #053546;
-	--primary-light: #227B9A;
-	--primary-lighter: #4A9FBC;
-
-	/* Secondary Colors */
-	--secondary: #4A9FBC;
-	--tertiary: #1a3a47;
-
-	/* Neutral Colors - inverted */
-	--white: #111827;
-	--background: #0f1419;
-	--bg-light: #1a1f2e;
-	--bg-lighter: #1f2937;
-	--bg-gray-50: #1f2937;
-	--bg-gray-100: #374151;
-	--bg-gray-200: #4b5563;
-	--text-dark: #f9fafb;
-	--text-gray-600: #d1d5db;
-	--text-gray-700: #e5e7eb;
-	--text-gray-800: #f3f4f6;
-
-	/* Semantic Colors - adjusted for dark mode */
-	--dimmed: #4b5563;
-	--inactive: #6b7280;
-	--error: #ef4444;
-	--error-light: #f87171;
-	--error-bg: rgba(239, 68, 68, 0.15);
-	--error-border: rgba(239, 68, 68, 0.3);
-	--warning: #f59e0b;
-	--success: #10b981;
-
-	/* Accent Colors */
-	--accent-yellow: #fbbf24;
-	--accent-red: #ef4444;
-
-	/* Star/Favorite Colors - brighter for dark mode */
-	--star-bg: rgba(251, 191, 36, 0.15);
-	--star-border: rgba(251, 191, 36, 0.4);
-	--star-color: rgba(251, 191, 36, 0.95);
-
-	/* Utility Colors */
-	--border-gray: #374151;
-
-	/* Card backgrounds - darker for dark mode */
-	--card-bg: rgba(31, 41, 55, 0.92);
-	--card-bg-solid: #1f2937;
-	--card-bg-light: rgba(55, 65, 81, 0.3);
-	--modal-bg: #1f2937;
-
-	/* Button colors */
-	--btn-text-light: #f9fafb;
-
-	/* Section titles on colored backgrounds */
-	--section-title-light: #f9fafb;
-
-	/* Page backgrounds - darker gradient for dark mode */
-	--page-gradient-start: #0a1520;
-	--page-gradient-mid: rgba(15, 23, 42, 0.95);
-	--page-gradient-end: #1e3a52;
-
-	/* White with opacity variants - now dark colors in dark mode */
-	--white-85: rgba(17, 24, 39, 0.85);
-	--white-80: rgba(17, 24, 39, 0.8);
-	--white-75: rgba(17, 24, 39, 0.75);
-	--white-60: rgba(17, 24, 39, 0.6);
-	--white-50: rgba(17, 24, 39, 0.5);
-	--white-30: rgba(17, 24, 39, 0.3);
-	--white-25: rgba(17, 24, 39, 0.25);
-	--white-20: rgba(17, 24, 39, 0.2);
-	--white-15: rgba(17, 24, 39, 0.15);
-	--white-10: rgba(17, 24, 39, 0.1);
-	--white-08: rgba(17, 24, 39, 0.08);
-	--white-06: rgba(17, 24, 39, 0.06);
-	--white-04: rgba(17, 24, 39, 0.04);
-	--white-02: rgba(17, 24, 39, 0.02);
-
-	/* Dark with opacity variants - now light colors in dark mode */
-	--dark-20: rgba(249, 250, 251, 0.2);
-	--dark-25: rgba(249, 250, 251, 0.25);
-	--dark-30: rgba(249, 250, 251, 0.3);
-	--dark-45: rgba(249, 250, 251, 0.45);
-	--dark-50: rgba(249, 250, 251, 0.5);
-	--dark-06: rgba(249, 250, 251, 0.06);
-	--dark-08: rgba(249, 250, 251, 0.08);
-	--dark-05: rgba(249, 250, 251, 0.05);
-	--dark-02: rgba(249, 250, 251, 0.02);
-
-	/* Primary with opacity variants */
-	--primary-06: rgba(12, 130, 172, 0.06);
-	--primary-08: rgba(12, 130, 172, 0.08);
-	--primary-20: rgba(12, 130, 172, 0.2);
-	--primary-02: rgba(12, 130, 172, 0.02);
-	--primary-35: rgba(12, 130, 172, 0.35);
-	--primary-25: rgba(12, 130, 172, 0.25);
-}
-
 *,
 *::after,
 *::before {
@@ -311,24 +202,13 @@ body {
 	outline-offset: 2px;
 }
 
-[data-theme='dark'] .skip-link {
-	background: var(--primary-light);
-	color: var(--text-dark);
-}
-
-[data-theme='dark'] .skip-link:focus {
-	outline-color: var(--white);
-}
-
 /* Focus styles for better keyboard navigation */
 *:focus-visible {
 	outline: 2px solid var(--primary);
 	outline-offset: 2px;
 }
 
-[data-theme='dark'] *:focus-visible {
-	outline-color: var(--primary-light);
-}
+
 
 /* Ensure interactive elements have visible focus */
 button:focus-visible,
@@ -340,13 +220,6 @@ select:focus-visible {
 	outline-offset: 2px;
 }
 
-[data-theme='dark'] button:focus-visible,
-[data-theme='dark'] a:focus-visible,
-[data-theme='dark'] input:focus-visible,
-[data-theme='dark'] textarea:focus-visible,
-[data-theme='dark'] select:focus-visible {
-	outline-color: var(--primary-light);
-}
 
 /* Screen reader only text - visually hidden but accessible */
 .sr-only {
@@ -360,4 +233,3 @@ select:focus-visible {
 	white-space: nowrap;
 	border-width: 0;
 }
-

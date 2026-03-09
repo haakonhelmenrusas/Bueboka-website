@@ -7,7 +7,6 @@ import Image from 'next/image';
 import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
-// import { ThemeToggle } from '@/components';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
 import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuUser, LuX } from 'react-icons/lu';

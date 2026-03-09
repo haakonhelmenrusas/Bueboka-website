@@ -2,7 +2,6 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
-import { ThemeProvider } from '@/context/ThemeProvider';
 import { FeedbackProvider } from '@/context/FeedbackProvider';
 import { ClarityInit } from '@/lib/ClarityInit';
 
@@ -41,9 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
 		<html lang="no-nb">
 			<body className={inter.className}>
 				<ClarityInit />
-				<ThemeProvider>
 					<FeedbackProvider>{children}</FeedbackProvider>
-				</ThemeProvider>
 			</body>
 		</html>
 	);
