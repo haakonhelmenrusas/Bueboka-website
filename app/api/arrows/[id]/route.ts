@@ -1,24 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
 import { updateArrowsSchema } from '@/lib/validations/arrows';
 import { validateRequest } from '@/lib/validations/helpers';
-
-async function getCurrentUser() {
-	try {
-		const reqHeaders = await headers();
-		const headerObj: Record<string, string> = {};
-		for (const [key, value] of reqHeaders) {
-			headerObj[key] = value;
-		}
-		const session = await auth.api.getSession({ headers: headerObj });
-		return session?.user || null;
-	} catch {
-		return null;
-	}
-}
+import { getCurrentUser } from '@/lib/session';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {

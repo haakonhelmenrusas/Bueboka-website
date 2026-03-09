@@ -1,21 +1,7 @@
 import { NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
-import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
-
-async function getCurrentUser() {
-	try {
-		const reqHeaders = await headers();
-		const headerObj: Record<string, string> = {};
-		for (const [key, value] of reqHeaders) headerObj[key] = value;
-		const session = await auth.api.getSession({ headers: headerObj });
-		return session?.user || null;
-	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'users/delete', where: 'getCurrentUser' } });
-		return null;
-	}
-}
+import { getCurrentUser } from '@/lib/session';
 
 export async function DELETE() {
 	try {

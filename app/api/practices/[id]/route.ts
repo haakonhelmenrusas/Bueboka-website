@@ -1,28 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { headers } from 'next/headers';
 import * as Sentry from '@sentry/nextjs';
-import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { Environment } from '@/lib/prismaEnums';
 import { updatePracticeSchema } from '@/lib/validations/practice';
 import { formatZodErrors } from '@/lib/validations/helpers';
 import { statsCache } from '@/lib/cache';
-
-async function getCurrentUser() {
-	try {
-		const reqHeaders = await headers();
-		const headerObj: Record<string, string> = {};
-		for (const [key, value] of reqHeaders) headerObj[key] = value;
-		const session = await auth.api.getSession({ headers: headerObj });
-		return session?.user || null;
-	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'practices/[id]', where: 'getCurrentUser' },
-		});
-		return null;
-	}
-}
+import { getCurrentUser } from '@/lib/session';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {

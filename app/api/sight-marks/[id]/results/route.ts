@@ -1,22 +1,8 @@
-import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
-import { auth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { parseNumberArray } from '@/lib/utils';
-
-async function getCurrentUser() {
-	try {
-		const reqHeaders = await headers();
-		const headerObj: Record<string, string> = {};
-		for (const [key, value] of reqHeaders) headerObj[key] = value;
-		const session = await auth.api.getSession({ headers: headerObj });
-		return session?.user || null;
-	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]/results', where: 'getCurrentUser' } });
-		return null;
-	}
-}
+import { getCurrentUser } from '@/lib/session';
 
 async function getOwnedSightMark(userId: string, sightMarkId: string) {
 	return prisma.sightMark.findFirst({ where: { id: sightMarkId, userId } });
