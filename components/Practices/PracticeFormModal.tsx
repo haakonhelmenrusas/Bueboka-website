@@ -158,25 +158,17 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 					roundScore: 0,
 				},
 			]);
-			setBowId('');
-			setArrowsId('');
+
+			// Set defaults based on favorites
+			const favBow = bows.find((b) => b.isFavorite);
+			setBowId(favBow ? favBow.id : '');
+
+			const favArrows = arrows.find((a) => a.isFavorite);
+			setArrowsId(favArrows ? favArrows.id : '');
 		}
 		setError(null);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open, mode, practice]);
-
-	// Prefill favorites for create mode
-	useEffect(() => {
-		if (!open || mode !== 'create') return;
-
-		if (!bowId) {
-			const favBow = bows.find((b) => b.isFavorite);
-			if (favBow) setBowId(favBow.id);
-		}
-		if (!arrowsId) {
-			const favArrows = arrows.find((a) => a.isFavorite);
-			if (favArrows) setArrowsId(favArrows.id);
-		}
-	}, [open, mode, bows, arrows, bowId, arrowsId]);
 
 	useEffect(() => {
 		if (environment !== Environment.OUTDOOR) {
