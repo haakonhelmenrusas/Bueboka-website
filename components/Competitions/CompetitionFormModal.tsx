@@ -167,22 +167,16 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			setNumberOfParticipants(null);
 			setPersonalBest(false);
 			setRounds([{ roundNumber: 1, distanceMeters: 18, targetType: '40cm', numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 }]);
-			setBowId('');
-			setArrowsId('');
+			// Set defaults based on favorites
+			const favoriteBow = bows.find((b) => b.isFavorite);
+			setBowId(favoriteBow ? favoriteBow.id : '');
+
+			const favoriteArrows = arrows.find((a) => a.isFavorite);
+			setArrowsId(favoriteArrows ? favoriteArrows.id : '');
 		}
 		setError(null);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open, mode, competition]);
-
-	// Prefill favorites
-	useEffect(() => {
-		if (open && mode === 'create') {
-			const favoriteBow = bows.find((b) => b.isFavorite);
-			const favoriteArrows = arrows.find((a) => a.isFavorite);
-
-			if (favoriteBow && !bowId) setBowId(favoriteBow.id);
-			if (favoriteArrows && !arrowsId) setArrowsId(favoriteArrows.id);
-		}
-	}, [open, mode, bows, arrows, bowId, arrowsId]);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
