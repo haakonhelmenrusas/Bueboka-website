@@ -1,63 +1,51 @@
 import styles from './Sponsor.module.css';
-import { ContactForm } from '@/components';
+import Link from 'next/link';
 import Image from 'next/image';
-import { LuExternalLink } from 'react-icons/lu';
+import { LuArrowRight } from 'react-icons/lu';
 
 export function Sponsors() {
-	const sponsors = [
-		{
-			name: 'Arctic bueskyting',
-			logo: '/assets/arcticBueLogo.png',
-			website: 'https://www.arcticbuesport.no',
-			description: 'Premium utstyr for alle bueskyttere',
-		},
-		{
-			name: 'Norges Bueskytterforbund',
-			logo: '/assets/norgesBueskytterforbund.png',
-			website: 'https://www.bueskyting.no',
-			description: 'Norges Bueskytterforbund',
-		},
-	];
-
 	return (
-		<section id="sponsors" className={styles.section} aria-labelledby="sponsors-heading">
+		<section id="support" className={styles.section}>
 			<div className={styles.container}>
-				<div className={`${styles.textCenter} ${styles.mb16} ${styles.reveal}`}>
-					<h2 id="sponsors-heading" className={styles.title}>
-						Våre samarbeidspartnere
-					</h2>
-					<p className={styles.subtitle}>Vi er stolte av å samarbeide med ledende aktører i bueskyting-miljøet som støtter vår visjon.</p>
+				<div className={`${styles.textCenter} ${styles.mb16}`}>
+					<h2 className={styles.title}>Støtt prosjektet</h2>
+					<p className={styles.subtitle}>
+						Bueboka utvikles og driftes av frivillige på dugnad. Alle bidrag går direkte til drift av servere og videreutvikling.
+					</p>
 				</div>
-				<div className={styles.gridCards}>
-					{sponsors.map((sponsor, index) => (
-						<div key={index} className={`${styles.card} ${styles.reveal}`} style={{ animationDelay: `${index * 100}ms` }}>
-							<div className={styles.logoWrap}>
-								<Image width={80} height={80} src={sponsor.logo} alt={`${sponsor.name} logo`} className={styles.logoImg} />
+
+				<div className={styles.supportGrid}>
+					{/* Vipps Section */}
+					<div className={`${styles.card} ${styles.vippsCard}`}>
+						<h3 className={styles.cardTitle}>Vipps et valgfritt beløp</h3>
+						<p className={styles.cardDesc}>Skann QR-koden med Vipps-appen eller søk opp vårt nummer.</p>
+
+						<div className={styles.vippsContent}>
+							<div className={styles.qrPlaceholder}>
+								<Image
+									src="/assets/vipps-qr.png"
+									alt="Vipps QR Kode"
+									width={150}
+									height={150}
+									className={styles.qrImage}
+								/>
 							</div>
-							<h3 className={styles.cardTitle}>{sponsor.name}</h3>
-							<p className={styles.cardDesc}>{sponsor.description}</p>
-							<a href={sponsor.website} target="_blank" rel="noopener noreferrer" className={`${styles.link} ${styles.scaleOnHover}`}>
-								<span>Besøk nettside</span>
-								<LuExternalLink className={styles.linkIconSm} aria-hidden="true" />
-								<span className="sr-only">(åpnes i ny fane)</span>
-							</a>
-						</div>
-					))}
-				</div>
-				<div className={`${styles.textCenter} ${styles.reveal}`} style={{ animationDelay: '800ms' }}>
-					<div className={styles.cta}>
-						<div className={styles.ctaGrid}>
-							<div className={styles.ctaTextWrap}>
-								<h3 className={styles.ctaTitle}>Vil du bli sponsor?</h3>
-								<p className={styles.ctaSubtitle}>
-									Vi søker partnere som deler vår lidenskap for bueskyting og ønsker å støtte utviklingen av appen. Kontakt oss for å lære
-									mer om samarbeidsmuligheter.
-								</p>
-							</div>
-							<div className={styles.ctaFormWrap}>
-								<ContactForm />
+							<div className={styles.vippsNumberBox}>
+								<span className={styles.vippsLabel}>Vipps-nummer</span>
+								<span className={styles.vippsNumber}>906240</span>
 							</div>
 						</div>
+					</div>
+
+					{/* Sponsor Link Section */}
+					<div className={`${styles.card} ${styles.sponsorLinkCard}`}>
+						<h3 className={styles.cardTitle}>For bedrifter</h3>
+						<p className={styles.cardDesc}>Ønsker din bedrift å profilere seg for bueskyttere? Bli en offisiell samarbeidspartner.</p>
+
+						<Link href="/sponsing" className={styles.primaryButton}>
+							<span>Bli sponsor</span>
+							<LuArrowRight size={20} />
+						</Link>
 					</div>
 				</div>
 			</div>
