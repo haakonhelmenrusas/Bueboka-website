@@ -101,6 +101,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return {
 				practiceId: practiceId,
 				arrows: round.numberArrows || 0,
+				arrowsWithoutScore: round.arrowsWithoutScore || null,
 				scores: [],
 				roundScore: round.roundScore || null,
 				distanceMeters: round.distanceMeters || null,
