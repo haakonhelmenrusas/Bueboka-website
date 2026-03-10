@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { LuBriefcase, LuChartBar, LuTarget } from 'react-icons/lu';
 import styles from './Features.module.css';
 
@@ -40,63 +39,6 @@ export function Features() {
 							<p className={styles.cardText}>{feature.description}</p>
 						</div>
 					))}
-				</div>
-				<div className={`${styles.cta} ${styles.reveal}`} style={{ animationDelay: '600ms' }}>
-					<h3 className={styles.ctaTitle}>Nye funksjoner tilgjengelig nå!</h3>
-					<p className={styles.ctaText}>Vi har lansert statistikk og enkel pålogging med e-post eller Google. Kom i gang i dag!</p>
-					<div className={styles.tiles}>
-						<div>
-							<div className={styles.bulletContainer}>
-								<div className={styles.bullet} aria-hidden="true" />
-								<p>Detaljert statistikk ✨</p>
-							</div>
-							<div className={styles.tile} role="img" aria-label="Statistikk illustrasjon">
-								<Image
-									src="https://images.unsplash.com/photo-1587440871875-191322ee64b0?q=80&w=800&auto=format&fit=crop"
-									alt=""
-									width={800}
-									height={600}
-									className={styles.tileImg}
-									loading="lazy"
-									unoptimized
-								/>
-							</div>
-						</div>
-						<div>
-							<div className={styles.bulletContainer}>
-								<div className={styles.bullet} aria-hidden="true" />
-								<p>Innlogging med Google ✨</p>
-							</div>
-							<div className={styles.tile} role="img" aria-label="Google innlogging illustrasjon">
-								<Image
-									src="https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?crop=entropy&cs=tinysrgb&fit=max&fm=webp&w=800&q=80"
-									alt=""
-									width={800}
-									height={600}
-									className={styles.tileImg}
-									loading="lazy"
-									unoptimized
-								/>
-							</div>
-						</div>
-						<div>
-							<div className={styles.bulletContainer}>
-								<div className={styles.bullet} aria-hidden="true" />
-								<p>Snart: Registrering av score</p>
-							</div>
-							<div className={styles.tile} role="img" aria-label="Score registrering illustrasjon">
-								<Image
-									src="https://plus.unsplash.com/premium_photo-1718315730752-eb55b9b6afa8?q=80&w=800&auto=format&fit=crop"
-									alt=""
-									width={800}
-									height={600}
-									className={styles.tileImg}
-									loading="lazy"
-									unoptimized
-								/>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 		</section>

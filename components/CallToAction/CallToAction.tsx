@@ -46,7 +46,6 @@ export function CallToAction() {
 							Opprett bruker
 							<LuChevronRight className={styles.ctaIcon} aria-hidden="true" />
 						</Link>
-						<p className={styles.ctaSubtext}>Gratis å bruke. Ingen kredittkort nødvendig.</p>
 						<p className={styles.existingUser}>
 							Har du allerede en konto?{' '}
 							<Link href="/logg-inn" className={styles.loginLink}>

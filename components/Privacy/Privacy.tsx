@@ -42,8 +42,7 @@ export function Privacy() {
 							</div>
 							<h3 className={styles.cardTitle}>Din kontroll</h3>
 							<p className={styles.cardText}>
-								Du har full kontroll over dine data. Slett kontoen din når som helst, og all tilhørende informasjon fjernes permanent. Ingen
-								bindinger, ingen skjulte agendaer.
+								Du har full kontroll over dine data. Slett kontoen din når som helst, og all tilhørende informasjon fjernes permanent.
 							</p>
 						</div>
 					</div>

@@ -71,17 +71,17 @@
 	transition: all 0.3s ease;
 }
 
-.featureCard:hover {
-	background: var(--white-15);
-	border-color: var(--white-30);
-	transform: translateY(-4px);
-}
-
 .featureIcon {
-	width: 3rem;
-	height: 3rem;
-	color: var(--white);
-	margin-bottom: 1.25rem;
+	width: 3.5rem;
+	height: 3.5rem;
+	background: linear-gradient(135deg, var(--white) 0%, var(--white-85) 100%);
+	border-radius: 0.75rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 1.5rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	color: var(--primary);
 	stroke-width: 1.5;
 }
 
