@@ -26,6 +26,9 @@ export async function DELETE() {
 			// Delete practices
 			await tx.practice.deleteMany({ where: { userId: user.id } });
 
+			// Delete competitions
+			await tx.competition.deleteMany({ where: { userId: user.id } });
+
 			// Delete equipment
 			await tx.bow.deleteMany({ where: { userId: user.id } });
 			await tx.arrows.deleteMany({ where: { userId: user.id } });
