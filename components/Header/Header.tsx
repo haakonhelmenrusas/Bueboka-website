@@ -162,7 +162,7 @@ export function Header() {
 									<Link href="/logg-inn" className={styles.authButton}>
 										Logg inn
 									</Link>
-									<Link href="/ny-bruker" className={styles.authButton}>
+									<Link href="/ny-bruker" className={styles.authButtonPrimary}>
 										Opprett bruker
 									</Link>
 								</div>

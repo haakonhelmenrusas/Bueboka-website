@@ -126,6 +126,24 @@
 	border-color: var(--white-80);
 }
 
+.authButtonPrimary {
+	color: var(--primary);
+	background: var(--white);
+	text-decoration: none;
+	padding: var(--space-2) var(--space-4);
+	border-radius: var(--radius-base);
+	transition: all 150ms ease-in-out;
+	border: 1px solid var(--white);
+	font-weight: 600;
+}
+
+.authButtonPrimary:hover {
+	background: var(--white-85);
+	border-color: var(--white-85);
+	transform: translateY(-1px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
 .userAvatar {
 	width: 32px;
 	height: 32px;
