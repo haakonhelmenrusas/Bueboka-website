@@ -25,6 +25,10 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 	}
 }
 
+export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+	return PUT(request, { params });
+}
+
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
 		const user = await getCurrentUser();

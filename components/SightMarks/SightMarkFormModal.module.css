@@ -1,0 +1,90 @@
+.modalOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 100;
+	padding: var(--space-4);
+}
+
+.modalContent {
+	background: var(--card-bg-solid);
+	border-radius: var(--radius-lg);
+	padding: var(--space-6);
+	width: 100%;
+	max-width: 500px;
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--space-6);
+}
+
+.title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--text-dark);
+	margin: 0;
+}
+
+.closeButton {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: var(--text-gray-600);
+	padding: var(--space-1);
+	border-radius: var(--radius-md);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.closeButton:hover {
+	background-color: var(--bg-gray-100);
+	color: var(--text-dark);
+}
+
+.form {
+	display: flex;
+	min-height: 200px;
+	flex-direction: column;
+	justify-content: center;
+	gap: var(--space-4);
+}
+
+.inputsRow {
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-4);
+}
+
+.inputsRow > div {
+	flex: 1;
+}
+
+@media (max-width: 640px) {
+	.inputsRow {
+		flex-direction: column;
+	}
+}
+
+.footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--space-3);
+	margin-top: var(--space-6);
+}
+
+.error {
+	color: var(--error);
+	font-size: 0.875rem;
+	margin-top: var(--space-2);
+}

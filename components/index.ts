@@ -27,10 +27,10 @@ import { EquipmentSection } from './EquipmentSection/EquipmentSection';
 import { Checkbox } from './common/Checkbox/Checkbox';
 import { PracticesSection } from './PracticesSection/PracticesSection';
 import { ConfirmModal } from './common/ConfirmModal/ConfirmModal';
-// import { ThemeToggle } from './ThemeToggle/ThemeToggle';
 import { Accordion } from './common/Accordion/Accordion';
 import { FullPageLoader } from './common/FullPageLoader/FullPageLoader';
 import { SightMarksSection } from './SightMarks/SightMarksSection';
+import { SightMarkFormModal } from './SightMarks/SightMarkFormModal';
 import { EmailVerificationBanner } from './EmailVerificationBanner/EmailVerificationBanner';
 import { SocialAuthButtons } from '@/components/common/SocialAuthButtons/SocialAuthButtons';
 import { Tooltip } from './common/Tooltip/Tooltip';
@@ -73,6 +73,7 @@ export {
 	Accordion,
 	FullPageLoader,
 	SightMarksSection,
+	SightMarkFormModal,
 	EmailVerificationBanner,
 	SocialAuthButtons,
 	Tooltip,

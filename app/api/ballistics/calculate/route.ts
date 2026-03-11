@@ -32,15 +32,13 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Call external ballistics service
-		//const ballisticsUrl = process.env.BALLISTICS_SERVICE_URL || 'http://localhost:7071/api/archerAim?task=CalcBallisticsPars';
-		const ballisticsUrl = 'http://localhost:7071/api/archerAim?task=CalcBallisticsPars';
+		const ballisticsUrl = process.env.BALLISTICS_SERVICE_URL || 'http://localhost:7071/api/archerAim?task=CalcBallisticsPars';
 		const response = await fetch(ballisticsUrl, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(payload),
-			signal: AbortSignal.timeout(30000), // 30 second timeout
+			signal: AbortSignal.timeout(20000), // 30 second timeout
 		});
-
 		if (!response.ok) {
 			const errorText = await response.text();
 			Sentry.captureException(new Error(`Ballistics service error: ${response.status}`), {
