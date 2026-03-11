@@ -19,3 +19,16 @@ export const Ballistics: AimDistanceMark = {
 	length_nock_eye_cm: 12.0,
 	feet_behind_or_center: 'behind',
 };
+
+export const TARGET_TYPE_OPTIONS = [
+	{ value: '40cm', label: '40 cm' },
+	{ value: '60cm', label: '60 cm' },
+	{ value: '80cm', label: '80 cm' },
+	{ value: '122cm', label: '122 cm' },
+	{ value: '3-spot', label: '3-spot' },
+	{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
+	{ value: 'animal', label: 'Dyr' },
+	{ value: 'bar', label: 'Barmatte uten blink' },
+	{ value: 'other', label: 'Annet' },
+	{ value: 'halmmatte', label: 'Halmmatte' },
+];
