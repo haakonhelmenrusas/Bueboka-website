@@ -7,7 +7,7 @@
 }
 .container {
     max-width: 1200px;
-    margin: 0 var(--space-20) auto;
+    margin: 0 auto var(--space-20) auto;
     gap: var(--space-4);
 }
 .backButtonContainer {

@@ -20,9 +20,14 @@
 .list {
   display: grid;
   gap: var(--space-4);
+  min-height: 200px;
 }
 
 .empty {
   color: var(--text-gray-600);
   font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
