@@ -238,7 +238,7 @@ For new features, please provide:
 
 ### Design Resources
 
-- [Penpot Design System](https://www.penpot.com) (link when available)
+- [Penpot Design System](https://design.penpot.app) (link when available)
 
 ## Recognition
 
