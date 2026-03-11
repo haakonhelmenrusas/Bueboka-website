@@ -111,7 +111,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					onChange={(v) => setDiameter(v)}
 					onEmpty={() => setDiameter(null)}
 					min={0}
-					step={1}
+					step={0.1}
 					startEmpty
 					emptyBehavior="ignore"
 					optional
@@ -124,7 +124,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					onChange={(v) => setLength(v)}
 					onEmpty={() => setLength(null)}
 					min={0}
-					step={1}
+					step={0.1}
 					startEmpty
 					emptyBehavior="ignore"
 					optional
@@ -135,7 +135,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					onChange={(v) => setWeight(v)}
 					onEmpty={() => setWeight(null)}
 					min={0}
-					step={1}
+					step={0.1}
 					startEmpty
 					emptyBehavior="ignore"
 					optional
