@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import styles from './HeroBackground.module.css';
 
 const svgPaths = {
@@ -19,51 +17,15 @@ const svgPaths = {
 };
 
 export function HeroBackground() {
-	const layer1Ref = useRef<HTMLDivElement | null>(null);
-	const layer2Ref = useRef<HTMLDivElement | null>(null);
-
-	// Map scrollY [0, 1000] -> translateY [0, -200] and [0, -100]
-	useEffect(() => {
-		if (typeof window === 'undefined') return;
-
-		let raf = 0;
-		const maxScroll = 1000;
-		const map = (value: number, inMax: number, outMin: number, outMax: number) => {
-			const t = Math.max(0, Math.min(value, inMax)) / inMax;
-			return outMin + (outMax - outMin) * t;
-		};
-
-		const onScroll = () => {
-			if (raf) return;
-			raf = window.requestAnimationFrame(() => {
-				const y = window.scrollY || 0;
-				const y1 = map(y, maxScroll, 0, -200);
-				const y2 = map(y, maxScroll, 0, -100);
-
-				if (layer1Ref.current) layer1Ref.current.style.transform = `translateY(${y1}px)`;
-				if (layer2Ref.current) layer2Ref.current.style.transform = `translateY(${y2}px)`;
-
-				raf = 0;
-			});
-		};
-
-		onScroll();
-		window.addEventListener('scroll', onScroll, { passive: true });
-		return () => {
-			window.removeEventListener('scroll', onScroll);
-			if (raf) cancelAnimationFrame(raf);
-		};
-	}, []);
-
 	return (
 		<div className={styles.wrapper} aria-hidden="true">
-			<div ref={layer1Ref} className={styles.layer1}>
+			<div className={styles.layer1}>
 				<svg className={styles.svg} fill="none" preserveAspectRatio="none" viewBox="0 0 799 826">
 					<path d={svgPaths.p1ecea700} fill="#FFBF00" />
 				</svg>
 			</div>
 
-			<div ref={layer2Ref} className={styles.layer2}>
+			<div className={styles.layer2}>
 				<svg className={styles.svg} fill="none" preserveAspectRatio="none" viewBox="0 0 585 590">
 					<path d={svgPaths.p2650f400} fill="#FFBF00" />
 					<path d={svgPaths.ped1ff00} fill="#C01C24" />

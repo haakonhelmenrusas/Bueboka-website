@@ -1,0 +1,109 @@
+.banner {
+	background-color: #92400e;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--space-6) var(--space-4);
+	border-radius: var(--radius-md);
+	margin-bottom: var(--space-6);
+}
+
+.content {
+	display: flex;
+	align-items: center;
+	flex: 1;
+	gap: var(--space-4);
+}
+
+.icon {
+	color: var(--white);
+	flex-shrink: 0;
+}
+
+.textContainer {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+
+.text {
+	color: var(--white);
+	font-size: 1rem;
+	font-weight: 500;
+	margin: 0;
+	line-height: 1.5;
+}
+
+.link {
+	color: var(--white);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	text-decoration: underline;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	text-align: left;
+	transition: opacity 150ms ease;
+}
+
+.link:hover:not(:disabled) {
+	opacity: 0.85;
+}
+
+.link:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.message {
+	color: var(--white);
+	font-size: 0.875rem;
+	font-weight: 500;
+    margin: var(--space-1) 0 0;
+    font-style: italic;
+}
+
+.closeButton {
+	padding: var(--space-1);
+	margin-left: var(--space-2);
+	background: none;
+	border: none;
+	color: var(--white);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--radius-sm);
+	transition: background 150ms ease;
+	flex-shrink: 0;
+}
+
+.closeButton:hover {
+	background: rgba(0, 0, 0, 0.1);
+}
+
+.link:focus-visible,
+.closeButton:focus-visible {
+	outline: 2px solid var(--white);
+	outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+	.banner {
+		padding: var(--space-2) var(--space-3);
+	}
+
+	.text {
+		font-size: 0.9375rem;
+	}
+
+	.link {
+		font-size: 0.875rem;
+	}
+
+	.message {
+		font-size: 0.8125rem;
+	}
+}

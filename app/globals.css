@@ -1,3 +1,173 @@
+:root {
+	/* Primary Brand Colors */
+	--primary: #053546;
+	--primary-dark: #00171F;
+	--primary-light: #0c82ac;
+	--primary-lighter: #227B9A;
+
+	/* Secondary Colors */
+	--secondary: #227B9A;
+	--tertiary: #D8F5FF;
+
+	/* Neutral Colors */
+	--white: #FFFFFF;
+	--background: #F2F2F2;
+	--bg-light: #f0f9ff;
+	--bg-lighter: #f8fafc;
+	--bg-gray-50: #f9fafb;
+	--bg-gray-100: #f3f4f6;
+	--bg-gray-200: #e5e7eb;
+	--text-dark: #111827;
+	--text-gray-600: #4b5563;
+	--text-gray-700: #374151;
+	--text-gray-800: #1f2937;
+
+	/* Semantic Colors */
+	--dimmed: #D3D4DF;
+	--inactive: #9697B6;
+	--error: #DD0000;
+	--error-light: #dc7f79;
+	--error-bg: rgba(239, 68, 68, 0.1);
+	--error-border: rgba(239, 68, 68, 0.2);
+	--warning: #FFA500;
+	--success: #008000;
+
+	/* Accent Colors */
+	--accent-yellow: #ffbf00;
+	--accent-red: #c01c24;
+
+	/* Star/Favorite Colors */
+	--star-bg: rgba(255, 214, 0, 0.20);
+	--star-border: rgba(255, 214, 0, 0.35);
+	--star-color: rgba(110, 80, 0, 0.95);
+
+	/* Utility Colors */
+	--transparent: transparent;
+	--border-gray: #e5e7eb;
+
+	/* Card backgrounds */
+	--card-bg: rgba(255, 255, 255, 0.92);
+	--card-bg-solid: #ffffff;
+	--card-bg-light: rgba(255, 255, 255, 0.11);
+	--modal-bg: #ffffff;
+
+	/* Button colors */
+	--btn-text-light: #ffffff;
+
+	/* Section titles on colored backgrounds */
+	--section-title-light: #ffffff;
+
+	/* Page backgrounds */
+	--page-gradient-start: var(--primary);
+	--page-gradient-mid: rgba(7, 66, 86, 0.95);
+	--page-gradient-end: var(--primary-light);
+
+	/* White with opacity variants */
+	--white-85: rgba(255, 255, 255, 0.85);
+	--white-80: rgba(255, 255, 255, 0.8);
+	--white-50: rgba(255, 255, 255, 0.5);
+	--white-30: rgba(255, 255, 255, 0.3);
+	--white-25: rgba(255, 255, 255, 0.25);
+	--white-20: rgba(255, 255, 255, 0.2);
+	--white-15: rgba(255, 255, 255, 0.15);
+	--white-10: rgba(255, 255, 255, 0.1);
+	--white-08: rgba(255, 255, 255, 0.08);
+
+	/* Dark with opacity variants */
+	--dark-20: rgba(0, 0, 0, 0.2);
+	--dark-25: rgba(2, 8, 23, 0.25);
+	--dark-30: rgba(0, 0, 0, 0.3);
+	--dark-50: rgba(0, 0, 0, 0.5);
+	--dark-06: rgba(0, 0, 0, 0.06);
+	--dark-08: rgba(0, 0, 0, 0.08);
+	--dark-05: rgba(0, 0, 0, 0.05);
+
+	/* Primary with opacity variants */
+	--primary-06: rgba(5, 53, 70, 0.06);
+	--primary-08: rgba(5, 53, 70, 0.08);
+	--primary-20: rgba(5, 53, 70, 0.2);
+	--primary-35: rgba(12, 130, 172, 0.35);
+	--primary-25: rgba(12, 130, 172, 0.25);
+
+	/* Spacing Scale (8px base unit) */
+	--space-0: 0px;
+	--space-1: 2px;
+	--space-2: 4px;
+	--space-3: 6px;
+	--space-4: 8px;
+	--space-5: 12px;
+	--space-6: 16px;
+	--space-7: 20px;
+	--space-8: 24px;
+	--space-9: 28px;
+	--space-10: 32px;
+	--space-11: 36px;
+	--space-12: 40px;
+	--space-13: 44px;
+	--space-14: 48px;
+	--space-15: 52px;
+	--space-16: 56px;
+	--space-17: 60px;
+	--space-18: 64px;
+	--space-19: 68px;
+	--space-20: 72px;
+	--space-24: 96px;
+	--space-28: 112px;
+	--space-32: 128px;
+
+	/* Padding shortcuts */
+	--padding-xs: var(--space-2);
+	--padding-sm: var(--space-4);
+	--padding-base: var(--space-6);
+	--padding-md: var(--space-8);
+	--padding-lg: var(--space-10);
+	--padding-xl: var(--space-12);
+	--padding-2xl: var(--space-14);
+	--padding-3xl: var(--space-18);
+
+	/* Margin shortcuts */
+	--margin-xs: var(--space-2);
+	--margin-sm: var(--space-4);
+	--margin-base: var(--space-6);
+	--margin-md: var(--space-8);
+	--margin-lg: var(--space-10);
+	--margin-xl: var(--space-12);
+	--margin-2xl: var(--space-14);
+	--margin-3xl: var(--space-18);
+
+	/* Gap shortcuts */
+	--gap-xs: var(--space-2);
+	--gap-sm: var(--space-4);
+	--gap-base: var(--space-6);
+	--gap-md: var(--space-8);
+	--gap-lg: var(--space-10);
+	--gap-xl: var(--space-12);
+	--gap-2xl: var(--space-14);
+	--gap-3xl: var(--space-18);
+
+	/* Border Radius Scale (8px base unit) */
+	--radius-0: 0px;
+	--radius-1: 4px;
+	--radius-2: 8px;
+	--radius-3: 12px;
+	--radius-4: 16px;
+	--radius-5: 20px;
+	--radius-6: 24px;
+	--radius-7: 32px;
+	--radius-8: 40px;
+	--radius-full: 9999px;
+	--radius-circle: 50%;
+
+	/* Border Radius shortcuts */
+	--radius-sm: var(--radius-1);
+	--radius-base: var(--radius-2);
+	--radius-md: var(--radius-3);
+	--radius-lg: var(--radius-4);
+	--radius-xl: var(--radius-5);
+	--radius-2xl: var(--radius-6);
+	--radius-3xl: var(--radius-7);
+}
+
 *,
 *::after,
 *::before {
@@ -10,4 +180,56 @@ html,
 body {
 	height: 100%;
 	margin: 0;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	background: var(--primary);
+	color: var(--white);
+	padding: 8px 16px;
+	text-decoration: none;
+	z-index: 10000;
+	border-radius: 0 0 var(--radius-1) 0;
+	font-weight: 600;
+}
+
+.skip-link:focus {
+	top: 0;
+	outline: 2px solid var(--primary-light);
+	outline-offset: 2px;
+}
+
+/* Focus styles for better keyboard navigation */
+*:focus-visible {
+	outline: 2px solid var(--primary);
+	outline-offset: 2px;
+}
+
+
+
+/* Ensure interactive elements have visible focus */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: 2px solid var(--primary);
+	outline-offset: 2px;
+}
+
+
+/* Screen reader only text - visually hidden but accessible */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
 }

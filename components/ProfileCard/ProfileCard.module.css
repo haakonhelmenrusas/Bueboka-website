@@ -1,0 +1,69 @@
+.card {
+    width: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--card-bg);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    color: var(--text-dark);
+}
+
+.avatarWrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar {
+    width: 140px;
+    height: 140px;
+    border-radius: var(--radius-circle);
+    object-fit: cover;
+    border: 3px solid var(--secondary);
+}
+
+.avatarPlaceholder {
+    width: 140px;
+    height: 140px;
+    border-radius: var(--radius-circle);
+    background: var(--background);
+    border: 3px solid var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-gray-600);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--text-dark);
+}
+
+.meta {
+    margin: 0;
+    font-size: 0.98rem;
+    font-weight: 650;
+    color: var(--text-dark);
+}
+
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-3);
+    width: 100%;
+}
+
+

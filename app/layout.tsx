@@ -1,10 +1,17 @@
 import './globals.css';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
+import { FeedbackProvider } from '@/context/FeedbackProvider';
 import { ClarityInit } from '@/lib/ClarityInit';
 
 const inter = Inter({ subsets: ['latin'] });
+
+export const viewport: Viewport = {
+	themeColor: '#053546',
+	width: 'device-width',
+	initialScale: 1,
+};
 
 export const metadata: Metadata = {
 	title: 'Bueboka',
@@ -18,6 +25,14 @@ export const metadata: Metadata = {
 	],
 	keywords: ['bueskyting', 'bueboka', 'idrett', 'trening', 'konkurranse', 'app', 'norge', 'ios', 'android'],
 	publisher: 'Rusås Design',
+	appleWebApp: {
+		capable: true,
+		statusBarStyle: 'black-translucent',
+		title: 'Bueboka',
+	},
+	icons: {
+		apple: '/assets/logo.png',
+	},
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
@@ -25,7 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
 		<html lang="no-nb">
 			<body className={inter.className}>
 				<ClarityInit />
-				{children}
+					<FeedbackProvider>{children}</FeedbackProvider>
 			</body>
 		</html>
 	);

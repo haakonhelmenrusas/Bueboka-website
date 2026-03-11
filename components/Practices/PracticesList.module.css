@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text-gray-800);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.empty {
+  color: var(--text-gray-600);
+  font-size: 0.95rem;
+}

@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Send } from 'lucide-react';
+import { LuSend } from 'react-icons/lu';
 import styles from './ContactForm.module.css';
+import { Button, Input, TextArea } from '@/components';
 
 export function ContactForm() {
 	const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ export function ContactForm() {
 				'bot-field': botField, // honeypot value
 			}).toString();
 
-			const res = await fetch('/form.html', {
+			const res = await fetch('/', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 				body,
@@ -72,63 +73,36 @@ export function ContactForm() {
 					</label>
 				</p>
 
-				<div>
-					<label htmlFor="name" className={styles.label}>
-						Navn
-					</label>
-					<input
-						type="text"
-						id="name"
-						name="name"
-						value={formData.name}
-						onChange={handleChange}
-						required
-						className={styles.input}
-						placeholder="Ditt navn"
-					/>
-				</div>
+				<Input label="Navn" id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Ditt navn" />
 
-				<div>
-					<label htmlFor="email" className={styles.label}>
-						E-post
-					</label>
-					<input
-						type="email"
-						id="email"
-						name="email"
-						value={formData.email}
-						onChange={handleChange}
-						required
-						className={styles.input}
-						placeholder="din@email.no"
-					/>
-				</div>
+				<Input
+					label="E-post"
+					type="email"
+					id="email"
+					name="email"
+					value={formData.email}
+					onChange={handleChange}
+					required
+					placeholder="din@email.no"
+				/>
 
-				<div>
-					<label htmlFor="content" className={styles.label}>
-						Melding
-					</label>
-					<textarea
-						id="content"
-						name="content"
-						value={formData.content}
-						onChange={handleChange}
-						required
-						rows={4}
-						className={`${styles.input} ${styles.textarea}`}
-						placeholder="Skriv din melding her..."
-					/>
-				</div>
+				<TextArea
+					label="Melding"
+					id="content"
+					name="content"
+					value={formData.content}
+					onChange={handleChange}
+					required
+					rows={4}
+					placeholder="Skriv din melding her..."
+				/>
 
-				<button
+				<Button
 					type="submit"
-					className={`${styles.button} ${styles.pressable}`}
-					disabled={status === 'submitting'}
-					aria-busy={status === 'submitting'}
-				>
-					<Send className={styles.buttonIcon} />
-					<span>{status === 'submitting' ? 'Sender…' : 'Send melding'}</span>
-				</button>
+					label={status === 'submitting' ? 'Sender…' : 'Send melding'}
+					icon={<LuSend size={16} />}
+					loading={status === 'submitting'}
+				/>
 
 				<div className={styles.status} aria-live="polite" role="status">
 					{status === 'success' && 'Takk! Meldingen er sendt.'}

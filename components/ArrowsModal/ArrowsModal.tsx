@@ -1,0 +1,184 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { LuTrash2, LuX } from 'react-icons/lu';
+import styles from './ArrowsModal.module.css';
+import { ArrowsForm, ArrowsFormValues } from '@/components/ProfileEditModal/ArrowsForm';
+import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
+import { Button } from '@/components';
+import { emitEquipmentChanged } from '@/lib/events';
+
+interface ArrowsModalProps {
+	open: boolean;
+	onClose: () => void;
+	onSaved?: () => void;
+	editingArrows?: {
+		id: string;
+		name: string;
+		material: ArrowsFormValues['material'];
+		arrowsCount?: number | null;
+		diameter?: number | null;
+		length?: number | null;
+		weight?: number | null;
+		spine?: string | null;
+		isFavorite?: boolean;
+	};
+}
+
+export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsModalProps) {
+	useModalBehavior({ open, onClose });
+
+	const [loading, setLoading] = useState(false);
+	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+	const [deleting, setDeleting] = useState(false);
+
+	useEffect(() => {
+		if (!open) {
+			setMessage(null);
+			setLoading(false);
+			setDeleting(false);
+			return;
+		}
+		setMessage(null);
+	}, [open, editingArrows?.id]);
+
+	const handleSubmit = async (values: ArrowsFormValues) => {
+		const hasChanges =
+			!editingArrows ||
+			values.name !== editingArrows.name ||
+			values.material !== editingArrows.material ||
+			(values.arrowsCount ?? null) !== (typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null) ||
+			(values.diameter ?? null) !== (typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null) ||
+			(values.length ?? null) !== (typeof editingArrows.length === 'number' ? editingArrows.length : null) ||
+			(values.weight ?? null) !== (typeof editingArrows.weight === 'number' ? editingArrows.weight : null) ||
+			(values.spine ?? '') !== (typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '') ||
+			values.isFavorite !== Boolean(editingArrows.isFavorite);
+
+		setLoading(true);
+		setMessage(null);
+		try {
+			const url = editingArrows ? `/api/arrows/${editingArrows.id}` : '/api/arrows';
+			const method = editingArrows ? 'PATCH' : 'POST';
+
+			const response = await fetch(url, {
+				method,
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(values),
+			});
+
+			if (!response.ok) {
+				setMessage({ type: 'error', text: editingArrows ? 'Kunne ikke oppdatere piler' : 'Kunne ikke legge til piler' });
+				return;
+			}
+
+			setMessage({ type: 'success', text: editingArrows ? 'Piler oppdatert' : 'Piler lagt til' });
+			setTimeout(() => {
+				emitEquipmentChanged();
+				if (hasChanges) onSaved?.();
+				onClose();
+			}, 800);
+		} catch (error) {
+			setMessage({ type: 'error', text: error instanceof Error ? error.message : 'En feil oppstod' });
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	const handleDelete = async () => {
+		if (!editingArrows) return;
+		setDeleting(true);
+		setMessage(null);
+		try {
+			const res = await fetch(`/api/arrows/${editingArrows.id}`, { method: 'DELETE' });
+			if (!res.ok) {
+				let details: any = null;
+				try {
+					details = await res.json();
+				} catch {
+					// ignore
+				}
+				setMessage({ type: 'error', text: details?.error || 'Kunne ikke slette pilsett' });
+				return;
+			}
+
+			setMessage({ type: 'success', text: 'Pilsett slettet' });
+			setTimeout(() => {
+				emitEquipmentChanged();
+				onSaved?.();
+				onClose();
+			}, 500);
+		} catch (e) {
+			setMessage({ type: 'error', text: e instanceof Error ? e.message : 'Kunne ikke slette pilsett' });
+		} finally {
+			setDeleting(false);
+		}
+	};
+
+	if (!open) return null;
+
+	return (
+		<div className={styles.overlay} onClick={onClose} role="presentation">
+			<div
+				className={styles.modal}
+				onClick={(e) => e.stopPropagation()}
+				role="dialog"
+				aria-modal="true"
+				aria-labelledby="arrows-modal-title"
+			>
+				<div className={styles.header}>
+					<h2 id="arrows-modal-title" className={styles.title}>
+						{editingArrows ? 'Rediger piler' : 'Legg til piler'}
+					</h2>
+					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+						<LuX size={22} />
+					</button>
+				</div>
+
+				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
+
+				<div className={styles.form}>
+					<ArrowsForm
+						initialValues={
+							editingArrows
+								? {
+										name: editingArrows.name,
+										material: editingArrows.material,
+										arrowsCount: typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null,
+										diameter: typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null,
+										length: typeof editingArrows.length === 'number' ? editingArrows.length : null,
+										weight: typeof editingArrows.weight === 'number' ? editingArrows.weight : null,
+										spine: typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '',
+										isFavorite: Boolean(editingArrows.isFavorite),
+									}
+								: undefined
+						}
+						onSubmit={handleSubmit}
+					/>
+
+					<div className={styles.actions}>
+						{editingArrows ? (
+							<Button
+								label={deleting ? 'Sletter...' : 'Slett piler'}
+								onClick={handleDelete}
+								disabled={loading || deleting}
+								buttonType="outline"
+								variant="warning"
+								icon={<LuTrash2 size={18} />}
+							/>
+						) : null}
+						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
+						<Button
+							label={loading ? (editingArrows ? 'Oppdaterer...' : 'Lagrer...') : editingArrows ? 'Oppdater' : 'Lagre'}
+							onClick={() => {
+								const form = document.getElementById('arrows-form') as HTMLFormElement | null;
+								form?.requestSubmit();
+							}}
+							loading={loading}
+							disabled={deleting}
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}

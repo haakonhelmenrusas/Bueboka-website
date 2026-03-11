@@ -13,15 +13,43 @@
 	transform: scale(0.95);
 }
 
+.link:focus-visible {
+	outline: 2px solid var(--primary-light);
+	outline-offset: 4px;
+	border-radius: var(--radius-md);
+}
+
+[data-theme='dark'] .link:focus-visible {
+	outline-color: var(--primary);
+}
+
 .badge {
 	display: flex;
 	align-items: center;
 	gap: 12px;
 	min-width: 180px;
-	background: #000;
-	color: #fff;
+	background: var(--text-dark);
+	color: var(--white);
 	padding: 8px 16px;
-	border-radius: 12px;
+	border-radius: var(--radius-md);
+	border: 1px solid var(--white-20);
+	transition: all 150ms ease;
+}
+
+[data-theme='dark'] .badge {
+	background: var(--bg-light);
+	color: var(--text-dark);
+	border-color: var(--bg-gray-200);
+}
+
+.badge:hover {
+	border-color: var(--white-40);
+	box-shadow: 0 4px 12px var(--dark-20);
+}
+
+[data-theme='dark'] .badge:hover {
+	border-color: var(--bg-gray-300);
+	box-shadow: 0 4px 12px var(--dark-20);
 }
 
 .icon {

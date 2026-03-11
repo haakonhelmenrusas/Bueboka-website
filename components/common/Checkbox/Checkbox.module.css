@@ -1,0 +1,110 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	width: fit-content;
+	max-width: 100%;
+	cursor: pointer;
+}
+
+.inline .controlRow {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	width: fit-content;
+}
+
+.label {
+	font-weight: 800;
+	font-size: 0.95rem;
+	color: var(--text-dark);
+	cursor: pointer;
+}
+
+.required {
+	margin-left: 6px;
+	color: var(--error);
+	font-weight: 900;
+}
+
+.helpText {
+	color: var(--text-gray-600);
+	font-weight: 650;
+	font-size: 0.9rem;
+}
+
+.controlRow {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	padding: 6px 8px;
+	border-radius: var(--radius-base);
+	transition: background-color 120ms ease;
+}
+
+.input {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.box {
+	width: 20px;
+	height: 20px;
+	border-radius: var(--radius-sm);
+	border: 1px solid var(--bg-gray-200);
+	background: var(--card-bg-solid);
+	box-shadow: 0 1px 0 var(--dark-02);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+	flex: 0 0 auto;
+}
+
+.input:checked + .box {
+	background: var(--primary-08);
+	border-color: var(--primary);
+	box-shadow: 0 10px 22px var(--dark-08);
+}
+
+.input:checked + .box::after {
+	content: '';
+	width: 10px;
+	height: 6px;
+	border-left: 2px solid var(--primary);
+	border-bottom: 2px solid var(--primary);
+	transform: rotate(-45deg);
+	margin-top: -1px;
+}
+
+.container:has(.input:focus-visible) .box {
+	outline: 2px solid rgba(12, 130, 172, 0.5);
+	outline-offset: 3px;
+}
+
+.container:has(.input:disabled) {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.container:has(.input:disabled) .controlRow {
+	cursor: not-allowed;
+}
+
+.container:has(.input:disabled) .label {
+	cursor: not-allowed;
+}
+
+.container:hover .box {
+	border-color: rgba(5, 53, 70, 0.34);
+}
+
+.container:hover .controlRow {
+	background: rgba(5, 53, 70, 0.04);
+}
+
+.container:has(.input:disabled):hover .controlRow {
+	background: transparent;
+}

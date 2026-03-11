@@ -1,126 +1,366 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./prisma/generated/prisma-client"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
 }
 
 model User {
-    id           String     @id @default(cuid())
-    email        String?    @unique
-    name         String
-    club         String?
-    profileImage String?
-    bows         Bow[]
-    arrows       Arrows[]
-    practices    Practice[]
-    createdAt    DateTime
-    updatedAt    DateTime
+  id            String   @id @default(cuid())
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  name          String?
+  club          String?
+  image         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation fields
+  bows              Bow[]
+  arrows            Arrows[]
+  practices         Practice[]
+  competitions      Competition[]
+  Account           Account[]
+  Session           Session[]
+  bowSpecifications BowSpecification[]
+  sightMarks        SightMark[]
+  sightMarkResults  SightMarkResult[]
+  achievements      UserAchievement[]  @relation("UserAchievements")
+
+  @@map("user")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?   @db.Text
+  refreshToken          String?   @db.Text
+  accessTokenExpiresAt  DateTime? // made nullable so create() may omit it
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?   @db.Text
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  // Relation fields
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@map("account")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation fields
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
 }
 
 model Bow {
-    id         String     @id @default(cuid())
-    user       User       @relation(fields: [userId], references: [id])
-    userId     String
-    practice   Practice[]
-    type       BowType
-    eyeToNock  Int?
-    aimMeasure Int?
-    eyeToSight Int?
-    notes      String?
-    createdAt  DateTime
-    updatedAt  DateTime
+  id                String             @id @default(cuid())
+  userId            String
+  name              String
+  practice          Practice[]
+  competitions      Competition[]
+  type              BowType
+  eyeToNock         Float?
+  aimMeasure        Float?
+  eyeToSight        Float?
+  notes             String?
+  isFavorite        Boolean            @default(false)
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  bowSpecifications BowSpecification[]
+
+  // Relation field
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("bows")
 }
 
 model Arrows {
-    id          String     @id @default(cuid())
-    user        User       @relation(fields: [userId], references: [id])
-    userId      String
-    practice    Practice[]
-    diameter    Float?
-    weight      Float?
-    length      Float?
-    material    String?
-    spine       String?
-    pointType   String?
-    pointWeight Float?
-    vanes       String?
-    nock        String?
-    notes       String?
-    createdAt   DateTime
-    updatedAt   DateTime
+  id           String        @id @default(cuid())
+  userId       String
+  name         String
+  practice     Practice[]
+  competitions Competition[]
+  arrowsCount  Int?
+  diameter     Float?
+  weight       Float?
+  length       Float?
+  material     Material
+  spine        String?
+  pointType    String?
+  pointWeight  Float?
+  vanes        String?
+  nock         String?
+  notes        String?
+  isFavorite   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // Relation fields
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("arrows")
 }
 
 model Practice {
-    id          String             @id @default(cuid())
-    user        User               @relation(fields: [userId], references: [id])
-    userId      String
-    date        DateTime
-    notes       String?
-    totalScore  Int
-    location    String?
-    environment Environment
-    weather     WeatherCondition[]
-    roundType   RoundType          @relation(fields: [roundTypeId], references: [id])
-    roundTypeId String             @unique
-    bow         Bow                @relation(fields: [bowId], references: [id])
-    bowId       String
-    arrows      Arrows             @relation(fields: [arrowsId], references: [id])
-    arrowsId    String
-    ends        End[]
-    createdAt   DateTime
-    updatedAt   DateTime
+  id               String             @id @default(cuid())
+  userId           String
+  date             DateTime           @default(now())
+  notes            String?
+  totalScore       Int
+  rating           Int?
+  location         String?
+  environment      Environment
+  weather          WeatherCondition[]
+  practiceCategory PracticeCategory   @default(SKIVE_INDOOR)
+  roundTypeId      String?
+  bowId            String?
+  arrowsId         String?
+  ends             End[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+
+  // Relation fields
+  user      User       @relation(fields: [userId], references: [id])
+  arrows    Arrows?    @relation(fields: [arrowsId], references: [id])
+  bow       Bow?       @relation(fields: [bowId], references: [id])
+  roundType RoundType? @relation(fields: [roundTypeId], references: [id])
+
+  @@index([userId])
+  @@index([date])
+  @@map("practices")
 }
 
 model RoundType {
-    id             String      @id @default(cuid())
-    name           String
-    Practice       Practice?
-    environment    Environment
-    distanceMeters Int?
-    targetSizeCm   Int?
-    createdAt      DateTime
-    updatedAt      DateTime
+  id                 String     @id @default(cuid())
+  name               String
+  Practice           Practice[]
+  distanceMeters     Int?
+  targetType         Json?
+  numberArrows       Int?
+  arrowsWithoutScore Int?
+  roundScore         Int?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+
+  @@map("round_types")
 }
 
 model End {
-    id             String   @id @default(cuid())
-    Practice       Practice @relation(fields: [practiceId], references: [id])
-    practiceId     String
-    arrows         Int
-    scores         Int[]
-    distanceMeters Int?
-    targetSizeCm   Int?
-    arrowsPerEnd   Int?
-    createdAt      DateTime
-    updatedAt      DateTime
+  id                 String   @id @default(cuid())
+  practiceId         String
+  arrows             Int?
+  arrowsWithoutScore Int?
+  scores             Int[]
+  roundScore         Int?
+  distanceMeters     Int?
+  distanceFrom       Int?
+  distanceTo         Int?
+  targetSizeCm       Int?
+  arrowsPerEnd       Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relation fields
+  Practice Practice @relation(fields: [practiceId], references: [id])
+
+  @@map("ends")
+}
+
+model Competition {
+  id                   String             @id @default(cuid())
+  userId               String
+  date                 DateTime           @default(now())
+  name                 String
+  location             String?
+  organizerName        String?
+  notes                String?
+  totalScore           Int
+  placement            Int?
+  numberOfParticipants Int?
+  personalBest         Boolean            @default(false)
+  environment          Environment
+  weather              WeatherCondition[]
+  practiceCategory     PracticeCategory   @default(SKIVE_INDOOR)
+  bowId                String?
+  arrowsId             String?
+  rounds               CompetitionRound[]
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  // Relation fields
+  user   User    @relation(fields: [userId], references: [id])
+  arrows Arrows? @relation(fields: [arrowsId], references: [id])
+  bow    Bow?    @relation(fields: [bowId], references: [id])
+
+  @@index([userId])
+  @@index([date])
+  @@map("competitions")
+}
+
+model CompetitionRound {
+  id                 String   @id @default(cuid())
+  competitionId      String
+  roundNumber        Int
+  arrows             Int?
+  arrowsWithoutScore Int?
+  scores             Int[]
+  roundScore         Int?
+  distanceMeters     Int?
+  targetSizeCm       Int?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relation fields
+  competition Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+
+  @@map("competition_rounds")
+}
+
+model BowSpecification {
+  id                    String     @id @default(cuid())
+  userId                String
+  bowId                 String
+  intervalSightReal     Int?
+  intervalSightMeasured Int?
+  placement             Placement?
+  createdAt             DateTime   @default(now())
+  updatedAt             DateTime   @updatedAt
+
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bow        Bow         @relation(fields: [bowId], references: [id], onDelete: Cascade)
+  sightMarks SightMark[]
+
+  @@unique([userId, bowId])
+  @@map("bow_specifications")
+}
+
+model SightMark {
+  id                   String   @id @default(cuid())
+  userId               String
+  bowSpecificationId   String
+  givenMarks           Float[]
+  givenDistances       Float[]
+  ballisticsParameters Json
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bowSpec      BowSpecification  @relation(fields: [bowSpecificationId], references: [id], onDelete: Cascade)
+  sightResults SightMarkResult[]
+
+  @@map("sight_marks")
+}
+
+model SightMarkResult {
+  id                String   @id @default(cuid())
+  userId            String
+  sightMarkId       String
+  distanceFrom      Float
+  distanceTo        Float
+  interval          Float
+  angles            Float[]
+  distances         Float[]
+  sightMarksByAngle Json
+  arrowSpeedByAngle Json
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sightMark SightMark @relation(fields: [sightMarkId], references: [id], onDelete: Cascade)
+
+  @@map("sight_mark_results")
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  unlockedAt    DateTime @default(now())
+  progress      Int      @default(0)
+  notified      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relation fields
+  user User @relation("UserAchievements", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+  @@map("user_achievements")
+}
+
+enum Material {
+  KARBON
+  ALUMINIUM
+  TREVERK
+}
+
+enum Placement {
+  BAK_LINJEN
+  OVER_LINJEN
+  ANNET
 }
 
 enum Environment {
-    INDOOR
-    OUTDOOR
+  INDOOR
+  OUTDOOR
 }
 
 enum WeatherCondition {
-    SUN
-    CLOUDED
-    RAIN
-    WIND
-    SNOW
-    FOG
-    THUNDER
-    CHANGING_CONDITIONS
-    OTHER
+  SUN
+  CLOUDED
+  CLEAR
+  RAIN
+  WIND
+  SNOW
+  FOG
+  THUNDER
+  CHANGING_CONDITIONS
+  OTHER
 }
 
 enum BowType {
-    RECURVE
-    COMPOUND
-    LONGBOW
-    BAREBOW
-    HORSEBOW
-    TRADITIONAL
-    OTHER
+  RECURVE
+  COMPOUND
+  LONGBOW
+  BAREBOW
+  HORSEBOW
+  TRADITIONAL
+  OTHER
+}
+
+enum PracticeCategory {
+  SKIVE_INDOOR
+  SKIVE_OUTDOOR
+  JAKT_3D
+  FELT
 }

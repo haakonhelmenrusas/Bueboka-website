@@ -1,0 +1,264 @@
+.section {
+	background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+	padding: 6rem 1.5rem;
+	position: relative;
+	overflow: hidden;
+	color: var(--white);
+}
+
+.section::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background:
+		radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+		radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+	pointer-events: none;
+}
+
+.container {
+	max-width: 1200px;
+	margin: 0 auto;
+	position: relative;
+	z-index: 1;
+}
+
+.content {
+	width: 100%;
+}
+
+.headerBlock {
+	margin-bottom: 4rem;
+}
+
+.textCenter {
+	text-align: center;
+}
+
+.title {
+	font-size: 2.75rem;
+	font-weight: 700;
+	color: var(--white);
+	margin-bottom: 1.25rem;
+	line-height: 1.2;
+	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subtitle {
+	font-size: 1.25rem;
+	color: var(--white-85);
+	max-width: 800px;
+	margin: 0 auto;
+	line-height: 1.6;
+}
+
+.featuresGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 2rem;
+	margin-bottom: 4rem;
+}
+
+.featureCard {
+	background: var(--white-10);
+	backdrop-filter: blur(10px);
+	border-radius: 1rem;
+	padding: 2rem;
+	border: 1px solid var(--white-20);
+	transition: all 0.3s ease;
+}
+
+.featureIcon {
+	width: 3.5rem;
+	height: 3.5rem;
+	background: linear-gradient(135deg, var(--white) 0%, var(--white-85) 100%);
+	border-radius: 0.75rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 1.5rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	color: var(--primary);
+	stroke-width: 1.5;
+}
+
+.featureTitle {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--white);
+	margin-bottom: 0.75rem;
+	line-height: 1.3;
+}
+
+.featureText {
+	font-size: 1rem;
+	color: var(--white-80);
+	line-height: 1.6;
+	margin: 0;
+}
+
+.ctaBlock {
+	text-align: center;
+	padding: 3rem 2rem;
+	background: var(--white-10);
+	backdrop-filter: blur(10px);
+	border-radius: 1.5rem;
+	border: 1px solid var(--white-20);
+}
+
+.ctaButton {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.75rem;
+	background: var(--white);
+	color: var(--primary);
+	font-size: 1.25rem;
+	font-weight: 600;
+	padding: 1.25rem 3rem;
+	border-radius: 0.75rem;
+	text-decoration: none;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.ctaButton:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+	background: var(--white-85);
+}
+
+.ctaButton:active {
+	transform: translateY(0);
+}
+
+.ctaButton:focus-visible {
+	outline: 3px solid var(--white);
+	outline-offset: 4px;
+	transform: translateY(-2px);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.ctaIcon {
+	width: 1.5rem;
+	height: 1.5rem;
+	transition: transform 0.3s ease;
+}
+
+.ctaButton:hover .ctaIcon {
+	transform: translateX(4px);
+}
+
+.ctaSubtext {
+	margin-top: 1.25rem;
+	font-size: 1rem;
+	color: var(--white-75);
+	margin-bottom: 0;
+}
+
+.existingUser {
+	margin-top: 1.5rem;
+	font-size: 1rem;
+	color: var(--white-75);
+	margin-bottom: 0;
+}
+
+.loginLink {
+	color: var(--white);
+	font-weight: 600;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+	transition: all 0.2s ease;
+}
+
+.loginLink:hover {
+	text-decoration-thickness: 2px;
+}
+
+.loginLink:focus-visible {
+	outline: 2px solid var(--white);
+	outline-offset: 4px;
+	border-radius: 2px;
+}
+
+.reveal {
+	animation: revealUp 0.6s ease-out;
+	animation-fill-mode: none;
+}
+
+/* Ensure interactive elements are keyboard accessible even during animation */
+.reveal a,
+.reveal button {
+	visibility: visible;
+}
+
+@keyframes revealUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@media (max-width: 768px) {
+	.section {
+		padding: 4rem 1.5rem;
+	}
+
+	.title {
+		font-size: 2rem;
+	}
+
+	.subtitle {
+		font-size: 1.125rem;
+	}
+
+	.featuresGrid {
+		grid-template-columns: 1fr;
+		gap: 1.5rem;
+		margin-bottom: 3rem;
+	}
+
+	.headerBlock {
+		margin-bottom: 3rem;
+	}
+
+	.ctaButton {
+		font-size: 1.125rem;
+		padding: 1rem 2.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.section {
+		padding: 3rem 1rem;
+	}
+
+	.title {
+		font-size: 1.75rem;
+	}
+
+	.subtitle {
+		font-size: 1rem;
+	}
+
+	.featureCard {
+		padding: 1.5rem;
+	}
+
+	.ctaBlock {
+		padding: 2rem 1.5rem;
+	}
+
+	.ctaButton {
+		width: 100%;
+		justify-content: center;
+	}
+}
+

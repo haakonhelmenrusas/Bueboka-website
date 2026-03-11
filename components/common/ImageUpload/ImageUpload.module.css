@@ -1,0 +1,140 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+}
+
+.label {
+	font-size: 0.95rem;
+	font-weight: 700;
+	color: var(--text-dark);
+}
+
+.uploadArea {
+	position: relative;
+}
+
+.preview {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+}
+
+.image {
+	width: 120px;
+	height: 120px;
+	border-radius: var(--radius-circle);
+	object-fit: cover;
+	border: 3px solid var(--primary-light);
+	box-shadow: 0 4px 12px var(--dark-20);
+}
+
+.actions {
+	display: flex;
+	gap: var(--space-3);
+}
+
+.changeButton,
+.removeButton {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-4);
+	border-radius: var(--radius-base);
+	font-size: 0.9rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 150ms ease;
+	border: none;
+}
+
+.changeButton {
+	background: var(--primary);
+	color: var(--white);
+}
+
+.changeButton:hover:not(:disabled) {
+	background: var(--primary-dark);
+	transform: translateY(-1px);
+}
+
+.removeButton {
+	background: var(--error-bg);
+	color: var(--error);
+	border: 1px solid var(--error-border);
+}
+
+.removeButton:hover:not(:disabled) {
+	background: var(--error);
+	color: var(--white);
+	transform: translateY(-1px);
+}
+
+.changeButton:disabled,
+.removeButton:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	transform: none;
+}
+
+.placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+}
+
+.placeholderIcon {
+	width: 120px;
+	height: 120px;
+	border-radius: var(--radius-circle);
+	background: var(--background);
+	border: 3px solid var(--primary-light);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-gray-600);
+}
+
+.uploadButton {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-4);
+	border: 2px solid var(--primary);
+	border-radius: var(--radius-base);
+	background: var(--primary);
+	color: var(--white);
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 200ms ease;
+}
+
+.uploadButton:hover:not(:disabled) {
+	background: var(--primary-dark);
+	border-color: var(--primary-dark);
+	transform: translateY(-1px);
+}
+
+.uploadButton:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+	transform: none;
+}
+
+
+.fileInput {
+	display: none;
+}
+
+.error {
+	padding: var(--space-3);
+	background: var(--error-bg);
+	border: 1px solid var(--error-border);
+	border-radius: var(--radius-base);
+	color: var(--error);
+	font-size: 0.9rem;
+	font-weight: 600;
+}
+

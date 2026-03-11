@@ -1,0 +1,88 @@
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.item {
+  background: var(--card-bg);
+  border: 1px solid var(--bg-gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+  background: var(--primary-06);
+  border: none;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+.header:hover {
+  background: var(--primary-08);
+}
+
+.title {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.titleRow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.titleIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: var(--primary);
+}
+
+.chevron {
+  transition: transform 160ms ease;
+  color: var(--primary);
+}
+
+.open {
+  transform: rotate(180deg);
+}
+
+.panel {
+  padding: var(--space-6);
+  color: var(--text-gray-700);
+  display: none;
+}
+
+.panelOpen {
+  display: block;
+}
+
+.panel p {
+  margin-bottom: var(--space-4);
+}
+
+.panel ul {
+  display: grid;
+  gap: var(--space-3);
+  padding-left: var(--space-6);
+}
+
+.panel a {
+  color: var(--primary);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.panel a:hover {
+  text-decoration: underline;
+}

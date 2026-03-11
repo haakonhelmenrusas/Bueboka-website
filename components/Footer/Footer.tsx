@@ -1,33 +1,20 @@
-'use client';
-
-import { Github } from 'lucide-react';
+import { LuGithub } from 'react-icons/lu';
 import { AppStoreBadge } from '@/components';
 import React from 'react';
 import styles from './Footer.module.css';
-import Link from 'next/link';
 import Image from 'next/image';
 
 export function Footer() {
-	const handleLogoClick = (e: React.MouseEvent) => {
-		const currentUrl = window.location.href;
-		const targetUrl = window.location.origin + window.location.pathname;
-
-		if (currentUrl === targetUrl) {
-			e.preventDefault();
-			window.scrollTo({ top: 0, behavior: 'smooth' });
-		}
-	};
-
 	return (
 		<footer id="contact" className={styles.footer}>
 			<div className={styles.container}>
 				<div className={`${styles.center} ${styles.revealOnce}`}>
-					<Link href="/" onClick={handleLogoClick} className={`${styles.logoLink} ${styles.pressable}`}>
+					<div className={styles.logoLink}>
 						<div className={styles.logoBox}>
 							<Image width={24} height={24} src="/assets/logo.png" alt="Bueboka Logo" className={styles.logoImg} />
 						</div>
 						<span className={styles.brandText}>Bueboka</span>
-					</Link>
+					</div>
 					<p className={styles.lead}>
 						Klar til å ta bueskyting-ferdighetene dine til neste nivå? Sjekk ut koden vår på GitHub eller last ned appen i dag.
 					</p>
@@ -37,7 +24,7 @@ export function Footer() {
 							target="_blank"
 							className={`${styles.ctaBtn} ${styles.pressable}`}
 						>
-							<Github className={styles.icon} />
+							<LuGithub className={styles.icon} />
 							<span>GitHub</span>
 						</a>
 					</div>
@@ -47,7 +34,7 @@ export function Footer() {
 					</div>
 					<div className={styles.separator}>
 						<p className={styles.finePrint}>
-							© 2025 Bueboka. Alle rettigheter forbeholdt. Laget med ❤️ av{' '}
+							© 2026 Bueboka. Alle rettigheter forbeholdt. Laget med ❤️ av{' '}
 							<a
 								href="https://rusåsdesign.no"
 								target="_blank"

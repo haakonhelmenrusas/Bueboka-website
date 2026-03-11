@@ -1,0 +1,74 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.label {
+    font-weight: 700;
+    color: var(--text-gray-700);
+    font-size: 1rem;
+}
+
+.optional {
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--text-gray-600);
+}
+
+.control {
+    border-radius: var(--radius-base);
+    border: 1px solid var(--bg-gray-200);
+    background: var(--card-bg-solid);
+    padding: 8px 10px;
+    box-shadow: 0 1px 0 var(--dark-02);
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.control:focus-within {
+    outline: 3px solid var(--primary-20);
+    outline-offset: 2px;
+}
+
+.textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 0.98rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    min-height: 110px;
+    resize: vertical;
+    line-height: 1.35;
+}
+
+.textarea:focus,
+.textarea:focus-visible {
+    outline: none;
+}
+
+.textarea::placeholder {
+    color: var(--text-gray-600);
+    font-weight: 500;
+}
+
+.help {
+    color: var(--text-gray-600);
+    font-size: 0.95rem;
+    line-height: 1.25;
+}
+
+.errorMessage {
+    color: var(--error);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.error {
+    border-color: rgba(255, 0, 0, 0.35);
+}
+
+.disabled {
+    opacity: 0.7;
+}

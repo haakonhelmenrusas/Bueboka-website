@@ -1,0 +1,214 @@
+.page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
+    color: var(--white);
+    width: 100%;
+    padding: calc(var(--space-12) + 80px) var(--space-8) var(--space-8);
+}
+.container {
+    max-width: 1200px;
+    margin: 0 var(--space-20) auto;
+    gap: var(--space-4);
+}
+.backButtonContainer {
+    margin-bottom: var(--space-8);
+    display: flex;
+    gap: var(--space-3);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.backButtonContainer button {
+    background: var(--white) !important;
+    color: var(--primary) !important;
+    border-color: var(--white) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.backButtonContainer button:hover {
+    background: var(--bg-gray-100) !important;
+    transform: translateX(-2px);
+}
+
+.header {
+    margin-bottom: var(--space-8);
+}
+
+.title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--white);
+    margin: 0 0 var(--space-2) 0;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+    font-size: 1.125rem;
+    color: var(--white);
+    margin: 0;
+    opacity: 0.95;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Summary Cards */
+.summaryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.summaryCard {
+    background: var(--secondary);
+    color: var(--white);
+    padding: var(--space-5);
+    border-radius: var(--radius-xl);
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.summaryCard h3 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    opacity: 0.9;
+    margin: 0 0 var(--space-2) 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summaryCard .value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1;
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    padding: var(--space-4);
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-gray);
+}
+
+.filterGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.filterLabel {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-gray-700);
+}
+
+.filterButtons {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+}
+
+.filterButton {
+    padding: var(--space-4) var(--space-6);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    background: var(--white);
+    color: var(--text-gray-700);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filterButton:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--bg-light);
+}
+
+.filterButton.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+}
+
+/* Grid */
+.achievementGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--space-5);
+}
+
+/* Loading & Empty States */
+.loading, .error, .empty {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--text-gray-600);
+}
+
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--bg-gray-200);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error {
+    color: var(--error);
+}
+
+.empty {
+    padding: var(--space-12);
+}
+
+.empty h3 {
+    font-size: 1.25rem;
+    margin: 0 0 var(--space-2) 0;
+    color: var(--text-dark);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        margin: 0 var(--space-4) auto;
+    }
+    .title {
+        font-size: 2rem;
+    }
+
+    .achievementGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .summaryGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+}
+
