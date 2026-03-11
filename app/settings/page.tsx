@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Accordion, ConfirmModal, EmailVerificationBanner, Header } from '@/components';
+import { Accordion, ConfirmModal, EmailVerificationBanner, Footer, Header } from '@/components';
 import { signOut, useSession } from '@/lib/auth-client';
 import { LuArrowLeft, LuKey, LuLock, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './page.module.css';
@@ -62,9 +62,6 @@ export default function SettingsPage() {
 
 	return (
 		<div className={styles.page}>
-			<a href="#main-content" className="skip-link">
-				Gå til hovedinnhold
-			</a>
 			<Header />
 			<main id="main-content" className={styles.main}>
 				<div className={styles.container}>
@@ -310,6 +307,7 @@ export default function SettingsPage() {
 					</div>
 				</div>
 			</main>
+			<Footer />
 			<ConfirmModal
 				open={showConfirmModal}
 				onClose={() => setShowConfirmModal(false)}

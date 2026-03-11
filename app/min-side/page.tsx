@@ -9,7 +9,7 @@ import {
 	BowModal,
 	Button,
 	CompetitionFormModal,
-	EquipmentSection,
+	EquipmentSection, Footer,
 	Header,
 	PracticeDetailsModal,
 	PracticeFormModal,
@@ -331,6 +331,7 @@ export default function MyPage() {
 			/>
 			<SightMarksSection />
 			</main>
+			<Footer />
 			<ProfileEditModal
 				isOpen={profileModalOpen}
 				onClose={() => setProfileModalOpen(false)}
