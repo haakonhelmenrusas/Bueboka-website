@@ -359,6 +359,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 												step={1}
 												startEmpty={true}
 												unit="m"
+												width={180}
 												containerClassName={styles.roundField}
 											/>
 										)}

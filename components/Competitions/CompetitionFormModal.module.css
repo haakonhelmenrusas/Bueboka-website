@@ -83,6 +83,12 @@
     justify-content: flex-end;
 }
 
+.rowFlex {
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-end;
+}
+
 .actions {
     display: flex;
     justify-content: flex-end;
@@ -160,19 +166,9 @@
     width: 100%;
 }
 
-.distanceField {
-    flex: 2; /* Takes up roughly 2/5 -> 40% max */
-    min-width: 90px;
-    max-width: 140px; /* Limit distance input width so it doesn't get too wide */
-}
-
 .targetField {
-    flex: 3; /* Takes up roughly 3/5 -> 60% min */
-    min-width: 140px;
-}
-
-.roundField {
-    min-width: 200px;
+    flex: 1;
+    max-width: 190px;
 }
 
 .limitMessage {

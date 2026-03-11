@@ -361,7 +361,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										</button>
 									)}
 								</div>
-								<div className={styles.roundInputs}>
+								<div className={styles.rowFlex}>
 									<NumberInput
 										label="Avstand"
 										value={round.distanceMeters ?? 0}
@@ -369,8 +369,8 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onEmpty={() => updateRound(index, 'distanceMeters', undefined)}
 										min={1}
 										startEmpty
+										width={180}
 										unit="m"
-										containerClassName={styles.distanceField}
 									/>
 									<Select
 										label="Skive"
@@ -383,7 +383,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										containerClassName={styles.targetField}
 									/>
 								</div>
-								<div className={styles.row}>
+								<div className={styles.rowFlex}>
 									<NumberInput
 										label="Piler"
 										value={round.numberArrows ?? 0}
@@ -392,21 +392,8 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										min={0}
 										optional
 										startEmpty
-										width="120px"
+										width={180}
 										helpText="Ant. piler med score"
-										containerClassName={styles.roundField}
-									/>
-									<NumberInput
-										label="Piler u/score"
-										value={round.arrowsWithoutScore ?? 0}
-										onChange={(val) => updateRound(index, 'arrowsWithoutScore', val || 0)}
-										onEmpty={() => updateRound(index, 'arrowsWithoutScore', 0)}
-										min={0}
-										optional
-										startEmpty
-										width="120px"
-										helpText="Piler uten score"
-										containerClassName={styles.roundField}
 									/>
 									<NumberInput
 										label="Score"
@@ -415,7 +402,20 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										min={0}
 										optional
 										startEmpty
-										width="120px"
+										width={180}
+									/>
+								</div>
+								<div className={styles.row}>
+									<NumberInput
+										label="Piler u/score"
+										value={round.arrowsWithoutScore ?? 0}
+										onChange={(val) => updateRound(index, 'arrowsWithoutScore', val || 0)}
+										onEmpty={() => updateRound(index, 'arrowsWithoutScore', 0)}
+										min={0}
+										optional
+										startEmpty
+										width={180}
+										helpText="Piler uten score"
 										containerClassName={styles.roundField}
 									/>
 								</div>
