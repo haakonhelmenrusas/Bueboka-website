@@ -14,7 +14,6 @@ interface PracticesSectionProps {
 }
 
 export function PracticesSection({ onCreate, onCreateCompetition, onSelectPractice, reloadKey, deletedPracticeId }: PracticesSectionProps) {
-	// ...existing code...
 	const { cards, page, totalPages, showPagination, loading, filter, setFilter, goToPrev, goToNext, fetchPage, removeLocal } =
 		usePracticeCards({
 			pageSize: 10,
@@ -37,8 +36,6 @@ export function PracticesSection({ onCreate, onCreateCompetition, onSelectPracti
 			<div className={styles.practicesHeader}>
 				<h2 className={styles.sectionTitle}>Treninger og konkurranser</h2>
 			</div>
-
-			{/* Filter controls with action buttons */}
 			<div className={styles.filterContainer}>
 				<div className={styles.filterButtons}>
 					<button
@@ -68,7 +65,6 @@ export function PracticesSection({ onCreate, onCreateCompetition, onSelectPracti
 					{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<LuTrophy size={18} />} />}
 				</div>
 			</div>
-
 			<div className={styles.practicesList}>
 				{hasPractices ? (
 					<PracticesList practices={cards} onSelectPractice={onSelectPractice} />
@@ -76,7 +72,6 @@ export function PracticesSection({ onCreate, onCreateCompetition, onSelectPracti
 					<div className={styles.placeholderCard}>Ingen treninger registrert ennå.</div>
 				)}
 			</div>
-
 			{showPagination ? (
 				<div className={styles.pagination}>
 					<Button

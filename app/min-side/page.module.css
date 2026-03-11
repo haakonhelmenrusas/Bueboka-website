@@ -272,21 +272,21 @@
   }
 
   .main {
-    padding: var(--space-6) var(--space-4);
+    padding: var(--space-20) var(--space-4);
   }
 
-	.rightActions {
-		flex-wrap: wrap;
-	}
-	.practicesSection {
-		padding: 0 var(--space-4) var(--space-10);
-	}
-	.practicesList {
-		padding: var(--space-6);
-	}
-	.profileSummaryGrid {
-		grid-template-columns: 1fr;
-	}
+    .rightActions {
+        flex-wrap: wrap;
+    }
+    .practicesSection {
+        padding: 0 var(--space-4) var(--space-10);
+    }
+    .practicesList {
+        padding: var(--space-6);
+    }
+    .profileSummaryGrid {
+        grid-template-columns: 1fr;
+    }
 }
 
 @keyframes dropdown-in {

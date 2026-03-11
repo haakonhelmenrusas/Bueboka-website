@@ -2,13 +2,9 @@
     min-height: 100vh;
     background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
     color: var(--white);
-}
-
-.container {
     max-width: 1200px;
     margin: 0 auto;
     padding: calc(var(--space-12) + 80px) var(--space-8) var(--space-8);
-    min-height: 100vh;
 }
 
 .backButtonContainer {
@@ -118,7 +114,7 @@
 }
 
 .filterButton {
-    padding: var(--space-2) var(--space-4);
+    padding: var(--space-4) var(--space-6);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-md);
     background: var(--white);
@@ -193,10 +189,6 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .container {
-        padding: var(--space-4);
-    }
-
     .title {
         font-size: 2rem;
     }

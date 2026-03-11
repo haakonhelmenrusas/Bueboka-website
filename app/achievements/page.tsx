@@ -107,8 +107,7 @@ export default function AchievementsPage() {
 	return (
 		<>
 			<Header />
-			<div className={styles.page}>
-				<div className={styles.container}>
+			<main className={styles.page}>
 					<div className={styles.backButtonContainer}>
 						<Button label="Tilbake" onClick={() => router.back()} icon={<LuArrowLeft size={18} />} size="small" buttonType="outline" />
 					</div>
@@ -250,8 +249,7 @@ export default function AchievementsPage() {
 							<p>Prøv å endre filtrene dine</p>
 						</div>
 					)}
-				</div>
-			</div>
+			</main>
 		</>
 	);
 }

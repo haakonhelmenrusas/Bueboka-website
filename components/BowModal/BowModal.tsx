@@ -152,11 +152,11 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 								disabled={loading || deleting}
 								buttonType="outline"
 								variant="warning"
-								width={170}
+
 								icon={<LuTrash2 size={18} />}
 							/>
 						) : null}
-						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" width={160} />
+						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
 						<Button
 							label={loading ? (editingBow ? 'Oppdaterer...' : 'Lagrer...') : editingBow ? 'Oppdater' : 'Lagre'}
 							onClick={() => {
@@ -165,7 +165,7 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 							}}
 							loading={loading}
 							disabled={deleting}
-							width={180}
+
 						/>
 					</div>
 				</div>

@@ -12,14 +12,12 @@ import { PiStar } from 'react-icons/pi';
 import { EquipmentListSkeleton } from './EquipmentSkeleton';
 
 export interface EquipmentSectionProps {
-	/** If provided, the component becomes controlled and will not fetch its own data */
 	bows?: Bow[];
 	arrows?: Arrow[];
 	onCreateBow: () => void;
 	onCreateArrows: () => void;
 	onSelectBow: (bow: Bow) => void;
 	onSelectArrows: (arrows: Arrow) => void;
-	/** Optional hook to expose a refresh function to the parent (useful after saving) */
 	onDataReady?: (api: { refresh: () => Promise<void>; refreshBows: () => Promise<void>; refreshArrows: () => Promise<void> }) => void;
 }
 
@@ -49,7 +47,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 			<div className={styles.header}>
 				<h2 className={styles.title}>Utstyr</h2>
 			</div>
-
 			<div className={styles.panel}>
 				<div className={styles.grid}>
 					<div>
@@ -93,7 +90,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 							)}
 						</div>
 					</div>
-
 					<div>
 						<div className={styles.subHeaderRow}>
 							<h3 className={styles.subTitle}>Piler</h3>

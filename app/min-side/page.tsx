@@ -301,7 +301,6 @@ export default function MyPage() {
 						</div>
 					</div>
 				</div>
-			</main>
 			<EquipmentSection
 				onCreateBow={() => {
 					setSelectedBow(null);
@@ -331,6 +330,7 @@ export default function MyPage() {
 				deletedPracticeId={deletedPracticeId}
 			/>
 			<SightMarksSection />
+			</main>
 			<ProfileEditModal
 				isOpen={profileModalOpen}
 				onClose={() => setProfileModalOpen(false)}
