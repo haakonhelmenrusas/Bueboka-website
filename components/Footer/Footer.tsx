@@ -45,6 +45,17 @@ export function Footer() {
 							</a>
 							.
 						</p>
+						<p className={styles.finePrint} style={{ marginTop: '0.5rem' }}>
+							This site is powered by{' '}
+							<a
+								href="https://www.netlify.com"
+								target="_blank"
+								rel="noopener noreferrer"
+								className={`${styles.creditLink} ${styles.scaleOnHover}`}
+							>
+								Netlify
+							</a>
+						</p>
 					</div>
 				</div>
 			</div>
