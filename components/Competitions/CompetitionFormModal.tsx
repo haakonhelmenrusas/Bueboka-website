@@ -384,8 +384,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										startEmpty
 										hideSteppers
 										unit="m"
-										width="120px"
-										containerClassName={styles.roundField}
+										containerClassName={styles.distanceField}
 									/>
 									<Select
 										label="Skive"
@@ -395,7 +394,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										placeholderLabel="Velg skive"
 										searchable
 										searchPlaceholder="Søk etter skive..."
-										containerClassName={styles.roundField}
+										containerClassName={styles.targetField}
 									/>
 								</div>
 								<div className={styles.row}>

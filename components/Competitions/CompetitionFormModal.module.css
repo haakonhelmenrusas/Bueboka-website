@@ -156,7 +156,19 @@
 
 .roundInputs {
     display: flex;
-    gap: var(--space-5);
+    gap: var(--space-4);
+    width: 100%;
+}
+
+.distanceField {
+    flex: 2; /* Takes up roughly 2/5 -> 40% max */
+    min-width: 90px;
+    max-width: 140px; /* Limit distance input width so it doesn't get too wide */
+}
+
+.targetField {
+    flex: 3; /* Takes up roughly 3/5 -> 60% min */
+    min-width: 140px;
 }
 
 .roundField {
