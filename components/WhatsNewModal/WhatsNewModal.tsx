@@ -47,22 +47,28 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 							<div className={styles.featureIconWrapper}>
 								<LiaFireAltSolid className="w-7 h-7" />
 							</div>
-							<h4>Registrer treninger</h4>
-							<p>Logg alle treningene dine med detaljer om bue, piler, distanse og score</p>
+							<div>
+								<h4>Registrer treninger</h4>
+								<p>Logg alle treningene dine med detaljer om bue, piler, distanse og score</p>
+							</div>
 						</div>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
 								<PiChartBarLight className="w-7 h-7" />
 							</div>
-							<h4>Se statistikk</h4>
-							<p>Få innsikt i din utvikling med detaljerte grafer og trender</p>
+							<div>
+								<h4>Se statistikk</h4>
+								<p>Få innsikt i din utvikling med detaljerte grafer og trender</p>
+							</div>
 						</div>
 						<div className={styles.featureCard}>
 							<div className={styles.featureIconWrapper}>
 								<IoMdTrendingUp className="w-7 h-7" />
 							</div>
-							<h4>Følg fremgang</h4>
-							<p>Hold oversikt over din forbedring over tid</p>
+							<div>
+								<h4>Følg fremgang</h4>
+								<p>Hold oversikt over din forbedring over tid</p>
+							</div>
 						</div>
 					</div>
 				</div>

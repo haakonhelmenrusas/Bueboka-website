@@ -345,39 +345,119 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .overlay {
+    padding: 0;
+    align-items: flex-end; /* Align to bottom for sheet-like feel or just cover */
+  }
+
   .modal {
     max-width: 100%;
-    max-height: 100vh;
-    border-radius: 0;
+    height: 100%; /* Full height */
+    max-height: 100%; /* Ensure it takes full viewport */
+    border-radius: 0; /* Remove corners for full screen */
+    animation: slideInUp 0.3s ease-out; /* Keep slide in from bottom */
+  }
+
+  .closeBtn {
+    top: var(--space-4);
+    right: var(--space-4);
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    width: 44px; /* Larger touch target */
+    height: 44px;
+  }
+
+  .closeBtn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    color: var(--white);
   }
 
   .header {
-    padding: var(--space-6) var(--space-6) var(--space-5);
+    padding: var(--space-10) var(--space-5) var(--space-6); /* More top padding for status bar/notch area if needed */
+    text-align: left; /* Optional: Left align usually looks better on mobile, but center is fine */
+    text-align: center;
   }
 
   .title {
     font-size: 1.5rem;
+    margin-bottom: var(--space-2);
   }
 
   .subtitle {
     font-size: 1rem;
+    line-height: 1.5;
   }
 
   .body {
-    padding: var(--space-6);
+    padding: var(--space-5);
+  }
+
+  /* Welcome Content specifics */
+  .welcomeContent {
+    gap: var(--space-6);
+  }
+
+  .heroSection {
+    padding: var(--space-4) 0;
   }
 
   .heroIcon {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
+    margin-bottom: var(--space-4);
+  }
+
+  .heroIcon svg {
+    width: 40px;
+    height: 40px;
   }
 
   .heroText {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
 
   .featureGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: var(--space-4);
+  }
+
+  .featureCard {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    padding: var(--space-4);
+    gap: var(--space-4);
+  }
+
+  .featureIconWrapper {
+    margin: 0; /* Reset margin since we are using flex gap */
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+  }
+
+  .featureIconWrapper svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .featureCard div:last-child {
+    /* Container for text inside flex card */
+    flex: 1;
+  }
+
+  .featureCard h4 {
+    margin-bottom: var(--space-1);
+    font-size: 1rem;
+  }
+
+  .featureCard p {
+    font-size: 0.875rem;
+  }
+
+  /* Steps Content specifics */
+  .stepsContent {
+    gap: var(--space-6);
   }
 
   .stepItem {
@@ -385,13 +465,66 @@
   }
 
   .stepNumber {
-    width: 40px;
-    height: 40px;
-    font-size: 1.25rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1.125rem;
   }
 
+  .stepText h4 {
+    font-size: 1rem;
+  }
+
+  .stepText p {
+    font-size: 0.9375rem;
+  }
+
+  /* Tips Content specifics */
+  .tipsContent {
+    gap: var(--space-4);
+  }
+
+  .tipItem {
+    padding: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .tipIcon {
+    width: 28px;
+    height: 28px;
+    padding: 6px;
+  }
+
+  .tipItem strong {
+    font-size: 0.9375rem;
+  }
+
+  .tipItem p {
+    font-size: 0.875rem;
+  }
+
+  /* Footer */
   .footer {
-    padding: var(--space-5) var(--space-6);
+    padding: var(--space-4) var(--space-5) var(--space-6); /* Bottom padding for safe area */
+    gap: var(--space-5);
+  }
+
+  .actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal buttons if both exist */
+    gap: var(--space-3);
+  }
+
+  .actions button {
+    width: 100% !important; /* Override inline style from Button component */
+  }
+
+  /* If only one button (Next/Get Started) makes sure it fills appropriately or stays centered?
+     The JS logic renders "Previous" only if step > 0.
+     If single child, we might want it full width.
+  */
+  .actions:has(> :only-child) {
+    grid-template-columns: 1fr;
   }
 }
 
