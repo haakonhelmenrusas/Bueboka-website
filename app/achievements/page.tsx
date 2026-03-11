@@ -77,12 +77,14 @@ export default function AchievementsPage() {
 		return (
 			<>
 				<Header />
-				<div className={styles.container}>
-					<div className={styles.loading}>
-						<div className={styles.spinner} />
-						<p>Laster prestasjoner...</p>
+				<main className={styles.page}>
+					<div className={styles.container}>
+						<div className={styles.loading}>
+							<div className={styles.spinner} />
+							<p>Laster prestasjoner...</p>
+						</div>
 					</div>
-				</div>
+				</main>
 			</>
 		);
 	}

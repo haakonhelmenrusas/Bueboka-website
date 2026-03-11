@@ -8,7 +8,7 @@ import { onEquipmentChanged } from '@/lib/events';
 export function useEquipmentData() {
 	const [bows, setBows] = useState<Bow[]>([]);
 	const [arrows, setArrows] = useState<Arrow[]>([]);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
 	const fetchBows = useCallback(async () => {
