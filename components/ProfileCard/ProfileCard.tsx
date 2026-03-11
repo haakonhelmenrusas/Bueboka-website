@@ -4,9 +4,10 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './ProfileCard.module.css';
-import { LuCamera, LuLoader, LuPencil, LuTrophy, LuUser } from 'react-icons/lu';
+import { LuCamera, LuLoader, LuPencil, LuTrash, LuTrophy, LuUser } from 'react-icons/lu';
 import { Button } from '@/components';
 import { compressImage } from '@/lib/imageUtils';
+import { useClickOutside } from '@/lib/hooks/useClickOutside';
 
 export interface ProfileCardProps {
 	name?: string | null;
@@ -14,7 +15,7 @@ export interface ProfileCardProps {
 	club?: string | null;
 	image?: string | null;
 	onEdit: () => void;
-	onImageUpdate: (newImage: string) => Promise<void>;
+	onImageUpdate: (newImage: string | null) => Promise<void>;
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, onEdit, onImageUpdate }) => {
@@ -22,7 +23,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 	const displayClub = club || 'Ingen klubb oppgitt';
 	const router = useRouter();
 	const fileInputRef = useRef<HTMLInputElement>(null);
+	const menuRef = useRef<HTMLDivElement>(null);
 	const [isUploading, setIsUploading] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false);
+
+	useClickOutside(menuRef, () => setMenuOpen(false), menuOpen);
 
 	const handleAchievementsClick = () => {
 		router.push('/achievements');
@@ -30,7 +35,26 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 
 	const handleAvatarClick = () => {
 		if (isUploading) return;
+		setMenuOpen((prev) => !prev);
+	};
+
+	const handleUploadClick = () => {
+		setMenuOpen(false);
 		fileInputRef.current?.click();
+	};
+
+	const handleRemoveClick = async () => {
+		setMenuOpen(false);
+		if (!image) return;
+
+			setIsUploading(true);
+			try {
+				await onImageUpdate(null);
+			} catch (error) {
+				console.error('Error removing image:', error);
+			} finally {
+				setIsUploading(false);
+			}
 	};
 
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,43 +91,64 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 
 	return (
 		<section className={styles.card} aria-label="Profil">
-			<div
-				className={styles.avatarWrap}
-				onClick={handleAvatarClick}
-				role="button"
-				tabIndex={0}
-				aria-label="Endre profilbilde"
-				onKeyDown={(e) => {
-					if (e.key === 'Enter' || e.key === ' ') {
-						handleAvatarClick();
-					}
-				}}
-			>
-				{isUploading ? (
-					<div className={styles.loadingOverlay}>
-						<LuLoader className={styles.spinner} />
-					</div>
-				) : (
-					<div className={styles.hoverOverlay}>
-						<LuCamera size={32} />
-						<span className={styles.overlayText}>Endre</span>
+			<div className={styles.avatarContainer} ref={menuRef}>
+				<div
+					className={styles.avatarWrap}
+					onClick={handleAvatarClick}
+					role="button"
+					tabIndex={0}
+					aria-label="Endre profilbilde"
+					aria-expanded={menuOpen}
+					aria-haspopup="menu"
+					onKeyDown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							e.preventDefault();
+							handleAvatarClick();
+						}
+					}}
+				>
+					{isUploading ? (
+						<div className={styles.loadingOverlay}>
+							<LuLoader className={styles.spinner} />
+						</div>
+					) : (
+						<div className={styles.hoverOverlay}>
+							<LuPencil size={32} />
+							<span className={styles.overlayText}>Rediger</span>
+						</div>
+					)}
+
+					{image ? (
+						<Image
+							loading="eager"
+							src={image}
+							alt={name ? `${name} profilbilde` : 'Profilbilde'}
+							width={140}
+							height={140}
+							className={styles.avatar}
+						/>
+					) : (
+						<div className={styles.avatarPlaceholder} aria-hidden="true">
+							<LuUser size={56} strokeWidth={1.5} />
+						</div>
+					)}
+				</div>
+
+				{menuOpen && (
+					<div className={styles.menu} role="menu">
+						<button className={styles.menuItem} onClick={handleUploadClick} role="menuitem">
+							<LuCamera size={18} />
+							<span>Last opp bilde</span>
+						</button>
+						{image && (
+							<button className={`${styles.menuItem} ${styles.menuItemDelete}`} onClick={handleRemoveClick} role="menuitem">
+								<LuTrash size={18} />
+								<span>Fjern bilde</span>
+							</button>
+						)}
 					</div>
 				)}
 
-				{image ? (
-					<Image
-						loading="eager"
-						src={image}
-						alt={name ? `${name} profilbilde` : 'Profilbilde'}
-						width={140}
-						height={140}
-						className={styles.avatar}
-					/>
-				) : (
-					<div className={styles.avatarPlaceholder} aria-hidden="true">
-						<LuUser size={56} strokeWidth={1.5} />
-					</div>
-				)}
 				<input
 					ref={fileInputRef}
 					type="file"

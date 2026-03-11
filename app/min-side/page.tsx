@@ -87,7 +87,7 @@ export default function MyPage() {
 		}
 	};
 
-	const handleProfileImageUpdate = async (newImage: string) => {
+	const handleProfileImageUpdate = async (newImage: string | null) => {
 		if (!profile) return;
 
 		try {
