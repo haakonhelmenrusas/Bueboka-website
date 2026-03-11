@@ -1,20 +1,16 @@
-'use client';
-
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from '@/lib/auth-client';
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { LandingPage } from './LandingPage';
 
-export default function Home() {
-	const router = useRouter();
-	const { data: session, isPending } = useSession();
+export default async function Home() {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
 
-	useEffect(() => {
-		if (!isPending && session?.user) {
-			router.push('/min-side');
-		}
-	}, [session, isPending, router]);
+	if (session) {
+		redirect('/min-side');
+	}
 
-	// Show the landing page while checking session or if not logged in
 	return <LandingPage />;
 }

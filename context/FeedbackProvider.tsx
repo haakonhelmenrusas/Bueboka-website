@@ -1,7 +1,9 @@
 'use client';
 
 import React, { createContext, ReactNode, useContext, useState } from 'react';
-import { FeedbackModal } from '@/components';
+import dynamic from 'next/dynamic';
+
+const FeedbackModal = dynamic(() => import('@/components/FeedbackModal/FeedbackModal').then((mod) => mod.FeedbackModal), { ssr: false });
 
 interface FeedbackContextType {
 	openFeedback: () => void;
