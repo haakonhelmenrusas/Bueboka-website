@@ -5,7 +5,6 @@ import { LuX } from 'react-icons/lu';
 import styles from './ProfileEditModal.module.css';
 import { ProfileForm } from './ProfileForm';
 import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
-import { ImageUpload } from '@/components/common/ImageUpload/ImageUpload';
 
 interface ProfileEditModalProps {
 	isOpen: boolean;
@@ -25,15 +24,13 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-	const [profileImage, setProfileImage] = useState<string | null>(user.image || null);
 
 	// Reset state when modal opens/closes
 	React.useEffect(() => {
 		if (isOpen) {
 			setMessage(null);
-			setProfileImage(user.image || null);
 		}
-	}, [isOpen, user.image]);
+	}, [isOpen]);
 
 	const handleProfileSubmit = async (values: { name: string; club: string }) => {
 		setLoading(true);
@@ -46,7 +43,6 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 				body: JSON.stringify({
 					name: values.name,
 					club: values.club,
-					image: profileImage,
 				}),
 			});
 
@@ -86,11 +82,9 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 						<LuX size={24} />
 					</button>
 				</div>
-
 				<div className={styles.content}>
 					{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
 					<div className={styles.form}>
-						<ImageUpload currentImage={profileImage} onImageChange={setProfileImage} disabled={loading} />
 						<ProfileForm
 							initialValues={{ name: user.name || '', club: user.club || '' }}
 							loading={loading}

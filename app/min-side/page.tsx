@@ -87,6 +87,39 @@ export default function MyPage() {
 		}
 	};
 
+	const handleProfileImageUpdate = async (newImage: string) => {
+		if (!profile) return;
+
+		try {
+			// Optimistically update the UI
+			setProfile((prev) => (prev ? { ...prev, image: newImage } : null));
+
+			const response = await fetch('/api/users', {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					name: profile.name, // Keep existing name
+					club: profile.club, // Keep existing club
+					image: newImage,
+				}),
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.error || 'Failed to update profile image');
+			}
+
+			// Re-fetch to ensure sync (optional, but good for consistency)
+			await fetchProfile();
+		} catch (error) {
+			console.error('Error updating profile image:', error);
+			setError('Kunne ikke oppdatere profilbilde');
+			// Revert on error could be complex without storing previous state,
+			// but fetchProfile() would fix it eventually.
+			await fetchProfile(); // Revert to server state
+		}
+	};
+
 	const fetchStats = async () => {
 		try {
 			const res = await fetch('/api/stats');
@@ -289,6 +322,7 @@ export default function MyPage() {
 								club={profile.club}
 								image={profile.image}
 								onEdit={() => setProfileModalOpen(true)}
+								onImageUpdate={handleProfileImageUpdate}
 							/>
 						</div>
 						<div className={styles.summaryCard}>
