@@ -75,7 +75,15 @@ export const Button: React.FC<ButtonProps> = ({
 		const content: React.ReactNode[] = [];
 
 		if (loading) {
-			content.push(<span key="loader" className={styles.spinner} style={{ width: sizeStyles.iconSize, height: sizeStyles.iconSize }} />);
+			// Keep label as hidden placeholder to maintain width
+			content.push(
+				<span key="label-hidden" style={{ ...textStyle, visibility: 'hidden', height: 0 }}>
+					{label}
+				</span>
+			);
+			content.push(
+				<span key="loader" className={styles.spinner} style={{ position: 'absolute', width: sizeStyles.iconSize, height: sizeStyles.iconSize }} />
+			);
 		} else {
 			if (icon && iconPosition === 'left') {
 				content.push(
