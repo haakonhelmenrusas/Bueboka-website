@@ -14,6 +14,7 @@ import {
 	getPracticeCategoryOptions,
 	getWeatherSelectOptions,
 } from '@/lib/formUtils';
+import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
 
 export interface RoundInput {
 	distanceMeters?: number; // For SKIVE categories
@@ -89,18 +90,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
-	// Target type options - TODO: can be expanded based on requirements
-	const targetTypeOptions = [
-		{ value: '40cm', label: '40cm' },
-		{ value: '60cm', label: '60cm' },
-		{ value: '80cm', label: '80cm' },
-		{ value: '122cm', label: '122cm' },
-		{ value: '3-spot', label: '3-spot' },
-		{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
-		{ value: 'animal', label: 'Dyr' },
-		{ value: 'other', label: 'Annet' },
-		{ value: 'halmmatte', label: 'Halmmatte' },
-	];
 
 	useEffect(() => {
 		if (!open) return;
@@ -235,7 +224,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			});
 			onClose();
 		} catch (err) {
-			console.error('Error saving practice:', err);
 			setError(err instanceof Error ? err.message : 'Kunne ikke lagre trening.');
 		} finally {
 			setSubmitting(false);
@@ -380,31 +368,20 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											onChange={(v) => updateRound(index, 'targetType', v as string)}
 											placeholderLabel="Velg"
 											searchable
-											options={targetTypeOptions}
+											options={TARGET_TYPE_OPTIONS}
 											containerClassName={styles.roundField}
 										/>
 									</div>
-									<div className={styles.row}>
+									<div className={styles.rowFlex}>
 										<NumberInput
-											label="Piler"
+											label="Piler m/score"
 											value={round.numberArrows || 0}
 											onChange={(v) => updateRound(index, 'numberArrows', v || 0)}
 											min={0}
 											step={1}
 											startEmpty={true}
 											optional
-											helpText="Ant. piler med score"
-											containerClassName={styles.roundField}
-										/>
-										<NumberInput
-											label="Piler u/score"
-											value={round.arrowsWithoutScore || 0}
-											onChange={(v) => updateRound(index, 'arrowsWithoutScore', v || 0)}
-											min={0}
-											step={1}
-											startEmpty={true}
-											optional
-											helpText="Piler uten score"
+											width={180}
 											containerClassName={styles.roundField}
 										/>
 										<NumberInput
@@ -415,6 +392,20 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 											step={1}
 											startEmpty={true}
 											optional
+											width={180}
+											containerClassName={styles.roundField}
+										/>
+									</div>
+									<div className={styles.row}>
+										<NumberInput
+											label="Piler u/score"
+											value={round.arrowsWithoutScore || 0}
+											onChange={(v) => updateRound(index, 'arrowsWithoutScore', v || 0)}
+											min={0}
+											step={1}
+											startEmpty={true}
+											optional
+											width={180}
 											containerClassName={styles.roundField}
 										/>
 									</div>

@@ -16,6 +16,7 @@ import {
 	getWeatherSelectOptions,
 } from '@/lib/formUtils';
 import { LuX } from 'react-icons/lu';
+import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
 
 export interface CompetitionRoundInput {
 	roundNumber: number;
@@ -89,18 +90,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 }) => {
 	useModalBehavior({ open, onClose });
 
-	// Target type options - same as practice form
-	const targetTypeOptions = [
-		{ value: '40cm', label: '40 cm' },
-		{ value: '60cm', label: '60 cm' },
-		{ value: '80cm', label: '80 cm' },
-		{ value: '122cm', label: '122 cm' },
-		{ value: '3-spot', label: '3-spot' },
-		{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
-		{ value: 'animal', label: 'Dyr' },
-		{ value: 'other', label: 'Annet' },
-		{ value: 'halmmatte', label: 'Halmmatte' },
-	];
 
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [name, setName] = useState('');
@@ -387,7 +376,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										label="Skive"
 										value={round.targetType}
 										onChange={(val) => updateRound(index, 'targetType', val as string)}
-										options={targetTypeOptions}
+										options={TARGET_TYPE_OPTIONS}
 										placeholderLabel="Velg skive"
 										searchable
 										searchPlaceholder="Søk etter skive..."
