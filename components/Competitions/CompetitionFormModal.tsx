@@ -344,7 +344,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							helpText="Din plassering"
 							startEmpty
 							optional
-							hideSteppers
 							inputClassName={styles.numberInput}
 							containerClassName={styles.field}
 						/>
@@ -357,7 +356,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 							helpText="Totalt antall"
 							startEmpty
 							optional
-							hideSteppers
 							containerClassName={styles.field}
 						/>
 					</div>
@@ -382,7 +380,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onEmpty={() => updateRound(index, 'distanceMeters', undefined)}
 										min={1}
 										startEmpty
-										hideSteppers
 										unit="m"
 										containerClassName={styles.distanceField}
 									/>
@@ -404,7 +401,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onChange={(val) => updateRound(index, 'numberArrows', val || 0)}
 										onEmpty={() => updateRound(index, 'numberArrows', 0)}
 										min={0}
-										hideSteppers
 										optional
 										startEmpty
 										width="120px"
@@ -418,7 +414,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onEmpty={() => updateRound(index, 'arrowsWithoutScore', 0)}
 										min={0}
 										optional
-										hideSteppers
 										startEmpty
 										width="120px"
 										helpText="Piler uten score"
@@ -430,7 +425,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										onChange={(val) => updateRound(index, 'roundScore', val || 0)}
 										min={0}
 										optional
-										hideSteppers
 										startEmpty
 										width="120px"
 										containerClassName={styles.roundField}

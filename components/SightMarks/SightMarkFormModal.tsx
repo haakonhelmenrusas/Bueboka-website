@@ -63,7 +63,6 @@ export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModal
 							max={150}
 							startEmpty
 							required
-							hideSteppers
 							width="100%"
 						/>
 						<NumberInput
@@ -73,7 +72,6 @@ export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModal
 							step={0.01}
 							startEmpty
 							required
-							hideSteppers
 							width="100%"
 						/>
 					</div>

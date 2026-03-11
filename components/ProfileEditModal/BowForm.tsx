@@ -45,7 +45,7 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 				<Select label="Type" value={type} onChange={(v) => setType(v as BowType)} options={BOW_TYPE_OPTIONS.map((o) => ({ ...o }))} />
 			</div>
 			<div className={styles.numberRow}>
-				<NumberInput optional hideSteppers label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={0.01} />
+				<NumberInput optional label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={0.01} />
 				<NumberInput
 					label={
 						<span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
@@ -54,13 +54,12 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 						</span>
 					}
 					optional
-					hideSteppers
 					value={aimMeasure}
 					onChange={setAimMeasure}
 					min={0}
 					step={0.01}
 				/>
-				<NumberInput optional label="Øye til sikte (cm)" value={eyeToSight} onChange={setEyeToSight} min={0} step={0.01} hideSteppers />
+				<NumberInput optional label="Øye til sikte (cm)" value={eyeToSight} onChange={setEyeToSight} min={0} step={0.01} />
 			</div>
 			<Checkbox label="Favorittbue" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittbue" />
 			<TextArea label="Notater" value={notes} onChange={(e) => setNotes(e.target.value)} helpText="Tilleggsnotater om buen" optional />

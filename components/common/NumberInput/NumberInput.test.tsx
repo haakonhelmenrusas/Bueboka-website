@@ -34,27 +34,6 @@ describe('NumberInput', () => {
 		expect(screen.getByRole('spinbutton')).toHaveValue(5);
 	});
 
-	test('increment/decrement buttons change value', async () => {
-		const user = userEvent.setup();
-		render(<Harness value={2} step={2} />);
-
-		await user.click(screen.getByRole('button', { name: /increase antall/i }));
-		expect(screen.getByRole('spinbutton')).toHaveValue(4);
-
-		await user.click(screen.getByRole('button', { name: /decrease antall/i }));
-		expect(screen.getByRole('spinbutton')).toHaveValue(2);
-	});
-
-	test('respects min/max for steppers', async () => {
-		const user = userEvent.setup();
-		render(<Harness value={0} min={0} max={1} step={1} />);
-
-		expect(screen.getByRole('button', { name: /decrease antall/i })).toBeDisabled();
-		await user.click(screen.getByRole('button', { name: /increase antall/i }));
-		expect(screen.getByRole('spinbutton')).toHaveValue(1);
-		expect(screen.getByRole('button', { name: /increase antall/i })).toBeDisabled();
-	});
-
 	test('typing clamps to min/max', async () => {
 		const user = userEvent.setup();
 		render(<Harness value={5} min={0} max={10} />);
@@ -82,12 +61,9 @@ describe('NumberInput', () => {
 		expect(screen.getByText('m')).toBeInTheDocument();
 	});
 
-	test('disabled prevents changes', async () => {
-		const user = userEvent.setup();
+	test('disabled prevents interactions', () => {
 		render(<Harness value={3} disabled />);
-
-		await user.click(screen.getByRole('button', { name: /increase antall/i }));
-		expect(screen.getByRole('spinbutton')).toHaveValue(3);
+		expect(screen.getByRole('spinbutton')).toBeDisabled();
 	});
 
 	test('help and error text are linked via aria-describedby', () => {

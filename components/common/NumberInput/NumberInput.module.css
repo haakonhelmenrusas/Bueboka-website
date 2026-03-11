@@ -26,8 +26,7 @@
 }
 
 .control {
-    display: grid;
-    grid-template-columns: 38px 1fr 38px;
+    display: flex;
     align-items: stretch;
     border-radius: var(--radius-base);
     border: 1px solid var(--bg-gray-200);
@@ -41,35 +40,6 @@
     outline-offset: 2px;
 }
 
-.control.noSteppers {
-    grid-template-columns: 1fr;
-}
-
-.stepper {
-    border: none;
-    background: var(--primary-06);
-    color: var(--primary);
-    font-size: 18px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 120ms ease, transform 120ms ease;
-}
-
-.stepper:hover:not(:disabled) {
-    background: var(--primary-08);
-}
-
-.stepper:active:not(:disabled) {
-    transform: translateY(1px);
-}
-
-.stepper:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
 
 .inputWrap {
     position: relative;
