@@ -319,3 +319,18 @@
 	text-decoration: underline;
 }
 
+.passwordToggle {
+	background: none;
+	border: none;
+	padding: 0 var(--space-2); /* Just some horizontal padding so it doesn't touch the edge */
+	display: flex;
+	align-items: center;
+	color: var(--text-muted);
+	cursor: pointer;
+	transition: color 0.2s;
+	height: 100%;
+}
+
+.passwordToggle:hover {
+	color: var(--text-primary);
+}

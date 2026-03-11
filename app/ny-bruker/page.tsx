@@ -7,16 +7,18 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Input, SocialAuthButtons } from '@/components';
 import { validateSignUpForm } from '@/lib/validations/authValidation';
-import { LuChartBar, LuTarget, LuTrendingUp } from 'react-icons/lu';
+import { LuChartBar, LuEye, LuEyeOff, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import styles from './page.module.css';
 
 export default function SignUpPage() {
 	const [error, setError] = useState<string | null>(null);
-	const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+	const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string; confirmPassword?: string }>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
+	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const router = useRouter();
 
-	const clearFieldError = (field: 'name' | 'email' | 'password') => {
+	const clearFieldError = (field: 'name' | 'email' | 'password' | 'confirmPassword') => {
 		setFieldErrors((prev) => {
 			const updated = { ...prev };
 			delete updated[field];
@@ -38,8 +40,17 @@ export default function SignUpPage() {
 			const name = formData.get('name') as string;
 			const email = formData.get('email') as string;
 			const password = formData.get('password') as string;
+			const confirmPassword = formData.get('confirmPassword') as string;
 
-			const errors = validateSignUpForm(name, email, password);
+			const errors: { name?: string; email?: string; password?: string; confirmPassword?: string } = validateSignUpForm(
+				name,
+				email,
+				password
+			);
+
+			if (password !== confirmPassword) {
+				errors.confirmPassword = 'Passordene er ikke like';
+			}
 
 			if (Object.keys(errors).length > 0) {
 				setFieldErrors(errors);
@@ -158,7 +169,7 @@ export default function SignUpPage() {
 											label="Passord"
 											id="password"
 											name="password"
-											type="password"
+											type={showPassword ? 'text' : 'password'}
 											autoComplete="new-password"
 											minLength={8}
 											disabled={isSubmitting}
@@ -166,6 +177,16 @@ export default function SignUpPage() {
 											aria-required="true"
 											aria-describedby="password-requirements"
 											onFocus={() => clearFieldError('password')}
+											rightAddon={
+												<button
+													type="button"
+													className={styles.passwordToggle}
+													onClick={() => setShowPassword(!showPassword)}
+													aria-label={showPassword ? 'Skjul passord' : 'Vis passord'}
+												>
+													{showPassword ? <LuEyeOff size={20} /> : <LuEye size={20} />}
+												</button>
+											}
 										/>
 										<div id="password-requirements" className={styles.helpText}>
 											Må være minst 8 tegn
@@ -173,6 +194,35 @@ export default function SignUpPage() {
 										{fieldErrors.password && (
 											<div className={styles.fieldError} role="alert" aria-live="polite">
 												{fieldErrors.password}
+											</div>
+										)}
+									</div>
+									<div className={styles.passwordInput}>
+										<Input
+											label="Bekreft passord"
+											id="confirmPassword"
+											name="confirmPassword"
+											type={showConfirmPassword ? 'text' : 'password'}
+											autoComplete="new-password"
+											minLength={8}
+											disabled={isSubmitting}
+											required
+											aria-required="true"
+											onFocus={() => clearFieldError('confirmPassword')}
+											rightAddon={
+												<button
+													type="button"
+													className={styles.passwordToggle}
+													onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+													aria-label={showConfirmPassword ? 'Skjul passord' : 'Vis passord'}
+												>
+													{showConfirmPassword ? <LuEyeOff size={20} /> : <LuEye size={20} />}
+												</button>
+											}
+										/>
+										{fieldErrors.confirmPassword && (
+											<div className={styles.fieldError} role="alert" aria-live="polite">
+												{fieldErrors.confirmPassword}
 											</div>
 										)}
 									</div>
