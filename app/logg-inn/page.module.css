@@ -205,10 +205,6 @@
 	}
 }
 
-[data-theme='dark'] .formSection {
-	background: var(--bg-light);
-}
-
 /* Card wrapper for forms/content */
 .card {
 	width: 100%;
@@ -218,12 +214,6 @@
 	border-radius: var(--radius-lg);
 	padding: var(--space-8);
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-[data-theme='dark'] .card {
-	background-color: var(--card-bg);
-	border-color: var(--bg-gray-200);
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .formWrapper {
@@ -241,10 +231,6 @@
     font-size: 1.5rem;
     line-height: 2rem;
     font-weight: 700;
-}
-
-[data-theme='dark'] .title {
-	color: var(--text-dark);
 }
 
 .errorBox {
@@ -332,9 +318,3 @@
 .forgotLinkRow {
 	padding: var(--space-2) 0;
 }
-
-
-[data-theme='dark'] .forgotLinkRow a {
-	color: var(--primary-light);
-}
-

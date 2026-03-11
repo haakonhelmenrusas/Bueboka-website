@@ -7,16 +7,10 @@
     position: relative;
 }
 
-/* Themed background for auth-like pages */
 .themeBackground {
 	background: var(--bg-lighter);
 }
 
-[data-theme='dark'] .themeBackground {
-	background: var(--background);
-}
-
-/* Small navigation logo */
 .navLogo {
 	position: fixed;
 	top: var(--space-6);
@@ -61,10 +55,6 @@
 	color: var(--white);
 }
 
-[data-theme='dark'] .navBrand {
-	color: var(--text-dark);
-}
-
 .layout {
 	width: 100%;
 	min-height: 100vh;
@@ -78,7 +68,6 @@
 	}
 }
 
-/* Brand Section (Left Side) - Primary gradient background */
 .brandSection {
 	background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
 	display: flex;
@@ -188,7 +177,6 @@
 	opacity: 0.9;
 }
 
-/* Form Section (Right Side) - Light background */
 .formSection {
 	background: var(--card-bg);
 	display: flex;
@@ -205,11 +193,6 @@
 	}
 }
 
-[data-theme='dark'] .formSection {
-	background: var(--bg-light);
-}
-
-/* Card wrapper for forms/content */
 .card {
 	width: 100%;
 	max-width: 480px;
@@ -218,12 +201,6 @@
 	border-radius: var(--radius-lg);
 	padding: var(--space-8);
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-}
-
-[data-theme='dark'] .card {
-	background-color: var(--card-bg);
-	border-color: var(--bg-gray-200);
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
 .formWrapper {
@@ -241,10 +218,6 @@
     font-size: 1.75rem;
     line-height: 2rem;
     font-weight: 700;
-}
-
-[data-theme='dark'] .title {
-	color: var(--text-dark);
 }
 
 .subtitle {
@@ -318,10 +291,6 @@
 .helpText {
 	margin-top: var(--space-1);
 	font-size: 0.875rem;
-	color: var(--text-gray-600);
-}
-
-[data-theme='dark'] .helpText {
 	color: var(--text-gray-600);
 }
 

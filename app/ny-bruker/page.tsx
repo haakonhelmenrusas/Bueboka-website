@@ -39,7 +39,6 @@ export default function SignUpPage() {
 			const email = formData.get('email') as string;
 			const password = formData.get('password') as string;
 
-			// Client-side validation using shared utility
 			const errors = validateSignUpForm(name, email, password);
 
 			if (Object.keys(errors).length > 0) {
@@ -68,21 +67,15 @@ export default function SignUpPage() {
 
 	return (
 		<div className={`${styles.container} ${styles.themeBackground}`}>
-			<a href="#main-content" className="skip-link">
-				Gå til hovedinnhold
-			</a>
-			{/* Small navigation logo */}
 			<Link href="/" className={styles.navLogo} aria-label="Gå til forsiden">
 				<div className={styles.navLogoBox} aria-hidden="true">
 					<Image width={24} height={24} src="/assets/logo.png" alt="" className={styles.navLogoImg} />
 				</div>
 				<span className={styles.navBrand}>Bueboka</span>
 			</Link>
-
 			<main id="main-content" className={styles.layout}>
 				<section className={styles.brandSection} aria-labelledby="brand-heading">
 					<div className={styles.brandContent}>
-						{/* Big decorative logo */}
 						<div className={styles.bigLogoBox} aria-hidden="true">
 							<Image width={80} height={80} priority src="/assets/logo.png" alt="" className={styles.bigLogoImg} />
 						</div>
@@ -108,7 +101,6 @@ export default function SignUpPage() {
 						</ul>
 					</div>
 				</section>
-
 				<section className={styles.formSection} aria-labelledby="signup-heading">
 					<div className={styles.card}>
 						<div className={styles.formWrapper}>
@@ -196,7 +188,7 @@ export default function SignUpPage() {
 								/>
 							</div>
 							<div className={styles.loginPrompt}>
-								Har du allerede en konto?{' '}
+								Har du allerede en konto?
 								<Link tabIndex={0} href="/logg-inn">
 									Logg inn her
 								</Link>

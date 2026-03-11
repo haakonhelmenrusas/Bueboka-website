@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
 
 			setSuccess(data?.message || 'Sjekk e-posten din for lenke til å tilbakestille passord.');
 			// Optional: take user back to login after a short pause.
-			setTimeout(() => router.push('/logg-inn'), 1200);
+			setTimeout(() => router.push('/logg-inn'), 2000);
 		} finally {
 			setIsSubmitting(false);
 		}

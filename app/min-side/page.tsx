@@ -162,7 +162,6 @@ export default function MyPage() {
 					}
 				} catch (achievementErr) {
 					// Don't fail the whole operation if achievement check fails
-					console.error('Failed to check achievements:', achievementErr);
 					Sentry.captureException(achievementErr, { tags: { page: 'min-side', action: 'check-achievements' } });
 				}
 			}
@@ -229,7 +228,6 @@ export default function MyPage() {
 						}
 					}
 				} catch (achievementErr) {
-					console.error('Failed to check achievements:', achievementErr);
 					Sentry.captureException(achievementErr, { tags: { page: 'min-side', action: 'check-achievements' } });
 				}
 			}
@@ -280,11 +278,7 @@ export default function MyPage() {
 
 	return (
 		<div className={styles.page}>
-			<a href="#main-content" className="skip-link">
-				Gå til hovedinnhold
-			</a>
 			<Header />
-
 			<main id="main-content" className={styles.main}>
 				<div className={styles.profileContainer}>
 					<div className={styles.profileSummaryGrid}>
@@ -297,7 +291,6 @@ export default function MyPage() {
 								onEdit={() => setProfileModalOpen(true)}
 							/>
 						</div>
-
 						<div className={styles.summaryCard}>
 							<h3 className={styles.summaryTitle}>Oppsummering</h3>
 							<p className={styles.summarySubtitle}>{summarySubtitle}</p>

@@ -13,7 +13,6 @@
   width: 100%;
 }
 
-/* Generic white card container (used for error/empty states, etc.) */
 .card {
   background: var(--card-bg);
   border: 1px solid rgba(0, 0, 0, 0.06);
@@ -24,7 +23,6 @@
   color: var(--text-dark);
 }
 
-/* Profile container should be neutral (inner cards handle the visuals) */
 .profileContainer {
   background: transparent;
   border: none;
@@ -33,7 +31,6 @@
   box-shadow: none;
 }
 
-/* Keep error/empty states readable when using .card */
 .card .empty {
   color: var(--text-gray-700);
 }
@@ -86,7 +83,6 @@
   color: var(--white);
 }
 
-/* Make lists span wider (about ~2x) */
 .list {
   display: grid;
   gap: var(--space-4);
@@ -181,7 +177,7 @@
 }
 
 .empty {
-  color: var(--white-60);
+  color: var(--white-50);
   padding: var(--space-3) var(--space-0);
 }
 
@@ -293,7 +289,6 @@
 	}
 }
 
-/* Dropdown animation */
 @keyframes dropdown-in {
   from {
     opacity: 0;
@@ -305,11 +300,10 @@
   }
 }
 
-/* Skeleton for practice cards */
 .skeletonItem {
   height: 88px;
   border-radius: var(--radius-md);
-  background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+  background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-50));
   animation: shimmer 1.4s infinite;
   background-size: 200% 100%;
 }
@@ -319,12 +313,11 @@
   100% { background-position: -200% 0; }
 }
 
-/* Skeleton blocks for the min-side loading state */
 .circleSkeleton {
 	width: 40px;
 	height: 40px;
 	border-radius: var(--radius-full);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
 }
@@ -333,10 +326,10 @@
 	width: 100%;
 	min-height: 72px;
 	border-radius: var(--radius-lg);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
-	border: 1px solid var(--white-06);
+	border: 1px solid var(--white-10);
 }
 
 .sectionTitleSkeletonLight {
@@ -379,7 +372,7 @@
 	width: 220px;
 	height: 18px;
 	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
 }
@@ -388,7 +381,7 @@
 	width: 170px;
 	height: 14px;
 	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
 }
@@ -397,7 +390,7 @@
 	width: 180px;
 	height: 40px;
 	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
 	margin-top: var(--space-4);
@@ -407,7 +400,7 @@
 	width: 170px;
 	height: 32px;
 	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
 }
@@ -416,7 +409,7 @@
 	width: 120px;
 	height: 16px;
 	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
 	margin-bottom: var(--space-3);
@@ -426,7 +419,7 @@
 	width: 180px;
 	height: 20px;
 	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
 }
@@ -435,10 +428,10 @@
 	width: 100%;
 	min-height: 72px;
 	border-radius: var(--radius-lg);
-	background: linear-gradient(90deg, var(--white-04), var(--white-08), var(--white-04));
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
 	background-size: 200% 100%;
 	animation: shimmer 1.4s infinite;
-	border: 1px solid var(--white-06);
+	border: 1px solid var(--white-10);
 }
 
 .sectionTitleSkeletonLight {

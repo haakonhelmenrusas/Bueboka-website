@@ -22,7 +22,7 @@ export default function SignInPage() {
 		});
 	};
 
-	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+	async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
 		e.preventDefault();
 		if (isSubmitting) return;
 
@@ -60,21 +60,15 @@ export default function SignInPage() {
 
 	return (
 		<div className={`${styles.container} ${styles.themeBackground}`}>
-			<a href="#main-content" className="skip-link">
-				Gå til hovedinnhold
-			</a>
-			{/* Small navigation logo */}
 			<Link href="/" className={styles.navLogo} aria-label="Gå til forsiden">
 				<div className={styles.navLogoBox} aria-hidden="true">
 					<Image width={24} height={24} src="/assets/logo.png" alt="" className={styles.navLogoImg} />
 				</div>
 				<span className={styles.navBrand}>Bueboka</span>
 			</Link>
-
 			<main id="main-content" className={styles.layout}>
 				<section className={styles.brandSection} aria-labelledby="brand-heading">
 					<div className={styles.brandContent}>
-						{/* Big decorative logo */}
 						<div className={styles.bigLogoBox} aria-hidden="true">
 							<Image width={80} height={80} priority src="/assets/logo.png" alt="" className={styles.bigLogoImg} />
 						</div>
