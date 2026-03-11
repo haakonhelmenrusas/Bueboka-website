@@ -13,7 +13,6 @@ function SkeletonBlock({ className }: { className: string }) {
 export function MyPageSkeleton() {
 	return (
 		<div className={styles.page}>
-			{/* Header Skeleton */}
 			<header className={headerStyles.header}>
 				<div className={headerStyles.container}>
 					<div className={headerStyles.row}>
@@ -29,12 +28,9 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 			</header>
-
-			{/* Main Content */}
 			<main id="main-content" className={styles.main}>
 				<div className={styles.profileContainer}>
 					<div className={styles.profileSummaryGrid}>
-						{/* Profile Card */}
 						<div>
 							<div className={styles.profileCard}>
 								<SkeletonBlock className={styles.avatarSkeleton} />
@@ -43,8 +39,6 @@ export function MyPageSkeleton() {
 								<SkeletonBlock className={styles.buttonSkeleton} />
 							</div>
 						</div>
-
-						{/* Summary Card */}
 						<div className={styles.summaryCard}>
 							<SkeletonBlock className={styles.sectionTitleSkeleton} />
 							<SkeletonBlock className={styles.lineSkeleton} />
@@ -58,8 +52,6 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 			</main>
-
-			{/* Equipment Section */}
 			<section className={equipmentStyles.section}>
 				<div className={equipmentStyles.header}>
 					<SkeletonBlock className={styles.sectionTitleSkeletonLight} />
@@ -91,8 +83,6 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 			</section>
-
-			{/* Practices Section */}
 			<section className={styles.practicesSection}>
 				<div className={styles.practicesHeader}>
 					<SkeletonBlock className={styles.practicesTitleSkeleton} />
@@ -101,15 +91,13 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 				<div className={styles.practicesList}>
-					<div className={styles.list}>
+					<div className={styles.list} style={{ minHeight: 200 }}>
 						{Array.from({ length: 3 }).map((_, i) => (
 							<SkeletonBlock key={i} className={styles.itemSkeleton} />
 						))}
 					</div>
 				</div>
 			</section>
-
-			{/* Sight Marks Section */}
 			<section className={sightMarksStyles.section}>
 				<div className={sightMarksStyles.header}>
 					<SkeletonBlock className={styles.sectionTitleSkeletonLight} />
