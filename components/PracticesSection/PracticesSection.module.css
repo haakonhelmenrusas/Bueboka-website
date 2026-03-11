@@ -79,7 +79,7 @@
 }
 
 .placeholderCard {
-    background: var(--primary);
+    background: var(--primary-06);
     border: 1px dashed var(--primary-20);
     border-radius: var(--radius-lg);
     padding: var(--space-5) var(--space-6);
