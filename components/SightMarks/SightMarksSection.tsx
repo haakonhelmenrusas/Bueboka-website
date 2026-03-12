@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { LuPlus } from 'react-icons/lu';
+import { LuPlus, LuX } from 'react-icons/lu';
 import { Button } from '@/components';
 import styles from './SightMarksSection.module.css';
 import { SightMarksTable } from './SightMarksTable';
@@ -16,7 +16,7 @@ interface SightMarksSectionProps {
 }
 
 export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
-	const { sightMarks, loading, error, fetchSightMarks, deleteSightMark } = useSightMarks();
+	const { sightMarks, loading, error, fetchSightMarks, deleteSightMark, clearError } = useSightMarks();
 	const { bows, arrows, refresh: refreshEquipment } = useEquipmentData();
 	const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,8 +43,9 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 			const activeArrow = arrows.find((a) => a.isFavorite) || arrows[0];
 
 			if (!activeBow) {
-				setCreateError('Du må registrere en bue før du kan legge til siktemerker.');
-				throw new Error('No bow found');
+				const msg = 'Du må registrere en bue i profilen din før du kan beregne siktemerker.';
+				setCreateError(msg);
+				throw new Error(msg);
 			}
 
 			// Ensure we have a bow specification
@@ -52,7 +53,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 			if (!specRes.ok) throw new Error('Kunne ikke hente buespesifikasjon');
 			const { bowSpecification: spec } = await specRes.json();
 
-			if (!spec) throw new Error('Fant ingen buespesifikasjon');
+			if (!spec) throw new Error('Fant ingen buespesifikasjon. Sjekk at du har registrert en bue i profilen din.');
 
 			// Find active sight mark for this bow spec (assuming most recent is active)
 			const activeSightMark = sightMarks.find((sm) => sm.bowSpecificationId === spec.id);
@@ -155,8 +156,22 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 				/>
 			</div>
 			<div className={styles.container}>
-				{error && <div className={styles.error}>{error}</div>}
-				{createError && <div className={styles.error}>{createError}</div>}
+				{error && (
+					<div className={styles.error}>
+						<span>{error}</span>
+						<button onClick={clearError} className={styles.closeButton} aria-label="Lukk feilmelding">
+							<LuX size={18} />
+						</button>
+					</div>
+				)}
+				{createError && (
+					<div className={styles.error}>
+						<span>{createError}</span>
+						<button onClick={() => setCreateError(null)} className={styles.closeButton} aria-label="Lukk feilmelding">
+							<LuX size={18} />
+						</button>
+					</div>
+				)}
 				<SightMarksTable sightMarks={sightMarks} onDelete={handleDelete} isDeleting={isDeletingId !== null} />
 			</div>
 			<SightMarkFormModal

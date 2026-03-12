@@ -363,7 +363,7 @@ export default function MyPage() {
 				reloadKey={practiceReloadKey}
 				deletedPracticeId={deletedPracticeId}
 			/>
-			{/*<SightMarksSection />*/}
+			<SightMarksSection />
 			</main>
 			<Footer />
 			<ProfileEditModal

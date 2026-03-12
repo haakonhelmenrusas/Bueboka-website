@@ -36,7 +36,11 @@ export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModal
 			setMark(0);
 		} catch (err) {
 			console.error(err);
-			setError('Kunne ikke lagre siktemerke');
+			if (err instanceof Error) {
+				setError(err.message);
+			} else {
+				setError('Kunne ikke lagre siktemerke');
+			}
 		} finally {
 			setLoading(false);
 		}
@@ -77,7 +81,7 @@ export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModal
 					</div>
 					{error && <div className={styles.error}>{error}</div>}
 					<div className={styles.footer}>
-						<Button label="Avbryt" buttonType="outline" onClick={onClose} disabled={loading} />
+						<Button label="Avbryt" type="button" buttonType="outline" onClick={onClose} disabled={loading} />
 						<Button label="Lagre" type="submit" loading={loading} />
 					</div>
 				</form>

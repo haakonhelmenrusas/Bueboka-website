@@ -40,5 +40,7 @@ export function useSightMarks() {
 		}
 	}, []);
 
-	return { sightMarks, loading, error, fetchSightMarks, deleteSightMark };
+	const clearError = useCallback(() => setError(null), []);
+
+	return { sightMarks, loading, error, fetchSightMarks, deleteSightMark, clearError };
 }
