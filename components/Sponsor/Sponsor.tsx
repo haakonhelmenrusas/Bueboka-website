@@ -5,7 +5,7 @@ import { LuArrowRight } from 'react-icons/lu';
 
 export function Sponsors() {
 	return (
-		<section id="support" className={styles.section}>
+		<section id="contact" className={styles.section}>
 			<div className={styles.container}>
 				<div className={`${styles.textCenter} ${styles.mb16}`}>
 					<h2 className={styles.title}>Støtt prosjektet</h2>

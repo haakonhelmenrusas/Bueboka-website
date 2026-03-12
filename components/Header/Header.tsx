@@ -118,11 +118,8 @@ export function Header() {
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.navLink}>
 									Team
 								</Link>
-								<Link href="#sponsors" onClick={(e) => handleHashLinkClick(e, '#sponsors')} className={styles.navLink}>
-									Sponsorer
-								</Link>
 								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.navLink}>
-									Kontakt
+									Støtt oss
 								</Link>
 							</>
 						)}
@@ -195,7 +192,6 @@ export function Header() {
 							</button>
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
-									{/* <ThemeToggle /> */}
 									<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
 										<LuMessageSquare size={16} />
 										<span>Gi tilbakemelding</span>
@@ -225,11 +221,8 @@ export function Header() {
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.mobileLink}>
 									Team
 								</Link>
-								<Link href="#sponsors" onClick={(e) => handleHashLinkClick(e, '#sponsors')} className={styles.mobileLink}>
-									Sponsorer
-								</Link>
 								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.mobileLink}>
-									Kontakt
+									Støtt oss
 								</Link>
 							</>
 						)}

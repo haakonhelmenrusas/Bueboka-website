@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export function Footer() {
 	return (
-		<footer id="contact" className={styles.footer}>
+		<footer className={styles.footer}>
 			<div className={styles.container}>
 				<div className={`${styles.center} ${styles.revealOnce}`}>
 					<div className={styles.logoLink}>
