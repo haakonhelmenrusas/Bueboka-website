@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
+import { statsCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 
 /**
@@ -163,6 +164,10 @@ export async function POST(request: Request) {
 				},
 			},
 		});
+
+		// Invalidate stats caches for this user
+		statsCache.delete(`stats:detailed:${user.id}`);
+		statsCache.delete(`stats:summary:${user.id}`);
 
 		return NextResponse.json({ competition }, { status: 201 });
 	} catch (error) {

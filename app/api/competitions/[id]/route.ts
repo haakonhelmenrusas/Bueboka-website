@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
+import { statsCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 
 interface RouteParams {
@@ -194,6 +195,10 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 			},
 		});
 
+		// Invalidate stats caches for this user
+		statsCache.delete(`stats:detailed:${user.id}`);
+		statsCache.delete(`stats:summary:${user.id}`);
+
 		return NextResponse.json({ competition });
 	} catch (error) {
 		Sentry.captureException(error, {
@@ -240,6 +245,10 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 		await prisma.competition.delete({
 			where: { id },
 		});
+
+		// Invalidate stats caches for this user
+		statsCache.delete(`stats:detailed:${user.id}`);
+		statsCache.delete(`stats:summary:${user.id}`);
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
