@@ -22,6 +22,6 @@ describe('PracticesList', () => {
 		const onSelect = jest.fn();
 		render(<PracticesList practices={practices} onSelectPractice={onSelect} />);
 		fireEvent.click(screen.getAllByRole('button')[0]);
-		expect(onSelect).toHaveBeenCalledWith('1');
+		expect(onSelect).toHaveBeenCalledWith('1', undefined);
 	});
 });

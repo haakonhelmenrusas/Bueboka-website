@@ -28,7 +28,7 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
 	isLoading = false,
 }) => {
 	return (
-		<Modal open={open} onClose={onClose} title={title} maxWidth={500} zIndex={220}>
+		<Modal open={open} onClose={onClose} title={title} maxWidth={500} zIndex={220} closeButtonDisabled={isLoading}>
 			<div className={styles.content}>
 				<p className={styles.message}>{message}</p>
 			</div>

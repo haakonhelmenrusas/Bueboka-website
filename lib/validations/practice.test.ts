@@ -53,41 +53,31 @@ describe('Practice Validation Schema', () => {
 			}
 		});
 
-		it('should reject practice with more than 8 rounds', () => {
+		it('should reject practice with more than 20 rounds', () => {
 			const practice = {
 				...validPracticeBase,
-				rounds: [
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 490 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 485 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 495 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 480 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 490 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 495 },
-					{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 485 },
-				],
+				rounds: Array(21).fill({ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }),
 			};
 
 			const result = createPracticeSchema.safeParse(practice);
 			expect(result.success).toBe(false);
 			if (!result.success) {
 				const roundsError = result.error.issues.find((e) => e.path.includes('rounds'));
-				expect(roundsError?.message).toContain('Maksimalt 8 runder er tillatt');
+				expect(roundsError?.message).toContain('Maksimalt 20 runder er tillatt');
 			}
 		});
 
-		it('should reject practice with 9 rounds', () => {
+		it('should reject practice with 21 rounds', () => {
 			const practice = {
 				...validPracticeBase,
-				rounds: Array(9).fill({ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }),
+				rounds: Array(21).fill({ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }),
 			};
 
 			const result = createPracticeSchema.safeParse(practice);
 			expect(result.success).toBe(false);
 			if (!result.success) {
 				const roundsError = result.error.issues.find((e) => e.path.includes('rounds'));
-				expect(roundsError?.message).toBe('Maksimalt 8 runder er tillatt');
+				expect(roundsError?.message).toBe('Maksimalt 20 runder er tillatt');
 			}
 		});
 	});
@@ -161,14 +151,14 @@ describe('Practice Validation Schema', () => {
 		it('should have same validation rules as create schema', () => {
 			const practice = {
 				...validPracticeBase,
-				rounds: Array(9).fill({ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }),
+				rounds: Array(21).fill({ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }),
 			};
 
 			const result = updatePracticeSchema.safeParse(practice);
 			expect(result.success).toBe(false);
 			if (!result.success) {
 				const roundsError = result.error.issues.find((e) => e.path.includes('rounds'));
-				expect(roundsError?.message).toBe('Maksimalt 8 runder er tillatt');
+				expect(roundsError?.message).toBe('Maksimalt 20 runder er tillatt');
 			}
 		});
 	});
@@ -177,8 +167,7 @@ describe('Practice Validation Schema', () => {
 		it('should accept valid arrows without score', () => {
 			const practice = {
 				...validPracticeBase,
-				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }],
-				arrowsWithoutScore: 100,
+				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500, arrowsWithoutScore: 100 }],
 			};
 
 			const result = createPracticeSchema.safeParse(practice);
@@ -188,8 +177,7 @@ describe('Practice Validation Schema', () => {
 		it('should reject arrows without score above 500', () => {
 			const practice = {
 				...validPracticeBase,
-				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }],
-				arrowsWithoutScore: 501,
+				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500, arrowsWithoutScore: 501 }],
 			};
 
 			const result = createPracticeSchema.safeParse(practice);
@@ -203,8 +191,7 @@ describe('Practice Validation Schema', () => {
 		it('should reject extremely large arrows without score value', () => {
 			const practice = {
 				...validPracticeBase,
-				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }],
-				arrowsWithoutScore: 9000099999999,
+				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500, arrowsWithoutScore: 9000099999999 }],
 			};
 
 			const result = createPracticeSchema.safeParse(practice);
@@ -214,8 +201,7 @@ describe('Practice Validation Schema', () => {
 		it('should reject negative arrows without score', () => {
 			const practice = {
 				...validPracticeBase,
-				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500 }],
-				arrowsWithoutScore: -1,
+				rounds: [{ distanceMeters: 30, targetType: '60cm', numberArrows: 60, roundScore: 500, arrowsWithoutScore: -1 }],
 			};
 
 			const result = createPracticeSchema.safeParse(practice);

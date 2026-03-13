@@ -43,6 +43,11 @@ export interface ModalProps {
 	 * The `title` value is still used as `aria-label` on the dialog for accessibility.
 	 */
 	hideHeader?: boolean;
+	/**
+	 * When true, the header close (×) button is rendered but disabled.
+	 * Useful for modals that should not be dismissed while an async operation is running.
+	 */
+	closeButtonDisabled?: boolean;
 	children: React.ReactNode;
 }
 
@@ -57,6 +62,7 @@ export const Modal: React.FC<ModalProps> = ({
 	panelClassName,
 	panelStyle,
 	hideHeader = false,
+	closeButtonDisabled = false,
 	children,
 }) => {
 	const generatedId = useId();
@@ -86,7 +92,13 @@ export const Modal: React.FC<ModalProps> = ({
 						<h2 id={titleId} className={styles.title}>
 							{title}
 						</h2>
-						<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk" type="button">
+						<button
+							className={styles.closeBtn}
+							onClick={onClose}
+							aria-label="Lukk"
+							type="button"
+							disabled={closeButtonDisabled}
+						>
 							<LuX size={20} />
 						</button>
 					</div>
