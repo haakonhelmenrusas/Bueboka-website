@@ -185,6 +185,7 @@ model End {
   distanceFrom       Int?
   distanceTo         Int?
   targetSizeCm       Int?
+  targetType         String?
   arrowsPerEnd       Int?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
@@ -236,6 +237,7 @@ model CompetitionRound {
   roundScore         Int?
   distanceMeters     Int?
   targetSizeCm       Int?
+  targetType         String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 

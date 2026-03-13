@@ -105,6 +105,7 @@ export async function POST(request: NextRequest) {
 						distanceFrom: roundAny.distanceFrom || null,
 						distanceTo: roundAny.distanceTo || null,
 						targetSizeCm,
+						targetType: round.targetType || null,
 					};
 				}),
 			},

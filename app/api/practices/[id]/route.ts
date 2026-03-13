@@ -108,6 +108,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				distanceFrom: roundAny.distanceFrom || null,
 				distanceTo: roundAny.distanceTo || null,
 				targetSizeCm,
+				targetType: round.targetType || null,
 			};
 		});
 

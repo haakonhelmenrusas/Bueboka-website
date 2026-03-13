@@ -3,6 +3,19 @@ import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { statsCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
+
+/** Map a stored targetType string or a numeric targetSizeCm to a human-readable label. */
+function formatTargetLabel(targetType: string | null, targetSizeCm: number | null): string {
+	if (targetType) {
+		const option = TARGET_TYPE_OPTIONS.find((o) => o.value === targetType);
+		if (option) return option.label;
+		// Fallback: return the raw value if it's somehow not in the list
+		return targetType;
+	}
+	if (typeof targetSizeCm === 'number' && targetSizeCm > 0) return `${targetSizeCm}cm`;
+	return 'Ukjent skive';
+}
 
 export async function GET() {
 	try {
@@ -48,7 +61,15 @@ export async function GET() {
 		// Group data by distance + target combination
 		const groupedData = new Map<
 			string,
-			Array<{ date: string; arrows: number; scoredArrows: number; score: number; practiceType: string; practiceCategory: string; sessionId: string }>
+			Array<{
+				date: string;
+				arrows: number;
+				scoredArrows: number;
+				score: number;
+				practiceType: string;
+				practiceCategory: string;
+				sessionId: string;
+			}>
 		>();
 
 		for (const practice of practices) {
@@ -78,8 +99,11 @@ export async function GET() {
 			for (const end of practice.ends) {
 				try {
 					const distance = typeof end.distanceMeters === 'number' ? end.distanceMeters : 0;
-					const target = typeof end.targetSizeCm === 'number' ? end.targetSizeCm : 0;
-					const key = `${distance}m - ${target}cm`;
+					const targetLabel = formatTargetLabel(
+						(end as any).targetType ?? null,
+						typeof end.targetSizeCm === 'number' ? end.targetSizeCm : null
+					);
+					const key = `${distance}m - ${targetLabel}`;
 
 					// Include both arrows with score and arrowsWithoutScore
 					const scoredArrows = typeof end.arrows === 'number' ? end.arrows : 0;
@@ -135,13 +159,15 @@ export async function GET() {
 			for (const round of competition.rounds) {
 				try {
 					const distance = typeof round.distanceMeters === 'number' ? round.distanceMeters : 0;
-					const target = typeof round.targetSizeCm === 'number' ? round.targetSizeCm : 0;
-					const key = `${distance}m - ${target}cm`;
+					const targetLabel = formatTargetLabel(
+						(round as any).targetType ?? null,
+						typeof round.targetSizeCm === 'number' ? round.targetSizeCm : null
+					);
+					const key = `${distance}m - ${targetLabel}`;
 
 					// Include both arrows with score and arrowsWithoutScore
 					const scoredArrows = typeof round.arrows === 'number' ? round.arrows : 0;
-					const arrows =
-						scoredArrows + (typeof round.arrowsWithoutScore === 'number' ? round.arrowsWithoutScore : 0);
+					const arrows = scoredArrows + (typeof round.arrowsWithoutScore === 'number' ? round.arrowsWithoutScore : 0);
 					const score = typeof round.roundScore === 'number' ? round.roundScore : 0;
 
 					// Only add if there are arrows

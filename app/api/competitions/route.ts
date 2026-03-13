@@ -154,6 +154,7 @@ export async function POST(request: Request) {
 							roundScore: round.roundScore || 0,
 							distanceMeters: round.distanceMeters,
 							targetSizeCm,
+							targetType: round.targetType || null,
 						};
 					}),
 				},

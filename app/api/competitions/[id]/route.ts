@@ -162,6 +162,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 							roundScore: round.roundScore || 0,
 							distanceMeters: round.distanceMeters,
 							targetSizeCm,
+							targetType: round.targetType || null,
 						};
 					}),
 				},
