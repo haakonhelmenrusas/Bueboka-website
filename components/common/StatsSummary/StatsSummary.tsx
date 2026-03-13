@@ -22,7 +22,7 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 				<div className={styles.statRow}>
 					<div className={styles.statLabel}>
 						<LuTarget className={styles.rowIcon} />
-						<span>Totalt piler</span>
+						<span>Totalt antall piler</span>
 					</div>
 					<span className={styles.statValue}>{data.totalArrows}</span>
 				</div>
@@ -49,7 +49,9 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 					</div>
 					<span className={styles.statValue}>
 						{data.avgScorePerArrow !== null ? (
-							<>{data.avgScorePerArrow.toFixed(2)} <span className={styles.unit}>pr pil</span></>
+							<>
+								{data.avgScorePerArrow.toFixed(2)} <span className={styles.unit}>pr pil</span>
+							</>
 						) : (
 							<span className={styles.noData}>—</span>
 						)}
