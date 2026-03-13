@@ -331,49 +331,53 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 									<div className={styles.roundInputs}>
 										{isRangeCategory ? (
 											<>
-												<NumberInput
-													label="Fra"
-													value={round.distanceFrom || 0}
-													onChange={(v) => updateRound(index, 'distanceFrom', v)}
-													min={0}
-													step={1}
-													startEmpty={true}
-													unit="m"
-													containerClassName={styles.roundField}
-												/>
-												<NumberInput
-													label="Til"
-													value={round.distanceTo || 0}
-													onChange={(v) => updateRound(index, 'distanceTo', v)}
-													min={0}
-													step={1}
-													startEmpty={true}
-													unit="m"
-													containerClassName={styles.roundField}
-												/>
-											</>
-										) : (
 											<NumberInput
-												label="Avstand"
-												value={round.distanceMeters || 0}
-												onChange={(v) => updateRound(index, 'distanceMeters', v)}
+												label="Fra"
+												value={round.distanceFrom || 0}
+												onChange={(v) => updateRound(index, 'distanceFrom', v)}
 												min={0}
 												step={1}
 												startEmpty={true}
 												unit="m"
-												width={180}
+												width={120}
 												containerClassName={styles.roundField}
 											/>
+											<NumberInput
+												label="Til"
+												value={round.distanceTo || 0}
+												onChange={(v) => updateRound(index, 'distanceTo', v)}
+												min={0}
+												step={1}
+												startEmpty={true}
+												unit="m"
+												width={120}
+												containerClassName={styles.roundField}
+											/>
+											</>
+										) : (
+											<>
+												<NumberInput
+													label="Avstand"
+													value={round.distanceMeters || 0}
+													onChange={(v) => updateRound(index, 'distanceMeters', v)}
+													min={0}
+													step={1}
+													startEmpty={true}
+													unit="m"
+													width={180}
+													containerClassName={styles.roundField}
+												/>
+												<Select
+													label="Skive"
+													value={round.targetType}
+													onChange={(v) => updateRound(index, 'targetType', v as string)}
+													placeholderLabel="Velg"
+													searchable
+													options={TARGET_TYPE_OPTIONS}
+													containerClassName={styles.roundField}
+												/>
+											</>
 										)}
-										<Select
-											label="Skive"
-											value={round.targetType}
-											onChange={(v) => updateRound(index, 'targetType', v as string)}
-											placeholderLabel="Velg"
-											searchable
-											options={TARGET_TYPE_OPTIONS}
-											containerClassName={styles.roundField}
-										/>
 									</div>
 									<div className={styles.rowFlex}>
 										<NumberInput

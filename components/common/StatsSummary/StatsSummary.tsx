@@ -41,22 +41,6 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 					</div>
 					<span className={styles.statValue}>{data.unscoredArrows}</span>
 				</div>
-				<div className={styles.divider} />
-				<div className={styles.statRow}>
-					<div className={styles.statLabel}>
-						<LuStar className={styles.rowIcon} />
-						<span>Gj.snitt score</span>
-					</div>
-					<span className={styles.statValue}>
-						{data.avgScorePerArrow !== null ? (
-							<>
-								{data.avgScorePerArrow.toFixed(2)} <span className={styles.unit}>pr pil</span>
-							</>
-						) : (
-							<span className={styles.noData}>—</span>
-						)}
-					</span>
-				</div>
 			</div>
 		</div>
 	);

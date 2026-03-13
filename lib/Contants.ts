@@ -27,7 +27,6 @@ export const TARGET_TYPE_OPTIONS = [
 	{ value: '122cm', label: '122 cm' },
 	{ value: '3-spot', label: '3-spot' },
 	{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
-	{ value: 'animal', label: 'Dyr' },
 	{ value: 'bar', label: 'Barmatte uten blink' },
 	{ value: 'other', label: 'Annet' },
 	{ value: 'halmmatte', label: 'Halmmatte' },

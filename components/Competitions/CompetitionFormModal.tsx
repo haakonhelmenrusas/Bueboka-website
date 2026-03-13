@@ -351,7 +351,9 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 					<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
 					<div className={styles.roundsSection}>
 						<h4 className={styles.sectionTitle}>Runder</h4>
-						{rounds.map((round, index) => (
+						{rounds.map((round, index) => {
+							const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
+							return (
 							<div key={index} className={styles.roundCard}>
 								<div className={styles.roundHeader}>
 									<span className={styles.roundNumber}>Runde {round.roundNumber}</span>
@@ -362,26 +364,51 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 									)}
 								</div>
 								<div className={styles.rowFlex}>
-									<NumberInput
-										label="Avstand"
-										value={round.distanceMeters ?? 0}
-										onChange={(val) => updateRound(index, 'distanceMeters', val || undefined)}
-										onEmpty={() => updateRound(index, 'distanceMeters', undefined)}
-										min={1}
-										startEmpty
-										width={180}
-										unit="m"
-									/>
-									<Select
-										label="Skive"
-										value={round.targetType}
-										onChange={(val) => updateRound(index, 'targetType', val as string)}
-										options={TARGET_TYPE_OPTIONS}
-										placeholderLabel="Velg skive"
-										searchable
-										searchPlaceholder="Søk etter skive..."
-										containerClassName={styles.targetField}
-									/>
+									{isRangeCategory ? (
+										<>
+											<NumberInput
+												label="Fra"
+												value={(round as any).distanceFrom ?? 0}
+												onChange={(val) => updateRound(index, 'distanceFrom' as any, val || undefined)}
+												min={0}
+												startEmpty
+												width={120}
+												unit="m"
+											/>
+											<NumberInput
+												label="Til"
+												value={(round as any).distanceTo ?? 0}
+												onChange={(val) => updateRound(index, 'distanceTo' as any, val || undefined)}
+												min={0}
+												startEmpty
+												width={120}
+												unit="m"
+											/>
+										</>
+									) : (
+										<>
+											<NumberInput
+												label="Avstand"
+												value={round.distanceMeters ?? 0}
+												onChange={(val) => updateRound(index, 'distanceMeters', val || undefined)}
+												onEmpty={() => updateRound(index, 'distanceMeters', undefined)}
+												min={1}
+												startEmpty
+												width={180}
+												unit="m"
+											/>
+											<Select
+												label="Skive"
+												value={round.targetType}
+												onChange={(val) => updateRound(index, 'targetType', val as string)}
+												options={TARGET_TYPE_OPTIONS}
+												placeholderLabel="Velg skive"
+												searchable
+												searchPlaceholder="Søk etter skive..."
+												containerClassName={styles.targetField}
+											/>
+										</>
+									)}
 								</div>
 								<div className={styles.rowFlex}>
 									<NumberInput
@@ -418,9 +445,10 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										helpText="Piler uten score"
 										containerClassName={styles.roundField}
 									/>
-								</div>
 							</div>
-						))}
+						</div>
+						);
+						})}
 						<Button
 							type="button"
 							label="+ Legg til runde"

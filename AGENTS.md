@@ -24,6 +24,13 @@ Never import Prisma enums from `@prisma/client` – it pulls the server bundle i
 ```ts
 import { Environment, PracticeCategory } from '@/lib/prismaEnums';
 ```
+`prismaEnums.ts` exports only `Environment`, `WeatherCondition`, and `PracticeCategory`. `BowType`, `Material`, and `Placement` are **not** exported there – use plain string literals (e.g. `'RECURVE'`) in client components for those values.
+
+### Prisma Namespace
+For utilities like `Prisma.JsonNull`, import the `Prisma` namespace from the generated client, **not** from `@prisma/client`:
+```ts
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
+```
 
 ### API Route Pattern
 Every API route follows this structure:
@@ -40,6 +47,8 @@ import { formatZodErrors } from '@/lib/validations/helpers';
 import { statsCache } from '@/lib/cache';
 ```
 
+`lib/cache.ts` exports four caches – use the right one: `statsCache` (3 min, stats API), `roundTypesCache` (5 min, round types), `userProfileCache` (2 min, user profiles), `cache` (60 s, generic).
+
 ### Auth
 - Server: `auth` from `@/lib/auth` (Better Auth instance), `getCurrentUser()` from `@/lib/session`
 - Client: `signIn`, `signUp`, `signOut`, `useSession` from `@/lib/auth-client`
@@ -49,9 +58,14 @@ import { statsCache } from '@/lib/cache';
 ```bash
 # Local development (requires Docker)
 npm run db:up           # Start Postgres in Docker
+npm run db:down         # Stop Postgres container
+npm run db:reset        # Wipe volume and restart Postgres
 npm run prisma:migrate  # Apply migrations
+npm run prisma:studio   # Open Prisma Studio GUI
 npm run seed:local      # Seed with test data (optional)
+npm run seed            # Run production seed (prisma/seed.ts)
 npm run dev             # Start dev server at localhost:3000
+npm run dev:clean       # Wipe .next cache then start dev server
 
 # After schema changes
 npm run prisma:generate # Regenerate client
@@ -79,6 +93,50 @@ npm run format          # Prettier
 - CSS Modules only (no Tailwind, no global class names in components)
 - Use `react-icons/lu` (Lucide) for icons
 - Dates formatted with `nb-NO` locale: `toLocaleDateString('nb-NO', ...)`
+- Use `motion` (not `framer-motion`) for animations
+
+### Modal Hooks
+All modal components must use hooks from `lib/hooks/`:
+```ts
+import { useModalBehavior } from '@/lib/hooks';
+// Handles Escape-to-close and body scroll lock automatically
+useModalBehavior({ open, onClose });
+```
+Other available hooks: `useClickOutside`, `useEscapeKey`, `useFocusTrap`.
+
+### Common UI Primitives
+Reuse components from `components/common/` instead of creating new ones:
+`Button`, `Input`, `NumberInput`, `TextArea`, `Select`, `Checkbox`, `DateInput`, `Tooltip`, `Accordion`, `ConfirmModal`, `FullPageLoader`, `ImageUpload`, `StatsSummary`, `SocialAuthButtons`.
+
+## Shared Utilities
+
+### Norwegian Translations
+`lib/labels.ts` contains all Norwegian label constants and helpers for enum values. Use these instead of inline strings:
+```ts
+import { getBowTypeLabel, getPracticeCategoryLabel, BOW_TYPE_OPTIONS } from '@/lib/labels';
+```
+
+### Form Option Builders
+`lib/formUtils.tsx` provides shared select option arrays (with icons) for weather, environment, and practice category. Import these rather than re-defining them:
+```ts
+import { getWeatherSelectOptions, getEnvironmentOptions, getPracticeCategoryOptions } from '@/lib/formUtils';
+```
+
+### Weather Utilities
+`lib/weatherUtils.tsx` exports `weatherLabels`, `weatherIcons`, `getWeatherLabel`, `getWeatherIcon`, and `formatWeatherConditions` for displaying weather data.
+
+### Equipment Change Events
+`lib/events.ts` provides a lightweight event bus to sync equipment changes across components:
+```ts
+import { emitEquipmentChanged, onEquipmentChanged } from '@/lib/events';
+```
+
+### Feedback Modal
+Wrap consumers in `context/FeedbackProvider` and open the modal via `useFeedback()`:
+```ts
+import { useFeedback } from '@/context/FeedbackProvider';
+const { openFeedback } = useFeedback();
+```
 
 ## Achievements System
 
@@ -95,6 +153,16 @@ Achievements are **statically defined** in `lib/achievements/definitions.ts` (no
 | `lib/cache.ts` | In-memory `statsCache` for stats API |
 | `lib/validations/` | Zod schemas per model + `helpers.ts` |
 | `lib/achievements/` | Static definitions, checker, types |
+| `lib/labels.ts` | Norwegian label constants + helpers for enum display values |
+| `lib/formUtils.tsx` | Shared form option arrays for weather/environment/category |
+| `lib/weatherUtils.tsx` | Weather label + icon helpers |
+| `lib/events.ts` | Equipment change event bus |
+| `lib/types.ts` | App-level TypeScript interfaces (Practice, Bow, Arrow, Stats, …) |
+| `lib/Contants.ts` | Ballistics defaults + `TARGET_TYPE_OPTIONS` |
+| `lib/hooks/` | `useModalBehavior`, `useClickOutside`, `useEscapeKey`, `useFocusTrap` |
+| `context/FeedbackProvider.tsx` | Feedback modal context + `useFeedback()` hook |
 | `prisma/schema.prisma` | Full data model |
 | `components/index.ts` | Component barrel export |
+| `components/common/` | Reusable UI primitives (Button, Input, Select, …) |
+| `types/SightMarks.ts` | TypeScript types for sight mark / ballistics domain |
 
