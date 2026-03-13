@@ -267,6 +267,7 @@ model SightMark {
   id                   String   @id @default(cuid())
   userId               String
   bowSpecificationId   String
+  name                 String?
   givenMarks           Float[]
   givenDistances       Float[]
   ballisticsParameters Json

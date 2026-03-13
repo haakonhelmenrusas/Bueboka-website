@@ -18,9 +18,10 @@ export interface SightMark {
 	id: string;
 	userId: string;
 	bowSpecificationId: string;
+	name?: string | null;
 	givenMarks: number[];
 	givenDistances: number[];
-	ballisticsParameters: CalculatedMarks | number[];
+	ballisticsParameters: CalculatedMarks | Record<string, unknown>;
 	createdAt?: Date;
 	updatedAt?: Date;
 	bowSpec?: BowSpecification;
@@ -109,6 +110,9 @@ export interface CalculatedMarks {
 
 	/** Array of ballistic parameters. */
 	ballistics_pars: number[];
+
+	/** Name of the arrow set used (stored for display, not used in calculations). */
+	arrow_name?: string;
 }
 
 export interface SightMarkCalc {

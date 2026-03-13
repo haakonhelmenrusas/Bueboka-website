@@ -1,14 +1,15 @@
 import styles from './SightMarksTable.module.css';
 import { SightMark, CalculatedMarks } from '@/types/SightMarks';
-import { LuTarget, LuTrash2 } from 'react-icons/lu';
+import { LuArrowRight, LuPencil, LuTarget, LuTrash2 } from 'react-icons/lu';
 
 interface SightMarksTableProps {
 	sightMarks: SightMark[];
 	onDeleteMark: (sightMarkId: string, index: number) => Promise<void>;
+	onCardClick?: (sm: SightMark) => void;
 	isDeleting?: boolean;
 }
 
-export function SightMarksTable({ sightMarks, onDeleteMark, isDeleting = false }: SightMarksTableProps) {
+export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDeleting = false }: SightMarksTableProps) {
 	if (sightMarks.length === 0) {
 		return (
 			<div className={styles.emptyState}>
@@ -22,13 +23,47 @@ export function SightMarksTable({ sightMarks, onDeleteMark, isDeleting = false }
 			{sightMarks.map((sm) => {
 				const calc = sm.ballisticsParameters as CalculatedMarks;
 				const bowName = sm.bowSpec?.bow?.name ?? 'Ukjent bue';
+				const title = sm.name || bowName;
+				const showBowBadge = !!sm.name;
+
+				// Arrow name from stored ballistics parameters
+				const arrowBadge = calc?.arrow_name ?? null;
 
 				return (
-					<div key={sm.id} className={styles.card}>
+					<div
+						key={sm.id}
+						className={`${styles.card} ${onCardClick ? styles.cardClickable : ''}`}
+						onClick={() => onCardClick?.(sm)}
+						role={onCardClick ? 'button' : undefined}
+						tabIndex={onCardClick ? 0 : undefined}
+						onKeyDown={onCardClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCardClick(sm); } } : undefined}
+						aria-label={onCardClick ? `Rediger siktemerker for ${title}` : undefined}
+					>
 						<div className={styles.cardHeader}>
-							<LuTarget className={styles.bowIcon} size={20} />
-							<h3 className={styles.bowName}>{bowName}</h3>
-							<span className={styles.markCount}>{sm.givenDistances.length} merker</span>
+							<div className={styles.cardTitleRow}>
+								<LuTarget className={styles.cardIcon} size={20} />
+								<h3 className={styles.cardTitle}>{title}</h3>
+								<span className={styles.markCount}>{sm.givenDistances.length} merker</span>
+								{onCardClick && (
+									<span className={styles.editHint} aria-hidden>
+										<LuPencil size={14} />
+									</span>
+								)}
+							</div>
+							<div className={styles.badgeRow}>
+								{showBowBadge && (
+									<span className={styles.badge}>
+										<LuTarget size={12} />
+										{bowName}
+									</span>
+								)}
+								{arrowBadge && (
+									<span className={styles.badge}>
+										<LuArrowRight size={12} />
+										{arrowBadge}
+									</span>
+								)}
+							</div>
 						</div>
 
 						{sm.givenDistances.length === 0 ? (
@@ -55,7 +90,7 @@ export function SightMarksTable({ sightMarks, onDeleteMark, isDeleting = false }
 											</span>
 											<button
 												className={styles.deleteBtn}
-												onClick={() => onDeleteMark(sm.id, index)}
+												onClick={(e) => { e.stopPropagation(); onDeleteMark(sm.id, index); }}
 												disabled={isDeleting}
 												aria-label={`Fjern merke for ${distance.toFixed(1)}m`}
 											>

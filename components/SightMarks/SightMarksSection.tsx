@@ -8,7 +8,7 @@ import { SightMarksTable } from './SightMarksTable';
 import { SightMarkFormModal } from '@/components';
 import { useSightMarks } from './useSightMarks';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
-import { AimDistanceMark } from '@/types/SightMarks';
+import { AimDistanceMark, SightMark } from '@/types/SightMarks';
 import { Ballistics } from '@/lib/Contants';
 
 interface SightMarksSectionProps {
@@ -20,6 +20,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 	const { bows, arrows, refresh: refreshEquipment } = useEquipmentData();
 	const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [editingSightMark, setEditingSightMark] = useState<SightMark | null>(null);
 	const [createError, setCreateError] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -68,11 +69,21 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 		}
 	};
 
-	const handleCreate = async (data: { distance: number; mark: number; bowId: string }) => {
+	const handleCardClick = (sm: SightMark) => {
+		setEditingSightMark(sm);
+		setIsModalOpen(true);
+	};
+
+	const handleModalClose = () => {
+		setIsModalOpen(false);
+		setEditingSightMark(null);
+	};
+
+	const handleCreate = async (data: { distance: number; mark: number; bowId: string; arrowId: string; name: string }) => {
 		setCreateError(null);
 		try {
 			const activeBow = bows.find((b) => b.id === data.bowId);
-			const activeArrow = arrows.find((a) => a.isFavorite) || arrows[0];
+			const activeArrow = arrows.find((a) => a.id === data.arrowId) ?? arrows.find((a) => a.isFavorite) ?? arrows[0];
 
 			if (!activeBow) {
 				const msg = 'Du må registrere en bue i profilen din før du kan beregne siktemerker.';
@@ -87,8 +98,8 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 
 			if (!spec) throw new Error('Fant ingen buespesifikasjon. Sjekk at du har registrert en bue i profilen din.');
 
-			// Find active sight mark for this bow spec (assuming most recent is active)
-			const activeSightMark = sightMarks.find((sm) => sm.bowSpecificationId === spec.id);
+			// Find active sight mark: prefer the one the user clicked, else match by bow spec
+			const activeSightMark = editingSightMark ?? sightMarks.find((sm) => sm.bowSpecificationId === spec.id);
 
 			// Prepare accumulated marks
 			const existingMarks = activeSightMark?.givenMarks ?? [];
@@ -124,6 +135,11 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 
 			const aimMarkResponse = await response.json();
 
+			// Enrich with arrow name so the card can display it without a separate lookup
+			if (activeArrow?.name) {
+				aimMarkResponse.arrow_name = activeArrow.name;
+			}
+
 			// Persist (Update or Create)
 			let saveRes;
 			if (activeSightMark) {
@@ -132,6 +148,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 					method: 'PATCH',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
+						name: data.name || undefined,
 						givenMarks,
 						givenDistances,
 						ballisticsParameters: aimMarkResponse,
@@ -144,6 +161,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
 						bowSpecificationId: spec.id,
+						name: data.name || undefined,
 						givenMarks,
 						givenDistances,
 						ballisticsParameters: aimMarkResponse,
@@ -182,7 +200,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 				<h2 className={styles.title}>Siktemerker</h2>
 				<Button
 					label="Nytt merke"
-					onClick={() => setIsModalOpen(true)}
+					onClick={() => { setEditingSightMark(null); setIsModalOpen(true); }}
 					icon={<LuPlus size={18} />}
 				/>
 			</div>
@@ -203,13 +221,33 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 						</button>
 					</div>
 				)}
-				<SightMarksTable sightMarks={sightMarks} onDeleteMark={handleDeleteMark} isDeleting={isDeletingId !== null} />
+				<SightMarksTable
+					sightMarks={sightMarks}
+					onDeleteMark={handleDeleteMark}
+					onCardClick={handleCardClick}
+					isDeleting={isDeletingId !== null}
+				/>
 			</div>
 			<SightMarkFormModal
 				open={isModalOpen}
-				onClose={() => setIsModalOpen(false)}
+				onClose={handleModalClose}
 				onSave={handleCreate}
+				onDelete={
+					editingSightMark
+						? async () => { await deleteSightMark(editingSightMark.id); fetchSightMarks(); }
+						: undefined
+				}
 				bows={bows}
+				arrows={arrows}
+				initialData={
+					editingSightMark
+						? {
+								bowId: editingSightMark.bowSpec?.bow?.id ?? '',
+								bowName: editingSightMark.bowSpec?.bow?.name ?? 'Ukjent bue',
+								name: editingSightMark.name ?? '',
+							}
+						: undefined
+				}
 			/>
 		</section>
 	);

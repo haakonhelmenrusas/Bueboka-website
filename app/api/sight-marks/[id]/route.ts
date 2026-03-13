@@ -39,6 +39,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 		if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
 		const body = (await request.json()) as Partial<{
+			name: unknown;
 			givenMarks: unknown;
 			givenDistances: unknown;
 			ballisticsParameters: unknown;
@@ -46,6 +47,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
 		const fieldErrors: Record<string, string> = {};
 
+		const name = typeof body.name === 'string' ? body.name.trim() || null : undefined;
 		const givenMarks = parseOptionalNumberArray(body.givenMarks, 'givenMarks', fieldErrors);
 		const givenDistances = parseOptionalNumberArray(body.givenDistances, 'givenDistances', fieldErrors);
 		const rawBallistics =
@@ -61,6 +63,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 		const updated = await prisma.sightMark.update({
 			where: { id },
 			data: {
+				...(name !== undefined ? { name } : {}),
 				...(givenMarks ? { givenMarks } : {}),
 				...(givenDistances ? { givenDistances } : {}),
 				ballisticsParameters,

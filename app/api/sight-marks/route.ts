@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { parseNumberArray } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/session';
 
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
 
 		const body = (await request.json()) as Partial<{
 			bowSpecificationId: unknown;
+			name: unknown;
 			givenMarks: unknown;
 			givenDistances: unknown;
 			ballisticsParameters: unknown;
@@ -46,10 +48,14 @@ export async function POST(request: NextRequest) {
 		if (typeof body.bowSpecificationId !== 'string' || !body.bowSpecificationId)
 			fieldErrors.bowSpecificationId = 'bowSpecificationId is required';
 
+		const name = typeof body.name === 'string' ? body.name.trim() || null : null;
 		const givenMarks = parseNumberArray(body.givenMarks, 'givenMarks', fieldErrors);
 		const givenDistances = parseNumberArray(body.givenDistances, 'givenDistances', fieldErrors);
-		const ballisticsParameters =
-			typeof body.ballisticsParameters === 'object' && body.ballisticsParameters !== null ? body.ballisticsParameters : {};
+		const rawBallistics =
+			typeof body.ballisticsParameters === 'object' && body.ballisticsParameters !== null
+				? body.ballisticsParameters
+				: {};
+		const ballisticsParameters: Prisma.InputJsonValue = rawBallistics as Prisma.InputJsonValue;
 
 		if (Object.keys(fieldErrors).length) {
 			return NextResponse.json({ error: 'Validation error', fieldErrors }, { status: 400 });
@@ -64,6 +70,7 @@ export async function POST(request: NextRequest) {
 			data: {
 				userId: user.id,
 				bowSpecificationId: bowSpec.id,
+				name,
 				givenMarks,
 				givenDistances,
 				ballisticsParameters,
@@ -73,6 +80,7 @@ export async function POST(request: NextRequest) {
 		return NextResponse.json({ sightMark }, { status: 201 });
 	} catch (error) {
 		Sentry.captureException(error, { tags: { endpoint: 'sight-marks', method: 'POST' } });
-		return NextResponse.json({ error: 'Failed to create sight mark' }, { status: 500 });
+		console.error('[POST /api/sight-marks] error:', error);
+		return NextResponse.json({ error: 'Failed to create sight mark', detail: error instanceof Error ? error.message : String(error) }, { status: 500 });
 	}
 }
