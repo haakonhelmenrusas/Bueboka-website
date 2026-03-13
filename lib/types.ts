@@ -84,6 +84,7 @@ export interface Practice {
 		distanceFrom?: number | null;
 		distanceTo?: number | null;
 		targetSizeCm?: number | null;
+		targetType?: string | null;
 		arrowsWithoutScore?: number | null;
 		roundScore?: number | null;
 	}>;

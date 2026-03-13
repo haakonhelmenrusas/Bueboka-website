@@ -10,11 +10,23 @@ function formatTargetLabel(targetType: string | null, targetSizeCm: number | nul
 	if (targetType) {
 		const option = TARGET_TYPE_OPTIONS.find((o) => o.value === targetType);
 		if (option) return option.label;
-		// Fallback: return the raw value if it's somehow not in the list
 		return targetType;
 	}
 	if (typeof targetSizeCm === 'number' && targetSizeCm > 0) return `${targetSizeCm}cm`;
 	return 'Ukjent skive';
+}
+
+/** Format a distance label, preferring a from–to range over a single distance. */
+function formatDistanceLabel(
+	distanceMeters: number | null,
+	distanceFrom: number | null,
+	distanceTo: number | null
+): string {
+	if ((typeof distanceFrom === 'number' && distanceFrom > 0) || (typeof distanceTo === 'number' && distanceTo > 0)) {
+		return `${distanceFrom ?? 0}m–${distanceTo ?? 0}m`;
+	}
+	if (typeof distanceMeters === 'number' && distanceMeters > 0) return `${distanceMeters}m`;
+	return '0m';
 }
 
 export async function GET() {
@@ -98,12 +110,16 @@ export async function GET() {
 
 			for (const end of practice.ends) {
 				try {
-					const distance = typeof end.distanceMeters === 'number' ? end.distanceMeters : 0;
+					const distanceLabel = formatDistanceLabel(
+						typeof end.distanceMeters === 'number' ? end.distanceMeters : null,
+						typeof end.distanceFrom === 'number' ? end.distanceFrom : null,
+						typeof end.distanceTo === 'number' ? end.distanceTo : null
+					);
 					const targetLabel = formatTargetLabel(
 						(end as any).targetType ?? null,
 						typeof end.targetSizeCm === 'number' ? end.targetSizeCm : null
 					);
-					const key = `${distance}m - ${targetLabel}`;
+					const key = `${distanceLabel} - ${targetLabel}`;
 
 					// Include both arrows with score and arrowsWithoutScore
 					const scoredArrows = typeof end.arrows === 'number' ? end.arrows : 0;

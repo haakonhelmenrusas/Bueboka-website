@@ -64,6 +64,7 @@ interface PracticeFormModalProps {
 			distanceFrom?: number | null;
 			distanceTo?: number | null;
 			targetSizeCm?: number | null;
+			targetType?: string | null;
 			arrowsWithoutScore?: number | null;
 			roundScore?: number | null;
 		}>;
@@ -106,8 +107,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 			// Extract rounds from ends data
 			if (practice.ends && practice.ends.length > 0) {
 				const extractedRounds = practice.ends.map((end) => {
-					// Convert targetSizeCm back to targetType format (e.g., 40 -> "40cm")
-					const targetType = end.targetSizeCm ? `${end.targetSizeCm}cm` : '';
+					// Prefer the stored targetType string (saved since the targetType migration).
+					// Fall back to reconstructing from targetSizeCm for older records.
+					const targetType = end.targetType || (end.targetSizeCm ? `${end.targetSizeCm}cm` : '');
 
 					return {
 						distanceMeters: end.distanceMeters || undefined,
