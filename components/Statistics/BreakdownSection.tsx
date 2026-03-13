@@ -1,11 +1,6 @@
 import { LuActivity, LuCalendar, LuCircleCheck, LuStar, LuTarget, LuCircleX } from 'react-icons/lu';
 import styles from './BreakdownSection.module.css';
-
-interface SeriesData {
-	date: string;
-	arrows: number;
-	score: number;
-}
+import type { SeriesData } from './types';
 
 interface BreakdownItem {
 	name: string;
