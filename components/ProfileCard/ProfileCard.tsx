@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './ProfileCard.module.css';
-import { LuCamera, LuLoader, LuPencil, LuTrash, LuTrophy, LuUser } from 'react-icons/lu';
+import { LuBuilding2, LuCamera, LuLoader, LuPencil, LuTrash, LuTrophy, LuUser } from 'react-icons/lu';
 import { Button } from '@/components';
 import { compressImage } from '@/lib/imageUtils';
 import { useClickOutside } from '@/lib/hooks/useClickOutside';
@@ -160,7 +160,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 			</div>
 			<header className={styles.header}>
 				<h2 className={styles.name}>{displayName}</h2>
-				<p className={styles.meta}>{displayClub}</p>
+				<span className={styles.clubBadge}>
+					<LuBuilding2 size={13} />
+					{displayClub}
+				</span>
 			</header>
 			<div className={styles.buttonGroup}>
 				<Button label="Rediger" onClick={onEdit} icon={<LuPencil size={18} />} size="normal" buttonType="outline" />

@@ -126,7 +126,6 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 			// Refresh list after save
 			fetchSightMarks();
 		} catch (err) {
-			console.error(err);
 			setCreateError(err instanceof Error ? err.message : 'En ukjent feil oppstod');
 			throw err; // Re-throw to be caught by modal if needed, or handle error display here
 		}

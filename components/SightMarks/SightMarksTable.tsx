@@ -19,9 +19,7 @@ export function SightMarksTable({ sightMarks, onDelete, isDeleting = false }: Si
 	}
 
 	const handleDelete = async (id: string) => {
-		if (confirm('Er du sikker på at du vil slette denne sikte merkingen?')) {
-			await onDelete(id);
-		}
+		await onDelete(id);
 	};
 
 	return (

@@ -46,7 +46,8 @@ export default function MyPage() {
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
 	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
 	const [selectedArrows, setSelectedArrows] = useState<Arrow | null>(null);
-	const [stats, setStats] = useState<StatsResponse['stats']>({ last7Days: 0, last30Days: 0, overall: 0 });
+	const emptyPeriod = { totalArrows: 0, scoredArrows: 0, unscoredArrows: 0, avgScorePerArrow: null };
+	const [stats, setStats] = useState<StatsResponse['stats']>({ last7Days: emptyPeriod, last30Days: emptyPeriod, overall: emptyPeriod });
 	const [practiceReloadKey, setPracticeReloadKey] = useState(0);
 	const [deletedPracticeId, setDeletedPracticeId] = useState<string | null>(null);
 	const [achievementModalOpen, setAchievementModalOpen] = useState(false);
@@ -126,11 +127,7 @@ export default function MyPage() {
 			if (!res.ok) return;
 			const data = (await res.json()) as StatsResponse;
 			if (data && data.stats) {
-				setStats({
-					last7Days: data.stats.last7Days ?? 0,
-					last30Days: data.stats.last30Days ?? 0,
-					overall: data.stats.overall ?? 0,
-				});
+				setStats(data.stats);
 			}
 		} catch (err) {
 			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchStats' } });

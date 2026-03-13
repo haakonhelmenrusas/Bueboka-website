@@ -89,10 +89,17 @@ export interface Practice {
 	}>;
 }
 
+export type PeriodStats = {
+	totalArrows: number;
+	scoredArrows: number;
+	unscoredArrows: number;
+	avgScorePerArrow: number | null;
+};
+
 export type Stats = {
-	last7Days: number;
-	last30Days: number;
-	overall: number;
+	last7Days: PeriodStats;
+	last30Days: PeriodStats;
+	overall: PeriodStats;
 };
 
 export type StatsResponse = { stats: Stats };

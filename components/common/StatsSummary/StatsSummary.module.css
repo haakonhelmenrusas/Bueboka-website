@@ -4,50 +4,98 @@
 	gap: var(--space-4);
 }
 
-@media (max-width: 800px) {
+@media (max-width: 900px) {
 	.grid {
 		grid-template-columns: 1fr;
 	}
 }
 
 .card {
-	background: var(--primary-08);
-	border: 1px solid var(--primary-20);
+	background: var(--card-bg-solid);
+	border: 1px solid var(--border-gray);
 	border-radius: var(--radius-lg);
 	padding: var(--space-5);
 	display: flex;
-	align-items: center;
+	flex-direction: column;
 	gap: var(--space-4);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.icon {
-	width: 44px;
-	height: 44px;
-	border-radius: var(--radius-lg);
-	background: var(--primary-06);
-	color: var(--primary);
+.cardHeader {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	padding-bottom: var(--space-3);
+	border-bottom: 2px solid var(--primary);
+}
+
+.cardIcon {
+	width: 36px;
+	height: 36px;
+	border-radius: var(--radius-base);
+	background: var(--primary);
+	color: var(--white);
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	flex: 0 0 auto;
 }
 
-.meta {
+.cardTitle {
+	color: var(--primary);
+	font-weight: 800;
+	font-size: 1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+}
+
+.cardStats {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
-	min-width: 0;
+	gap: var(--space-2);
 }
 
-.title {
-	color: var(--text-gray-700);
-	font-weight: 750;
-	font-size: 0.95rem;
+.statRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
-.value {
+.statLabel {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	color: var(--text-gray-600);
+	font-size: 0.9rem;
+	font-weight: 500;
+}
+
+.rowIcon {
+	width: 1rem;
+	height: 1rem;
+	color: var(--primary-light);
+	flex: 0 0 auto;
+}
+
+.statValue {
 	color: var(--text-dark);
 	font-weight: 700;
-	font-size: 1.6rem;
-	line-height: 1;
+	font-size: 1rem;
+}
+
+.unit {
+	font-size: 0.8rem;
+	color: var(--text-gray-600);
+	font-weight: 400;
+}
+
+.noData {
+	color: var(--text-gray-600);
+	font-weight: 400;
+}
+
+.divider {
+	height: 1px;
+	background: var(--border-gray);
+	margin: var(--space-1) 0;
 }

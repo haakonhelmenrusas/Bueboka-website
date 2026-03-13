@@ -1,5 +1,6 @@
 .card {
     width: 100%;
+    height: 100%;
     background: var(--card-bg);
     border: 1px solid var(--card-bg);
     border-radius: var(--radius-xl);
@@ -7,13 +8,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-6);
+    gap: var(--space-8);
     color: var(--text-dark);
 }
 
 .avatarContainer {
-	position: relative;
-	width: fit-content;
+    position: relative;
+    width: fit-content;
 }
 
 .avatarWrap {
@@ -35,8 +36,8 @@
 }
 
 .avatarWrap:focus-visible {
-	outline: 2px solid var(--primary);
-	outline-offset: 4px;
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
 }
 
 .avatar {
@@ -59,7 +60,7 @@
 }
 
 .hiddenInput {
-	display: none;
+    display: none;
 }
 
 .hoverOverlay,
@@ -90,18 +91,18 @@
 }
 
 .spinner {
-	animation: spin 1s linear infinite;
-	width: 2rem;
-	height: 2rem;
+    animation: spin 1s linear infinite;
+    width: 2rem;
+    height: 2rem;
 }
 
 @keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .header {
@@ -115,75 +116,82 @@
 .name {
     margin: 0;
     font-size: 1.25rem;
-    font-weight: 900;
+    font-weight: 800;
     color: var(--text-dark);
 }
 
-.meta {
-    margin: 0;
-    font-size: 0.98rem;
-    font-weight: 650;
-    color: var(--text-dark);
+.clubBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .buttonGroup {
     display: flex;
     flex-direction: row;
     gap: var(--space-3);
+    margin-top: auto;
     width: 100%;
 }
 
 .menu {
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	transform: translateX(-50%);
-	margin-top: var(--space-3);
-	background: var(--white);
-	border-radius: var(--radius-md);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	min-width: 180px;
-	z-index: 50;
-	overflow: hidden;
-	animation: fadeIn 0.1s ease-out;
-	border: 1px solid var(--border-gray);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: var(--space-3);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    z-index: 50;
+    overflow: hidden;
+    animation: fadeIn 0.1s ease-out;
+    border: 1px solid var(--border-gray);
 }
 
 .menuItem {
-	display: flex;
-	align-items: center;
-	gap: var(--space-3);
-	width: 100%;
-	padding: var(--space-3) var(--space-4);
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	text-align: left;
-	font-size: 0.95rem;
-	color: var(--text-dark);
-	transition: background-color 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    transition: background-color 0.1s ease;
 }
 
 .menuItem:hover {
-	background-color: var(--bg-gray-100);
+    background-color: var(--bg-gray-100);
 }
 
 .menuItemDelete {
-	color: var(--error);
-	border-top: 1px solid var(--border-gray);
+    color: var(--error);
+    border-top: 1px solid var(--border-gray);
 }
 
 .menuItemDelete:hover {
-	background-color: var(--error-bg);
+    background-color: var(--error-bg);
 }
 
 @keyframes fadeIn {
-	from {
-		opacity: 0;
-		transform: translate(-50%, -10px);
-	}
-	to {
-		opacity: 1;
-		transform: translate(-50%, 0);
-	}
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }

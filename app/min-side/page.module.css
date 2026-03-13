@@ -39,7 +39,7 @@
   display: grid;
   grid-template-columns: 420px 1fr;
   gap: var(--space-8);
-  align-items: start;
+  align-items: stretch;
 }
 
 .editButton {
