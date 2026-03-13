@@ -1,11 +1,10 @@
 'use client';
 
 import React from 'react';
-import { LuTrash2, LuX } from 'react-icons/lu';
+import { LuTrash2 } from 'react-icons/lu';
 import styles from './BowModal.module.css';
 import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
-import { Button } from '@/components';
+import { Button, Modal } from '@/components';
 import { emitEquipmentChanged } from '@/lib/events';
 
 interface BowModalProps {
@@ -25,8 +24,6 @@ interface BowModalProps {
 }
 
 export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) {
-	useModalBehavior({ open, onClose });
-
 	const [loading, setLoading] = React.useState(false);
 	const [message, setMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null);
 	const [deleting, setDeleting] = React.useState(false);
@@ -128,48 +125,33 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 	if (!open) return null;
 
 	return (
-		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="bow-modal-title">
-				<div className={styles.header}>
-					<h2 id="bow-modal-title" className={styles.title}>
-						{editingBow ? 'Rediger bue' : 'Legg til bue'}
-					</h2>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<LuX size={22} />
-					</button>
-				</div>
-
-				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
-
-				<div className={styles.form}>
-					<BowForm key={editingBow?.id ?? 'new'} initialValues={initialValues} onSubmit={handleSubmit} />
-
-					<div className={styles.actions}>
-						{editingBow ? (
-							<Button
-								label={deleting ? 'Sletter...' : 'Slett bue'}
-								onClick={handleDelete}
-								disabled={loading || deleting}
-								buttonType="outline"
-								variant="warning"
-
-								icon={<LuTrash2 size={18} />}
-							/>
-						) : null}
-						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
+		<Modal open={open} onClose={onClose} title={editingBow ? 'Rediger bue' : 'Legg til bue'} maxWidth={680}>
+			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
+			<div className={styles.form}>
+				<BowForm key={editingBow?.id ?? 'new'} initialValues={initialValues} onSubmit={handleSubmit} />
+				<div className={styles.actions}>
+					{editingBow ? (
 						<Button
-							label={loading ? (editingBow ? 'Oppdaterer...' : 'Lagrer...') : editingBow ? 'Oppdater' : 'Lagre'}
-							onClick={() => {
-								const form = document.getElementById('bow-form') as HTMLFormElement | null;
-								form?.requestSubmit();
-							}}
-							loading={loading}
-							disabled={deleting}
-
+							label={deleting ? 'Sletter...' : 'Slett bue'}
+							onClick={handleDelete}
+							disabled={loading || deleting}
+							buttonType="outline"
+							variant="warning"
+							icon={<LuTrash2 size={18} />}
 						/>
-					</div>
+					) : null}
+					<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
+					<Button
+						label={loading ? (editingBow ? 'Oppdaterer...' : 'Lagrer...') : editingBow ? 'Oppdater' : 'Lagre'}
+						onClick={() => {
+							const form = document.getElementById('bow-form') as HTMLFormElement | null;
+							form?.requestSubmit();
+						}}
+						loading={loading}
+						disabled={deleting}
+					/>
 				</div>
 			</div>
-		</div>
+		</Modal>
 	);
 }

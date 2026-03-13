@@ -1,10 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LuX } from 'react-icons/lu';
 import styles from './ProfileEditModal.module.css';
 import { ProfileForm } from './ProfileForm';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
+import { Modal } from '@/components';
 
 interface ProfileEditModalProps {
 	isOpen: boolean;
@@ -20,7 +19,6 @@ interface ProfileEditModalProps {
 }
 
 export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: ProfileEditModalProps) {
-	useModalBehavior({ open: isOpen, onClose });
 
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -66,34 +64,18 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 	if (!isOpen) return null;
 
 	return (
-		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div
-				className={styles.modal}
-				onClick={(e) => e.stopPropagation()}
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="profile-edit-title"
-			>
-				<div className={styles.header}>
-					<h2 id="profile-edit-title" className={styles.title}>
-						Rediger profil
-					</h2>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<LuX size={24} />
-					</button>
-				</div>
-				<div className={styles.content}>
-					{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
-					<div className={styles.form}>
-						<ProfileForm
-							initialValues={{ name: user.name || '', club: user.club || '' }}
-							loading={loading}
-							onSubmit={handleProfileSubmit}
-							onCancel={onClose}
-						/>
-					</div>
+		<Modal open={isOpen} onClose={onClose} title="Rediger profil" maxWidth={560}>
+			<div className={styles.content}>
+				{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
+				<div className={styles.form}>
+					<ProfileForm
+						initialValues={{ name: user.name || '', club: user.club || '' }}
+						loading={loading}
+						onSubmit={handleProfileSubmit}
+						onCancel={onClose}
+					/>
 				</div>
 			</div>
-		</div>
+		</Modal>
 	);
 }

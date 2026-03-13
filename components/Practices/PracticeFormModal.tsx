@@ -5,8 +5,7 @@ import styles from './PracticeFormModal.module.css';
 import { LuX } from 'react-icons/lu';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
-import { Button, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
+import { Button, DateInput, Input, Modal, NumberInput, Select, TextArea } from '@/components';
 import {
 	getArrowsOptions,
 	getBowOptions,
@@ -74,7 +73,6 @@ interface PracticeFormModalProps {
 }
 
 export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onClose, onSave, mode, practice, bows = [], arrows = [] }) => {
-	useModalBehavior({ open, onClose });
 
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [location, setLocation] = useState('');
@@ -244,17 +242,8 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const arrowsOptions = getArrowsOptions(arrows);
 
 	return (
-		<div className={styles.overlay} role="presentation">
-			<div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="practice-form-title">
-				<div className={styles.header}>
-					<h3 id="practice-form-title" className={styles.title}>
-						{title}
-					</h3>
-					<button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<LuX size={20} />
-					</button>
-				</div>
-				<form className={styles.form} onSubmit={handleSubmit}>
+		<Modal open={open} onClose={onClose} title={title} maxWidth={720} closeOnBackdrop={false}>
+			<form className={styles.form} onSubmit={handleSubmit}>
 					<div className={styles.row}>
 						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
 						<Select
@@ -478,10 +467,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 							disabled={submitting}
 							loading={submitting}
 							width={180}
-						/>
-					</div>
-				</form>
-			</div>
-		</div>
+					/>
+				</div>
+			</form>
+		</Modal>
 	);
 };

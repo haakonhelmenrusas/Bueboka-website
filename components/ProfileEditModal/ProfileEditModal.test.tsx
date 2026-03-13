@@ -49,7 +49,7 @@ describe('ProfileEditModal', () => {
 
 		it('should not close modal when modal content is clicked', () => {
 			const { container } = render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-			const modal = container.querySelector('[class*="modal"]');
+			const modal = container.querySelector('[role="dialog"]');
 			fireEvent.click(modal!);
 			expect(mockOnClose).not.toHaveBeenCalled();
 		});

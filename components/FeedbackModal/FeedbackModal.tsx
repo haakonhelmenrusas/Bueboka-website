@@ -1,10 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { LuStar, LuX } from 'react-icons/lu';
+import { LuStar } from 'react-icons/lu';
 import styles from './FeedbackModal.module.css';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
-import { Button } from '@/components';
+import { Button, Modal } from '@/components';
 
 interface FeedbackModalProps {
 	open: boolean;
@@ -12,7 +11,6 @@ interface FeedbackModalProps {
 }
 
 export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
-	useModalBehavior({ open, onClose });
 
 	const [rating, setRating] = useState<number>(0);
 	const [hoveredRating, setHoveredRating] = useState<number>(0);
@@ -72,26 +70,9 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 	if (!open) return null;
 
 	return (
-		<div className={styles.overlay} onClick={handleClose} role="presentation">
-			<div
-				className={styles.modal}
-				onClick={(e) => e.stopPropagation()}
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="feedback-modal-title"
-			>
-				<div className={styles.header}>
-					<h2 id="feedback-modal-title" className={styles.title}>
-						Gi tilbakemelding
-					</h2>
-					<button type="button" className={styles.closeButton} onClick={onClose} aria-label="Lukk tilbakemeldingsskjema">
-						<LuX size={22} />
-					</button>
-				</div>
-
-				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
-
-				<form className={styles.form} onSubmit={handleSubmit}>
+		<Modal open={open} onClose={handleClose} title="Gi tilbakemelding" maxWidth={540} zIndex={10000}>
+			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
+			<form className={styles.form} onSubmit={handleSubmit}>
 					<div className={styles.ratingSection}>
 						<label className={styles.label}>Hvordan vil du vurdere Bueboka?</label>
 						<div className={styles.stars}>
@@ -135,7 +116,6 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 						/>
 					</div>
 				</form>
-			</div>
-		</div>
+		</Modal>
 	);
 }

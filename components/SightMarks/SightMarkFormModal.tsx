@@ -1,11 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { LuInfo, LuTrash2, LuX } from 'react-icons/lu';
+import { LuInfo, LuTrash2 } from 'react-icons/lu';
 import styles from './SightMarkFormModal.module.css';
-import { Button, NumberInput, Select } from '@/components';
+import { Button, Modal, NumberInput, Select } from '@/components';
 import type { SelectOption } from '@/components/common/Select/Select';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
 import type { Arrow, Bow } from '@/lib/types';
 
 interface InitialData {
@@ -26,7 +25,6 @@ interface SightMarkFormModalProps {
 }
 
 export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arrows, initialData }: SightMarkFormModalProps) {
-	useModalBehavior({ open, onClose });
 
 	const isEditing = !!initialData;
 
@@ -122,18 +120,8 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 	const busy = loading || deleting;
 
 	return (
-		<div className={styles.modalOverlay}>
-			<div className={styles.modalContent}>
-				<div className={styles.header}>
-					<h3 className={styles.title}>
-						{isEditing ? 'Rediger siktemerke' : 'Nytt siktemerke'}
-					</h3>
-					<button onClick={onClose} className={styles.closeButton} aria-label="Lukk">
-						<LuX size={20} />
-					</button>
-				</div>
-
-				{!isEditing && (
+		<Modal open={open} onClose={onClose} title={isEditing ? 'Rediger siktemerke' : 'Nytt siktemerke'} maxWidth={560}>
+			{!isEditing && (
 					<div className={styles.infoBox}>
 						<LuInfo size={18} className={styles.infoIcon} />
 						<p className={styles.infoText}>
@@ -210,7 +198,6 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 						</div>
 					</div>
 				</form>
-			</div>
-		</div>
+		</Modal>
 	);
 }

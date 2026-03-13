@@ -3,8 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './WhatsNewModal.module.css';
 import { LuChevronRight } from 'react-icons/lu';
-import { Button } from '@/components';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
+import { Button, Modal } from '@/components';
 import { LiaFireAltSolid } from 'react-icons/lia';
 import { PiChartBarLight, PiCheckSquareLight } from 'react-icons/pi';
 import { IoMdTrendingUp } from 'react-icons/io';
@@ -16,7 +15,6 @@ interface WhatsNewModalProps {
 }
 
 export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
-	useModalBehavior({ open, onClose });
 	const [currentStep, setCurrentStep] = useState(0);
 
 	// Reset to first step when modal opens
@@ -166,46 +164,52 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 	};
 
 	return (
-		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-labelledby="whats-new-title">
-				<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-					<HiOutlineXMark className="w-6 h-6" />
-				</button>
+		<Modal
+			open={open}
+			onClose={onClose}
+			title={currentStepData.title}
+			maxWidth={800}
+			zIndex={300}
+			hideHeader
+			panelStyle={{ overflow: 'hidden', padding: 0, gap: 0, borderRadius: 'var(--radius-xl)' }}
+		>
+			<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+				<HiOutlineXMark className="w-6 h-6" />
+			</button>
 
-				<div className={styles.content}>
-					<div className={styles.header}>
-						<h2 id="whats-new-title" className={styles.title}>
-							{currentStepData.title}
-						</h2>
-						<p className={styles.subtitle}>{currentStepData.subtitle}</p>
-					</div>
+			<div className={styles.content}>
+				<div className={styles.header}>
+					<h2 id="whats-new-title" className={styles.title}>
+						{currentStepData.title}
+					</h2>
+					<p className={styles.subtitle}>{currentStepData.subtitle}</p>
+				</div>
 
-					<div className={styles.body}>{currentStepData.content}</div>
+				<div className={styles.body}>{currentStepData.content}</div>
 
-					<div className={styles.footer}>
-						<div className={styles.progressDots}>
-							{steps.map((_, index) => (
-								<button
-									key={index}
-									className={`${styles.dot} ${index === currentStep ? styles.dotActive : ''} ${index < currentStep ? styles.dotCompleted : ''}`}
-									onClick={() => setCurrentStep(index)}
-									aria-label={`Gå til steg ${index + 1}`}
-								/>
-							))}
-						</div>
-						<div className={styles.actions}>
-							{currentStep > 0 && <Button label="Forrige" onClick={handlePrevious} buttonType="outline" width={120} />}
-							<Button
-								label={isLastStep ? 'Kom i gang!' : 'Neste'}
-								onClick={handleNext}
-								icon={<LuChevronRight className="w-4 h-4" />}
-								iconPosition="right"
-								width={isLastStep ? 160 : 120}
+				<div className={styles.footer}>
+					<div className={styles.progressDots}>
+						{steps.map((_, index) => (
+							<button
+								key={index}
+								className={`${styles.dot} ${index === currentStep ? styles.dotActive : ''} ${index < currentStep ? styles.dotCompleted : ''}`}
+								onClick={() => setCurrentStep(index)}
+								aria-label={`Gå til steg ${index + 1}`}
 							/>
-						</div>
+						))}
+					</div>
+					<div className={styles.actions}>
+						{currentStep > 0 && <Button label="Forrige" onClick={handlePrevious} buttonType="outline" width={120} />}
+						<Button
+							label={isLastStep ? 'Kom i gang!' : 'Neste'}
+							onClick={handleNext}
+							icon={<LuChevronRight className="w-4 h-4" />}
+							iconPosition="right"
+							width={isLastStep ? 160 : 120}
+						/>
 					</div>
 				</div>
 			</div>
-		</div>
+		</Modal>
 	);
 }

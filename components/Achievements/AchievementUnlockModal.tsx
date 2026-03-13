@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
 	LuArrowUpRight,
 	LuChevronRight,
@@ -18,7 +18,7 @@ import {
 	LuZap,
 } from 'react-icons/lu';
 import { Achievement } from '@/lib/achievements/types';
-import { Button } from '@/components';
+import { Button, Modal } from '@/components';
 import styles from './AchievementUnlockModal.module.css';
 import { CiTrophy } from 'react-icons/ci';
 
@@ -54,86 +54,49 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ achievements, onClose, onViewAll }) => {
-	// Prevent body scroll when modal is open
-	useEffect(() => {
-		document.body.style.overflow = 'hidden';
-		return () => {
-			document.body.style.overflow = 'unset';
-		};
-	}, []);
-
-	// Handle escape key
-	useEffect(() => {
-		const handleEscape = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				onClose();
-			}
-		};
-		window.addEventListener('keydown', handleEscape);
-		return () => window.removeEventListener('keydown', handleEscape);
-	}, [onClose]);
-
-	// Handle backdrop click
-	const handleBackdropClick = (e: React.MouseEvent) => {
-		if (e.target === e.currentTarget) {
-			onClose();
-		}
-	};
-
 	const totalPoints = achievements.reduce((sum, achievement) => sum + achievement.points, 0);
+	const modalTitle = achievements.length === 1 ? 'Nytt Merke!' : `${achievements.length} Nye Merker!`;
 
 	return (
-		<div className={styles.modal} onClick={handleBackdropClick}>
-			<div className={styles.modalContent}>
-				<button className={styles.closeButton} onClick={onClose} aria-label="Lukk" type="button">
-					<LuX className="w-6 h-6" />
-				</button>
+		<Modal open={true} onClose={onClose} title={modalTitle} maxWidth={500} zIndex={1000} hideHeader>
+			<button className={styles.closeButton} onClick={onClose} aria-label="Lukk" type="button">
+				<LuX className="w-6 h-6" />
+			</button>
 
-				<div className={styles.header}>
-					<div className={styles.celebration}>🎉</div>
-					<h2 className={styles.title}>{achievements.length === 1 ? 'Nytt Merke!' : `${achievements.length} Nye Merker!`}</h2>
-					<p className={styles.subtitle}>Gratulerer! Du har låst opp {achievements.length === 1 ? 'et nytt merke' : 'nye merker'}</p>
-				</div>
+			<div className={styles.header}>
+				<div className={styles.celebration}>🎉</div>
+				<h2 className={styles.title}>{modalTitle}</h2>
+				<p className={styles.subtitle}>Gratulerer! Du har låst opp {achievements.length === 1 ? 'et nytt merke' : 'nye merker'}</p>
+			</div>
 
-				<div className={styles.achievementList}>
-					{achievements.map((achievement) => {
-						const IconComponent = ICON_MAP[achievement.icon] || CiTrophy;
-						return (
-							<div key={achievement.id} className={styles.achievementItem}>
-								<div className={styles.achievementIcon}>
-									<IconComponent className="w-8 h-8" />
-								</div>
-								<div className={styles.achievementContent}>
-									<h3 className={styles.achievementName}>{achievement.name}</h3>
-									<p className={styles.achievementDescription}>{achievement.description}</p>
-									<p className={styles.achievementPoints}>+{achievement.points} poeng</p>
-								</div>
+			<div className={styles.achievementList}>
+				{achievements.map((achievement) => {
+					const IconComponent = ICON_MAP[achievement.icon] || CiTrophy;
+					return (
+						<div key={achievement.id} className={styles.achievementItem}>
+							<div className={styles.achievementIcon}>
+								<IconComponent className="w-8 h-8" />
 							</div>
-						);
-					})}
-				</div>
+							<div className={styles.achievementContent}>
+								<h3 className={styles.achievementName}>{achievement.name}</h3>
+								<p className={styles.achievementDescription}>{achievement.description}</p>
+								<p className={styles.achievementPoints}>+{achievement.points} poeng</p>
+							</div>
+						</div>
+					);
+				})}
+			</div>
 
-				<div className={styles.footer}>
-					<Button label="Lukk" onClick={onClose} size="normal" buttonType="outline" />
-					{onViewAll && (
-						<Button label="Se Alle Merker" onClick={onViewAll} size="normal" buttonType="filled" icon={<LuTrophy className="w-4 h-4" />} />
-					)}
-				</div>
-
-				{totalPoints > 0 && (
-					<p
-						style={{
-							textAlign: 'center',
-							marginTop: 'var(--space-4)',
-							fontSize: '0.875rem',
-							color: 'var(--text-gray-600)',
-							fontWeight: 600,
-						}}
-					>
-						Totalt: +{totalPoints} poeng
-					</p>
+			<div className={styles.footer}>
+				<Button label="Lukk" onClick={onClose} size="normal" buttonType="outline" />
+				{onViewAll && (
+					<Button label="Se Alle Merker" onClick={onViewAll} size="normal" buttonType="filled" icon={<LuTrophy className="w-4 h-4" />} />
 				)}
 			</div>
-		</div>
+
+			{totalPoints > 0 && (
+				<p className={styles.totalPoints}>Totalt: +{totalPoints} poeng</p>
+			)}
+		</Modal>
 	);
 };

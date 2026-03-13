@@ -25,6 +25,7 @@ import { ProfileCard } from './ProfileCard/ProfileCard';
 import { ProfileMenu } from './ProfileMenu/ProfileMenu';
 import { EquipmentSection } from './EquipmentSection/EquipmentSection';
 import { Checkbox } from './common/Checkbox/Checkbox';
+import { Modal } from './common/Modal/Modal';
 import { PracticesSection } from './PracticesSection/PracticesSection';
 import { ConfirmModal } from './common/ConfirmModal/ConfirmModal';
 import { Accordion } from './common/Accordion/Accordion';
@@ -67,9 +68,9 @@ export {
 	ProfileMenu,
 	EquipmentSection,
 	Checkbox,
+	Modal,
 	PracticesSection,
 	ConfirmModal,
-	// ThemeToggle,
 	Accordion,
 	FullPageLoader,
 	SightMarksSection,

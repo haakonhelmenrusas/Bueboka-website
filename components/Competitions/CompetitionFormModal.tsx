@@ -2,10 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import styles from './CompetitionFormModal.module.css';
+import { LuX } from 'react-icons/lu';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
-import { Button, Checkbox, DateInput, Input, NumberInput, Select, TextArea } from '@/components';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
+import { Button, Checkbox, DateInput, Input, Modal, NumberInput, Select, TextArea } from '@/components';
 import {
 	type ArrowsOption,
 	type EquipmentOption,
@@ -15,7 +15,6 @@ import {
 	getPracticeCategoryOptions,
 	getWeatherSelectOptions,
 } from '@/lib/formUtils';
-import { LuX } from 'react-icons/lu';
 import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
 
 export interface CompetitionRoundInput {
@@ -88,8 +87,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	bows = [],
 	arrows = [],
 }) => {
-	useModalBehavior({ open, onClose });
-
 
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [name, setName] = useState('');
@@ -246,16 +243,9 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	const arrowsOptions = getArrowsOptions(arrows);
 
 	return (
-		<div className={styles.overlay} onClick={onClose}>
-			<div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-				<div className={styles.header}>
-					<h3 className={styles.title}>{mode === 'edit' ? 'Rediger konkurranse' : 'Legg til konkurranse'}</h3>
-					<button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<LuX size={20} />
-					</button>
-				</div>
-				<form onSubmit={handleSubmit} className={styles.form}>
-					{error && <div className={styles.error}>{error}</div>}
+		<Modal open={open} onClose={onClose} title={mode === 'edit' ? 'Rediger konkurranse' : 'Legg til konkurranse'} maxWidth={720}>
+			<form onSubmit={handleSubmit} className={styles.form}>
+				{error && <div className={styles.error}>{error}</div>}
 					<Input
 						label="Navn på konkurransen"
 						value={name}
@@ -474,7 +464,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre'} disabled={submitting} loading={submitting} width={180} />
 					</div>
 				</form>
-			</div>
-		</div>
+		</Modal>
 	);
 };

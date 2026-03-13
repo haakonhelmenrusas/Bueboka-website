@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { LuTrash2, LuX } from 'react-icons/lu';
+import { LuTrash2 } from 'react-icons/lu';
 import styles from './ArrowsModal.module.css';
 import { ArrowsForm, ArrowsFormValues } from '@/components/ProfileEditModal/ArrowsForm';
-import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
-import { Button } from '@/components';
+import { Button, Modal } from '@/components';
 import { emitEquipmentChanged } from '@/lib/events';
 
 interface ArrowsModalProps {
@@ -26,7 +25,6 @@ interface ArrowsModalProps {
 }
 
 export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsModalProps) {
-	useModalBehavior({ open, onClose });
 
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -117,26 +115,9 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 	if (!open) return null;
 
 	return (
-		<div className={styles.overlay} onClick={onClose} role="presentation">
-			<div
-				className={styles.modal}
-				onClick={(e) => e.stopPropagation()}
-				role="dialog"
-				aria-modal="true"
-				aria-labelledby="arrows-modal-title"
-			>
-				<div className={styles.header}>
-					<h2 id="arrows-modal-title" className={styles.title}>
-						{editingArrows ? 'Rediger piler' : 'Legg til piler'}
-					</h2>
-					<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
-						<LuX size={22} />
-					</button>
-				</div>
-
-				{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
-
-				<div className={styles.form}>
+		<Modal open={open} onClose={onClose} title={editingArrows ? 'Rediger piler' : 'Legg til piler'} maxWidth={640}>
+			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
+			<div className={styles.form}>
 					<ArrowsForm
 						initialValues={
 							editingArrows
@@ -178,7 +159,6 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 						/>
 					</div>
 				</div>
-			</div>
-		</div>
+		</Modal>
 	);
 }
