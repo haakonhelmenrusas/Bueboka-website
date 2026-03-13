@@ -1,5 +1,12 @@
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { PrismaClient } from '@/prisma/prisma/generated/prisma-client/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+
+const adapter = new PrismaPg({
+	// DIRECT_DATABASE_URL is the raw postgres:// connection.
+	// DATABASE_URL may be the Prisma Accelerate URL which PrismaPg cannot use directly.
+	connectionString: process.env.DIRECT_DATABASE_URL ?? process.env.DATABASE_URL,
+});
 
 const globalForPrisma = global as unknown as {
 	prisma: PrismaClient;
@@ -8,8 +15,14 @@ const globalForPrisma = global as unknown as {
 export const prisma =
 	globalForPrisma.prisma ||
 	new PrismaClient({
-		accelerateUrl: process.env.DATABASE_URL as string,
+		adapter
 	}).$extends(withAccelerate());
+
+/*export const prisma =
+	globalForPrisma.prisma ||
+	new PrismaClient({
+		accelerateUrl: process.env.DATABASE_URL as string,
+	}).$extends(withAccelerate());*/
 
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
