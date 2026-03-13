@@ -27,19 +27,51 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 		refreshEquipment();
 	}, [fetchSightMarks, refreshEquipment, onRefresh]);
 
-	const handleDelete = async (id: string) => {
-		setIsDeletingId(id);
+	const handleDeleteMark = async (sightMarkId: string, index: number) => {
+		setIsDeletingId(sightMarkId);
 		try {
-			await deleteSightMark(id);
+			const sm = sightMarks.find((s) => s.id === sightMarkId);
+			if (!sm) return;
+
+			const newMarks = sm.givenMarks.filter((_, i) => i !== index);
+			const newDistances = sm.givenDistances.filter((_, i) => i !== index);
+
+			if (newMarks.length === 0) {
+				// No marks left – delete the whole record
+				await deleteSightMark(sightMarkId);
+			} else {
+				// Patch the record with the mark removed; also filter calculated_marks from stored ballistics
+				const calc = sm.ballisticsParameters as import('@/types/SightMarks').CalculatedMarks;
+				const newCalculated = Array.isArray(calc?.calculated_marks)
+					? calc.calculated_marks.filter((_, i) => i !== index)
+					: undefined;
+				const updatedBallistics = newCalculated
+					? { ...calc, calculated_marks: newCalculated, given_marks: newMarks, given_distances: newDistances }
+					: sm.ballisticsParameters;
+
+				const res = await fetch(`/api/sight-marks/${sightMarkId}`, {
+					method: 'PATCH',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({
+						givenMarks: newMarks,
+						givenDistances: newDistances,
+						ballisticsParameters: updatedBallistics,
+					}),
+				});
+				if (!res.ok) throw new Error('Kunne ikke oppdatere siktemerke');
+				fetchSightMarks();
+			}
+		} catch (err) {
+			console.error('Error deleting mark:', err);
 		} finally {
 			setIsDeletingId(null);
 		}
 	};
 
-	const handleCreate = async (data: { distance: number; mark: number }) => {
+	const handleCreate = async (data: { distance: number; mark: number; bowId: string }) => {
 		setCreateError(null);
 		try {
-			const activeBow = bows.find((b) => b.isFavorite) || bows[0];
+			const activeBow = bows.find((b) => b.id === data.bowId);
 			const activeArrow = arrows.find((a) => a.isFavorite) || arrows[0];
 
 			if (!activeBow) {
@@ -171,12 +203,13 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 						</button>
 					</div>
 				)}
-				<SightMarksTable sightMarks={sightMarks} onDelete={handleDelete} isDeleting={isDeletingId !== null} />
+				<SightMarksTable sightMarks={sightMarks} onDeleteMark={handleDeleteMark} isDeleting={isDeletingId !== null} />
 			</div>
 			<SightMarkFormModal
 				open={isModalOpen}
 				onClose={() => setIsModalOpen(false)}
 				onSave={handleCreate}
+				bows={bows}
 			/>
 		</section>
 	);

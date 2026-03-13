@@ -1,89 +1,162 @@
 .tableWrapper {
-	overflow-x: auto;
-	width: 100%;
+    overflow-x: auto;
+    width: 100%;
 }
 
-.table {
-	width: 100%;
-	border-collapse: collapse;
-	background-color: transparent;
-	border-radius: var(--radius-base);
-	overflow: hidden;
+.cardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-5);
 }
 
-.table thead {
-	background-color: var(--card-bg-solid);
-	border-bottom: 2px solid var(--border-gray);
+.card {
+    background: var(--card-bg-solid);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
-.table th {
-	padding: 12px 16px;
-	text-align: left;
-	font-weight: 600;
-	font-size: 14px;
-	color: var(--text-dark);
-	text-transform: uppercase;
-	letter-spacing: 1px;
+.cardHeader {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-5);
+    background: var(--primary);
+    color: var(--white);
 }
 
-.table td {
-	padding: 12px 16px;
-	border-bottom: 1px solid var(--border-gray);
-	color: var(--text-gray-600);
-	font-size: 14px;
+.bowIcon {
+    flex: 0 0 auto;
+    opacity: 0.85;
 }
 
-.table tbody tr:hover {
-	background-color: var(--card-bg-light);
+.bowName {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    flex: 1;
 }
 
-.table tbody tr:last-child td {
-	border-bottom: none;
+.markCount {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.18);
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
 }
 
-.actions {
-	text-align: right;
-	white-space: nowrap;
+/* Marks inner table */
+.marksTable {
+    display: flex;
+    flex-direction: column;
+}
+
+.marksHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 36px;
+    padding: var(--space-2) var(--space-5);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-gray-600);
+    border-bottom: 1px solid var(--border-gray);
+    background: var(--bg-gray-50);
+}
+
+.calculatedHeader {
+    color: var(--primary);
+}
+
+.markRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 36px;
+    align-items: center;
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--border-gray);
+    transition: background 0.1s;
+}
+
+.markRow:last-child {
+    border-bottom: none;
+}
+
+.markRow:hover {
+    background: var(--bg-gray-50);
+}
+
+.distanceValue {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.markValue {
+    font-size: 0.9rem;
+    color: var(--text-gray-600);
+}
+
+.calculatedValue {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.deleteBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-base);
+    color: var(--text-gray-600);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    padding: 0;
+}
+
+.deleteBtn:hover:not(:disabled) {
+    background: var(--error-bg);
+    color: var(--error);
+}
+
+.deleteBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.noMarks {
+    padding: var(--space-4) var(--space-5);
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-gray-600);
 }
 
 .emptyState {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	padding: 40px 20px;
-	background-color: var(--primary-02);
-	border-radius: var(--radius-base);
-	border: 1px dashed var(--primary-20);
-	text-align: center;
-	color: var(--text-gray-700);
-	font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    background-color: var(--primary-02);
+    border-radius: var(--radius-base);
+    border: 1px dashed var(--primary-20);
+    text-align: center;
+    color: var(--text-gray-700);
+    font-weight: 600;
 }
 
 .emptyState p {
-	margin: 0;
-	font-size: 16px;
+    margin: 0;
+    font-size: 16px;
 }
 
-/* Dark mode support */
-[data-theme='dark'] .table thead {
-	background-color: var(--card-bg-solid);
-}
-
-[data-theme='dark'] .table th {
-	color: var(--text-dark);
-}
-
-[data-theme='dark'] .table td {
-	color: var(--text-gray-600);
-}
-
-[data-theme='dark'] .table tbody tr:hover {
-	background-color: var(--card-bg-light);
-}
-
-[data-theme='dark'] .emptyState {
-	background-color: var(--primary-02);
-	border-color: var(--primary-20);
-	color: var(--text-gray-700);
+@media (max-width: 640px) {
+    .cardGrid {
+        grid-template-columns: 1fr;
+    }
 }

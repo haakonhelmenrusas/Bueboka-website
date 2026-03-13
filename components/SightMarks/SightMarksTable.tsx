@@ -1,62 +1,74 @@
 import styles from './SightMarksTable.module.css';
-import { SightMark } from '@/types/SightMarks';
-import { LuTrash2 } from 'react-icons/lu';
-import { Button } from '@/components/common/Button/Button';
+import { SightMark, CalculatedMarks } from '@/types/SightMarks';
+import { LuTarget, LuTrash2 } from 'react-icons/lu';
 
 interface SightMarksTableProps {
 	sightMarks: SightMark[];
-	onDelete: (id: string) => Promise<void>;
+	onDeleteMark: (sightMarkId: string, index: number) => Promise<void>;
 	isDeleting?: boolean;
 }
 
-export function SightMarksTable({ sightMarks, onDelete, isDeleting = false }: SightMarksTableProps) {
+export function SightMarksTable({ sightMarks, onDeleteMark, isDeleting = false }: SightMarksTableProps) {
 	if (sightMarks.length === 0) {
 		return (
 			<div className={styles.emptyState}>
-				<p>Ingen siktemerker ennå. Opprett din første siktemerker i appen.</p>
+				<p>Ingen siktemerker ennå. Legg til ditt første siktemerke med knappen over.</p>
 			</div>
 		);
 	}
 
-	const handleDelete = async (id: string) => {
-		await onDelete(id);
-	};
-
 	return (
-		<div className={styles.tableWrapper}>
-			<table className={styles.table}>
-				<thead>
-					<tr>
-						<th>Bue</th>
-						<th>Merker</th>
-						<th>Avstand (m)</th>
-						<th>Opprettet</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{sightMarks.map((sightMark) => (
-						<tr key={sightMark.id}>
-							<td>{sightMark.bowSpec?.bow?.name || 'Ukjent bue'}</td>
-							<td>{sightMark.givenMarks.length > 0 ? sightMark.givenMarks.join(', ') : '-'}</td>
-							<td>{sightMark.givenDistances.length > 0 ? sightMark.givenDistances.join(', ') : '-'}</td>
-							<td>{new Date(sightMark.createdAt || '').toLocaleDateString('nb-NO')}</td>
-							<td className={styles.actions}>
-								<Button
-									label="Slett"
-									icon={<LuTrash2 size={16} />}
-									onClick={() => handleDelete(sightMark.id)}
-									size="small"
-									disabled={isDeleting}
-									variant="warning"
-									buttonType="outline"
-									width={80}
-								/>
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
+		<div className={styles.cardGrid}>
+			{sightMarks.map((sm) => {
+				const calc = sm.ballisticsParameters as CalculatedMarks;
+				const bowName = sm.bowSpec?.bow?.name ?? 'Ukjent bue';
+
+				return (
+					<div key={sm.id} className={styles.card}>
+						<div className={styles.cardHeader}>
+							<LuTarget className={styles.bowIcon} size={20} />
+							<h3 className={styles.bowName}>{bowName}</h3>
+							<span className={styles.markCount}>{sm.givenDistances.length} merker</span>
+						</div>
+
+						{sm.givenDistances.length === 0 ? (
+							<p className={styles.noMarks}>Ingen merker registrert</p>
+						) : (
+							<div className={styles.marksTable}>
+								<div className={styles.marksHeader}>
+									<span>Avstand</span>
+									<span>Merke</span>
+									<span className={styles.calculatedHeader}>Beregnet</span>
+									<span></span>
+								</div>
+								{sm.givenDistances.map((distance, index) => {
+									const givenMark = sm.givenMarks[index];
+									const calculatedMark = Array.isArray(calc?.calculated_marks)
+										? calc.calculated_marks[index]
+										: undefined;
+									return (
+										<div key={index} className={styles.markRow}>
+											<span className={styles.distanceValue}>{distance.toFixed(1)} m</span>
+											<span className={styles.markValue}>{givenMark != null ? givenMark.toFixed(2) : '-'}</span>
+											<span className={styles.calculatedValue}>
+												{calculatedMark != null ? calculatedMark.toFixed(2) : '-'}
+											</span>
+											<button
+												className={styles.deleteBtn}
+												onClick={() => onDeleteMark(sm.id, index)}
+												disabled={isDeleting}
+												aria-label={`Fjern merke for ${distance.toFixed(1)}m`}
+											>
+												<LuTrash2 size={15} />
+											</button>
+										</div>
+									);
+								})}
+							</div>
+						)}
+					</div>
+				);
+			})}
 		</div>
 	);
 }

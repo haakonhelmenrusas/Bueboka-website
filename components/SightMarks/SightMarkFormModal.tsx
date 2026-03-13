@@ -5,22 +5,30 @@ import { LuX } from 'react-icons/lu';
 import styles from './SightMarkFormModal.module.css';
 import { Button, NumberInput } from '@/components';
 import { useModalBehavior } from '@/lib/hooks/useModalBehavior';
+import type { Bow } from '@/lib/types';
 
 interface SightMarkFormModalProps {
 	open: boolean;
 	onClose: () => void;
-	onSave: (data: { distance: number; mark: number }) => Promise<void>;
+	onSave: (data: { distance: number; mark: number; bowId: string }) => Promise<void>;
+	bows: Bow[];
 }
 
-export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModalProps) {
+export function SightMarkFormModal({ open, onClose, onSave, bows }: SightMarkFormModalProps) {
 	useModalBehavior({ open, onClose });
 	const [distance, setDistance] = useState<number>(0);
 	const [mark, setMark] = useState<number>(0);
+	const defaultBow = bows.find((b) => b.isFavorite) ?? bows[0];
+	const [selectedBowId, setSelectedBowId] = useState<string>(defaultBow?.id ?? '');
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
+		if (!selectedBowId) {
+			setError('Du må velge en bue');
+			return;
+		}
 		if (distance <= 0 || mark <= 0) {
 			setError('Vennligst fyll ut begge feltene med positive verdier');
 			return;
@@ -30,17 +38,13 @@ export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModal
 		setError(null);
 
 		try {
-			await onSave({ distance, mark });
+			await onSave({ distance, mark, bowId: selectedBowId });
 			onClose();
 			setDistance(0);
 			setMark(0);
 		} catch (err) {
 			console.error(err);
-			if (err instanceof Error) {
-				setError(err.message);
-			} else {
-				setError('Kunne ikke lagre siktemerke');
-			}
+			setError(err instanceof Error ? err.message : 'Kunne ikke lagre siktemerke');
 		} finally {
 			setLoading(false);
 		}
@@ -58,6 +62,25 @@ export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModal
 					</button>
 				</div>
 				<form onSubmit={handleSubmit} className={styles.form}>
+					<div className={styles.field}>
+						<label className={styles.label} htmlFor="bow-select">Bue</label>
+						{bows.length === 0 ? (
+							<p className={styles.noBows}>Ingen buer registrert. Legg til en bue i profilen din først.</p>
+						) : (
+							<select
+								id="bow-select"
+								className={styles.select}
+								value={selectedBowId}
+								onChange={(e) => setSelectedBowId(e.target.value)}
+							>
+								{bows.map((bow) => (
+									<option key={bow.id} value={bow.id}>
+										{bow.name}{bow.isFavorite ? ' ⭐' : ''}
+									</option>
+								))}
+							</select>
+						)}
+					</div>
 					<div className={styles.inputsRow}>
 						<NumberInput
 							label="Avstand (m)"
@@ -82,7 +105,7 @@ export function SightMarkFormModal({ open, onClose, onSave }: SightMarkFormModal
 					{error && <div className={styles.error}>{error}</div>}
 					<div className={styles.footer}>
 						<Button label="Avbryt" type="button" buttonType="outline" onClick={onClose} disabled={loading} />
-						<Button label="Lagre" type="submit" loading={loading} />
+						<Button label="Lagre" type="submit" loading={loading} disabled={bows.length === 0} />
 					</div>
 				</form>
 			</div>
