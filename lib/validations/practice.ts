@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
 
 // Environment, Weather, and PracticeCategory enums matching Prisma schema
 export const EnvironmentEnum = z.enum(['INDOOR', 'OUTDOOR']);
@@ -25,8 +26,7 @@ export const RoundInputSchema = z.object({
 		.string()
 		.refine((val) => {
 			if (!val) return true; // Optional field
-			// Valid target types
-			const validTypes = ['40cm', '60cm', '80cm', '122cm', '3-spot', 'vertical-3-spot', 'animal', 'other', 'halmmatte'];
+			const validTypes = TARGET_TYPE_OPTIONS.map((o) => o.value);
 			return validTypes.includes(val);
 		}, 'Ugyldig blinktype')
 		.optional(),
