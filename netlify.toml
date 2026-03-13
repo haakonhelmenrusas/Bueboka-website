@@ -1,5 +1,5 @@
 [build]
-  command = "DATABASE_URL=$DIRECT_DATABASE_URL npx prisma migrate deploy && npm run prisma:generate && npm run build"
+  command = "npm test -- --passWithNoTests --ci && DATABASE_URL=$DIRECT_DATABASE_URL npx prisma migrate deploy && npm run prisma:generate && npm run build"
   publish = ".next"
 
 [[plugins]]
