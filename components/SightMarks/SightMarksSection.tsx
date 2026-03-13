@@ -98,8 +98,9 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 
 			if (!spec) throw new Error('Fant ingen buespesifikasjon. Sjekk at du har registrert en bue i profilen din.');
 
-			// Find active sight mark: prefer the one the user clicked, else match by bow spec
-			const activeSightMark = editingSightMark ?? sightMarks.find((sm) => sm.bowSpecificationId === spec.id);
+			// Only append to an existing set when the user explicitly clicked a card to edit it.
+			// In "Nytt merke" mode (editingSightMark === null) always create a fresh record.
+			const activeSightMark = editingSightMark;
 
 			// Prepare accumulated marks
 			const existingMarks = activeSightMark?.givenMarks ?? [];
