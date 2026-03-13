@@ -1,5 +1,4 @@
 .button {
-    /* Default tokens (can be overridden by modifier classes / inline CSS variables) */
     --btn-bg: var(--primary);
     --btn-color: var(--btn-text-light);
     --btn-border-color: transparent;
@@ -78,37 +77,10 @@
     --btn-border-color: var(--error);
 }
 
-/* Dark mode overrides */
-[data-theme='dark'] .standard {
-    --btn-bg: var(--btn-text-light);
-    --btn-color: var(--primary-dark);
-}
-
-[data-theme='dark'] .standard.outline {
-    --btn-color: var(--primary-light);
-    --btn-border-color: var(--primary-light);
-}
-
-[data-theme='dark'] .warning {
-    --btn-bg: var(--error);
-    --btn-color: var(--btn-text-light);
-}
-
-[data-theme='dark'] .warning.outline {
-    --btn-color: var(--error-light);
-    --btn-border-color: var(--error-light);
-}
-
 .button:hover:not(:disabled) {
     background-color: var(--secondary);
     color: var(--btn-text-light);
     border-color: rgba(255, 255, 255, 0.35);
-}
-
-[data-theme='dark'] .button:hover:not(:disabled) {
-    background-color: var(--primary);
-    color: var(--btn-text-light);
-    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .warning:hover:not(:disabled) {
@@ -122,11 +94,6 @@
     border-color: var(--error-light);
 }
 
-[data-theme='dark'] .warning.outline:hover:not(:disabled) {
-    background-color: rgba(239, 68, 68, 0.2);
-}
-
-
 .button:hover:not(:disabled) svg {
     color: currentColor;
 }
@@ -137,11 +104,6 @@
     border-top-color: var(--white-85);
     border-radius: var(--radius-circle);
     animation: spin 0.8s linear infinite;
-}
-
-[data-theme='dark'] .spinner {
-    border: 2px solid rgba(249, 250, 251, 0.25);
-    border-top-color: var(--btn-text-light);
 }
 
 @keyframes spin {

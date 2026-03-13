@@ -48,7 +48,7 @@ export async function GET() {
 		// Group data by distance + target combination
 		const groupedData = new Map<
 			string,
-			Array<{ date: string; arrows: number; score: number; practiceType: string; practiceCategory: string; sessionId: string }>
+			Array<{ date: string; arrows: number; scoredArrows: number; score: number; practiceType: string; practiceCategory: string; sessionId: string }>
 		>();
 
 		for (const practice of practices) {
@@ -82,8 +82,8 @@ export async function GET() {
 					const key = `${distance}m - ${target}cm`;
 
 					// Include both arrows with score and arrowsWithoutScore
-					const arrows =
-						(typeof end.arrows === 'number' ? end.arrows : 0) + (typeof end.arrowsWithoutScore === 'number' ? end.arrowsWithoutScore : 0);
+					const scoredArrows = typeof end.arrows === 'number' ? end.arrows : 0;
+					const arrows = scoredArrows + (typeof end.arrowsWithoutScore === 'number' ? end.arrowsWithoutScore : 0);
 					const score = typeof end.roundScore === 'number' ? end.roundScore : 0;
 
 					// Only add if there are arrows
@@ -95,6 +95,7 @@ export async function GET() {
 						groupedData.get(key)!.push({
 							date: dateStr,
 							arrows,
+							scoredArrows,
 							score,
 							practiceType,
 							practiceCategory,
@@ -138,9 +139,9 @@ export async function GET() {
 					const key = `${distance}m - ${target}cm`;
 
 					// Include both arrows with score and arrowsWithoutScore
+					const scoredArrows = typeof round.arrows === 'number' ? round.arrows : 0;
 					const arrows =
-						(typeof round.arrows === 'number' ? round.arrows : 0) +
-						(typeof round.arrowsWithoutScore === 'number' ? round.arrowsWithoutScore : 0);
+						scoredArrows + (typeof round.arrowsWithoutScore === 'number' ? round.arrowsWithoutScore : 0);
 					const score = typeof round.roundScore === 'number' ? round.roundScore : 0;
 
 					// Only add if there are arrows
@@ -152,6 +153,7 @@ export async function GET() {
 						groupedData.get(key)!.push({
 							date: dateStr,
 							arrows,
+							scoredArrows,
 							score,
 							practiceType,
 							practiceCategory,

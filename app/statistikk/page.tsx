@@ -185,37 +185,37 @@ export default function StatisticsPage() {
 
 	// Calculate average score per arrow grouped by practice type (training vs competition)
 	const getScoreChartData = () => {
-		// Group by date and practice type
-		const dateMap = new Map<string, { training: { score: number; arrows: number }; competition: { score: number; arrows: number } }>();
+		// Group by date and practice type, only counting arrows that have a score
+		const dateMap = new Map<string, { training: { score: number; scoredArrows: number }; competition: { score: number; scoredArrows: number } }>();
 
 		filteredSeries.forEach((s) => {
 			s.data.forEach((d) => {
-				if (d.score > 0 && d.arrows > 0) {
+				if (d.score > 0 && d.scoredArrows > 0) {
 					if (!dateMap.has(d.date)) {
 						dateMap.set(d.date, {
-							training: { score: 0, arrows: 0 },
-							competition: { score: 0, arrows: 0 },
+							training: { score: 0, scoredArrows: 0 },
+							competition: { score: 0, scoredArrows: 0 },
 						});
 					}
 
 					const entry = dateMap.get(d.date)!;
 					if (d.practiceType === 'KONKURRANSE') {
 						entry.competition.score += d.score;
-						entry.competition.arrows += d.arrows;
+						entry.competition.scoredArrows += d.scoredArrows;
 					} else {
 						entry.training.score += d.score;
-						entry.training.arrows += d.arrows;
+						entry.training.scoredArrows += d.scoredArrows;
 					}
 				}
 			});
 		});
 
-		// Convert to array and calculate averages
+		// Convert to array and calculate averages (score / scoredArrows only)
 		return Array.from(dateMap.entries())
 			.map(([date, data]) => ({
 				date,
-				training_avg: data.training.arrows > 0 ? data.training.score / data.training.arrows : null,
-				competition_avg: data.competition.arrows > 0 ? data.competition.score / data.competition.arrows : null,
+				training_avg: data.training.scoredArrows > 0 ? data.training.score / data.training.scoredArrows : null,
+				competition_avg: data.competition.scoredArrows > 0 ? data.competition.score / data.competition.scoredArrows : null,
 			}))
 			.filter((point) => point.training_avg !== null || point.competition_avg !== null)
 			.sort((a, b) => a.date.localeCompare(b.date));
@@ -304,6 +304,7 @@ export default function StatisticsPage() {
 					) : (
 						<>
 							<FilterControls dateRange={dateRange} onDateRangeChange={setDateRange} onDownloadCSV={downloadCSV} />
+								<BreakdownSection items={getBreakdownItems()} />
 							<div className={styles.chartSection}>
 								<ArrowsChart
 									data={getArrowsChartData()}
@@ -313,7 +314,6 @@ export default function StatisticsPage() {
 									onCategoryChange={setSelectedCategory}
 								/>
 								<ScoreChart data={getScoreChartData()} formatDate={formatDate} />
-								<BreakdownSection items={getBreakdownItems()} />
 							</div>
 						</>
 					)}

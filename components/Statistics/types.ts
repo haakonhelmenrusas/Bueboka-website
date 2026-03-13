@@ -5,6 +5,7 @@ export type PracticeCategory = 'SKIVE_INDOOR' | 'SKIVE_OUTDOOR' | 'JAKT_3D' | 'F
 export interface SeriesData {
 	date: string;
 	arrows: number;
+	scoredArrows: number; // Arrows that have a score (excludes arrowsWithoutScore)
 	score: number;
 	practiceType: string;
 	practiceCategory: string;
