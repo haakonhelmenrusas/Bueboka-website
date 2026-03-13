@@ -1,29 +1,49 @@
 -- Consolidated migration: full schema as of 2026-03-05
 -- This replaces all previous individual migrations.
+-- All statements are idempotent (safe to re-run against a DB that already
+-- has some of these objects from the old individual migrations).
 
 -- ─── Enums ───────────────────────────────────────────────────────────────────
 
-CREATE TYPE "Material" AS ENUM ('KARBON', 'ALUMINIUM', 'TREVERK');
+DO $$ BEGIN
+    CREATE TYPE "Material" AS ENUM ('KARBON', 'ALUMINIUM', 'TREVERK');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE "Placement" AS ENUM ('BAK_LINJEN', 'OVER_LINJEN', 'ANNET');
+DO $$ BEGIN
+    CREATE TYPE "Placement" AS ENUM ('BAK_LINJEN', 'OVER_LINJEN', 'ANNET');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE "Environment" AS ENUM ('INDOOR', 'OUTDOOR');
+DO $$ BEGIN
+    CREATE TYPE "Environment" AS ENUM ('INDOOR', 'OUTDOOR');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE "WeatherCondition" AS ENUM (
-    'SUN', 'CLOUDED', 'CLEAR', 'RAIN', 'WIND', 'SNOW',
-    'FOG', 'THUNDER', 'CHANGING_CONDITIONS', 'OTHER'
-);
+DO $$ BEGIN
+    CREATE TYPE "WeatherCondition" AS ENUM (
+        'SUN', 'CLOUDED', 'CLEAR', 'RAIN', 'WIND', 'SNOW',
+        'FOG', 'THUNDER', 'CHANGING_CONDITIONS', 'OTHER'
+    );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE "BowType" AS ENUM (
-    'RECURVE', 'COMPOUND', 'LONGBOW', 'BAREBOW',
-    'HORSEBOW', 'TRADITIONAL', 'OTHER'
-);
+DO $$ BEGIN
+    CREATE TYPE "BowType" AS ENUM (
+        'RECURVE', 'COMPOUND', 'LONGBOW', 'BAREBOW',
+        'HORSEBOW', 'TRADITIONAL', 'OTHER'
+    );
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-CREATE TYPE "PracticeCategory" AS ENUM ('SKIVE_INDOOR', 'SKIVE_OUTDOOR', 'JAKT_3D', 'FELT');
+DO $$ BEGIN
+    CREATE TYPE "PracticeCategory" AS ENUM ('SKIVE_INDOOR', 'SKIVE_OUTDOOR', 'JAKT_3D', 'FELT');
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
 -- ─── Tables ──────────────────────────────────────────────────────────────────
 
-CREATE TABLE "user" (
+CREATE TABLE IF NOT EXISTS "user" (
     "id"            TEXT         NOT NULL,
     "email"         TEXT         NOT NULL,
     "emailVerified" BOOLEAN      NOT NULL DEFAULT false,
@@ -36,7 +56,7 @@ CREATE TABLE "user" (
     CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "account" (
+CREATE TABLE IF NOT EXISTS "account" (
     "id"                    TEXT         NOT NULL,
     "userId"                TEXT         NOT NULL,
     "accountId"             TEXT         NOT NULL,
@@ -54,7 +74,7 @@ CREATE TABLE "account" (
     CONSTRAINT "account_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "session" (
+CREATE TABLE IF NOT EXISTS "session" (
     "id"        TEXT         NOT NULL,
     "userId"    TEXT         NOT NULL,
     "token"     TEXT         NOT NULL,
@@ -67,7 +87,7 @@ CREATE TABLE "session" (
     CONSTRAINT "session_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "verification" (
+CREATE TABLE IF NOT EXISTS "verification" (
     "id"         TEXT         NOT NULL,
     "identifier" TEXT         NOT NULL,
     "value"      TEXT         NOT NULL,
@@ -78,7 +98,7 @@ CREATE TABLE "verification" (
     CONSTRAINT "verification_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "bows" (
+CREATE TABLE IF NOT EXISTS "bows" (
     "id"         TEXT             NOT NULL,
     "userId"     TEXT             NOT NULL,
     "name"       TEXT             NOT NULL,
@@ -94,7 +114,7 @@ CREATE TABLE "bows" (
     CONSTRAINT "bows_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "arrows" (
+CREATE TABLE IF NOT EXISTS "arrows" (
     "id"          TEXT             NOT NULL,
     "userId"      TEXT             NOT NULL,
     "name"        TEXT             NOT NULL,
@@ -116,7 +136,7 @@ CREATE TABLE "arrows" (
     CONSTRAINT "arrows_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "round_types" (
+CREATE TABLE IF NOT EXISTS "round_types" (
     "id"                 TEXT         NOT NULL,
     "name"               TEXT         NOT NULL,
     "distanceMeters"     INTEGER,
@@ -130,7 +150,7 @@ CREATE TABLE "round_types" (
     CONSTRAINT "round_types_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "practices" (
+CREATE TABLE IF NOT EXISTS "practices" (
     "id"               TEXT                  NOT NULL,
     "userId"           TEXT                  NOT NULL,
     "date"             TIMESTAMP(3)          NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -150,7 +170,7 @@ CREATE TABLE "practices" (
     CONSTRAINT "practices_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "ends" (
+CREATE TABLE IF NOT EXISTS "ends" (
     "id"                 TEXT         NOT NULL,
     "practiceId"         TEXT         NOT NULL,
     "arrows"             INTEGER,
@@ -168,7 +188,7 @@ CREATE TABLE "ends" (
     CONSTRAINT "ends_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "competitions" (
+CREATE TABLE IF NOT EXISTS "competitions" (
     "id"                   TEXT                  NOT NULL,
     "userId"               TEXT                  NOT NULL,
     "date"                 TIMESTAMP(3)          NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -191,7 +211,7 @@ CREATE TABLE "competitions" (
     CONSTRAINT "competitions_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "competition_rounds" (
+CREATE TABLE IF NOT EXISTS "competition_rounds" (
     "id"                 TEXT         NOT NULL,
     "competitionId"      TEXT         NOT NULL,
     "roundNumber"        INTEGER      NOT NULL,
@@ -207,7 +227,7 @@ CREATE TABLE "competition_rounds" (
     CONSTRAINT "competition_rounds_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "bow_specifications" (
+CREATE TABLE IF NOT EXISTS "bow_specifications" (
     "id"                    TEXT         NOT NULL,
     "userId"                TEXT         NOT NULL,
     "bowId"                 TEXT         NOT NULL,
@@ -220,7 +240,7 @@ CREATE TABLE "bow_specifications" (
     CONSTRAINT "bow_specifications_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "sight_marks" (
+CREATE TABLE IF NOT EXISTS "sight_marks" (
     "id"                 TEXT         NOT NULL,
     "userId"             TEXT         NOT NULL,
     "bowSpecificationId" TEXT         NOT NULL,
@@ -233,7 +253,7 @@ CREATE TABLE "sight_marks" (
     CONSTRAINT "sight_marks_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "sight_mark_results" (
+CREATE TABLE IF NOT EXISTS "sight_mark_results" (
     "id"                TEXT             NOT NULL,
     "userId"            TEXT             NOT NULL,
     "sightMarkId"       TEXT             NOT NULL,
@@ -250,7 +270,7 @@ CREATE TABLE "sight_mark_results" (
     CONSTRAINT "sight_mark_results_pkey" PRIMARY KEY ("id")
 );
 
-CREATE TABLE "user_achievements" (
+CREATE TABLE IF NOT EXISTS "user_achievements" (
     "id"            TEXT         NOT NULL,
     "userId"        TEXT         NOT NULL,
     "achievementId" TEXT         NOT NULL,
@@ -265,96 +285,156 @@ CREATE TABLE "user_achievements" (
 
 -- ─── Indexes ─────────────────────────────────────────────────────────────────
 
-CREATE UNIQUE INDEX "user_email_key"                        ON "user"("email");
-CREATE UNIQUE INDEX "account_providerId_accountId_key"      ON "account"("providerId", "accountId");
-CREATE UNIQUE INDEX "session_token_key"                     ON "session"("token");
-CREATE INDEX        "practices_userId_idx"                  ON "practices"("userId");
-CREATE INDEX        "practices_date_idx"                    ON "practices"("date");
-CREATE INDEX        "competitions_userId_idx"               ON "competitions"("userId");
-CREATE INDEX        "competitions_date_idx"                 ON "competitions"("date");
-CREATE UNIQUE INDEX "bow_specifications_userId_bowId_key"   ON "bow_specifications"("userId", "bowId");
-CREATE INDEX        "user_achievements_userId_idx"          ON "user_achievements"("userId");
-CREATE UNIQUE INDEX "user_achievements_userId_achievementId_key" ON "user_achievements"("userId", "achievementId");
+CREATE UNIQUE INDEX IF NOT EXISTS "user_email_key"                        ON "user"("email");
+CREATE UNIQUE INDEX IF NOT EXISTS "account_providerId_accountId_key"      ON "account"("providerId", "accountId");
+CREATE UNIQUE INDEX IF NOT EXISTS "session_token_key"                     ON "session"("token");
+CREATE INDEX        IF NOT EXISTS "practices_userId_idx"                  ON "practices"("userId");
+CREATE INDEX        IF NOT EXISTS "practices_date_idx"                    ON "practices"("date");
+CREATE INDEX        IF NOT EXISTS "competitions_userId_idx"               ON "competitions"("userId");
+CREATE INDEX        IF NOT EXISTS "competitions_date_idx"                 ON "competitions"("date");
+CREATE UNIQUE INDEX IF NOT EXISTS "bow_specifications_userId_bowId_key"   ON "bow_specifications"("userId", "bowId");
+CREATE INDEX        IF NOT EXISTS "user_achievements_userId_idx"          ON "user_achievements"("userId");
+CREATE UNIQUE INDEX IF NOT EXISTS "user_achievements_userId_achievementId_key" ON "user_achievements"("userId", "achievementId");
 
 -- ─── Foreign Keys ────────────────────────────────────────────────────────────
 
-ALTER TABLE "account"
-    ADD CONSTRAINT "account_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "account"
+        ADD CONSTRAINT "account_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "session"
-    ADD CONSTRAINT "session_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "session"
+        ADD CONSTRAINT "session_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "bows"
-    ADD CONSTRAINT "bows_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "bows"
+        ADD CONSTRAINT "bows_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "arrows"
-    ADD CONSTRAINT "arrows_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "arrows"
+        ADD CONSTRAINT "arrows_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "practices"
-    ADD CONSTRAINT "practices_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "practices"
+        ADD CONSTRAINT "practices_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "practices"
-    ADD CONSTRAINT "practices_bowId_fkey"
-    FOREIGN KEY ("bowId") REFERENCES "bows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "practices"
+        ADD CONSTRAINT "practices_bowId_fkey"
+        FOREIGN KEY ("bowId") REFERENCES "bows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "practices"
-    ADD CONSTRAINT "practices_arrowsId_fkey"
-    FOREIGN KEY ("arrowsId") REFERENCES "arrows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "practices"
+        ADD CONSTRAINT "practices_arrowsId_fkey"
+        FOREIGN KEY ("arrowsId") REFERENCES "arrows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "practices"
-    ADD CONSTRAINT "practices_roundTypeId_fkey"
-    FOREIGN KEY ("roundTypeId") REFERENCES "round_types"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "practices"
+        ADD CONSTRAINT "practices_roundTypeId_fkey"
+        FOREIGN KEY ("roundTypeId") REFERENCES "round_types"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "ends"
-    ADD CONSTRAINT "ends_practiceId_fkey"
-    FOREIGN KEY ("practiceId") REFERENCES "practices"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "ends"
+        ADD CONSTRAINT "ends_practiceId_fkey"
+        FOREIGN KEY ("practiceId") REFERENCES "practices"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "competitions"
-    ADD CONSTRAINT "competitions_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "competitions"
+        ADD CONSTRAINT "competitions_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "competitions"
-    ADD CONSTRAINT "competitions_bowId_fkey"
-    FOREIGN KEY ("bowId") REFERENCES "bows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "competitions"
+        ADD CONSTRAINT "competitions_bowId_fkey"
+        FOREIGN KEY ("bowId") REFERENCES "bows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "competitions"
-    ADD CONSTRAINT "competitions_arrowsId_fkey"
-    FOREIGN KEY ("arrowsId") REFERENCES "arrows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "competitions"
+        ADD CONSTRAINT "competitions_arrowsId_fkey"
+        FOREIGN KEY ("arrowsId") REFERENCES "arrows"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "competition_rounds"
-    ADD CONSTRAINT "competition_rounds_competitionId_fkey"
-    FOREIGN KEY ("competitionId") REFERENCES "competitions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "competition_rounds"
+        ADD CONSTRAINT "competition_rounds_competitionId_fkey"
+        FOREIGN KEY ("competitionId") REFERENCES "competitions"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "bow_specifications"
-    ADD CONSTRAINT "bow_specifications_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "bow_specifications"
+        ADD CONSTRAINT "bow_specifications_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "bow_specifications"
-    ADD CONSTRAINT "bow_specifications_bowId_fkey"
-    FOREIGN KEY ("bowId") REFERENCES "bows"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "bow_specifications"
+        ADD CONSTRAINT "bow_specifications_bowId_fkey"
+        FOREIGN KEY ("bowId") REFERENCES "bows"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "sight_marks"
-    ADD CONSTRAINT "sight_marks_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "sight_marks"
+        ADD CONSTRAINT "sight_marks_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "sight_marks"
-    ADD CONSTRAINT "sight_marks_bowSpecificationId_fkey"
-    FOREIGN KEY ("bowSpecificationId") REFERENCES "bow_specifications"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "sight_marks"
+        ADD CONSTRAINT "sight_marks_bowSpecificationId_fkey"
+        FOREIGN KEY ("bowSpecificationId") REFERENCES "bow_specifications"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "sight_mark_results"
-    ADD CONSTRAINT "sight_mark_results_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "sight_mark_results"
+        ADD CONSTRAINT "sight_mark_results_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "sight_mark_results"
-    ADD CONSTRAINT "sight_mark_results_sightMarkId_fkey"
-    FOREIGN KEY ("sightMarkId") REFERENCES "sight_marks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "sight_mark_results"
+        ADD CONSTRAINT "sight_mark_results_sightMarkId_fkey"
+        FOREIGN KEY ("sightMarkId") REFERENCES "sight_marks"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
-ALTER TABLE "user_achievements"
-    ADD CONSTRAINT "user_achievements_userId_fkey"
-    FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+DO $$ BEGIN
+    ALTER TABLE "user_achievements"
+        ADD CONSTRAINT "user_achievements_userId_fkey"
+        FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
 
