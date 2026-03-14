@@ -1,0 +1,196 @@
+/* =============================================
+   SessionShareCard – fixed 460px card
+   Uses hardcoded hex colours (not CSS vars) so
+   html-to-image captures them correctly.
+   ============================================= */
+
+.card {
+	width: 460px;
+	min-height: 340px;
+	background: #ffffff;
+	border-radius: 20px;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	box-shadow: 0 4px 24px rgba(5, 53, 70, 0.18);
+}
+
+/* ---- Header ---- */
+.header {
+	background: linear-gradient(135deg, #053546 0%, #00171f 100%);
+	padding: 20px 24px 16px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.brand {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.brandLogoCircle {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	background: #D8F5FF;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.brandLogo {
+	width: 22px;
+	height: 22px;
+	object-fit: contain;
+}
+
+.brandName {
+	color: #ffffff;
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: -0.3px;
+}
+
+.typeBadge {
+	background: rgba(255, 255, 255, 0.15);
+	color: #d8f5ff;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	padding: 4px 12px;
+	border-radius: 100px;
+	border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ---- Score hero ---- */
+.scoreHero {
+	background: linear-gradient(160deg, #0c82ac 0%, #053546 100%);
+	padding: 28px 24px;
+	text-align: center;
+}
+
+.scoreLabel {
+	color: rgba(216, 245, 255, 0.85);
+	font-size: 11px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	margin-bottom: 8px;
+}
+
+.scoreValue {
+	color: #ffffff;
+	font-size: 64px;
+	font-weight: 800;
+	line-height: 1;
+	margin-bottom: 8px;
+	letter-spacing: -2px;
+}
+
+.scoreArrowsRow {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.scoreArrowsChip {
+	background: rgba(255, 255, 255, 0.18);
+	color: #ffffff;
+	font-size: 12px;
+	font-weight: 600;
+	padding: 3px 10px;
+	border-radius: 100px;
+	border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.scoreArrowsChipDim {
+	background: rgba(255, 255, 255, 0.08);
+	color: rgba(216, 245, 255, 0.7);
+	font-size: 12px;
+	font-weight: 500;
+	padding: 3px 10px;
+	border-radius: 100px;
+	border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+
+/* ---- Stats grid ---- */
+.statsGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1px;
+	background: #e5e7eb;
+	flex: 1;
+}
+
+.statItem {
+	background: #ffffff;
+	padding: 16px 18px;
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+}
+
+.statIcon {
+	color: #0c82ac;
+	flex-shrink: 0;
+	margin-top: 2px;
+}
+
+.statContent {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.statLabel {
+	color: #9ca3af;
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+}
+
+.statValue {
+	color: #111827;
+	font-size: 13px;
+	font-weight: 600;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.statSub {
+	color: #6b7280;
+	font-size: 11px;
+	font-weight: 400;
+}
+
+/* ---- Footer ---- */
+.footer {
+	background: #f9fafb;
+	border-top: 1px solid #e5e7eb;
+	padding: 10px 24px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+
+.footerText {
+	color: #9ca3af;
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.03em;
+}
+

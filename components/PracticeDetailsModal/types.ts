@@ -25,6 +25,8 @@ export interface PracticeDetails {
 	practiceType?: PracticeType | null;
 	practiceCategory?: PracticeCategory | null;
 	totalScore?: number;
+	placement?: number | null;
+	numberOfParticipants?: number | null;
 	bow?: { name: string; type: string };
 	arrows?: { name: string; material: string };
 	ends?: PracticeEnd[];

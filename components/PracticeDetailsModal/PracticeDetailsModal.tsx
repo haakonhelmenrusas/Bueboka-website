@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Modal } from '@/components';
+import { Button, Modal, SessionShareModal } from '@/components';
+import type { SessionShareData } from '@/components/SessionShareCard/SessionShareCard';
 import { formatWeatherConditions } from '@/lib/weatherUtils';
 import { getArrowMaterialLabel, getBowTypeLabel, getPracticeCategoryLabel } from '@/lib/labels';
 import type { PracticeDetailsModalProps } from './types';
@@ -9,13 +10,14 @@ import { EnvironmentBadge, PracticeTypeBadge } from './Badges';
 import { StatCard } from './StatCard';
 import { RoundCard } from './RoundCard';
 import styles from './PracticeDetailsModal.module.css';
-import { LuCloud, LuMapPin, LuTarget, LuTrash } from 'react-icons/lu';
+import { LuCloud, LuMapPin, LuTarget, LuTrash, LuShare2 } from 'react-icons/lu';
 import { GiArrowhead, GiBowArrow, GiBrokenArrow } from 'react-icons/gi';
 import { CgNotes } from 'react-icons/cg';
 
 export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open, practice, onClose, onEdit, onDeleted }) => {
 	const [deleting, setDeleting] = React.useState(false);
 	const [deleteError, setDeleteError] = React.useState<string | null>(null);
+	const [shareOpen, setShareOpen] = React.useState(false);
 
 	if (!practice) return null;
 
@@ -27,6 +29,23 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 
 	const totalArrows = calculateTotalArrows(practice);
 	const totalScore = calculateTotalScore(practice);
+
+	// Derive distance from first end
+	const distanceMeters = practice.ends?.[0]?.distanceMeters ?? null;
+
+	const shareData: SessionShareData = {
+		date: practice.date,
+		practiceType: practice.practiceType ?? null,
+		totalScore,
+		arrowsShot: totalArrows,
+		arrowsWithoutScore: practice.arrowsWithoutScore ?? 0,
+		bowName: practice.bow?.name ?? null,
+		bowType: practice.bow?.type ?? null,
+		distanceMeters,
+		category: practice.practiceCategory ?? null,
+		environment: practice.environment ?? null,
+		location: practice.location ?? null,
+	};
 
 	const handleDelete = async () => {
 		setDeleting(true);
@@ -49,6 +68,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 	};
 
 	return (
+		<>
 		<Modal open={open} onClose={onClose} title={formattedDate} maxWidth={900}>
 			<div className={styles.badges}>
 				<PracticeTypeBadge practiceType={practice.practiceType} />
@@ -122,6 +142,14 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				<Button label="Lukk" buttonType="outline" onClick={onClose} width={140} disabled={deleting} />
 				{onEdit && <Button label="Rediger" onClick={onEdit} width={140} disabled={deleting} />}
 				<Button
+					label="Del"
+					onClick={() => setShareOpen(true)}
+					width={140}
+					buttonType="outline"
+					disabled={deleting}
+					icon={<LuShare2 size={16} />}
+				/>
+				<Button
 					label={deleting ? 'Sletter...' : 'Slett'}
 					onClick={handleDelete}
 					width={140}
@@ -132,5 +160,12 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 				/>
 			</div>
 		</Modal>
+
+		<SessionShareModal
+			open={shareOpen}
+			onClose={() => setShareOpen(false)}
+			data={shareData}
+		/>
+	</>
 	);
 };

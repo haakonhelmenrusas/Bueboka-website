@@ -28,6 +28,12 @@ export const PRACTICE_CATEGORY_LABELS: Record<string, string> = {
 	FELT: 'Felt',
 };
 
+// Environment translations
+export const ENVIRONMENT_LABELS: Record<string, string> = {
+	INDOOR: 'Innendørs',
+	OUTDOOR: 'Utendørs',
+};
+
 // Select options (for dropdowns/forms)
 export const BOW_TYPE_OPTIONS = [
 	{ value: 'RECURVE', label: 'Recurve' },
@@ -57,3 +63,8 @@ export function getArrowMaterialLabel(material: string): string {
 export function getPracticeCategoryLabel(category: string): string {
 	return PRACTICE_CATEGORY_LABELS[category] || category;
 }
+
+export function getEnvironmentLabel(environment: string): string {
+	return ENVIRONMENT_LABELS[environment] || environment;
+}
+
