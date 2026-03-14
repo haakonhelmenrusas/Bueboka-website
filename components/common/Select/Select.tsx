@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import styles from './Select.module.css';
 import { useClickOutside, useEscapeKey } from '@/lib/hooks';
 
@@ -71,7 +72,7 @@ export const Select: React.FC<SelectProps> = ({
 	const [open, setOpen] = useState(false);
 	const [activeIndex, setActiveIndex] = useState<number>(-1);
 	const [searchQuery, setSearchQuery] = useState('');
-
+	const [menuRect, setMenuRect] = useState<{ top: number; left: number; width: number } | null>(null);
 	const describedById = useMemo(() => {
 		const ids: string[] = [];
 		if (helpText) ids.push(`${selectId}-help`);
@@ -111,6 +112,12 @@ export const Select: React.FC<SelectProps> = ({
 
 	const openMenu = () => {
 		if (disabled) return;
+
+		if (buttonRef.current) {
+			const rect = buttonRef.current.getBoundingClientRect();
+			setMenuRect({ top: rect.bottom + 6, left: rect.left, width: rect.width });
+		}
+
 		setOpen(true);
 		// set active to selected, otherwise first enabled
 		if (multiple) {
@@ -257,8 +264,15 @@ export const Select: React.FC<SelectProps> = ({
 					</span>
 				</button>
 
-				{open ? (
-					<ul className={styles.menu} role="listbox" id={listboxId} aria-labelledby={buttonId}>
+				{open && menuRect ? createPortal(
+					<ul
+						className={styles.menu}
+						role="listbox"
+						id={listboxId}
+						aria-labelledby={buttonId}
+						style={{ position: 'fixed', top: menuRect.top, left: menuRect.left, width: menuRect.width }}
+						onMouseDown={(e) => e.stopPropagation()}
+					>
 						{searchable ? (
 							<li className={styles.searchWrapper}>
 								<input
@@ -315,7 +329,8 @@ export const Select: React.FC<SelectProps> = ({
 								);
 							})
 						)}
-					</ul>
+					</ul>,
+					document.body
 				) : null}
 			</div>
 

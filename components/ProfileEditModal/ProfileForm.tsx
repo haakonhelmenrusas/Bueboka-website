@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Button, Input } from '@/components';
+import { Button, Input, Select } from '@/components';
+import { NORWEGIAN_ARCHERY_CLUBS } from '@/lib/clubs';
 import styles from './ProfileForm.module.css';
 
 export interface ProfileFormValues {
@@ -15,6 +16,8 @@ interface ProfileFormProps {
 	onSubmit: (values: ProfileFormValues) => Promise<void>;
 	onCancel?: () => void;
 }
+
+const CLUB_OPTIONS = [{ value: '', label: 'Ingen / ikke tilknyttet' }, ...NORWEGIAN_ARCHERY_CLUBS];
 
 export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: ProfileFormProps) {
 	const [name, setName] = useState(initialValues.name);
@@ -34,7 +37,14 @@ export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: Prof
 			className={styles.form}
 		>
 			<Input label="Navn" value={name} onChange={(e) => setName(e.target.value)} helpText="Ditt fulle navn" required />
-			<Input label="Klubb" value={club} onChange={(e) => setClub(e.target.value)} helpText="Navnet på klubben din" />
+			<Select
+				searchable
+				label="Klubb"
+				value={club}
+				onChange={(val) => setClub(val as string)}
+				options={CLUB_OPTIONS}
+				helpText="Klubben din"
+			/>
 
 			<div className={styles.actions}>
 				{onCancel && <Button label="Avbryt" onClick={onCancel} disabled={loading} buttonType="outline" width={160} type="button" />}

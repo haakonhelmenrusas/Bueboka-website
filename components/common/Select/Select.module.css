@@ -91,11 +91,7 @@
 }
 
 .menu {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(100% + 6px);
-    z-index: 50;
+    z-index: 9999;
     background: var(--card-bg-solid);
     border: 1px solid var(--bg-gray-200);
     border-radius: var(--radius-md);
