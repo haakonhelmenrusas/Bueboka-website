@@ -16,6 +16,25 @@
 .chartSubtitle {
   font-size: 0.875rem;
   color: var(--text-gray-600);
-  margin: 0 0 var(--space-6) 0;
+  margin: 0;
 }
 
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.filterGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 200px;
+}
+
+.filterSelect {
+  min-width: 200px;
+}

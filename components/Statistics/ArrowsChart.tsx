@@ -31,7 +31,6 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 
 	// Category options for Select component
 	const categoryOptions = [
-		{ value: 'all', label: 'Alle kategorier' },
 		{ value: 'SKIVE_INDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR },
 		{ value: 'SKIVE_OUTDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR },
 		{ value: 'JAKT_3D', label: PRACTICE_CATEGORY_LABELS.JAKT_3D },
