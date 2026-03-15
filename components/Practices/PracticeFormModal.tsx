@@ -363,7 +363,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 													placeholderLabel="Velg"
 													searchable
 													options={TARGET_TYPE_OPTIONS}
-													containerClassName={styles.roundField}
+													containerClassName={styles.skiveField}
 												/>
 											</>
 										)}

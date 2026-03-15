@@ -103,13 +103,35 @@
 
 .roundInputs {
     display: flex;
-    gap: var(--space-4);
-    width: 100%;
+    gap: 0;
+    align-items: flex-start;
+}
+
+.skiveField {
+    flex: 1;
+}
+
+@media (max-width: 640px) {
+    .roundInputs {
+        flex-wrap: wrap;
+    }
+
+    .skiveField {
+        flex: 1 1 100%;
+    }
+
+    .rowFlex {
+        flex-wrap: wrap;
+    }
+
+    .rowFlex > * {
+        flex: 1 1 140px;
+        min-width: 0;
+    }
 }
 
 .targetField {
     flex: 1;
-    max-width: 190px;
 }
 
 .limitMessage {

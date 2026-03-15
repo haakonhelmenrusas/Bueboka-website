@@ -22,12 +22,17 @@ export const Ballistics: AimDistanceMark = {
 
 export const TARGET_TYPE_OPTIONS = [
 	{ value: '40cm', label: '40 cm' },
+	{ value: '40cm-trippel-vegas', label: '40cm Trippel/Vegas' },
 	{ value: '60cm', label: '60 cm' },
+	{ value: '60cm-trippel', label: '60cm Trippel' },
 	{ value: '80cm', label: '80 cm' },
+	{ value: '80cm-centre-6', label: '80 cm Centre 6' },
 	{ value: '122cm', label: '122 cm' },
-	{ value: '3-spot', label: '3-spot' },
-	{ value: 'vertical-3-spot', label: 'Vertical 3-spot' },
+	{ value: 'felt-20-trippel', label: 'Felt 20 cm Trippel' },
+	{ value: 'felt-40', label: 'Felt 40 cm' },
+	{ value: 'felt-60', label: 'Felt 60 cm' },
+	{ value: 'felt-80', label: 'Felt 80 cm' },
 	{ value: 'bar', label: 'Barmatte uten blink' },
+	{ value: 'historisk-nl-inne', label: 'Historisk NL Inne' },
 	{ value: 'other', label: 'Annet' },
-	{ value: 'halmmatte', label: 'Halmmatte' },
 ];
