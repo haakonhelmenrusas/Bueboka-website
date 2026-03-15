@@ -1,4 +1,4 @@
-import { LuActivity, LuCalendar, LuCircleCheck, LuStar, LuTarget, LuCircleX } from 'react-icons/lu';
+import { LuActivity, LuCalendar, LuCircleCheck, LuStar, LuTarget, LuCircleX, LuTrophy } from 'react-icons/lu';
 import styles from './BreakdownSection.module.css';
 import type { SeriesData } from './types';
 
@@ -71,6 +71,15 @@ export function BreakdownSection({ items }: BreakdownSectionProps) {
 									</div>
 									<span className={styles.breakdownValue}>{avgArrows}</span>
 								</div>
+								{totalScore > 0 && (
+									<div className={styles.breakdownStat}>
+										<div className={styles.statLabelWrapper}>
+											<LuTrophy className={styles.statIcon} />
+											<span className={styles.breakdownLabel}>Total score</span>
+										</div>
+										<span className={styles.breakdownValueScore}>{totalScore}</span>
+									</div>
+								)}
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuStar className={styles.statIcon} />

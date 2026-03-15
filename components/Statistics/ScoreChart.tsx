@@ -1,10 +1,17 @@
+'use client';
+
 import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styles from './ScoreChart.module.css';
 import { useEffect, useState } from 'react';
+import { Select } from '@/components';
+import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
+import { PracticeCategory } from './types';
 
 interface ScoreChartProps {
 	data: any[];
 	formatDate: (date: string) => string;
+	selectedCategory: PracticeCategory;
+	onCategoryChange: (category: PracticeCategory) => void;
 }
 
 // Generate colors from CSS variables
@@ -18,17 +25,45 @@ const getChartColors = (): { training: string; competition: string } => {
 	};
 };
 
-export function ScoreChart({ data, formatDate }: ScoreChartProps) {
+export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChange }: ScoreChartProps) {
 	const [colors, setColors] = useState<{ training: string; competition: string }>({ training: '#053546', competition: '#e63946' });
 
 	useEffect(() => {
 		setColors(getChartColors());
 	}, []);
 
+	const categoryOptions = [
+		{ value: 'SKIVE_INDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR },
+		{ value: 'SKIVE_OUTDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR },
+		{ value: 'JAKT_3D', label: PRACTICE_CATEGORY_LABELS.JAKT_3D },
+		{ value: 'FELT', label: PRACTICE_CATEGORY_LABELS.FELT },
+	];
+
+	// Compute integer y-axis ticks from the actual data range
+	const allValues = data
+		.flatMap((d) => [d.training_avg, d.competition_avg])
+		.filter((v): v is number => v != null);
+	const minTick = allValues.length ? Math.floor(Math.min(...allValues)) : 0;
+	const maxTick = allValues.length ? Math.ceil(Math.max(...allValues)) : 10;
+	const yTicks = Array.from({ length: maxTick - minTick + 1 }, (_, i) => minTick + i);
+
 	return (
 		<div className={styles.chartCard}>
-			<h3 className={styles.chartTitle}>Gjennomsnittlig score per pil over tid</h3>
-			<p className={styles.chartSubtitle}>Trening vs. Konkurranse</p>
+			<div className={styles.chartHeader}>
+				<div>
+					<h3 className={styles.chartTitle}>Gjennomsnittlig score per pil over tid</h3>
+					<p className={styles.chartSubtitle}>Trening vs. Konkurranse</p>
+				</div>
+				<div className={styles.filterGroup}>
+					<Select
+						label="Kategori"
+						options={categoryOptions}
+						value={selectedCategory}
+						onChange={(value) => onCategoryChange(value as PracticeCategory)}
+						containerClassName={styles.filterSelect}
+					/>
+				</div>
+			</div>
 
 			<ResponsiveContainer width="100%" height={400}>
 				<LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -38,7 +73,8 @@ export function ScoreChart({ data, formatDate }: ScoreChartProps) {
 						stroke="#6b7280"
 						style={{ fontSize: '0.875rem' }}
 						label={{ value: 'Snitt score per pil', angle: -90, position: 'insideLeft', fill: '#6b7280' }}
-						domain={[0, 'auto']}
+						ticks={yTicks}
+						domain={[minTick, maxTick]}
 					/>
 					<Tooltip
 						contentStyle={{

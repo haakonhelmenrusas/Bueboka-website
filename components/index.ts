@@ -39,6 +39,8 @@ import { Privacy } from './Privacy/Privacy';
 import { CallToAction } from './CallToAction/CallToAction';
 import { FeedbackModal } from './FeedbackModal/FeedbackModal';
 import { Bueboka2Announcement } from './Bueboka2Announcement/Bueboka2Announcement';
+import { SessionShareModal } from './SessionShareCard';
+import { SessionShareCard } from './SessionShareCard';
 
 export {
 	Header,
@@ -82,6 +84,8 @@ export {
 	CallToAction,
 	FeedbackModal,
 	Bueboka2Announcement,
+	SessionShareModal,
+	SessionShareCard,
 };
 
 export * from './common/StatsSummary/StatsSummary';

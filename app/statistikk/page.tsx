@@ -27,7 +27,8 @@ export default function StatisticsPage() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [dateRange, setDateRange] = useState<DateRange>('all');
-	const [selectedCategory, setSelectedCategory] = useState<PracticeCategory>('all');
+	const [selectedCategory, setSelectedCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
+	const [scoreCategory, setScoreCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
 	const router = useRouter();
 
 	useEffect(() => {
@@ -190,7 +191,8 @@ export default function StatisticsPage() {
 
 		filteredSeries.forEach((s) => {
 			s.data.forEach((d) => {
-				if (d.score > 0 && d.scoredArrows > 0) {
+				const matchesCategory = scoreCategory === 'all' || d.practiceCategory === scoreCategory;
+				if (d.score > 0 && d.scoredArrows > 0 && matchesCategory) {
 					if (!dateMap.has(d.date)) {
 						dateMap.set(d.date, {
 							training: { score: 0, scoredArrows: 0 },
@@ -313,7 +315,12 @@ export default function StatisticsPage() {
 									selectedCategory={selectedCategory}
 									onCategoryChange={setSelectedCategory}
 								/>
-								<ScoreChart data={getScoreChartData()} formatDate={formatDate} />
+								<ScoreChart
+									data={getScoreChartData()}
+									formatDate={formatDate}
+									selectedCategory={scoreCategory}
+									onCategoryChange={setScoreCategory}
+								/>
 							</div>
 						</>
 					)}

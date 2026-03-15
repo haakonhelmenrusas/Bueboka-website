@@ -11,7 +11,7 @@ describe('ProfileEditModal', () => {
 		id: '123',
 		name: 'Test User',
 		email: 'test@example.com',
-		club: 'Test Club',
+		club: 'Oslo Bueskyttere',
 	};
 
 	const mockOnClose = jest.fn();
@@ -56,22 +56,21 @@ describe('ProfileEditModal', () => {
 	});
 
 	describe('Profile Form', () => {
-		it('should render profile form with club input', () => {
+		it('should render profile form with club select', () => {
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
-			const clubInput = screen.getByLabelText('Klubb') as HTMLInputElement;
-			expect(clubInput).toBeInTheDocument();
-			expect(clubInput.value).toBe('Test Club');
+			const clubBtn = screen.getByRole('button', { name: /Klubb/i });
+			expect(clubBtn).toBeInTheDocument();
+			expect(screen.getByText('Oslo Bueskyttere')).toBeInTheDocument();
 		});
 
-		it('should update club input value', async () => {
+		it('should update club value when an option is selected', async () => {
 			const user = userEvent.setup();
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} />);
 
-			const clubInput = screen.getByLabelText('Klubb') as HTMLInputElement;
-			await user.clear(clubInput);
-			await user.type(clubInput, 'New Club');
+			await user.click(screen.getByRole('button', { name: /Klubb/i }));
+			await user.click(screen.getByRole('option', { name: 'Bergen Bueskyttere' }));
 
-			expect(clubInput.value).toBe('New Club');
+			expect(screen.getByText('Bergen Bueskyttere')).toBeInTheDocument();
 		});
 
 		it('should submit profile form successfully', async () => {
@@ -80,9 +79,8 @@ describe('ProfileEditModal', () => {
 
 			render(<ProfileEditModal isOpen={true} onClose={mockOnClose} user={mockUser} onProfileUpdate={mockOnProfileUpdate} />);
 
-			const clubInput = screen.getByLabelText('Klubb');
-			await user.clear(clubInput);
-			await user.type(clubInput, 'Updated Club');
+			await user.click(screen.getByRole('button', { name: /Klubb/i }));
+			await user.click(screen.getByRole('option', { name: 'Stavanger Bueskyttere' }));
 
 			const submitBtn = screen.getByRole('button', { name: 'Lagre' });
 			await user.click(submitBtn);
