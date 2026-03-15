@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { LuBuilding2, LuHash, LuSearch, LuUser } from 'react-icons/lu';
 import { Footer, Header, Input } from '@/components';
+import { ANONYMOUS_ARCHER_LABEL } from '@/lib/labels';
 import type { PublicProfile } from '@/lib/types';
 import styles from './page.module.css';
 
@@ -28,16 +29,11 @@ export default function ProfilerPage() {
 		}
 	}, []);
 
-	// Load all public profiles on mount
-	useEffect(() => {
-		fetchProfiles('');
-	}, [fetchProfiles]);
-
-	// Debounced search
+	// Load on mount and re-fetch with debounce on query change
 	useEffect(() => {
 		const timer = setTimeout(() => {
 			fetchProfiles(query);
-		}, 300);
+		}, query ? 300 : 0);
 		return () => clearTimeout(timer);
 	}, [query, fetchProfiles]);
 
@@ -75,7 +71,7 @@ export default function ProfilerPage() {
 					{!loading && profiles.length > 0 && (
 						<ul className={styles.list}>
 							{profiles.map((profile) => {
-								const displayName = profile.name ?? 'Anonym bueskytter';
+								const displayName = profile.name ?? ANONYMOUS_ARCHER_LABEL;
 								return (
 									<li key={profile.id}>
 										<Link href={`/profil/${profile.id}`} className={styles.profileCard}>

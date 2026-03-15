@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { LuArrowLeft, LuBuilding2, LuHash, LuTarget, LuUser } from 'react-icons/lu';
+import { prisma } from '@/lib/prisma';
+import { ANONYMOUS_ARCHER_LABEL } from '@/lib/labels';
 import type { PublicProfile } from '@/lib/types';
 import styles from './page.module.css';
 
@@ -10,12 +12,63 @@ interface Props {
 }
 
 async function getPublicProfile(id: string): Promise<PublicProfile | null> {
-	const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
-	const res = await fetch(`${baseUrl}/api/public/profiles/${id}`, { cache: 'no-store' });
-	if (res.status === 404) return null;
-	if (!res.ok) throw new Error('Failed to fetch profile');
-	const data = await res.json();
-	return data.profile ?? null;
+	const user = await prisma.user.findUnique({
+		where: { id, isPublic: true },
+		select: {
+			id: true,
+			name: true,
+			club: true,
+			image: true,
+			skytternr: true,
+			publicName: true,
+			publicClub: true,
+			publicSkytternr: true,
+			publicStats: true,
+			practices: {
+				select: {
+					ends: {
+						select: {
+							scores: true,
+							arrowsWithoutScore: true,
+						},
+					},
+				},
+			},
+		},
+	});
+
+	if (!user) return null;
+
+	let stats: { totalArrows: number; avgScorePerArrow: number | null } | null = null;
+	if (user.publicStats) {
+		let totalArrows = 0;
+		let totalScore = 0;
+		let scoredArrows = 0;
+
+		for (const practice of user.practices) {
+			for (const end of practice.ends) {
+				const endScoredArrows = end.scores.length;
+				const endUnscoredArrows = end.arrowsWithoutScore ?? 0;
+				totalArrows += endScoredArrows + endUnscoredArrows;
+				scoredArrows += endScoredArrows;
+				totalScore += end.scores.reduce((sum, s) => sum + s, 0);
+			}
+		}
+
+		stats = {
+			totalArrows,
+			avgScorePerArrow: scoredArrows > 0 ? Math.round((totalScore / scoredArrows) * 100) / 100 : null,
+		};
+	}
+
+	return {
+		id: user.id,
+		name: user.publicName ? user.name : null,
+		club: user.publicClub ? user.club : null,
+		image: user.image,
+		skytternr: user.publicSkytternr ? user.skytternr : null,
+		stats,
+	};
 }
 
 export default async function PublicProfilePage({ params }: Props) {
@@ -26,7 +79,7 @@ export default async function PublicProfilePage({ params }: Props) {
 		notFound();
 	}
 
-	const displayName = profile.name ?? 'Anonym bueskytter';
+	const displayName = profile.name ?? ANONYMOUS_ARCHER_LABEL;
 
 	return (
 		<div className={styles.page}>
