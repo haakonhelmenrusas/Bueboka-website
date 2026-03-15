@@ -8,15 +8,20 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  emailVerified Boolean  @default(false)
-  name          String?
-  club          String?
-  image         String?
-  skytternr     String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                String   @id @default(cuid())
+  email             String   @unique
+  emailVerified     Boolean  @default(false)
+  name              String?
+  club              String?
+  image             String?
+  skytternr         String?
+  isPublic          Boolean  @default(false)
+  publicName        Boolean  @default(true)
+  publicClub        Boolean  @default(true)
+  publicStats       Boolean  @default(false)
+  publicSkytternr   Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   // Relation fields
   bows              Bow[]
