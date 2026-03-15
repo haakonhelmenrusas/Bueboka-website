@@ -353,7 +353,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										</button>
 									)}
 								</div>
-								<div className={styles.rowFlex}>
+								<div className={styles.roundInputs}>
 									{isRangeCategory ? (
 										<>
 											<NumberInput
@@ -395,7 +395,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 												placeholderLabel="Velg skive"
 												searchable
 												searchPlaceholder="Søk etter skive..."
-												containerClassName={styles.targetField}
+												containerClassName={styles.skiveField}
 											/>
 										</>
 									)}

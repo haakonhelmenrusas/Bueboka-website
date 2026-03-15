@@ -26,6 +26,17 @@
     align-items: flex-start;
 }
 
+@media (max-width: 640px) {
+    .rowFlex {
+        flex-wrap: wrap;
+    }
+
+    .rowFlex > * {
+        flex: 1 1 140px;
+        min-width: 0;
+    }
+}
+
 .actions {
     display: flex;
     justify-content: flex-end;
@@ -98,14 +109,23 @@
 }
 
 .roundInputs {
-    display: grid;
-    grid-template-columns: 1fr 1.5fr 1fr 1fr; /* Give more space to Blink (2nd column) */
+    display: flex;
     gap: var(--space-4);
+    align-items: flex-end;
+}
+
+
+.skiveField {
+    flex: 1;
 }
 
 @media (max-width: 640px) {
     .roundInputs {
-        grid-template-columns: repeat(2, 1fr);
+        flex-wrap: wrap;
+    }
+
+    .skiveField {
+        flex: 1 1 100%;
     }
 }
 
