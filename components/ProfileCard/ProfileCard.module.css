@@ -139,7 +139,7 @@
 
 .skytternrBadge {
     background: var(--secondary);
-    color: var(--text-dark);
+    color: var(--white);
     font-size: 0.75rem;
     padding: 4px 10px;
 }
