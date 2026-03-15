@@ -8,6 +8,7 @@ import styles from './ProfileForm.module.css';
 export interface ProfileFormValues {
 	name: string;
 	club: string;
+	skytternr: string;
 }
 
 interface ProfileFormProps {
@@ -22,17 +23,19 @@ const CLUB_OPTIONS = [{ value: '', label: 'Ingen / ikke tilknyttet' }, ...NORWEG
 export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: ProfileFormProps) {
 	const [name, setName] = useState(initialValues.name);
 	const [club, setClub] = useState(initialValues.club);
+	const [skytternr, setSkytternr] = useState(initialValues.skytternr);
 
 	useEffect(() => {
 		setName(initialValues.name);
 		setClub(initialValues.club);
-	}, [initialValues.name, initialValues.club]);
+		setSkytternr(initialValues.skytternr);
+	}, [initialValues.name, initialValues.club, initialValues.skytternr]);
 
 	return (
 		<form
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await onSubmit({ name, club });
+				await onSubmit({ name, club, skytternr });
 			}}
 			className={styles.form}
 		>
@@ -45,6 +48,7 @@ export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: Prof
 				options={CLUB_OPTIONS}
 				helpText="Klubben din"
 			/>
+			<Input label="Skytternr" value={skytternr} onChange={(e) => setSkytternr(e.target.value)} helpText="Ditt skytternummer" optional />
 
 			<div className={styles.actions}>
 				{onCancel && <Button label="Avbryt" onClick={onCancel} disabled={loading} buttonType="outline" width={160} type="button" />}

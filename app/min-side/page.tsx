@@ -318,6 +318,7 @@ export default function MyPage() {
 								email={profile.email}
 								club={profile.club}
 								image={profile.image}
+								skytternr={profile.skytternr}
 								onEdit={() => setProfileModalOpen(true)}
 								onImageUpdate={handleProfileImageUpdate}
 							/>
@@ -372,6 +373,7 @@ export default function MyPage() {
 					email: profile.email,
 					club: profile.club,
 					image: profile.image,
+					skytternr: profile.skytternr,
 				}}
 				onProfileUpdate={fetchProfile}
 			/>

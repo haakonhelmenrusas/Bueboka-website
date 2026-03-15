@@ -8,6 +8,7 @@ export interface User {
 	name: string | null;
 	club: string | null;
 	image: string | null;
+	skytternr: string | null;
 	bows: Bow[];
 	arrows: Arrow[];
 	practices: Practice[];
