@@ -321,7 +321,7 @@ describe('Practice Validation Schema', () => {
 
 	describe('TargetType validation', () => {
 		it('should accept valid target types', () => {
-			const validTypes = ['40cm', '60cm', '80cm', '122cm', '3-spot', 'vertical-3-spot'];
+			const validTypes = ['40cm', '60cm', '80cm', 'felt-40', '40cm-trippel-vegas', 'felt-60'];
 
 			validTypes.forEach((targetType) => {
 				const practice = {
