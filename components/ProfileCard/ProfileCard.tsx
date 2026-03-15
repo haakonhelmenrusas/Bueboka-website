@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import styles from './ProfileCard.module.css';
-import { LuBuilding2, LuCamera, LuLoader, LuPencil, LuTrash, LuTrophy, LuUser } from 'react-icons/lu';
+import { LuBuilding2, LuCamera, LuHash, LuLoader, LuPencil, LuTrash, LuTrophy, LuUser } from 'react-icons/lu';
 import { Button } from '@/components';
 import { compressImage } from '@/lib/imageUtils';
 import { useClickOutside } from '@/lib/hooks/useClickOutside';
@@ -14,11 +14,12 @@ export interface ProfileCardProps {
 	email: string;
 	club?: string | null;
 	image?: string | null;
+	skytternr?: string | null;
 	onEdit: () => void;
 	onImageUpdate: (newImage: string | null) => Promise<void>;
 }
 
-export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, onEdit, onImageUpdate }) => {
+export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, skytternr, onEdit, onImageUpdate }) => {
 	const displayName = name || email;
 	const displayClub = club || 'Ingen klubb oppgitt';
 	const router = useRouter();
@@ -164,11 +165,17 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 					<LuBuilding2 size={13} />
 					{displayClub}
 				</span>
+				{skytternr && (
+					<span className={styles.skytternrBadge}>
+						<LuHash size={13} />
+						{skytternr}
+					</span>
+				)}
 			</header>
 			<div className={styles.buttonGroup}>
 				<Button label="Rediger" onClick={onEdit} icon={<LuPencil size={18} />} size="normal" buttonType="outline" />
 				<Button
-					label="Mine prestasjoner"
+					label="Prestasjoner"
 					onClick={handleAchievementsClick}
 					icon={<LuTrophy size={18} />}
 					size="normal"

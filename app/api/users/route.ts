@@ -21,6 +21,7 @@ export async function GET() {
 				name: true,
 				club: true,
 				image: true,
+				skytternr: true,
 			},
 		});
 
@@ -41,7 +42,7 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 		}
 
-		const { club, name, image } = await request.json();
+		const { club, name, image, skytternr } = await request.json();
 
 		// Validate image if provided
 		if (image !== undefined && image !== null) {
@@ -66,6 +67,7 @@ export async function PATCH(request: NextRequest) {
 				...(club !== undefined && { club }),
 				...(name !== undefined && { name }),
 				...(image !== undefined && { image }),
+				...(skytternr !== undefined && { skytternr }),
 			},
 		});
 

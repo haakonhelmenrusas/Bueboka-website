@@ -16,6 +16,7 @@ export async function GET() {
 				name: true,
 				club: true,
 				image: true,
+				skytternr: true,
 			},
 		});
 

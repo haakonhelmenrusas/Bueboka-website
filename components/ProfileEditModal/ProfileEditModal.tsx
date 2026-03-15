@@ -14,6 +14,7 @@ interface ProfileEditModalProps {
 		email: string;
 		club: string | null;
 		image?: string | null;
+		skytternr?: string | null;
 	};
 	onProfileUpdate?: () => void;
 }
@@ -30,7 +31,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 		}
 	}, [isOpen]);
 
-	const handleProfileSubmit = async (values: { name: string; club: string }) => {
+	const handleProfileSubmit = async (values: { name: string; club: string; skytternr: string }) => {
 		setLoading(true);
 		setMessage(null);
 
@@ -41,6 +42,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 				body: JSON.stringify({
 					name: values.name,
 					club: values.club,
+					skytternr: values.skytternr,
 				}),
 			});
 
@@ -69,7 +71,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 				{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
 				<div className={styles.form}>
 					<ProfileForm
-						initialValues={{ name: user.name || '', club: user.club || '' }}
+						initialValues={{ name: user.name || '', club: user.club || '', skytternr: user.skytternr || '' }}
 						loading={loading}
 						onSubmit={handleProfileSubmit}
 						onCancel={onClose}
