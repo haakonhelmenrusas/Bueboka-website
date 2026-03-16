@@ -144,14 +144,6 @@
     padding: 4px 10px;
 }
 
-.buttonGroup {
-    display: flex;
-    flex-direction: row;
-    gap: var(--space-3);
-    margin-top: auto;
-    width: 100%;
-}
-
 .menu {
     position: absolute;
     top: 100%;

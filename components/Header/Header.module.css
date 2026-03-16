@@ -369,6 +369,36 @@
     background: var(--primary-06);
 }
 
+.profileMenuLink {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-4);
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 650;
+    font-size: 1rem;
+    border-radius: var(--radius-base);
+    white-space: nowrap;
+    transition: background 150ms ease;
+}
+
+.profileMenuLink:hover {
+    background: var(--primary-06);
+}
+
+.profileMenuDivider {
+    height: 1px;
+    background: rgba(0, 0, 0, 0.08);
+    margin: var(--space-2) 0;
+}
+
+/* Nav shortcuts shown in the dropdown only on mobile */
+.profileMenuNavSection {
+    display: contents;
+}
+
 
 /* Dropdown animation */
 @keyframes dropdown-in {
@@ -411,6 +441,10 @@
     }
 
     .mobileProfileButton {
+        display: none;
+    }
+
+    .profileMenuNavSection {
         display: none;
     }
 }

@@ -78,6 +78,19 @@
     gap: var(--space-6);
 }
 
+.accountGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5) var(--space-8);
+}
+
+.cardActions {
+    display: flex;
+    padding-top: var(--space-4);
+    border-top: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+
 .userInfo {
     display: flex;
     flex-direction: column;
@@ -274,5 +287,9 @@
     .card,
     .dangerCard {
         padding: var(--space-6);
+    }
+
+    .accountGrid {
+        grid-template-columns: 1fr;
     }
 }

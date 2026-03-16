@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Accordion, Checkbox, ConfirmModal, EmailVerificationBanner, Footer, Header } from '@/components';
+import { Accordion, Button, Checkbox, ConfirmModal, EmailVerificationBanner, Footer, Header, ProfileEditModal } from '@/components';
 import { signOut, useSession } from '@/lib/auth-client';
-import { LuArrowLeft, LuGlobe, LuKey, LuLock, LuShield, LuTarget } from 'react-icons/lu';
+import { LuArrowLeft, LuGlobe, LuKey, LuLock, LuPencil, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './page.module.css';
 
 export default function SettingsPage() {
@@ -24,6 +24,14 @@ export default function SettingsPage() {
 	const [publicSettingsSaving, setPublicSettingsSaving] = useState(false);
 	const [publicSettingsMessage, setPublicSettingsMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+	// Account info
+	const [profileId, setProfileId] = useState<string | null>(null);
+	const [profileName, setProfileName] = useState<string | null>(null);
+	const [profileClub, setProfileClub] = useState<string | null>(null);
+	const [profileSkytternr, setProfileSkytternr] = useState<string | null>(null);
+	const [profileImage, setProfileImage] = useState<string | null>(null);
+	const [profileModalOpen, setProfileModalOpen] = useState(false);
+
 	useEffect(() => {
 		if (!isPending && !session?.user) {
 			router.push('/logg-inn');
@@ -37,6 +45,11 @@ export default function SettingsPage() {
 				.then((res) => res.json())
 				.then((data) => {
 					if (data.profile) {
+						setProfileId(data.profile.id);
+						setProfileName(data.profile.name ?? null);
+						setProfileClub(data.profile.club ?? null);
+						setProfileSkytternr(data.profile.skytternr ?? null);
+						setProfileImage(data.profile.image ?? null);
 						setIsPublic(data.profile.isPublic ?? false);
 						setPublicName(data.profile.publicName ?? true);
 						setPublicClub(data.profile.publicClub ?? true);
@@ -48,6 +61,20 @@ export default function SettingsPage() {
 				.catch(() => setPublicSettingsLoaded(true));
 		}
 	}, [isPending, session]);
+
+	const handleProfileUpdate = () => {
+		fetch('/api/profile')
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.profile) {
+					setProfileName(data.profile.name ?? null);
+					setProfileClub(data.profile.club ?? null);
+					setProfileSkytternr(data.profile.skytternr ?? null);
+					setProfileImage(data.profile.image ?? null);
+				}
+			})
+			.catch(() => {});
+	};
 
 	const handlePublicSettingChange = async (updates: {
 		isPublic?: boolean;
@@ -154,16 +181,32 @@ export default function SettingsPage() {
 						<h2 className={styles.sectionTitle}>Konto</h2>
 						<div className={styles.card}>
 							<div className={styles.cardContent}>
-								<div className={styles.userInfo}>
-									<p className={styles.label}>E-post</p>
-									<p className={styles.value}>{session.user.email}</p>
-								</div>
-								{session.user.name && (
+								<div className={styles.accountGrid}>
 									<div className={styles.userInfo}>
 										<p className={styles.label}>Navn</p>
-										<p className={styles.value}>{session.user.name}</p>
+										<p className={styles.value}>{profileName ?? '—'}</p>
 									</div>
-								)}
+									<div className={styles.userInfo}>
+										<p className={styles.label}>E-post</p>
+										<p className={styles.value}>{session.user.email}</p>
+									</div>
+									<div className={styles.userInfo}>
+										<p className={styles.label}>Klubb</p>
+										<p className={styles.value}>{profileClub ?? '—'}</p>
+									</div>
+									<div className={styles.userInfo}>
+										<p className={styles.label}>Skytternummer</p>
+										<p className={styles.value}>{profileSkytternr ?? '—'}</p>
+									</div>
+								</div>
+								<div className={styles.cardActions}>
+									<Button
+										label="Rediger profil"
+										buttonType="outline"
+										icon={<LuPencil size={14} />}
+										onClick={() => setProfileModalOpen(true)}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -224,7 +267,7 @@ export default function SettingsPage() {
 							</div>
 						</div>
 					</div>
-					<div className={styles.section}>
+					{/*	<div className={styles.section}>
 						<h2 className={styles.sectionTitle}>Ofte stilte spørsmål (FAQ)</h2>
 						<Accordion
 							items={[
@@ -336,7 +379,7 @@ export default function SettingsPage() {
 								},
 							]}
 						/>
-					</div>
+					</div>*/}
 					<div className={styles.section}>
 						<h2 className={styles.sectionTitle}>Personvern og datasikkerhet</h2>
 						<div className={styles.card}>
@@ -449,6 +492,21 @@ export default function SettingsPage() {
 				variant="danger"
 				isLoading={isDeleting}
 			/>
+			{profileId && (
+				<ProfileEditModal
+					isOpen={profileModalOpen}
+					onClose={() => setProfileModalOpen(false)}
+					user={{
+						id: profileId,
+						name: profileName,
+						email: session.user.email,
+						club: profileClub,
+						image: profileImage,
+						skytternr: profileSkytternr,
+					}}
+					onProfileUpdate={handleProfileUpdate}
+				/>
+			)}
 		</div>
 	);
 }

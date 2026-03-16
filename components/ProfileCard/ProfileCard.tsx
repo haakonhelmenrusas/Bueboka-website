@@ -15,11 +15,10 @@ export interface ProfileCardProps {
 	club?: string | null;
 	image?: string | null;
 	skytternr?: string | null;
-	onEdit: () => void;
 	onImageUpdate: (newImage: string | null) => Promise<void>;
 }
 
-export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, skytternr, onEdit, onImageUpdate }) => {
+export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, skytternr, onImageUpdate }) => {
 	const displayName = name || email;
 	const displayClub = club || 'Ingen klubb oppgitt';
 	const router = useRouter();
@@ -48,14 +47,14 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 		setMenuOpen(false);
 		if (!image) return;
 
-			setIsUploading(true);
-			try {
-				await onImageUpdate(null);
-			} catch (error) {
-				console.error('Error removing image:', error);
-			} finally {
-				setIsUploading(false);
-			}
+		setIsUploading(true);
+		try {
+			await onImageUpdate(null);
+		} catch (error) {
+			console.error('Error removing image:', error);
+		} finally {
+			setIsUploading(false);
+		}
 	};
 
 	const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,16 +171,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 					</span>
 				)}
 			</header>
-			<div className={styles.buttonGroup}>
-				<Button label="Rediger" onClick={onEdit} icon={<LuPencil size={18} />} size="normal" buttonType="outline" />
-				<Button
-					label="Prestasjoner"
-					onClick={handleAchievementsClick}
-					icon={<LuTrophy size={18} />}
-					size="normal"
-					buttonType="filled"
-				/>
-			</div>
+			<Button label="Prestasjoner" onClick={handleAchievementsClick} icon={<LuTrophy size={18} />} size="normal" buttonType="filled" />
 		</section>
 	);
 };

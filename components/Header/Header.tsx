@@ -209,6 +209,17 @@ export function Header() {
 							</button>
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
+									<div className={styles.profileMenuNavSection}>
+										<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+											<LuUsers size={16} />
+											<span>Skyttere</span>
+										</Link>
+										<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
+											<LuMessageSquare size={16} />
+											<span>Tilbakemelding</span>
+										</button>
+										<div className={styles.profileMenuDivider} role="separator" />
+									</div>
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<LuSettings size={16} />
 										<span>Innstillinger</span>

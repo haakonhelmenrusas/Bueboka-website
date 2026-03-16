@@ -9,13 +9,13 @@ import {
 	BowModal,
 	Button,
 	CompetitionFormModal,
-	EquipmentSection, Footer,
+	EquipmentSection,
+	Footer,
 	Header,
 	PracticeDetailsModal,
 	PracticeFormModal,
 	PracticesSection,
 	ProfileCard,
-	ProfileEditModal,
 	SightMarksSection,
 	StatsSummary,
 	usePracticeDetails,
@@ -41,7 +41,6 @@ export default function MyPage() {
 	const [competitionFormOpen, setCompetitionFormOpen] = useState(false);
 	const [competitionFormMode, setCompetitionFormMode] = useState<'create' | 'edit'>('create');
 	const [selectedCompetition, setSelectedCompetition] = useState<any>(null);
-	const [profileModalOpen, setProfileModalOpen] = useState(false);
 	const [bowModalOpen, setBowModalOpen] = useState(false);
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
 	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
@@ -319,7 +318,6 @@ export default function MyPage() {
 								club={profile.club}
 								image={profile.image}
 								skytternr={profile.skytternr}
-								onEdit={() => setProfileModalOpen(true)}
 								onImageUpdate={handleProfileImageUpdate}
 							/>
 						</div>
@@ -333,50 +331,38 @@ export default function MyPage() {
 						</div>
 					</div>
 				</div>
-			<EquipmentSection
-				onCreateBow={() => {
-					setSelectedBow(null);
-					setBowModalOpen(true);
-				}}
-				onCreateArrows={() => setArrowsModalOpen(true)}
-				onSelectBow={(bow) => {
-					setSelectedBow(bow);
-					setBowModalOpen(true);
-				}}
-				onSelectArrows={(a) => {
-					setSelectedArrows(a);
-					setArrowsModalOpen(true);
-				}}
-			/>
-			<PracticesSection
-				onCreate={() => {
-					setPracticeFormMode('create');
-					setPracticeFormOpen(true);
-				}}
-				onCreateCompetition={() => {
-					setCompetitionFormMode('create');
-					setCompetitionFormOpen(true);
-				}}
-				onSelectPractice={handleSelectPractice}
-				reloadKey={practiceReloadKey}
-				deletedPracticeId={deletedPracticeId}
-			/>
-			<SightMarksSection />
+				<EquipmentSection
+					onCreateBow={() => {
+						setSelectedBow(null);
+						setBowModalOpen(true);
+					}}
+					onCreateArrows={() => setArrowsModalOpen(true)}
+					onSelectBow={(bow) => {
+						setSelectedBow(bow);
+						setBowModalOpen(true);
+					}}
+					onSelectArrows={(a) => {
+						setSelectedArrows(a);
+						setArrowsModalOpen(true);
+					}}
+				/>
+				<PracticesSection
+					onCreate={() => {
+						setPracticeFormMode('create');
+						setPracticeFormOpen(true);
+					}}
+					onCreateCompetition={() => {
+						setCompetitionFormMode('create');
+						setCompetitionFormOpen(true);
+					}}
+					onSelectPractice={handleSelectPractice}
+					reloadKey={practiceReloadKey}
+					deletedPracticeId={deletedPracticeId}
+				/>
+				<SightMarksSection />
 			</main>
 			<Footer />
-			<ProfileEditModal
-				isOpen={profileModalOpen}
-				onClose={() => setProfileModalOpen(false)}
-				user={{
-					id: profile.id,
-					name: profile.name,
-					email: profile.email,
-					club: profile.club,
-					image: profile.image,
-					skytternr: profile.skytternr,
-				}}
-				onProfileUpdate={fetchProfile}
-			/>
+			<WhatsNewModal open={whatsNewOpen} onClose={handleWhatsNewClose} />
 			<BowModal
 				open={bowModalOpen}
 				onClose={() => {
