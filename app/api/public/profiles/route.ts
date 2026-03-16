@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
 			...(query.length > 0 && {
 				OR: [
 					{ name: { contains: query, mode: 'insensitive' as const } },
-					{ club: { contains: query, mode: 'insensitive' as const } },
+					{ club: { contains: query, mode: 'insensitive' as const }, publicClub: true },
 				],
 			}),
 		};
