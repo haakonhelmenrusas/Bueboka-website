@@ -196,6 +196,7 @@
     cursor: pointer;
     transition: color 150ms ease-in-out;
     display: inline-flex; /* Visible on mobile when not authenticated */
+    margin-left: auto;
 }
 
 .mobileButton:hover {
