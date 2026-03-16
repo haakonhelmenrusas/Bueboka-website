@@ -111,6 +111,8 @@
 .navLinkActive {
 	color: var(--white) !important;
 	font-weight: 600;
+	text-decoration: underline;
+	text-decoration-color: rgba(255, 255, 255, 0.6);
 }
 
 .navLinkIcon {
@@ -122,21 +124,21 @@
 /* Feedback and other nav-level buttons */
 .navButton {
 	background: transparent;
-	border: none;
-	padding: 0;
+	border: 1px solid var(--white-20);
+	padding: var(--space-2) var(--space-4);
+	border-radius: var(--radius-base);
 	cursor: pointer;
 	font-size: inherit;
 	font-family: inherit;
 	color: var(--white-80);
 	text-decoration: none;
-	transition: color 150ms ease-in-out, text-decoration-color 150ms ease-in-out;
-	text-underline-offset: 3px;
+	transition: color 150ms ease-in-out, background 150ms ease-in-out, border-color 150ms ease-in-out;
 }
 
 .navButton:hover {
 	color: var(--white);
-	text-decoration: underline;
-	text-decoration-color: rgba(255, 255, 255, 0.5);
+	background: var(--white-10);
+	border-color: var(--white-80);
 }
 
 .authButtons {
