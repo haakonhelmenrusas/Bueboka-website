@@ -65,7 +65,7 @@ export default function SkytterePage() {
 					</div>
 					<h1 className={styles.title}>Finn bueskyttere</h1>
 					<p className={styles.subtitle}>
-						Søk blant bueskyttere som har valgt å dele profilen sin med Bueboka-skyttere. Husk det er bare registerte brukere som kan søke
+						Søk blant bueskyttere som har valgt å dele profilen sin med andre Bueboka-skyttere. Det er kun registrerte brukere som kan søke.
 					</p>
 					<div className={styles.searchWrap}>
 						<div className={styles.searchIcon} aria-hidden="true">
