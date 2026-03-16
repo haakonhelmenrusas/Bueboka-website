@@ -1,0 +1,79 @@
+.card {
+	display: flex;
+	align-items: center;
+	gap: var(--space-4);
+	background: var(--card-bg);
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: var(--radius-xl);
+	padding: var(--space-4) var(--space-6);
+	text-decoration: none;
+	color: var(--text-dark);
+	transition: box-shadow 150ms ease, transform 150ms ease;
+}
+
+.card:hover {
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+	transform: translateY(-1px);
+}
+
+.avatarWrap {
+	width: 56px;
+	height: 56px;
+	border-radius: var(--radius-circle);
+	overflow: hidden;
+	border: 2px solid var(--secondary);
+	flex: 0 0 auto;
+}
+
+.avatar {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.avatarPlaceholder {
+	width: 100%;
+	height: 100%;
+	background: var(--background);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text-gray-600);
+}
+
+.info {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	flex: 1;
+	min-width: 0;
+}
+
+.name {
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.meta {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 0.85rem;
+	color: var(--text-gray-600);
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.arrow {
+	font-size: 1.4rem;
+	color: var(--text-gray-400);
+	flex: 0 0 auto;
+	line-height: 1;
+}
+

@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
-import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuUser, LuX } from 'react-icons/lu';
+import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuUser, LuUsers, LuX } from 'react-icons/lu';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -21,7 +21,13 @@ export function Header() {
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	// Check if we're on an authenticated page
-	const isAuthPage = pathname === '/min-side' || pathname === '/settings' || pathname === '/statistikk' || pathname === '/achievements';
+	const isAuthPage =
+		pathname === '/min-side' ||
+		pathname === '/settings' ||
+		pathname === '/statistikk' ||
+		pathname === '/achievements' ||
+		pathname === '/skyttere' ||
+		pathname.startsWith('/skyttere/');
 
 	// Check if we're on an auth form page (login/signup)
 	const isAuthFormPage =
@@ -140,6 +146,17 @@ export function Header() {
 										)}
 									</Link>
 								)}
+								<Link
+									href="/skyttere"
+									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/skyttere' || pathname.startsWith('/skyttere/') ? styles.navLinkActive : ''}`}
+								>
+									<LuUsers size={16} />
+									Skyttere
+								</Link>
+								<button className={`${styles.navButton} ${styles.navLinkIcon}`} onClick={handleFeedbackClick}>
+									<LuMessageSquare size={16} />
+									Tilbakemelding
+								</button>
 								<button
 									aria-label="Åpne profil menu"
 									className={`${styles.profileMenuButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
@@ -192,10 +209,6 @@ export function Header() {
 							</button>
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
-									<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
-										<LuMessageSquare size={16} />
-										<span>Gi tilbakemelding</span>
-									</button>
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<LuSettings size={16} />
 										<span>Innstillinger</span>
@@ -233,6 +246,14 @@ export function Header() {
 										Min side
 									</Link>
 								)}
+								<Link href="/skyttere" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
+									<LuUsers size={16} />
+									Skyttere
+								</Link>
+								<button className={`${styles.mobileLinkButton} ${styles.mobileLinkIcon}`} onClick={handleFeedbackClick}>
+									<LuMessageSquare size={16} />
+									Tilbakemelding
+								</button>
 							</>
 						) : (
 							!isAuthPage && (

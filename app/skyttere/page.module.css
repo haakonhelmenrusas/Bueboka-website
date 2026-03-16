@@ -1,0 +1,203 @@
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
+    color: var(--white);
+}
+
+/* ── Hero / search banner ─────────────────────────────────── */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: calc(100vh - 64px);
+}
+
+.hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: calc(var(--space-14) + 64px) var(--space-8) var(--space-14);
+    gap: var(--space-4);
+    width: 100%;
+}
+
+.heroIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-circle);
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    margin-bottom: var(--space-2);
+}
+
+.title {
+    margin: 0;
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--section-title-light);
+    letter-spacing: -0.02em;
+}
+
+.subtitle {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--white);
+    max-width: 560px;
+    line-height: 1.6;
+}
+
+/* ── Custom search field ──────────────────────────────────── */
+.searchWrap {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    margin-top: var(--space-4);
+}
+
+.searchIcon {
+    position: absolute;
+    left: var(--space-4);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--white-50);
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+.searchInput {
+    width: 100%;
+    padding: var(--space-4) var(--space-4) var(--space-4) calc(var(--space-4) + 20px + var(--space-3));
+    font-size: 1rem;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: var(--radius-xl);
+    color: var(--white);
+    outline: none;
+    transition: background 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+}
+
+.searchInput::placeholder {
+    color: var(--white-50);
+}
+
+.searchInput:focus {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* hide the native clear button in Chrome / Safari */
+.searchInput::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+}
+
+/* ── Results section ──────────────────────────────────────── */
+.results {
+    max-width: 640px;
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--space-6) var(--space-8) var(--space-14);
+}
+
+/* ── Idle graphic ─────────────────────────────────────────── */
+.idle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-5);
+    padding: var(--space-10) 0 var(--space-6);
+}
+
+.idleTarget {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.idleRing {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    animation: idlePulse 3s ease-in-out infinite;
+}
+
+.idleRing:nth-child(1) {
+    width: 140px;
+    height: 140px;
+    animation-delay: 0s;
+}
+
+.idleRing:nth-child(2) {
+    width: 100px;
+    height: 100px;
+    animation-delay: 0.4s;
+}
+
+.idleRing:nth-child(3) {
+    width: 62px;
+    height: 62px;
+    animation-delay: 0.8s;
+}
+
+@keyframes idlePulse {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.03);
+    }
+}
+
+.idleCenter {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    color: var(--white);
+}
+
+.idleHint {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--white-50);
+    letter-spacing: 0.01em;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .hero {
+        padding: calc(var(--space-12) + 64px) var(--space-4) var(--space-12);
+    }
+
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .results {
+        padding: var(--space-4) var(--space-4) var(--space-10);
+    }
+}

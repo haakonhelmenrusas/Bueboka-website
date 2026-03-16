@@ -41,6 +41,8 @@ import { FeedbackModal } from './FeedbackModal/FeedbackModal';
 import { Bueboka2Announcement } from './Bueboka2Announcement/Bueboka2Announcement';
 import { SessionShareModal } from './SessionShareCard';
 import { SessionShareCard } from './SessionShareCard';
+import { PublicUserCard } from './PublicProfiles/PublicUserCard';
+import { PublicProfileList } from './PublicProfiles/PublicProfileList';
 
 export {
 	Header,
@@ -86,6 +88,8 @@ export {
 	Bueboka2Announcement,
 	SessionShareModal,
 	SessionShareCard,
+	PublicUserCard,
+	PublicProfileList,
 };
 
 export * from './common/StatsSummary/StatsSummary';

@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
+import { getCurrentUser } from '@/lib/session';
 
 export async function GET(request: NextRequest) {
 	try {
+		const currentUser = await getCurrentUser();
+		if (!currentUser) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+
 		const { searchParams } = new URL(request.url);
 		const query = searchParams.get('q')?.trim() ?? '';
 

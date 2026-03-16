@@ -85,7 +85,7 @@ export default async function PublicProfilePage({ params }: Props) {
 		<div className={styles.page}>
 			<main className={styles.main}>
 				<div className={styles.container}>
-					<Link href="/profiler" className={styles.backLink}>
+					<Link href="/skyttere" className={styles.backLink}>
 						<LuArrowLeft size={18} />
 						<span>Tilbake til søk</span>
 					</Link>
