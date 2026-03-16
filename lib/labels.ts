@@ -68,3 +68,7 @@ export function getEnvironmentLabel(environment: string): string {
 	return ENVIRONMENT_LABELS[environment] || environment;
 }
 
+
+
+// Public profile
+export const ANONYMOUS_ARCHER_LABEL = 'Anonym bueskytter';

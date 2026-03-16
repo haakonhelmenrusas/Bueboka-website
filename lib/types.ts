@@ -9,9 +9,26 @@ export interface User {
 	club: string | null;
 	image: string | null;
 	skytternr: string | null;
+	isPublic: boolean;
+	publicName: boolean;
+	publicClub: boolean;
+	publicStats: boolean;
+	publicSkytternr: boolean;
 	bows: Bow[];
 	arrows: Arrow[];
 	practices: Practice[];
+}
+
+export interface PublicProfile {
+	id: string;
+	name: string | null;
+	club: string | null;
+	image: string | null;
+	skytternr: string | null;
+	stats?: {
+		totalArrows: number;
+		avgScorePerArrow: number | null;
+	} | null;
 }
 
 export interface Bow {

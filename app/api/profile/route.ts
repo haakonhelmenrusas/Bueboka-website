@@ -17,6 +17,11 @@ export async function GET() {
 				club: true,
 				image: true,
 				skytternr: true,
+				isPublic: true,
+				publicName: true,
+				publicClub: true,
+				publicStats: true,
+				publicSkytternr: true,
 			},
 		});
 

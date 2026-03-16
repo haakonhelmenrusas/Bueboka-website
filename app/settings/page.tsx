@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Accordion, ConfirmModal, EmailVerificationBanner, Footer, Header } from '@/components';
+import { Accordion, Checkbox, ConfirmModal, EmailVerificationBanner, Footer, Header } from '@/components';
 import { signOut, useSession } from '@/lib/auth-client';
-import { LuArrowLeft, LuKey, LuLock, LuShield, LuTarget } from 'react-icons/lu';
+import { LuArrowLeft, LuGlobe, LuKey, LuLock, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './page.module.css';
 
 export default function SettingsPage() {
@@ -14,11 +14,85 @@ export default function SettingsPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 
+	// Public profile settings
+	const [isPublic, setIsPublic] = useState(false);
+	const [publicName, setPublicName] = useState(true);
+	const [publicClub, setPublicClub] = useState(true);
+	const [publicStats, setPublicStats] = useState(false);
+	const [publicSkytternr, setPublicSkytternr] = useState(false);
+	const [publicSettingsLoaded, setPublicSettingsLoaded] = useState(false);
+	const [publicSettingsSaving, setPublicSettingsSaving] = useState(false);
+	const [publicSettingsMessage, setPublicSettingsMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
 	useEffect(() => {
 		if (!isPending && !session?.user) {
 			router.push('/logg-inn');
 		}
 	}, [session, isPending, router]);
+
+	// Load current public profile settings
+	useEffect(() => {
+		if (!isPending && session?.user) {
+			fetch('/api/profile')
+				.then((res) => res.json())
+				.then((data) => {
+					if (data.profile) {
+						setIsPublic(data.profile.isPublic ?? false);
+						setPublicName(data.profile.publicName ?? true);
+						setPublicClub(data.profile.publicClub ?? true);
+						setPublicStats(data.profile.publicStats ?? false);
+						setPublicSkytternr(data.profile.publicSkytternr ?? false);
+					}
+					setPublicSettingsLoaded(true);
+				})
+				.catch(() => setPublicSettingsLoaded(true));
+		}
+	}, [isPending, session]);
+
+	const handlePublicSettingChange = async (updates: {
+		isPublic?: boolean;
+		publicName?: boolean;
+		publicClub?: boolean;
+		publicStats?: boolean;
+		publicSkytternr?: boolean;
+	}) => {
+		setPublicSettingsSaving(true);
+		setPublicSettingsMessage(null);
+
+		const newValues = {
+			isPublic: updates.isPublic ?? isPublic,
+			publicName: updates.publicName ?? publicName,
+			publicClub: updates.publicClub ?? publicClub,
+			publicStats: updates.publicStats ?? publicStats,
+			publicSkytternr: updates.publicSkytternr ?? publicSkytternr,
+		};
+
+		// Update local state immediately
+		if (updates.isPublic !== undefined) setIsPublic(updates.isPublic);
+		if (updates.publicName !== undefined) setPublicName(updates.publicName);
+		if (updates.publicClub !== undefined) setPublicClub(updates.publicClub);
+		if (updates.publicStats !== undefined) setPublicStats(updates.publicStats);
+		if (updates.publicSkytternr !== undefined) setPublicSkytternr(updates.publicSkytternr);
+
+		try {
+			const res = await fetch('/api/users', {
+				method: 'PATCH',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(newValues),
+			});
+
+			if (!res.ok) {
+				setPublicSettingsMessage({ type: 'error', text: 'Kunne ikke lagre innstillinger' });
+			} else {
+				setPublicSettingsMessage({ type: 'success', text: 'Innstillinger lagret' });
+				setTimeout(() => setPublicSettingsMessage(null), 3000);
+			}
+		} catch {
+			setPublicSettingsMessage({ type: 'error', text: 'Kunne ikke lagre innstillinger' });
+		} finally {
+			setPublicSettingsSaving(false);
+		}
+	};
 
 	const handleDeleteClick = () => {
 		setShowConfirmModal(true);
@@ -89,6 +163,67 @@ export default function SettingsPage() {
 										<p className={styles.label}>Navn</p>
 										<p className={styles.value}>{session.user.name}</p>
 									</div>
+								)}
+							</div>
+						</div>
+					</div>
+					<div className={styles.section}>
+						<h2 className={styles.sectionTitle}>
+							<span className={styles.sectionTitleWithIcon}><LuGlobe size={20} /> Offentlig profil</span>
+						</h2>
+						<div className={styles.card}>
+							<div className={styles.cardContent}>
+								<p className={styles.privacyText}>
+									Gjør profilen din søkbar for andre brukere. Du velger selv hva du ønsker å dele.
+								</p>
+								{publicSettingsLoaded && (
+									<>
+										<Checkbox
+											label="Gjør profilen min offentlig"
+											checked={isPublic}
+											onChange={(checked) => handlePublicSettingChange({ isPublic: checked })}
+											disabled={publicSettingsSaving}
+											helpText="Andre brukere kan finne og se profilen din på /profiler"
+										/>
+										{isPublic && (
+											<div className={styles.publicSubSettings}>
+												<p className={styles.label}>Velg hva som vises offentlig:</p>
+												<Checkbox
+													label="Navn"
+													checked={publicName}
+													onChange={(checked) => handlePublicSettingChange({ publicName: checked })}
+													disabled={publicSettingsSaving}
+												/>
+												<Checkbox
+													label="Klubb"
+													checked={publicClub}
+													onChange={(checked) => handlePublicSettingChange({ publicClub: checked })}
+													disabled={publicSettingsSaving}
+												/>
+												<Checkbox
+													label="Skytternummer"
+													checked={publicSkytternr}
+													onChange={(checked) => handlePublicSettingChange({ publicSkytternr: checked })}
+													disabled={publicSettingsSaving}
+												/>
+												<Checkbox
+													label="Statistikk (totalt antall piler og snittpoeng)"
+													checked={publicStats}
+													onChange={(checked) => handlePublicSettingChange({ publicStats: checked })}
+													disabled={publicSettingsSaving}
+												/>
+											</div>
+										)}
+										{publicSettingsMessage && (
+											<div
+												className={
+													publicSettingsMessage.type === 'success' ? styles.successMessage : styles.error
+												}
+											>
+												{publicSettingsMessage.text}
+											</div>
+										)}
+									</>
 								)}
 							</div>
 						</div>
