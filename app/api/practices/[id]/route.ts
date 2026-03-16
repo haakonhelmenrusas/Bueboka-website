@@ -5,7 +5,7 @@ import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { Environment } from '@/lib/prismaEnums';
 import { updatePracticeSchema } from '@/lib/validations/practice';
 import { formatZodErrors } from '@/lib/validations/helpers';
-import { statsCache } from '@/lib/cache';
+import { statsCache, practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -149,6 +149,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		// Invalidate stats caches for this user
 		statsCache.delete(`stats:detailed:${user.id}`);
 		statsCache.delete(`stats:summary:${user.id}`);
+		practicesCache.deleteByPrefix(`practices:cards:${user.id}`);
 
 		return NextResponse.json(mappedPractice);
 	} catch (error) {
@@ -203,6 +204,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 		// Invalidate stats caches for this user
 		statsCache.delete(`stats:detailed:${user.id}`);
 		statsCache.delete(`stats:summary:${user.id}`);
+		practicesCache.deleteByPrefix(`practices:cards:${user.id}`);
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
