@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
+import { practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 
 export async function GET(request: Request) {
@@ -17,6 +18,23 @@ export async function GET(request: Request) {
 
 		// Filter by type: 'all', 'TRENING', or 'KONKURRANSE'
 		const filterType = url.searchParams.get('filter') ?? 'all';
+
+		// Check server-side cache (skip in development).
+		// The server cache TTL (30 s) is intentionally longer than the HTTP max-age (10 s):
+		// the HTTP header controls browser/CDN freshness while the server cache avoids
+		// repeated DB queries across concurrent requests within the same server instance.
+		if (process.env.NODE_ENV !== 'development') {
+			const cacheKey = `practices:cards:${user.id}:${page}:${pageSize}:${filterType}`;
+			const cached = practicesCache.get(cacheKey);
+			if (cached) {
+				return NextResponse.json(cached, {
+					headers: {
+						'Cache-Control': 'private, max-age=10, must-revalidate',
+						Vary: 'Cookie',
+					},
+				});
+			}
+		}
 
 		// When fetching 'all', we need all records up to the current page's end offset
 		// so we can sort them together and slice correctly.
@@ -161,8 +179,16 @@ export async function GET(request: Request) {
 		// Otherwise, results are already paginated from the database query
 		const paginatedCards = filterType === 'all' ? allCards.slice(skip, skip + pageSize) : allCards;
 
+		const responseData = { practices: paginatedCards, page, pageSize, total };
+
+		// Store in server-side cache (skip in development)
+		if (process.env.NODE_ENV !== 'development') {
+			const cacheKey = `practices:cards:${user.id}:${page}:${pageSize}:${filterType}`;
+			practicesCache.set(cacheKey, responseData);
+		}
+
 		return NextResponse.json(
-			{ practices: paginatedCards, page, pageSize, total },
+			responseData,
 			{
 				headers: {
 					'Cache-Control':

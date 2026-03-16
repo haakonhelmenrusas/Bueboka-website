@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
+import { userProfileCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 
 export async function GET() {
@@ -75,6 +76,9 @@ export async function PATCH(request: NextRequest) {
 				...(publicSkytternr !== undefined && { publicSkytternr }),
 			},
 		});
+
+		// Invalidate profile cache
+		userProfileCache.delete(`profile:${user.id}`);
 
 		return NextResponse.json({ user: updatedUser });
 	} catch (error) {
