@@ -1,285 +1,278 @@
 .page {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
-	color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
+    color: var(--white);
 }
 
 .main {
-	padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
-	max-width: 800px;
-	margin: 0 auto;
-	width: 100%;
-	flex: 1;
+    padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
 }
 
 .container {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-10);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
 }
 
 .header {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	gap: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
 }
 
 .backButton {
-	background: transparent;
-	border: none;
-	color: var(--section-title-light);
-	cursor: pointer;
-	padding: var(--space-2);
-	border-radius: var(--radius-base);
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	transition: background 150ms ease;
+    background: transparent;
+    border: none;
+    color: var(--section-title-light);
+    cursor: pointer;
+    padding: var(--space-2);
+    border-radius: var(--radius-base);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 150ms ease;
 }
 
 .backButton:hover {
-	background: var(--white-10);
+    background: var(--white-10);
 }
 
 .title {
-	margin: 0 0 var(--space-8);
-	font-size: 2rem;
-	font-weight: 900;
-	color: var(--section-title-light);
+    margin: 0 0 var(--space-8);
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--section-title-light);
 }
 
 .section {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
 }
 
 .sectionTitle {
-	margin: 0;
-	font-size: 1.4rem;
-	font-weight: 900;
-	color: var(--section-title-light);
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--section-title-light);
 }
 
 .card {
-	background: var(--card-bg);
-	border: 1px solid rgba(0, 0, 0, 0.06);
-	border-radius: var(--radius-4);
-	padding: var(--space-8);
-	color: var(--text-dark);
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-4);
+    padding: var(--space-8);
+    color: var(--text-dark);
 }
 
 .cardContent {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
 }
 
 .userInfo {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
 }
 
 .label {
-	margin: 0;
-	font-size: 0.875rem;
-	font-weight: 700;
-	color: var(--text-gray-700);
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-gray-700);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .value {
-	margin: 0;
-	font-size: 1.1rem;
-	font-weight: 600;
-	color: var(--text-dark);
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
 }
 
 .privacyText {
-	margin: 0;
-	font-size: 1.05rem;
-	line-height: 1.6;
-	color: var(--text-dark);
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-dark);
 }
 
 .privacyList {
-	margin: 0;
-	padding: 0;
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-5);
-	list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    list-style: none;
 }
 
 .privacyItem {
-	display: flex;
-	align-items: flex-start;
-	gap: var(--space-4);
-	padding: var(--space-4);
-	background: var(--primary-02);
-	border-radius: var(--radius-md);
-	border: 1px solid var(--primary-06);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: var(--primary-02);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--primary-06);
 }
 
 .privacyIcon {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 28px;
-	height: 28px;
-	border-radius: var(--radius-base);
-	background: var(--primary-08);
-	color: var(--primary);
-	flex: 0 0 auto;
-	margin-top: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-base);
+    background: var(--primary-08);
+    color: var(--primary);
+    flex: 0 0 auto;
+    margin-top: 2px;
 }
 
 .privacyItem div {
-	line-height: 1.6;
-	color: var(--text-gray-700);
+    line-height: 1.6;
+    color: var(--text-gray-700);
 }
 
 .privacyItem strong {
-	color: var(--text-dark);
+    color: var(--text-dark);
 }
 
 .privacyFooter {
-	margin: 0;
-	font-size: 0.95rem;
-	line-height: 1.6;
-	color: var(--text-gray-700);
-	font-style: italic;
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-gray-700);
+    font-style: italic;
 }
 
 .dangerZone {
-	margin-top: var(--space-8);
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-4);
-}
-
-.dangerTitle {
-	margin: 0;
-	font-size: 1.4rem;
-	font-weight: 600;
-	color: var(--error-light);
+    margin-top: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
 }
 
 .dangerCard {
-	background: var(--card-bg);
-	border: 1px solid rgba(255, 107, 107, 0.3);
-	border-radius: 18px;
-	padding: var(--space-8);
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 18px;
+    padding: var(--space-8);
 }
 
 .dangerContent {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
 }
 
 .dangerInfo {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
 }
 
 .dangerHeading {
-	margin: 0;
-	font-size: 1.2rem;
-	font-weight: 800;
-	color: var(--error);
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--error);
 }
 
 .dangerDescription {
-	margin: 0;
-	font-size: 0.95rem;
-	line-height: 1.6;
-	color: var(--text-gray-700);
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-gray-700);
 }
 
 .deleteButton {
-	align-self: flex-start;
-	padding: var(--space-4) var(--space-6);
-	background: linear-gradient(90deg, #d63031, #e74c3c);
-	color: var(--white);
-	border: none;
-	border-radius: 12px;
-	font-weight: 800;
-	font-size: 1rem;
-	cursor: pointer;
-	transition: all 150ms ease;
-	box-shadow: 0 8px 18px rgba(214, 48, 49, 0.25);
+    align-self: flex-start;
+    padding: var(--space-4) var(--space-6);
+    background: linear-gradient(90deg, #d63031, #e74c3c);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 150ms ease;
+    box-shadow: 0 8px 18px rgba(214, 48, 49, 0.25);
 }
 
 .deleteButton:hover:not(:disabled) {
-	transform: translateY(-1px);
-	box-shadow: 0 12px 24px rgba(214, 48, 49, 0.35);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px rgba(214, 48, 49, 0.35);
 }
 
 .deleteButton:active:not(:disabled) {
-	transform: translateY(0);
+    transform: translateY(0);
 }
 
 .deleteButton:disabled {
-	opacity: 0.7;
-	cursor: not-allowed;
-	transform: none;
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
 }
 
 .error {
-	padding: var(--space-3);
-	background: var(--error-bg);
-	border: 1px solid var(--error-border);
-	border-radius: 10px;
-	color: var(--error-light);
-	font-size: 0.95rem;
-	font-weight: 600;
+    padding: var(--space-3);
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
+    border-radius: 10px;
+    color: var(--error-light);
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
 .successMessage {
-	padding: var(--space-3);
-	background: rgba(0, 184, 148, 0.1);
-	border: 1px solid rgba(0, 184, 148, 0.4);
-	border-radius: 10px;
-	color: var(--text-dark);
-	font-size: 0.95rem;
-	font-weight: 600;
+    padding: var(--space-3);
+    background: rgba(0, 184, 148, 0.1);
+    border: 1px solid rgba(0, 184, 148, 0.4);
+    border-radius: 10px;
+    color: var(--text-dark);
+    font-size: 0.95rem;
+    font-weight: 600;
 }
 
 .sectionTitleWithIcon {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 .publicSubSettings {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
-	padding: var(--space-4);
-	background: var(--primary-02);
-	border-radius: var(--radius-md);
-	border: 1px solid var(--primary-06);
-	margin-top: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--primary-02);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--primary-06);
+    margin-top: var(--space-2);
 }
 
 @media (max-width: 900px) {
-	.main {
-		padding: var(--space-8) var(--space-4);
-	}
+    .main {
+        padding: var(--space-8) var(--space-4);
+    }
 
-	.title {
-		font-size: 1.75rem;
-	}
+    .title {
+        font-size: 1.75rem;
+    }
 
-	.card,
-	.dangerCard {
-		padding: var(--space-6);
-	}
+    .card,
+    .dangerCard {
+        padding: var(--space-6);
+    }
 }

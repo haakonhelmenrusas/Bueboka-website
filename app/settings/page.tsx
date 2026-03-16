@@ -169,13 +169,13 @@ export default function SettingsPage() {
 					</div>
 					<div className={styles.section}>
 						<h2 className={styles.sectionTitle}>
-							<span className={styles.sectionTitleWithIcon}><LuGlobe size={20} /> Offentlig profil</span>
+							<span className={styles.sectionTitleWithIcon}>
+								<LuGlobe size={20} /> Offentlig profil
+							</span>
 						</h2>
 						<div className={styles.card}>
 							<div className={styles.cardContent}>
-								<p className={styles.privacyText}>
-									Gjør profilen din søkbar for andre brukere. Du velger selv hva du ønsker å dele.
-								</p>
+								<p className={styles.privacyText}>Gjør profilen din søkbar for andre brukere. Du velger selv hva du ønsker å dele.</p>
 								{publicSettingsLoaded && (
 									<>
 										<Checkbox
@@ -215,11 +215,7 @@ export default function SettingsPage() {
 											</div>
 										)}
 										{publicSettingsMessage && (
-											<div
-												className={
-													publicSettingsMessage.type === 'success' ? styles.successMessage : styles.error
-												}
-											>
+											<div className={publicSettingsMessage.type === 'success' ? styles.successMessage : styles.error}>
 												{publicSettingsMessage.text}
 											</div>
 										)}
@@ -423,7 +419,6 @@ export default function SettingsPage() {
 						</div>
 					</div>
 					<div className={styles.dangerZone}>
-						<h2 className={styles.dangerTitle}>Farlig sone</h2>
 						<div className={styles.dangerCard}>
 							<div className={styles.dangerContent}>
 								<div className={styles.dangerInfo}>
