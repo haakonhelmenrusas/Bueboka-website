@@ -75,4 +75,5 @@ export const roundTypesCache = new MemoryCache(300000); // 5 minutes for round t
 export const userProfileCache = new MemoryCache(120000); // 2 minutes for user profiles
 export const statsCache = new MemoryCache(180000); // 3 minutes for statistics
 export const practicesCache = new MemoryCache(30000); // 30 seconds for practice cards
+export const equipmentCache = new MemoryCache(60000); // 60 seconds for bows + arrows
 

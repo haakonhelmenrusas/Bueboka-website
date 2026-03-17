@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 import { updateBowSchema } from '@/lib/validations/bow';
 import { validateRequest } from '@/lib/validations/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { equipmentCache } from '@/lib/cache';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
@@ -56,6 +57,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			});
 		});
 
+		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ bow }, { status: 200 });
 	} catch (error) {
 		Sentry.captureException(error, {
@@ -89,6 +91,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
 		await prisma.bow.delete({ where: { id } });
 
+		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ success: true }, { status: 200 });
 	} catch (error) {
 		Sentry.captureException(error, {

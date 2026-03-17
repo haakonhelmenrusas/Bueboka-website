@@ -11,52 +11,33 @@ export function useEquipmentData() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 
-	const fetchBows = useCallback(async () => {
+	const refresh = useCallback(async () => {
+		setLoading(true);
+		setError(null);
 		try {
-			const res = await fetch('/api/bows');
+			const res = await fetch('/api/equipment');
 			if (!res.ok) {
-				setError('Kunne ikke hente buer');
+				setError('Kunne ikke hente utstyr');
 				return;
 			}
 			const data = await res.json();
 			setBows(data.bows ?? []);
-		} catch (err) {
-			Sentry.captureException(err, { tags: { area: 'EquipmentSection', action: 'fetchBows' } });
-			setError(err instanceof Error ? err.message : 'Kunne ikke hente buer');
-		}
-	}, []);
-
-	const fetchArrows = useCallback(async () => {
-		try {
-			const res = await fetch('/api/arrows');
-			if (!res.ok) {
-				setError('Kunne ikke hente piler');
-				return;
-			}
-			const data = await res.json();
 			setArrows(data.arrows ?? []);
 		} catch (err) {
-			Sentry.captureException(err, { tags: { area: 'EquipmentSection', action: 'fetchArrows' } });
-			setError(err instanceof Error ? err.message : 'Kunne ikke hente piler');
+			Sentry.captureException(err, { tags: { area: 'useEquipmentData', action: 'refresh' } });
+			setError('Kunne ikke hente utstyr');
+		} finally {
+			setLoading(false);
 		}
 	}, []);
-
-	const refresh = useCallback(async () => {
-		setLoading(true);
-		setError(null);
-		await Promise.all([fetchBows(), fetchArrows()]);
-		setLoading(false);
-	}, [fetchBows, fetchArrows]);
 
 	useEffect(() => {
 		refresh();
 	}, [refresh]);
 
 	useEffect(() => {
-		return onEquipmentChanged(() => {
-			refresh();
-		});
+		return onEquipmentChanged(refresh);
 	}, [refresh]);
 
-	return { bows, arrows, loading, error, refresh, refreshBows: fetchBows, refreshArrows: fetchArrows, setBows, setArrows };
+	return { bows, arrows, loading, error, refresh, setBows, setArrows };
 }
