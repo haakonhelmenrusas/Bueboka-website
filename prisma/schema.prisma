@@ -15,11 +15,12 @@ model User {
   club              String?
   image             String?
   skytternr         String?
-  isPublic          Boolean  @default(false)
-  publicName        Boolean  @default(true)
-  publicClub        Boolean  @default(true)
-  publicStats       Boolean  @default(false)
-  publicSkytternr   Boolean  @default(false)
+  isPublic             Boolean  @default(false)
+  publicName           Boolean  @default(true)
+  publicClub           Boolean  @default(true)
+  publicStats          Boolean  @default(false)
+  publicSkytternr      Boolean  @default(false)
+  publicAchievements   Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 

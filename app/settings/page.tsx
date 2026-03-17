@@ -20,6 +20,7 @@ export default function SettingsPage() {
 	const [publicClub, setPublicClub] = useState(true);
 	const [publicStats, setPublicStats] = useState(false);
 	const [publicSkytternr, setPublicSkytternr] = useState(false);
+	const [publicAchievements, setPublicAchievements] = useState(false);
 	const [publicSettingsLoaded, setPublicSettingsLoaded] = useState(false);
 	const [publicSettingsSaving, setPublicSettingsSaving] = useState(false);
 	const [publicSettingsMessage, setPublicSettingsMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -55,6 +56,7 @@ export default function SettingsPage() {
 						setPublicClub(data.profile.publicClub ?? true);
 						setPublicStats(data.profile.publicStats ?? false);
 						setPublicSkytternr(data.profile.publicSkytternr ?? false);
+						setPublicAchievements(data.profile.publicAchievements ?? false);
 					}
 					setPublicSettingsLoaded(true);
 				})
@@ -82,6 +84,7 @@ export default function SettingsPage() {
 		publicClub?: boolean;
 		publicStats?: boolean;
 		publicSkytternr?: boolean;
+		publicAchievements?: boolean;
 	}) => {
 		setPublicSettingsSaving(true);
 		setPublicSettingsMessage(null);
@@ -92,6 +95,7 @@ export default function SettingsPage() {
 			publicClub: updates.publicClub ?? publicClub,
 			publicStats: updates.publicStats ?? publicStats,
 			publicSkytternr: updates.publicSkytternr ?? publicSkytternr,
+			publicAchievements: updates.publicAchievements ?? publicAchievements,
 		};
 
 		// Update local state immediately
@@ -100,6 +104,7 @@ export default function SettingsPage() {
 		if (updates.publicClub !== undefined) setPublicClub(updates.publicClub);
 		if (updates.publicStats !== undefined) setPublicStats(updates.publicStats);
 		if (updates.publicSkytternr !== undefined) setPublicSkytternr(updates.publicSkytternr);
+		if (updates.publicAchievements !== undefined) setPublicAchievements(updates.publicAchievements);
 
 		try {
 			const res = await fetch('/api/users', {
@@ -253,6 +258,12 @@ export default function SettingsPage() {
 													label="Statistikk (totalt antall piler og snittpoeng)"
 													checked={publicStats}
 													onChange={(checked) => handlePublicSettingChange({ publicStats: checked })}
+													disabled={publicSettingsSaving}
+												/>
+												<Checkbox
+													label="Prestasjoner (antall oppnådde prestasjoner)"
+													checked={publicAchievements}
+													onChange={(checked) => handlePublicSettingChange({ publicAchievements: checked })}
 													disabled={publicSettingsSaving}
 												/>
 											</div>
