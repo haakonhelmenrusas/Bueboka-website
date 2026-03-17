@@ -31,9 +31,8 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--space-6);
-    height: 100%;
     display: flex;
-    align-items: center;
+    flex-direction: column; /* stack .row above .mobileNav — not side-by-side */
 }
 
 .row {
@@ -41,6 +40,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    height: 64px; /* fills the fixed header; mobileNav overflows below */
 }
 
 .logoLink {
@@ -89,56 +89,56 @@
 
 /* Desktop navigation (hidden on small screens) */
 .desktopNav {
-	display: none;
-	align-items: center;
-	gap: var(--space-10);
-	margin-left: auto;
+    display: none;
+    align-items: center;
+    gap: var(--space-10);
+    margin-left: auto;
 }
 
 .navLink {
-	color: var(--white-80);
-	text-decoration: none;
-	transition: color 150ms ease-in-out, text-decoration-color 150ms ease-in-out;
-	text-underline-offset: 3px;
+    color: var(--white-80);
+    text-decoration: none;
+    transition: color 150ms ease-in-out, text-decoration-color 150ms ease-in-out;
+    text-underline-offset: 3px;
 }
 
 .navLink:hover {
-	color: var(--white);
-	text-decoration: underline;
-	text-decoration-color: rgba(255, 255, 255, 0.5);
+    color: var(--white);
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.5);
 }
 
 .navLinkActive {
-	color: var(--white) !important;
-	font-weight: 600;
-	text-decoration: underline;
-	text-decoration-color: rgba(255, 255, 255, 0.6);
+    color: var(--white) !important;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.6);
 }
 
 .navLinkIcon {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-2);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 /* Feedback and other nav-level buttons */
 .navButton {
-	background: transparent;
-	border: 1px solid var(--white-20);
-	padding: var(--space-2) var(--space-4);
-	border-radius: var(--radius-base);
-	cursor: pointer;
-	font-size: inherit;
-	font-family: inherit;
-	color: var(--white-80);
-	text-decoration: none;
-	transition: color 150ms ease-in-out, background 150ms ease-in-out, border-color 150ms ease-in-out;
+    background: transparent;
+    border: 1px solid var(--white-20);
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    color: var(--white-80);
+    text-decoration: none;
+    transition: color 150ms ease-in-out, background 150ms ease-in-out, border-color 150ms ease-in-out;
 }
 
 .navButton:hover {
-	color: var(--white);
-	background: var(--white-10);
-	border-color: var(--white-80);
+    color: var(--white);
+    background: var(--white-10);
+    border-color: var(--white-80);
 }
 
 .authButtons {
@@ -270,6 +270,8 @@
     display: inline-flex;
     align-items: center;
     position: relative;
+    /* no margin-left: auto — space-between already pins this to the right.
+       Having it here AND on .desktopNav splits free space on desktop. */
 }
 
 .profileMenuButton {
@@ -285,7 +287,7 @@
 }
 
 .profileMenuButton:hover {
-    background: var(--white);
+    background: var(--white-10);
 }
 
 .hamburgerBox {
@@ -413,12 +415,12 @@
     }
 }
 
-/* Mobile-specific profile button: visible only under md */
+/* Mobile-specific profile button: visible only under 767px (matches desktopNav breakpoint) */
 .mobileProfileButton {
     display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 767px) {
     .mobileProfileButton {
         display: inline-flex;
     }
