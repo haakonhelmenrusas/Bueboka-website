@@ -100,3 +100,4 @@ export * from './WhatsNewModal/WhatsNewModal';
 export * from './WhatsNewModal/useWhatsNew';
 export * from './Achievements/AchievementUnlockModal';
 export * from './Competitions/CompetitionFormModal';
+export * from './MobileActionButton/MobileActionButton';

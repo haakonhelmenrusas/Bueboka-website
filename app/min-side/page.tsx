@@ -12,6 +12,7 @@ import {
 	EquipmentSection,
 	Footer,
 	Header,
+	MobileActionButton,
 	PracticeDetailsModal,
 	PracticeFormModal,
 	PracticesSection,
@@ -514,6 +515,21 @@ export default function MyPage() {
 					}}
 				/>
 			)}
+			<MobileActionButton
+				onCreatePractice={() => {
+					setPracticeFormMode('create');
+					setPracticeFormOpen(true);
+				}}
+				onCreateCompetition={() => {
+					setCompetitionFormMode('create');
+					setCompetitionFormOpen(true);
+				}}
+				onCreateBow={() => {
+					setSelectedBow(null);
+					setBowModalOpen(true);
+				}}
+				onCreateArrows={() => setArrowsModalOpen(true)}
+			/>
 		</div>
 	);
 }
