@@ -43,7 +43,7 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 		}
 
-		const { club, name, image, skytternr, isPublic, publicName, publicClub, publicStats, publicSkytternr } = await request.json();
+		const { club, name, image, skytternr, isPublic, publicName, publicClub, publicStats, publicSkytternr, publicAchievements } = await request.json();
 
 		// Validate image if provided
 		if (image !== undefined && image !== null) {
@@ -74,6 +74,7 @@ export async function PATCH(request: NextRequest) {
 				...(publicClub !== undefined && { publicClub }),
 				...(publicStats !== undefined && { publicStats }),
 				...(publicSkytternr !== undefined && { publicSkytternr }),
+				...(publicAchievements !== undefined && { publicAchievements }),
 			},
 		});
 

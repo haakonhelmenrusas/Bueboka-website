@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { LuArrowLeft, LuBuilding2, LuHash, LuTarget, LuUser } from 'react-icons/lu';
+import { LuArrowLeft, LuBuilding2, LuHash, LuTarget, LuTrophy, LuUser } from 'react-icons/lu';
 import { prisma } from '@/lib/prisma';
 import { ANONYMOUS_ARCHER_LABEL } from '@/lib/labels';
 import type { PublicProfile } from '@/lib/types';
@@ -24,6 +24,7 @@ async function getPublicProfile(id: string): Promise<PublicProfile | null> {
 			publicClub: true,
 			publicSkytternr: true,
 			publicStats: true,
+			publicAchievements: true,
 			practices: {
 				select: {
 					ends: {
@@ -33,6 +34,9 @@ async function getPublicProfile(id: string): Promise<PublicProfile | null> {
 						},
 					},
 				},
+			},
+			achievements: {
+				select: { id: true },
 			},
 		},
 	});
@@ -68,6 +72,7 @@ async function getPublicProfile(id: string): Promise<PublicProfile | null> {
 		image: user.image,
 		skytternr: user.publicSkytternr ? user.skytternr : null,
 		stats,
+		achievementCount: user.publicAchievements ? user.achievements.length : null,
 	};
 }
 
@@ -139,6 +144,19 @@ export default async function PublicProfilePage({ params }: Props) {
 											<span className={styles.statLabel}>Snittpoeng per pil</span>
 										</div>
 									)}
+								</div>
+							</div>
+						)}
+
+						{profile.achievementCount != null && (
+							<div className={styles.statsSection}>
+								<h2 className={styles.statsTitle}>Prestasjoner</h2>
+								<div className={styles.statsGrid}>
+									<div className={styles.statItem}>
+										<LuTrophy size={20} className={styles.statIcon} />
+										<span className={styles.statValue}>{profile.achievementCount}</span>
+										<span className={styles.statLabel}>Prestasjoner oppnådd</span>
+									</div>
 								</div>
 							</div>
 						)}

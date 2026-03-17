@@ -14,6 +14,7 @@ export interface User {
 	publicClub: boolean;
 	publicStats: boolean;
 	publicSkytternr: boolean;
+	publicAchievements: boolean;
 	bows: Bow[];
 	arrows: Arrow[];
 	practices: Practice[];
@@ -29,6 +30,7 @@ export interface PublicProfile {
 		totalArrows: number;
 		avgScorePerArrow: number | null;
 	} | null;
+	achievementCount?: number | null;
 }
 
 export interface Bow {
