@@ -29,6 +29,7 @@ export async function GET() {
 				publicClub: true,
 				publicStats: true,
 				publicSkytternr: true,
+				publicAchievements: true,
 			},
 		});
 

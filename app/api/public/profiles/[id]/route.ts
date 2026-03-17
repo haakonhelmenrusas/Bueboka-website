@@ -18,6 +18,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 				publicClub: true,
 				publicSkytternr: true,
 				publicStats: true,
+				publicAchievements: true,
 				practices: {
 					select: {
 						totalScore: true,
@@ -28,6 +29,9 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 							},
 						},
 					},
+				},
+				achievements: {
+					select: { id: true },
 				},
 			},
 		});
@@ -66,6 +70,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 			image: user.image,
 			skytternr: user.publicSkytternr ? user.skytternr : null,
 			stats,
+			achievementCount: user.publicAchievements ? user.achievements.length : null,
 		};
 
 		return NextResponse.json({ profile });
