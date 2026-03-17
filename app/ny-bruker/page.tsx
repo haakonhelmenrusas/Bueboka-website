@@ -231,7 +231,6 @@ export default function SignUpPage() {
 							</form>
 							<div className={styles.authActions}>
 								<SocialAuthButtons
-									provider="google"
 									label="Logg på med Google"
 									onClick={() => signIn.social({ provider: 'google', callbackURL: '/min-side' })}
 									disabled={isSubmitting}
