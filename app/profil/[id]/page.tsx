@@ -6,6 +6,7 @@ import { prisma } from '@/lib/prisma';
 import { ANONYMOUS_ARCHER_LABEL } from '@/lib/labels';
 import type { PublicProfile } from '@/lib/types';
 import styles from './page.module.css';
+import { Header } from '@/components';
 
 interface Props {
 	params: Promise<{ id: string }>;
@@ -88,6 +89,7 @@ export default async function PublicProfilePage({ params }: Props) {
 
 	return (
 		<div className={styles.page}>
+			<Header />
 			<main className={styles.main}>
 				<div className={styles.container}>
 					<Link href="/skyttere" className={styles.backLink}>
@@ -98,13 +100,7 @@ export default async function PublicProfilePage({ params }: Props) {
 					<div className={styles.card}>
 						<div className={styles.avatarWrap}>
 							{profile.image ? (
-								<Image
-									src={profile.image}
-									alt={`${displayName} profilbilde`}
-									width={120}
-									height={120}
-									className={styles.avatar}
-								/>
+								<Image src={profile.image} alt={`${displayName} profilbilde`} width={120} height={120} className={styles.avatar} />
 							) : (
 								<div className={styles.avatarPlaceholder} aria-hidden="true">
 									<LuUser size={48} strokeWidth={1.5} />
@@ -140,7 +136,9 @@ export default async function PublicProfilePage({ params }: Props) {
 									</div>
 									{profile.stats.avgScorePerArrow !== null && (
 										<div className={styles.statItem}>
-											<span className={styles.statValue}>{profile.stats.avgScorePerArrow.toLocaleString('nb-NO', { maximumFractionDigits: 2 })}</span>
+											<span className={styles.statValue}>
+												{profile.stats.avgScorePerArrow.toLocaleString('nb-NO', { maximumFractionDigits: 2 })}
+											</span>
 											<span className={styles.statLabel}>Snittpoeng per pil</span>
 										</div>
 									)}

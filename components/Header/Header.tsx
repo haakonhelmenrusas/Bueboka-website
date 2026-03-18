@@ -27,7 +27,8 @@ export function Header() {
 		pathname === '/statistikk' ||
 		pathname === '/achievements' ||
 		pathname === '/skyttere' ||
-		pathname.startsWith('/skyttere/');
+		pathname.startsWith('/profil/');
+	pathname.startsWith('/skyttere/');
 
 	// Check if we're on an auth form page (login/signup)
 	const isAuthFormPage =

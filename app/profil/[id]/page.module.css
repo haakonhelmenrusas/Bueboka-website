@@ -1,163 +1,163 @@
 .page {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
-	color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
+    color: var(--white);
 }
 
 .main {
-	padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
-	max-width: 600px;
-	margin: 0 auto;
-	width: 100%;
-	flex: 1;
+    padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+    flex: 1;
 }
 
 .container {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
 }
 
 .backLink {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--space-2);
-	color: var(--section-title-light);
-	text-decoration: none;
-	font-size: 0.95rem;
-	font-weight: 600;
-	transition: opacity 150ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--section-title-light);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: opacity 150ms ease;
 }
 
 .backLink:hover {
-	opacity: 0.8;
+    opacity: 0.8;
 }
 
 .card {
-	background: var(--card-bg);
-	border: 1px solid rgba(0, 0, 0, 0.06);
-	border-radius: var(--radius-xl);
-	padding: var(--space-10);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--space-6);
-	color: var(--text-dark);
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-xl);
+    padding: var(--space-10);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    color: var(--text-dark);
 }
 
 .avatarWrap {
-	width: 120px;
-	height: 120px;
-	border-radius: var(--radius-circle);
-	overflow: hidden;
-	border: 3px solid var(--secondary);
+    width: 120px;
+    height: 120px;
+    border-radius: var(--radius-circle);
+    overflow: hidden;
+    border: 3px solid var(--secondary);
 }
 
 .avatar {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .avatarPlaceholder {
-	width: 100%;
-	height: 100%;
-	background: var(--background);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--text-gray-600);
+    width: 100%;
+    height: 100%;
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-gray-600);
 }
 
 .name {
-	margin: 0;
-	font-size: 1.6rem;
-	font-weight: 900;
-	color: var(--text-dark);
-	text-align: center;
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--text-dark);
+    text-align: center;
 }
 
 .badges {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-2);
-	justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    justify-content: center;
 }
 
 .clubBadge,
 .skytternrBadge {
-	display: inline-flex;
-	align-items: center;
-	gap: 5px;
-	padding: 6px 12px;
-	border-radius: 20px;
-	font-weight: 600;
-	white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 .clubBadge {
-	background: var(--primary);
-	color: var(--white);
-	font-size: 0.8rem;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 0.8rem;
 }
 
 .skytternrBadge {
-	background: var(--secondary);
-	color: var(--white);
-	font-size: 0.75rem;
-	padding: 4px 10px;
+    background: var(--secondary);
+    color: var(--white);
+    font-size: 0.75rem;
+    padding: 4px 10px;
 }
 
 .statsSection {
-	width: 100%;
-	border-top: 1px solid var(--border-gray);
-	padding-top: var(--space-6);
+    width: 100%;
+    border-top: 1px solid var(--border-gray);
+    padding-top: var(--space-6);
 }
 
 .statsTitle {
-	margin: 0 0 var(--space-4);
-	font-size: 1rem;
-	font-weight: 700;
-	color: var(--text-gray-700);
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	text-align: center;
+    margin: 0 0 var(--space-4);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-gray-700);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
 }
 
 .statsGrid {
-	display: flex;
-	gap: var(--space-6);
-	justify-content: center;
-	flex-wrap: wrap;
+    display: flex;
+    gap: var(--space-6);
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .statItem {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--space-1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
 }
 
 .statIcon {
-	color: var(--primary);
+    color: var(--primary);
 }
 
 .statValue {
-	font-size: 1.5rem;
-	font-weight: 900;
-	color: var(--text-dark);
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text-dark);
 }
 
 .statLabel {
-	font-size: 0.8rem;
-	color: var(--text-gray-600);
-	font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--text-gray-600);
+    font-weight: 500;
 }
 
 @media (max-width: 600px) {
-	.main {
-		padding: var(--space-8) var(--space-4);
-	}
+    .main {
+        padding: var(--space-24) var(--space-4);
+    }
 }
