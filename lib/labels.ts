@@ -68,6 +68,19 @@ export function getEnvironmentLabel(environment: string): string {
 	return ENVIRONMENT_LABELS[environment] || environment;
 }
 
+// Achievement tier translations
+export const ACHIEVEMENT_TIER_LABELS: Record<string, string> = {
+	BRONZE: 'Bronse',
+	SILVER: 'Sølv',
+	GOLD: 'Gull',
+	PLATINUM: 'Platina',
+	DIAMOND: 'Diamant',
+};
+
+export function getAchievementTierLabel(tier: string): string {
+	return ACHIEVEMENT_TIER_LABELS[tier] || tier;
+}
+
 
 
 // Public profile
