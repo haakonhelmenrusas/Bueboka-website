@@ -1,10 +1,7 @@
 import { Button } from '@/components';
 import styles from './SocialAuthButtons.module.css';
 
-type Provider = 'google' | 'apple';
-
 type Props = {
-	provider: Provider;
 	label: string;
 	onClick: () => void;
 	disabled?: boolean;
@@ -32,33 +29,18 @@ const GoogleIcon = ({ size = 18 }: { size?: number }) => (
 	</svg>
 );
 
-const AppleIcon = ({ size = 18 }: { size?: number }) => (
-	<svg width={size} height={size} viewBox="0 0 384 512" aria-hidden="true" focusable="false">
-		<path
-			fill="currentColor"
-			d="M318.7 268.6c.2 32.4 14.5 57.6 43.2 75.2-5.4 15.8-12.6 30.6-21.6 44.4-12.2 18.8-24.9 37.5-44.8 37.9-19.1.4-25.2-11.4-47-11.4s-28.5 11-46.6 11.8c-19.1.7-33.6-19.2-45.9-38-25.1-38.4-44.3-108.6-18.5-156.1 12.8-23.5 35.7-38.4 60.6-38.8 18.9-.4 36.7 12.7 47 12.7 10.2 0 29.5-15.7 49.8-13.4 8.5.4 32.3 3.4 47.6 25.9-1.2.7-28.4 16.6-28.1 49.9zM259.7 120.6c10.2-12.4 17.1-29.7 15.2-47-14.7.6-32.5 9.8-43 22.2-9.4 10.9-17.7 28.4-15.5 45.1 16.4 1.3 33.1-8.3 43.3-20.3z"
-		/>
-	</svg>
-);
-
-export function SocialAuthButtons({ provider, label, onClick, disabled, loading }: Props) {
-	const icon = provider === 'google' ? <GoogleIcon /> : <AppleIcon />;
-
+export function SocialAuthButtons({ label, onClick, disabled, loading }: Props) {
 	return (
 		<Button
 			type="button"
 			label={label}
 			onClick={onClick}
 			buttonType="outline"
-			icon={icon}
+			icon={<GoogleIcon />}
 			width="100%"
 			disabled={disabled}
 			loading={loading}
-			buttonStyle={
-				provider === 'google'
-					? { backgroundColor: 'var(--white)', borderColor: 'rgba(0,0,0,0.15)', color: 'var(--black)' }
-					: { backgroundColor: 'var(--white)', borderColor: 'rgba(0,0,0,0.15)', color: 'var(--text-dark)' }
-			}
+			buttonStyle={{ backgroundColor: 'var(--white)', borderColor: 'rgba(0,0,0,0.15)', color: 'var(--black)' }}
 			textStyle={{ fontWeight: 600 }}
 			className={styles.socialButton}
 		/>

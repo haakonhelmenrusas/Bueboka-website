@@ -15,6 +15,7 @@ import {
 	LuZap,
 } from 'react-icons/lu';
 import { AchievementProgress } from '@/lib/achievements/types';
+import { getAchievementTierLabel } from '@/lib/labels';
 import styles from './AchievementBadge.module.css';
 
 interface AchievementBadgeProps {
@@ -83,7 +84,7 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 		>
 			<div className={styles.iconContainer}>
 				<IconComponent className={styles.icon} />
-				{achievement.tier && <div className={styles.tierBadge}>{achievement.tier}</div>}
+				{achievement.tier && <div className={styles.tierBadge}>{getAchievementTierLabel(achievement.tier)}</div>}
 			</div>
 
 			<div className={styles.content}>

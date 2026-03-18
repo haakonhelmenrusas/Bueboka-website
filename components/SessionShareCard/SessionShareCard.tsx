@@ -5,6 +5,7 @@ import styles from './SessionShareCard.module.css';
 import { LuTarget, LuCalendar, LuArrowUp, LuMapPin } from 'react-icons/lu';
 import { GiBowArrow } from 'react-icons/gi';
 import { getBowTypeLabel, getPracticeCategoryLabel, getEnvironmentLabel } from '@/lib/labels';
+import { Badge } from '@/components/common/Badge/Badge';
 
 export interface SessionShareData {
 	date: string;
@@ -53,7 +54,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 					</div>
 					<span className={styles.brandName}>Bueboka</span>
 				</div>
-				<span className={styles.typeBadge}>{typeLabel}</span>
+				<Badge variant="ghost" uppercase>{typeLabel}</Badge>
 			</div>
 			{data.totalScore > 0 ? (
 				<div className={styles.scoreHero}>

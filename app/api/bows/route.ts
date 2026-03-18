@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 import { createBowSchema } from '@/lib/validations/bow';
 import { validateRequest } from '@/lib/validations/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { equipmentCache } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
 			});
 		});
 
+		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ bow }, { status: 201 });
 	} catch (error) {
 		Sentry.captureException(error, {

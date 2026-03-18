@@ -333,6 +333,8 @@ export default function MyPage() {
 					</div>
 				</div>
 				<EquipmentSection
+					bows={bows}
+					arrows={arrows}
 					onCreateBow={() => {
 						setSelectedBow(null);
 						setBowModalOpen(true);

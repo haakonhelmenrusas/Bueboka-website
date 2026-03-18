@@ -4,6 +4,7 @@ import * as Sentry from '@sentry/nextjs';
 import { createArrowsSchema } from '@/lib/validations/arrows';
 import { validateRequest } from '@/lib/validations/helpers';
 import { getCurrentUser } from '@/lib/session';
+import { equipmentCache } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
 			});
 		});
 
+		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ arrows }, { status: 201 });
 	} catch (error) {
 		Sentry.captureException(error, {

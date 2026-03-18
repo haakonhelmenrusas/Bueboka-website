@@ -1,0 +1,87 @@
+/* ── Base ─────────────────────────────────────────────────── */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 100px;
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 1;
+    border: 1px solid transparent;
+    flex-shrink: 0;
+    font-family: inherit;
+}
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+/* ── Sizes ────────────────────────────────────────────────── */
+.sm {
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    gap: 4px;
+}
+
+.md {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+}
+
+.lg {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+}
+
+/* ── Variants ─────────────────────────────────────────────── */
+
+/* neutral – light backgrounds */
+.default {
+    background: var(--primary-06, rgba(5, 53, 70, 0.06));
+    color: var(--text-gray-600);
+    border-color: var(--border-gray, rgba(0, 0, 0, 0.1));
+}
+
+/* training – blue */
+.training {
+    background: rgba(59, 130, 246, 0.1);
+    color: rgb(37, 99, 235);
+    border-color: rgba(59, 130, 246, 0.25);
+}
+
+/* competition – amber */
+.competition {
+    background: rgba(251, 191, 36, 0.1);
+    color: rgb(180, 100, 0);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+/* primary – solid brand colour */
+.primary {
+    background: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+/* secondary – solid secondary colour */
+.secondary {
+    background: var(--secondary, #0c82ac);
+    color: var(--white);
+    border-color: var(--secondary, #0c82ac);
+}
+
+/* ghost – semi-transparent white, for use on dark/coloured backgrounds */
+.ghost {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Modifiers ────────────────────────────────────────────── */
+.uppercase {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+

@@ -86,44 +86,84 @@
 
 /* Lead paragraph */
 .lead {
-	color: var(--white-80); /* text-white/80 */
-	margin-bottom: var(--space-10); /* mb-8 */
-	max-width: 28rem; /* max-w-md */
+	color: var(--white-80);
+	margin-bottom: var(--space-8);
+	max-width: 28rem;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-/* CTA row (GitHub, Email) */
-.ctaRow {
+/* CTA row — removed */
+
+/* Sponsors section */
+.sponsorsSection {
+	margin-bottom: var(--space-10);
+}
+
+.sponsorsLabel {
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--white-50);
+	margin-bottom: var(--space-5);
+}
+
+.sponsorsGrid {
 	display: flex;
-	align-items: center;
 	justify-content: center;
-	gap: var(--space-6); /* space-x-6 */
-	margin-bottom: var(--space-10); /* mb-8 */
+	gap: var(--space-6);
 	flex-wrap: wrap;
 }
 
-.ctaBtn {
+.sponsorCard {
+	background: var(--white);
+	border-radius: 1.5rem;
+	padding: 2rem;
+	width: 320px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.15);
+}
+
+.sponsorLogoWrap {
+	height: 5rem;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 1rem;
+}
+
+.sponsorLogo {
+	object-fit: contain;
+	max-height: 100%;
+}
+
+.sponsorName {
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--primary);
+	margin-bottom: 0.375rem;
+}
+
+.sponsorDesc {
+	font-size: 0.85rem;
+	color: var(--text-gray-600);
+	margin-bottom: 0.875rem;
+	line-height: 1.4;
+}
+
+.sponsorLink {
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: var(--primary-light);
 	display: inline-flex;
 	align-items: center;
-	gap: var(--space-2); /* space-x-2 */
-	padding: var(--space-3) var(--space-6); /* py-3 px-6 */
-	border-radius: 9999px; /* rounded-full */
-	background: var(--white-20);
-	color: var(--white);
-	text-decoration: none;
-	transition:
-		background-color 150ms ease,
-		transform 120ms ease;
-}
-
-.ctaBtn:hover {
-	background: var(--white-30); /* hover:bg-white/30 */
-}
-
-.icon {
-	width: 20px; /* w-5 */
-	height: 20px; /* h-5 */
+	gap: 4px;
+	margin-top: auto;
 }
 
 /* Store badges row */

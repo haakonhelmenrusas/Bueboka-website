@@ -18,7 +18,7 @@ export interface EquipmentSectionProps {
 	onCreateArrows: () => void;
 	onSelectBow: (bow: Bow) => void;
 	onSelectArrows: (arrows: Arrow) => void;
-	onDataReady?: (api: { refresh: () => Promise<void>; refreshBows: () => Promise<void>; refreshArrows: () => Promise<void> }) => void;
+	onDataReady?: (api: { refresh: () => Promise<void> }) => void;
 }
 
 export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
@@ -35,8 +35,8 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
 	React.useEffect(() => {
 		if (!managed) return;
-		onDataReady?.({ refresh: equipment.refresh, refreshBows: equipment.refreshBows, refreshArrows: equipment.refreshArrows });
-	}, [managed, onDataReady, equipment.refresh, equipment.refreshArrows, equipment.refreshBows]);
+		onDataReady?.({ refresh: equipment.refresh });
+	}, [managed, onDataReady, equipment.refresh]);
 
 	const bows = managed ? equipment.bows : (bowsProp ?? []);
 	const arrows = managed ? equipment.arrows : (arrowsProp ?? []);

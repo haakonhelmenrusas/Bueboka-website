@@ -4,23 +4,78 @@ import { prisma } from './prisma';
 import { sendEmail } from './email';
 import { expo } from '@better-auth/expo';
 
+// -- Base URL + cookie-security -----------------------------------------------
+// baseURL must be the canonical server URL that Google (and other OAuth
+// providers) can redirect to.  Only loopback addresses (localhost/127.0.0.1)
+// receive special dev treatment from Google — all other private IPs
+// (192.168.x.x, 10.x.x.x …) are rejected with:
+//   "device_id and device_name are required for private IP"
+//
+// BETTER_AUTH_URL_MOBILE is the LAN IP of the dev machine
+// (e.g. http://192.168.x.x:3000).  It is added to trustedOrigins so the
+// Expo app can call server APIs from a physical device, but it MUST NOT
+// become the baseURL because that puts the private IP into the OAuth
+// redirect_uri, which Google refuses.
+//
+// OAuth on physical devices — options:
+//   A) Test on iOS Simulator  (can reach the host's localhost:3000 directly)
+//   B) Test on Android Emulator  →  BETTER_AUTH_URL=http://10.0.2.2:3000
+//      (Android's special alias for the host machine)
+//   C) Use a public HTTPS tunnel for physical-device + Google OAuth:
+//        1.  npx ngrok http 3000          (or: cloudflare tunnel, ssh -R …)
+//        2.  BETTER_AUTH_URL=https://<tunnel>.ngrok.io  (restart dev server)
+//        3.  Add https://<tunnel>.ngrok.io/api/auth/callback/google
+//            to Google Console → Authorised Redirect URIs
+//        4.  Add https://<tunnel>.ngrok.io
+//            to Google Console → Authorised JavaScript Origins
+//        Keep BETTER_AUTH_URL_MOBILE=http://192.168.x.x:3000 so non-OAuth
+//        API calls from the device continue to be trusted.
+
+const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3000';
+
+// The Next.js server ALWAYS listens on plain HTTP (localhost:3000).
+// The HTTPS layer lives in the reverse proxy (ngrok, nginx, Netlify edge …).
+// useSecureCookies must reflect the server's own transport, NOT the public
+// baseURL protocol — if we derive it from baseURL we get __Secure- cookies
+// that the server tries to set over HTTP, which browsers silently drop,
+// breaking every downstream cookie read (state, session, etc.).
+//
+// Rule of thumb:
+//   development → HTTP server  → false  (works for localhost, LAN IP, ngrok)
+//   production  → HTTPS server → true   (Netlify / any properly TLS-terminated host)
+const useSecureCookies = process.env.NODE_ENV === 'production';
+
 export const auth = betterAuth({
 	database: prismaAdapter(prisma, {
 		provider: 'postgresql',
 	}),
 	trustedOrigins: [
-		// Use environment-specific trusted origins
-		// In production: use BETTER_AUTH_TRUSTED_ORIGINS_PROD
-		// In development: use BETTER_AUTH_TRUSTED_ORIGINS_DEV
+		// The Expo app's deep-link scheme must ALWAYS be trusted (dev + prod).
+		// The expo plugin's after-hook checks isTrustedOrigin(callbackURL) before
+		// it appends the session cookie to the post-OAuth redirect URL.
+		// Without this, openAuthSessionAsync receives a bare bueboka:// link,
+		// the cookie is never transferred, and the user appears logged-out.
+		'bueboka://',
 		...(process.env.NODE_ENV === 'production'
-			? (process.env.BETTER_AUTH_TRUSTED_ORIGINS_PROD?.split(',')
+			? // Production: explicit allow-list only
+			  process.env.BETTER_AUTH_TRUSTED_ORIGINS_PROD?.split(',')
 					.map((origin) => origin.trim())
-					.filter(Boolean) ?? ['https://appleid.apple.com'])
-			: (process.env.BETTER_AUTH_TRUSTED_ORIGINS_DEV?.split(',')
-					.map((origin) => origin.trim())
-					.filter(Boolean) ?? ['https://appleid.apple.com', 'exp://', 'http://localhost:8081', 'http://localhost:3000'])),
+					.filter(Boolean) || []
+			: [
+					// Always trust the standard web URL for browser-based dev.
+					process.env.BETTER_AUTH_URL ?? 'http://localhost:3000',
+					// Trust the LAN/device URL so the Expo app can call server APIs
+					// from a physical device (non-OAuth calls: practices, profile, etc.)
+					...(process.env.BETTER_AUTH_URL_MOBILE
+						? [process.env.BETTER_AUTH_URL_MOBILE]
+						: []),
+					// Any additional origins from .env (Expo dev server, deep-link scheme, etc.)
+					...(process.env.BETTER_AUTH_TRUSTED_ORIGINS_DEV?.split(',')
+						.map((origin) => origin.trim())
+						.filter(Boolean) ?? ['exp://', 'http://localhost:8081', 'http://localhost:3000']),
+			  ]),
 	],
-	baseURL: process.env.BETTER_AUTH_URL || 'http://localhost:3000',
+	baseURL: baseURL,
 	emailAndPassword: {
 		enabled: true,
 		// Password reset (dev): log reset link to the server console instead of sending an email.
@@ -204,8 +259,20 @@ export const auth = betterAuth({
 		expiresIn: 60 * 60 * 24 * 7,
 		updateAge: 60 * 60 * 24,
 	},
+	account: {
+		// The signed state-cookie is a secondary CSRF guard on top of the primary
+		// DB-stored state verification.  In the Expo OAuth flow the proxy endpoint
+		// is called from the LAN IP (http://192.168.x.x:3000) while the callback
+		// arrives at the public URL (https://ngrok / production domain) — a
+		// different cookie domain, so the browser never sends the cookie back.
+		// Disabling the check is safe because:
+		//   1. State is still stored in and looked up from the DB (primary check).
+		//   2. PKCE (code_challenge / code_verifier) prevents code-injection attacks.
+		skipStateCookieCheck: true,
+	},
 	advanced: {
 		generateId: false,
+		useSecureCookies,
 		crossSubDomainCookies: {
 			enabled: false,
 		},

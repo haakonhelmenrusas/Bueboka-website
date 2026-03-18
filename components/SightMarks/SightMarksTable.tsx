@@ -1,6 +1,7 @@
 import styles from './SightMarksTable.module.css';
 import { SightMark, CalculatedMarks } from '@/types/SightMarks';
 import { LuArrowRight, LuPencil, LuTarget, LuTrash2 } from 'react-icons/lu';
+import { Badge } from '@/components/common/Badge/Badge';
 
 interface SightMarksTableProps {
 	sightMarks: SightMark[];
@@ -50,20 +51,18 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 									</span>
 								)}
 							</div>
-							<div className={styles.badgeRow}>
-								{showBowBadge && (
-									<span className={styles.badge}>
-										<LuTarget size={12} />
-										{bowName}
-									</span>
-								)}
-								{arrowBadge && (
-									<span className={styles.badge}>
-										<LuArrowRight size={12} />
-										{arrowBadge}
-									</span>
-								)}
-							</div>
+						<div className={styles.badgeRow}>
+							{showBowBadge && (
+								<Badge variant="ghost" size="sm" icon={<LuTarget size={12} />}>
+									{bowName}
+								</Badge>
+							)}
+							{arrowBadge && (
+								<Badge variant="ghost" size="sm" icon={<LuArrowRight size={12} />}>
+									{arrowBadge}
+								</Badge>
+							)}
+						</div>
 						</div>
 
 						{sm.givenDistances.length === 0 ? (
