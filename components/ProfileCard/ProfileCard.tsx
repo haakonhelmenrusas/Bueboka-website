@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import styles from './ProfileCard.module.css';
 import { LuBuilding2, LuCamera, LuHash, LuLoader, LuPencil, LuTrash, LuTrophy, LuUser } from 'react-icons/lu';
 import { Button } from '@/components';
+import { Badge } from '@/components/common/Badge/Badge';
 import { compressImage } from '@/lib/imageUtils';
 import { useClickOutside } from '@/lib/hooks/useClickOutside';
 
@@ -160,15 +161,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 			</div>
 			<header className={styles.header}>
 				<h2 className={styles.name}>{displayName}</h2>
-				<span className={styles.clubBadge}>
-					<LuBuilding2 size={13} />
+				<Badge variant="primary" icon={<LuBuilding2 size={13} />}>
 					{displayClub}
-				</span>
+				</Badge>
 				{skytternr && (
-					<span className={styles.skytternrBadge}>
-						<LuHash size={13} />
+					<Badge variant="secondary" size="sm" icon={<LuHash size={13} />}>
 						{skytternr}
-					</span>
+					</Badge>
 				)}
 			</header>
 			<Button label="Prestasjoner" onClick={handleAchievementsClick} icon={<LuTrophy size={18} />} size="normal" buttonType="filled" />

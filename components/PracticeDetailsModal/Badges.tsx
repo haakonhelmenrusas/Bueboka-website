@@ -1,9 +1,9 @@
 import React from 'react';
 import { LuHouse, LuMaximize2 } from 'react-icons/lu';
 import { Environment } from '@/lib/prismaEnums';
-import styles from './PracticeDetailsModal.module.css';
 import { GiArcher } from 'react-icons/gi';
 import { CiTrophy } from 'react-icons/ci';
+import { Badge } from '@/components/common/Badge/Badge';
 
 type PracticeType = 'TRENING' | 'KONKURRANSE';
 
@@ -14,15 +14,13 @@ interface PracticeTypeBadgeProps {
 export const PracticeTypeBadge: React.FC<PracticeTypeBadgeProps> = ({ practiceType }) => {
 	const isCompetition = practiceType === 'KONKURRANSE';
 	return isCompetition ? (
-		<div className={`${styles.badge} ${styles.competitionBadge}`}>
-			<CiTrophy className="w-3.5 h-3.5" />
-			<span>Konkurranse</span>
-		</div>
+		<Badge variant="competition" icon={<CiTrophy size={14} />}>
+			Konkurranse
+		</Badge>
 	) : (
-		<div className={`${styles.badge} ${styles.trainingBadge}`}>
-			<GiArcher className="w-3.5 h-3.5" />
-			<span>Trening</span>
-		</div>
+		<Badge variant="training" icon={<GiArcher size={14} />}>
+			Trening
+		</Badge>
 	);
 };
 
@@ -31,17 +29,7 @@ interface EnvironmentBadgeProps {
 }
 
 export const EnvironmentBadge: React.FC<EnvironmentBadgeProps> = ({ environment }) => (
-	<div className={styles.envBadge}>
-		{environment === 'INDOOR' ? (
-			<>
-				<LuHouse className="w-4 h-4" />
-				<span>Inne</span>
-			</>
-		) : (
-			<>
-				<LuMaximize2 className="w-4 h-4" />
-				<span>Ute</span>
-			</>
-		)}
-	</div>
+	<Badge variant="default" icon={environment === 'INDOOR' ? <LuHouse size={14} /> : <LuMaximize2 size={14} />}>
+		{environment === 'INDOOR' ? 'Inne' : 'Ute'}
+	</Badge>
 );

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './PracticeCard.module.css';
 import { LuChevronRight, LuHouse, LuMapPin, LuStar, LuTarget, LuTrees, LuTrophy, LuWind } from 'react-icons/lu';
+import { Badge } from '@/components/common/Badge/Badge';
 
 export interface PracticeCardProps {
 	id: string;
@@ -69,18 +70,16 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 					|
 				</span>
 				<div className={styles.badgeGroup}>
-					{isCompetition ? (
-						<div className={`${styles.badge} ${styles.competitionBadge}`}>
-							<LuTrophy size={12} />
-							<span>Konkurranse</span>
-						</div>
-					) : (
-						<div className={`${styles.badge} ${styles.trainingBadge}`}>
-							<LuTarget size={12} />
-							<span>Trening</span>
-						</div>
-					)}
-				</div>
+								{isCompetition ? (
+									<Badge variant="competition" icon={<LuTrophy size={12} />}>
+										Konkurranse
+									</Badge>
+								) : (
+									<Badge variant="training" icon={<LuTarget size={12} />}>
+										Trening
+									</Badge>
+								)}
+							</div>
 				<span className={styles.separator} aria-hidden="true">
 					|
 				</span>

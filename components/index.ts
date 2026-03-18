@@ -8,6 +8,7 @@ import { Sponsors } from './Sponsor/Sponsor';
 import { ContactForm } from './ContactForm/ContactForm';
 import { HeroBackground } from './HeroBackground/HeroBackground';
 import { Button } from './common/Button/Button';
+import { Badge } from './common/Badge/Badge';
 import { Input } from './common/Input/Input';
 import { NumberInput } from './common/NumberInput/NumberInput';
 import { DateInput } from './common/DateInput/DateInput';
@@ -55,6 +56,7 @@ export {
 	ContactForm,
 	HeroBackground,
 	Button,
+	Badge,
 	Input,
 	NumberInput,
 	DateInput,

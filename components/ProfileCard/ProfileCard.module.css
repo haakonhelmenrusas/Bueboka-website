@@ -120,30 +120,6 @@
     color: var(--text-dark);
 }
 
-.clubBadge,
-.skytternrBadge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.clubBadge {
-    background: var(--primary);
-    color: var(--white);
-    font-size: 0.8rem;
-}
-
-.skytternrBadge {
-    background: var(--secondary);
-    color: var(--white);
-    font-size: 0.75rem;
-    padding: 4px 10px;
-}
-
 .menu {
     position: absolute;
     top: 100%;
