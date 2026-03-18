@@ -3,6 +3,7 @@ import { AppStoreBadge } from './AppStoreBadge/AppStoreBadge';
 import { HeroSection } from './Hero/HeroSection';
 import { Footer } from './Footer/Footer';
 import { Features } from './Features/Features';
+import { SocialMedia } from './SocialMedia/SocialMedia';
 import { Contributors } from './Contributors/Contributors';
 import { Sponsors } from './Sponsor/Sponsor';
 import { ContactForm } from './ContactForm/ContactForm';
@@ -88,6 +89,7 @@ export {
 	CallToAction,
 	FeedbackModal,
 	Bueboka2Announcement,
+	SocialMedia,
 	SessionShareModal,
 	SessionShareCard,
 	PublicUserCard,

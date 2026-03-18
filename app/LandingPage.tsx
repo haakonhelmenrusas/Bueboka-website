@@ -1,4 +1,4 @@
-import { Bueboka2Announcement, CallToAction, Contributors, Features, Footer, Header, HeroSection, Privacy, Sponsors } from '@/components';
+import { Bueboka2Announcement, CallToAction, Contributors, Footer, Header, HeroSection, Privacy, SocialMedia, Sponsors } from '@/components';
 
 export function LandingPage() {
 	return (
@@ -10,7 +10,7 @@ export function LandingPage() {
 				<Header />
 				<HeroSection />
 				<Bueboka2Announcement />
-				<Features />
+				<SocialMedia />
 				<Privacy />
 				<CallToAction />
 				<Contributors />
