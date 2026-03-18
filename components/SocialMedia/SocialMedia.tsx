@@ -27,7 +27,7 @@ function HuddLogo({ className }: { className?: string }) {
 
 export function SocialMedia() {
 	return (
-		<section className={styles.section} aria-labelledby="social-heading">
+		<section id="community" className={styles.section} aria-labelledby="social-heading">
 			<div className={styles.container}>
 				<div className={styles.header}>
 					<div className={styles.badge}>

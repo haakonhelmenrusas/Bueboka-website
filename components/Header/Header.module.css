@@ -7,7 +7,8 @@
     background: var(--primary);
     border-bottom: 1px solid var(--white-20);
     will-change: transform, opacity;
-    height: 64px;
+    min-height: 64px;
+    height: auto;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -219,9 +220,10 @@
 
 .mobileLinks {
     padding-top: var(--space-4);
-    padding-bottom: var(--space-2);
+    padding-bottom: var(--space-5);
     display: grid;
     gap: var(--space-2);
+    text-align: right;
 }
 
 .mobileLink {
@@ -239,7 +241,9 @@
 .mobileLinkIcon {
     display: inline-flex;
     align-items: center;
+    justify-content: flex-end;
     gap: var(--space-2);
+    width: 100%;
 }
 
 .mobileLinkButton {
@@ -251,7 +255,8 @@
     font-family: inherit;
     color: var(--white-80);
     transition: color 150ms ease-in-out;
-    text-align: left;
+    text-align: right;
+    width: 100%;
 }
 
 .mobileLinkButton:hover {

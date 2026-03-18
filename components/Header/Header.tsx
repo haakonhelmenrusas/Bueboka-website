@@ -119,8 +119,8 @@ export function Header() {
 					<nav className={styles.desktopNav} aria-label="Primary">
 						{!isAuthPage && (
 							<>
-								<Link href="#features" onClick={(e) => handleHashLinkClick(e, '#features')} className={styles.navLink}>
-									Funksjoner
+								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.navLink}>
+									Felleskap
 								</Link>
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.navLink}>
 									Team
@@ -240,8 +240,8 @@ export function Header() {
 					<div className={styles.mobileLinks}>
 						{!isAuthPage && (
 							<>
-								<Link href="#features" onClick={(e) => handleHashLinkClick(e, '#features')} className={styles.mobileLink}>
-									Funksjoner
+								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.mobileLink}>
+									Felleskap
 								</Link>
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.mobileLink}>
 									Team
