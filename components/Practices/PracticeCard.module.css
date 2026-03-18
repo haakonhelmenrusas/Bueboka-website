@@ -18,11 +18,21 @@
     transform: translateY(0);
 }
 
+/* ── Desktop layout: single horizontal flex row ── */
 .main {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: var(--space-5);
+}
+
+/* date + badge sit side-by-side in their own wrapper */
+.topRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-4);
+    flex: 0 0 auto;
 }
 
 .date {
@@ -41,6 +51,16 @@
     flex: 0 0 auto;
 }
 
+/* Detail chips row (arrows, score, round, location, env) */
+.details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    flex: 1;
+}
+
 .detailItem {
     display: inline-flex;
     align-items: center;
@@ -49,8 +69,8 @@
     font-weight: 550;
     font-size: 0.9rem;
     white-space: nowrap;
-    max-width: 200px;
     overflow: hidden;
+    max-width: 200px;
 }
 
 .detailIcon {
@@ -73,13 +93,6 @@
     display: inline-flex;
     align-items: center;
     flex: 0 0 auto;
-    min-width: 106px;
-    justify-content: center;
-}
-
-
-.hideOnMobile {
-    display: inline-flex;
 }
 
 .openIcon {
@@ -97,44 +110,48 @@
     transform: translateX(4px);
 }
 
+/* ── Mobile layout ── */
 @media (max-width: 700px) {
     .card {
         padding: var(--space-4) var(--space-5);
     }
 
+    /* Stack topRow + details vertically */
     .main {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: var(--space-3);
     }
 
+    /* Date (prominent) on left, badge on right */
     .topRow {
         width: 100%;
-        flex-direction: row;
+        justify-content: space-between;
+        gap: var(--space-3);
     }
 
-    .details {
-        gap: var(--space-2) var(--space-3);
+    .date {
+        font-size: 1.18rem;
+        font-weight: 700;
+        width: auto;
     }
 
-    .detailItem {
-        font-size: 0.85rem;
-    }
-
-    .hideOnMobile {
-        display: none;
-    }
-
+    /* Desktop pipe hidden on mobile */
     .separator {
         display: none;
     }
 
-    .badgeGroup {
-        min-width: unset;
-        justify-content: flex-start;
+    /* Detail chips wrap naturally into multiple rows */
+    .details {
+        gap: var(--space-2) var(--space-5);
     }
 
-    .badgeGroup > .badge:first-child {
-        min-width: unset;
+    .detailItem {
+        font-size: 0.875rem;
+    }
+
+    /* Whole card is clickable – chevron is redundant on mobile */
+    .openIcon {
+        display: none;
     }
 }

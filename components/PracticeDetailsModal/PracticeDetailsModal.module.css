@@ -208,6 +208,11 @@
     margin-top: var(--space-2);
 }
 
+/* On desktop, Lukk + Del flow as individual items inside .actions */
+.closeShareRow {
+    display: contents;
+}
+
 .errorBox {
     background: var(--error-bg);
     border: 1px solid var(--error-border);
@@ -233,6 +238,19 @@
 
     .actions button {
         width: 100% !important;
+    }
+
+    /* Lukk + Del share one row on mobile */
+    .closeShareRow {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-4);
+        width: 100%;
+    }
+
+    .closeShareRow button {
+        flex: 1;
+        width: auto !important;
     }
 }
 

@@ -65,82 +65,58 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	return (
 		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={`${ariaLabel}. Klikk for å se detaljer`}>
 			<div className={styles.main}>
-				<div className={styles.date}>{formattedDate}</div>
-				<span className={styles.separator} aria-hidden="true">
-					|
-				</span>
-				<div className={styles.badgeGroup}>
-								{isCompetition ? (
-									<Badge variant="competition" icon={<LuTrophy size={12} />}>
-										Konkurranse
-									</Badge>
-								) : (
-									<Badge variant="training" icon={<LuTarget size={12} />}>
-										Trening
-									</Badge>
-								)}
-							</div>
-				<span className={styles.separator} aria-hidden="true">
-					|
-				</span>
-				<div className={styles.detailItem}>
-					<span className={styles.detailIcon} aria-hidden="true">
-						<LuTarget size={14} />
-					</span>
-					<span className={styles.detailText}>{arrowsShot} piler</span>
+				{/* Top row: date + badge */}
+				<div className={styles.topRow}>
+					<div className={styles.date}>{formattedDate}</div>
+					<div className={styles.badgeGroup}>
+						{isCompetition ? (
+							<Badge variant="competition" icon={<LuTrophy size={12} />}>
+								Konkurranse
+							</Badge>
+						) : (
+							<Badge variant="training" icon={<LuTarget size={12} />}>
+								Trening
+							</Badge>
+						)}
+					</div>
 				</div>
-				{totalScore !== null && totalScore !== undefined && totalScore > 0 ? (
-					<>
-						<span className={styles.separator} aria-hidden="true">
-							|
-						</span>
+
+				{/* Single separator – desktop only */}
+				<span className={styles.separator} aria-hidden="true">|</span>
+
+				{/* Detail chips */}
+				<div className={styles.details}>
+					<div className={styles.detailItem}>
+						<span className={styles.detailIcon} aria-hidden="true"><LuTarget size={14} /></span>
+						<span className={styles.detailText}>{arrowsShot} piler</span>
+					</div>
+					{totalScore !== null && totalScore !== undefined && totalScore > 0 && (
 						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true">
-								<LuStar size={14} fill="currentColor" />
-							</span>
+							<span className={styles.detailIcon} aria-hidden="true"><LuStar size={14} fill="currentColor" /></span>
 							<span className={styles.detailText}>{totalScore} poeng</span>
 						</div>
-					</>
-				) : null}
-				{roundTypeName ? (
-					<>
-						<span className={styles.separator} aria-hidden="true">
-							|
-						</span>
+					)}
+					{roundTypeName && (
 						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true">
-								<LuTarget size={14} />
-							</span>
+							<span className={styles.detailIcon} aria-hidden="true"><LuTarget size={14} /></span>
 							<span className={styles.detailText}>{roundTypeName}</span>
 						</div>
-					</>
-				) : null}
-				{location ? (
-					<>
-						<span className={styles.separator} aria-hidden="true">
-							|
-						</span>
+					)}
+					{location && (
 						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true">
-								<LuMapPin size={14} />
-							</span>
+							<span className={styles.detailIcon} aria-hidden="true"><LuMapPin size={14} /></span>
 							<span className={styles.detailText}>{location}</span>
 						</div>
-					</>
-				) : null}
-				{envText ? (
-					<>
-						<span className={styles.separator} aria-hidden="true">
-							|
-						</span>
-						<div className={`${styles.detailItem} ${styles.hideOnMobile}`}>
-							<span className={styles.detailIcon} aria-hidden="true">
-								{envIcon(environment)}
-							</span>
+					)}
+					{envText && (
+						<div className={styles.detailItem}>
+							<span className={styles.detailIcon} aria-hidden="true">{envIcon(environment)}</span>
 							<span className={styles.detailText}>{envText}</span>
 						</div>
-					</>
-				) : null}
+					)}
+				</div>
+
+				{/* Chevron – hidden on mobile via CSS */}
 				<div className={styles.openIcon}>
 					<LuChevronRight size={20} aria-hidden="true" />
 				</div>
