@@ -20,9 +20,9 @@ export function BreakdownSection({ items }: BreakdownSectionProps) {
 				{items.map((item) => {
 					const totalArrows = item.data.reduce((sum, d) => sum + d.arrows, 0);
 					const totalScore = item.data.reduce((sum, d) => sum + d.score, 0);
-					
+
 					const scoredArrows = item.data.reduce((sum, d) => sum + d.scoredArrows, 0);
-					
+
 					const percentScored = totalArrows > 0 ? Math.round((scoredArrows / totalArrows) * 100) : 0;
 					const percentUnscored = totalArrows > 0 ? 100 - percentScored : 0;
 
@@ -71,21 +71,14 @@ export function BreakdownSection({ items }: BreakdownSectionProps) {
 									</div>
 									<span className={styles.breakdownValue}>{avgArrows}</span>
 								</div>
-								{totalScore > 0 && (
-									<div className={styles.breakdownStat}>
-										<div className={styles.statLabelWrapper}>
-											<LuTrophy className={styles.statIcon} />
-											<span className={styles.breakdownLabel}>Total score</span>
-										</div>
-										<span className={styles.breakdownValueScore}>{totalScore}</span>
-									</div>
-								)}
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuStar className={styles.statIcon} />
 										<span className={styles.breakdownLabel}>Gj score</span>
 									</div>
-									<span className={styles.breakdownValue}>{avgScore} <span className={styles.unit}>pr pil</span></span>
+									<span className={styles.breakdownValue}>
+										{avgScore} <span className={styles.unit}>pr pil</span>
+									</span>
 								</div>
 							</div>
 						</div>
