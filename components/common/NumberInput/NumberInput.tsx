@@ -114,7 +114,8 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (disabled) return;
-		const raw = e.target.value;
+		// Normalize comma → dot so both decimal separators are accepted
+		const raw = e.target.value.replace(',', '.');
 		setDisplayValue(raw);
 
 		if (raw === '') {
@@ -125,6 +126,9 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 			}
 			return;
 		}
+
+		// Allow intermediate states like "3." or "-" while the user is still typing
+		if (raw === '-' || raw.endsWith('.')) return;
 
 		const parsed = Number(raw);
 		if (Number.isNaN(parsed)) return;
@@ -204,16 +208,17 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						ref={inputRef}
 						id={inputId}
 						name={name}
-						type="number"
-						inputMode="numeric"
+						type="text"
+						inputMode="decimal"
+						role="spinbutton"
+						aria-valuemin={min}
+						aria-valuemax={max}
+						aria-valuenow={numericDisplay}
 						className={`${styles.input} ${inputClassName || ''}`}
 						value={displayValue}
 						onChange={handleChange}
 						onBlur={handleBlur}
 						onFocus={handleFocus}
-						min={min}
-						max={max}
-						step={step}
 						disabled={disabled}
 						required={required}
 						aria-invalid={errorMessage ? 'true' : 'false'}

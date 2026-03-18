@@ -31,7 +31,7 @@ describe('NumberInput', () => {
 	test('renders label and current value', () => {
 		render(<Harness value={5} />);
 		expect(screen.getByText('Antall')).toBeInTheDocument();
-		expect(screen.getByRole('spinbutton')).toHaveValue(5);
+		expect(screen.getByRole('spinbutton')).toHaveDisplayValue('5');
 	});
 
 	test('typing clamps to min/max', async () => {
@@ -41,7 +41,7 @@ describe('NumberInput', () => {
 		const input = screen.getByRole('spinbutton');
 		await user.clear(input);
 		await user.type(input, '99');
-		expect(input).toHaveValue(10);
+		expect(input).toHaveDisplayValue('10');
 	});
 
 	test('can be cleared so the user can type without deleting an initial value', async () => {
@@ -53,7 +53,7 @@ describe('NumberInput', () => {
 		expect(input).toHaveDisplayValue('');
 
 		await user.type(input, '12');
-		expect(input).toHaveValue(12);
+		expect(input).toHaveDisplayValue('12');
 	});
 
 	test('unit renders', () => {
