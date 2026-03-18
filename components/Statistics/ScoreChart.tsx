@@ -39,19 +39,14 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 		{ value: 'FELT', label: PRACTICE_CATEGORY_LABELS.FELT },
 	];
 
-	// Compute integer y-axis ticks from the actual data range
-	const allValues = data
-		.flatMap((d) => [d.training_avg, d.competition_avg])
-		.filter((v): v is number => v != null);
-	const minTick = allValues.length ? Math.floor(Math.min(...allValues)) : 0;
-	const maxTick = allValues.length ? Math.ceil(Math.max(...allValues)) : 10;
-	const yTicks = Array.from({ length: maxTick - minTick + 1 }, (_, i) => minTick + i);
+	// Fixed y-axis ticks from 0 to 11
+	const yTicks = Array.from({ length: 12 }, (_, i) => i);
 
 	return (
 		<div className={styles.chartCard}>
 			<div className={styles.chartHeader}>
 				<div>
-					<h3 className={styles.chartTitle}>Gjennomsnittlig score per pil over tid</h3>
+					<h3 className={styles.chartTitle}>Gjennomsnittlig score per pil</h3>
 					<p className={styles.chartSubtitle}>Trening vs. Konkurranse</p>
 				</div>
 				<div className={styles.filterGroup}>
@@ -74,7 +69,7 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 						style={{ fontSize: '0.875rem' }}
 						label={{ value: 'Snitt score per pil', angle: -90, position: 'insideLeft', fill: '#6b7280' }}
 						ticks={yTicks}
-						domain={[minTick, maxTick]}
+						domain={[0, 11]}
 					/>
 					<Tooltip
 						contentStyle={{
