@@ -37,6 +37,7 @@ import { SightMarkFormModal } from './SightMarks/SightMarkFormModal';
 import { SightMarkChooserModal } from './SightMarks/SightMarkChooserModal';
 import { CalculatedMarksTable } from './SightMarks/CalculatedMarksTable';
 import { CalculateMarksModal } from './SightMarks/CalculateMarksModal';
+import { SightMarksPrintModal } from './SightMarks/SightMarksPrintModal';
 import { EmailVerificationBanner } from './EmailVerificationBanner/EmailVerificationBanner';
 import { SocialAuthButtons } from '@/components/common/SocialAuthButtons/SocialAuthButtons';
 import { Tooltip } from './common/Tooltip/Tooltip';
@@ -88,6 +89,7 @@ export {
 	SightMarkChooserModal,
 	CalculatedMarksTable,
 	CalculateMarksModal,
+	SightMarksPrintModal,
 	EmailVerificationBanner,
 	SocialAuthButtons,
 	Tooltip,

@@ -8,7 +8,9 @@ import { Header, Footer, Button, SightMarksSection } from '@/components';
 import { CalculatedMarksTable } from '@/components/SightMarks/CalculatedMarksTable';
 import { CalculateMarksModal } from '@/components/SightMarks/CalculateMarksModal';
 import { SightMarkChooserModal } from '@/components/SightMarks/SightMarkChooserModal';
-import { LuArrowLeft, LuChartLine, LuRefreshCw, LuTarget, LuTrash2, LuWind } from 'react-icons/lu';
+import { SightMarksPrintModal } from '@/components/SightMarks/SightMarksPrintModal';
+import type { SightMarksPrintData } from '@/components/SightMarks/SightMarksPrintCard';
+import { LuArrowLeft, LuChartLine, LuPrinter, LuRefreshCw, LuTarget, LuTrash2, LuWind } from 'react-icons/lu';
 import type { SightMark, SightMarkResult, CalculatedMarks, FullMarksResult } from '@/types/SightMarks';
 import styles from './page.module.css';
 
@@ -29,6 +31,7 @@ export default function SiktemerkerPage() {
 	const [showSpeed, setShowSpeed] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [chooserOpen, setChooserOpen] = useState(false);
+	const [printOpen, setPrintOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [deletingResult, setDeletingResult] = useState(false);
 	const [activeResultId, setActiveResultId] = useState<string | null>(null);
@@ -249,6 +252,12 @@ export default function SiktemerkerPage() {
 										icon={<LuWind size={16} />}
 									/>
 									<Button
+										label="Del / Skriv ut"
+										buttonType="outline"
+										onClick={() => setPrintOpen(true)}
+										icon={<LuPrinter size={16} />}
+									/>
+									<Button
 										label={deletingResult ? 'Sletter…' : 'Beregn på nytt'}
 										buttonType="outline"
 										onClick={handleRemoveResult}
@@ -285,6 +294,21 @@ export default function SiktemerkerPage() {
 				currentId={activeSightMark?.id ?? null}
 				onChoose={handleChooserConfirm}
 			/>
+
+			{calculatedMarks && activeSightMark && (
+				<SightMarksPrintModal
+					open={printOpen}
+					onClose={() => setPrintOpen(false)}
+					data={{
+						marksData: calculatedMarks,
+						setName: activeSightMark.name || activeSightMark.bowSpec?.bow?.name || 'Siktemerker',
+						bowName: activeSightMark.bowSpec?.bow?.name || 'Ukjent bue',
+						arrowName: ballistics?.arrow_name,
+						givenDistances: ballistics?.given_distances,
+						showSpeed,
+					} satisfies SightMarksPrintData}
+				/>
+			)}
 		</div>
 	);
 }
