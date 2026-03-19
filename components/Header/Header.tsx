@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
-import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuSwords, LuUser, LuUsers, LuX } from 'react-icons/lu';
+import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -158,7 +158,7 @@ export function Header() {
 									href="/siktemerker"
 									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/siktemerker' ? styles.navLinkActive : ''}`}
 								>
-									<LuSwords size={16} />
+									<LuCalculator size={16} />
 									Siktemerker
 								</Link>
 								<button className={`${styles.navButton} ${styles.navLinkIcon}`} onClick={handleFeedbackClick}>
@@ -223,7 +223,7 @@ export function Header() {
 											<span>Skyttere</span>
 										</Link>
 										<Link href="/siktemerker" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
-											<LuSwords size={16} />
+											<LuCalculator size={16} />
 											<span>Siktemerker</span>
 										</Link>
 										<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
@@ -274,7 +274,7 @@ export function Header() {
 									Skyttere
 								</Link>
 								<Link href="/siktemerker" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
-									<LuSwords size={16} />
+									<LuCalculator size={16} />
 									Siktemerker
 								</Link>
 								<button className={`${styles.mobileLinkButton} ${styles.mobileLinkIcon}`} onClick={handleFeedbackClick}>
