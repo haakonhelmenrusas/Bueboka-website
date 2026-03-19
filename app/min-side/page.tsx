@@ -17,7 +17,6 @@ import {
 	PracticeFormModal,
 	PracticesSection,
 	ProfileCard,
-	SightMarksSection,
 	StatsSummary,
 	usePracticeDetails,
 	useWhatsNew,
@@ -362,7 +361,6 @@ export default function MyPage() {
 					reloadKey={practiceReloadKey}
 					deletedPracticeId={deletedPracticeId}
 				/>
-				<SightMarksSection />
 			</main>
 			<Footer />
 			<WhatsNewModal open={whatsNewOpen} onClose={handleWhatsNewClose} />

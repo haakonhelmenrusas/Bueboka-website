@@ -34,6 +34,10 @@ import { Accordion } from './common/Accordion/Accordion';
 import { FullPageLoader } from './common/FullPageLoader/FullPageLoader';
 import { SightMarksSection } from './SightMarks/SightMarksSection';
 import { SightMarkFormModal } from './SightMarks/SightMarkFormModal';
+import { SightMarkChooserModal } from './SightMarks/SightMarkChooserModal';
+import { CalculatedMarksTable } from './SightMarks/CalculatedMarksTable';
+import { CalculateMarksModal } from './SightMarks/CalculateMarksModal';
+import { SightMarksPrintModal } from './SightMarks/SightMarksPrintModal';
 import { EmailVerificationBanner } from './EmailVerificationBanner/EmailVerificationBanner';
 import { SocialAuthButtons } from '@/components/common/SocialAuthButtons/SocialAuthButtons';
 import { Tooltip } from './common/Tooltip/Tooltip';
@@ -82,6 +86,10 @@ export {
 	FullPageLoader,
 	SightMarksSection,
 	SightMarkFormModal,
+	SightMarkChooserModal,
+	CalculatedMarksTable,
+	CalculateMarksModal,
+	SightMarksPrintModal,
 	EmailVerificationBanner,
 	SocialAuthButtons,
 	Tooltip,

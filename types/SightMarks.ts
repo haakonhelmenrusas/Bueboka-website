@@ -118,6 +118,9 @@ export interface CalculatedMarks {
 export interface SightMarkCalc {
 	ballistics_pars: number[];
 	distances_def: [number, number, number];
+	/** Explicit list of distances to compute marks for. When provided the service
+	 *  uses this instead of expanding distances_def itself. */
+	distances?: number[];
 	angles: number[];
 }
 
@@ -126,3 +129,13 @@ export interface MarksResult {
 	sight_marks_by_hill_angle: number[];
 	arrow_speed_by_angle: number[];
 }
+
+/** Multi-angle result from the /calculate/sight-marks service.
+ *  Keys are angle values as strings (e.g. "0", "-5"), values are
+ *  arrays of one entry per distance. */
+export interface FullMarksResult {
+	distances: number[];
+	sight_marks_by_hill_angle: Record<string, number[]>;
+	arrow_speed_by_angle: Record<string, number[]>;
+}
+
