@@ -9,7 +9,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import * as Sentry from '@sentry/nextjs';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
-import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuUser, LuUsers, LuX } from 'react-icons/lu';
+import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuSwords, LuUser, LuUsers, LuX } from 'react-icons/lu';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,8 +27,8 @@ export function Header() {
 		pathname === '/statistikk' ||
 		pathname === '/achievements' ||
 		pathname === '/skyttere' ||
+		pathname === '/siktemerker' ||
 		pathname.startsWith('/profil/');
-	pathname.startsWith('/skyttere/');
 
 	// Check if we're on an auth form page (login/signup)
 	const isAuthFormPage =
@@ -154,6 +154,13 @@ export function Header() {
 									<LuUsers size={16} />
 									Skyttere
 								</Link>
+								<Link
+									href="/siktemerker"
+									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/siktemerker' ? styles.navLinkActive : ''}`}
+								>
+									<LuSwords size={16} />
+									Siktemerker
+								</Link>
 								<button className={`${styles.navButton} ${styles.navLinkIcon}`} onClick={handleFeedbackClick}>
 									<LuMessageSquare size={16} />
 									Tilbakemelding
@@ -215,6 +222,10 @@ export function Header() {
 											<LuUsers size={16} />
 											<span>Skyttere</span>
 										</Link>
+										<Link href="/siktemerker" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+											<LuSwords size={16} />
+											<span>Siktemerker</span>
+										</Link>
 										<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
 											<LuMessageSquare size={16} />
 											<span>Tilbakemelding</span>
@@ -261,6 +272,10 @@ export function Header() {
 								<Link href="/skyttere" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
 									<LuUsers size={16} />
 									Skyttere
+								</Link>
+								<Link href="/siktemerker" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
+									<LuSwords size={16} />
+									Siktemerker
 								</Link>
 								<button className={`${styles.mobileLinkButton} ${styles.mobileLinkIcon}`} onClick={handleFeedbackClick}>
 									<LuMessageSquare size={16} />

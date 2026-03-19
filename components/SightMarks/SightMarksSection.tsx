@@ -13,9 +13,11 @@ import { Ballistics } from '@/lib/Contants';
 
 interface SightMarksSectionProps {
 	onRefresh?: number;
+	/** Called after any create / delete so a parent page can silently refresh its own state. */
+	onChanged?: () => void;
 }
 
-export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
+export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionProps) {
 	const { sightMarks, loading, error, fetchSightMarks, deleteSightMark, clearError } = useSightMarks();
 	const { bows, arrows, refresh: refreshEquipment } = useEquipmentData();
 	const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
@@ -40,6 +42,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 			if (newMarks.length === 0) {
 				// No marks left – delete the whole record
 				await deleteSightMark(sightMarkId);
+				onChanged?.();
 			} else {
 				// Patch the record with the mark removed; also filter calculated_marks from stored ballistics
 				const calc = sm.ballisticsParameters as import('@/types/SightMarks').CalculatedMarks;
@@ -61,6 +64,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 				});
 				if (!res.ok) throw new Error('Kunne ikke oppdatere siktemerke');
 				fetchSightMarks();
+				onChanged?.();
 			}
 		} catch (err) {
 			console.error('Error deleting mark:', err);
@@ -176,6 +180,7 @@ export function SightMarksSection({ onRefresh }: SightMarksSectionProps) {
 
 			// Refresh list after save
 			fetchSightMarks();
+			onChanged?.();
 		} catch (err) {
 			setCreateError(err instanceof Error ? err.message : 'En ukjent feil oppstod');
 			throw err; // Re-throw to be caught by modal if needed, or handle error display here

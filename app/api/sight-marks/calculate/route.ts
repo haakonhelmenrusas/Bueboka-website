@@ -37,9 +37,9 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Call external sight mark calculation service
-		const ballisticsUrl = process.env.BALLISTICS_SERVICE_URL || 'http://localhost:8000';
+		const ballisticsUrl = process.env.SIGHTMARKS_CALCULATION_SERVICE_URL || 'http://localhost:8000';
 
-		const response = await fetch(`${ballisticsUrl}/calculate/sight-marks`, {
+		const response = await fetch(`${ballisticsUrl}`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(payload),
