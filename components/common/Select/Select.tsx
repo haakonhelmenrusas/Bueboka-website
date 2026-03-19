@@ -68,6 +68,7 @@ export const Select: React.FC<SelectProps> = ({
 	const rootRef = useRef<HTMLDivElement | null>(null);
 	const buttonRef = useRef<HTMLButtonElement | null>(null);
 	const searchInputRef = useRef<HTMLInputElement | null>(null);
+	const menuRef = useRef<HTMLUListElement | null>(null);
 
 	const [open, setOpen] = useState(false);
 	const [activeIndex, setActiveIndex] = useState<number>(-1);
@@ -149,7 +150,11 @@ export const Select: React.FC<SelectProps> = ({
 	};
 
 	// Use custom hooks for better separation of concerns
-	const handleClickOutside = useCallback(() => {
+	const handleClickOutside = useCallback((e: MouseEvent | TouchEvent) => {
+		// Don't close if the click was inside the portaled menu
+		if (menuRef.current && menuRef.current.contains(e.target as Node)) {
+			return;
+		}
 		closeMenu();
 	}, []);
 
@@ -269,6 +274,7 @@ export const Select: React.FC<SelectProps> = ({
 						className={styles.menu}
 						role="listbox"
 						id={listboxId}
+						ref={menuRef}
 						aria-labelledby={buttonId}
 						style={{ position: 'fixed', top: menuRect.top, left: menuRect.left, width: menuRect.width }}
 						onMouseDown={(e) => e.stopPropagation()}

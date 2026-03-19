@@ -27,7 +27,7 @@ export function BreakdownSection({ items }: BreakdownSectionProps) {
 					const percentUnscored = totalArrows > 0 ? 100 - percentScored : 0;
 
 					const avgArrows = Math.round(totalArrows / item.data.length);
-					const avgScore = scoredArrows > 0 ? (totalScore / scoredArrows).toFixed(2) : '0.00';
+					const avgScore = scoredArrows > 0 ? (totalScore / scoredArrows).toFixed(2).replace('.', ',') : '0,00';
 
 					return (
 						<div key={item.name} className={styles.breakdownCard}>
@@ -55,14 +55,14 @@ export function BreakdownSection({ items }: BreakdownSectionProps) {
 										<LuCircleCheck className={styles.statIcon} />
 										<span className={styles.breakdownLabel}>Piler med score</span>
 									</div>
-									<span className={styles.breakdownValue}>{percentScored}%</span>
+									<span className={styles.breakdownValue}>{percentScored} %</span>
 								</div>
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuCircleX className={styles.statIcon} />
 										<span className={styles.breakdownLabel}>Piler uten score</span>
 									</div>
-									<span className={styles.breakdownValue}>{percentUnscored}%</span>
+									<span className={styles.breakdownValue}>{percentUnscored} %</span>
 								</div>
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>

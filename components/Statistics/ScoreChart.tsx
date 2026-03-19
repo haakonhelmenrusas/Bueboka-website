@@ -82,7 +82,7 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 						labelStyle={{ color: '#111827' }}
 						itemStyle={{ color: '#111827' }}
 						labelFormatter={(label) => `Dato: ${formatDate(label as string)}`}
-						formatter={(value: any) => [typeof value === 'number' ? value.toFixed(2) : value, '']}
+						formatter={(value: any) => [typeof value === 'number' ? value.toFixed(2).replace('.', ',') : value, '']}
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
 					<Line
