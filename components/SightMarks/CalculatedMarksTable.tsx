@@ -10,7 +10,7 @@ interface CalculatedMarksTableProps {
 function formatAngle(a: string) {
 	const n = parseFloat(a);
 	if (Number.isNaN(n) || n === 0) return '0°';
-	return n > 0 ? `+${n}°` : `${n}°`;
+	return n > 0 ? `+ ${n}°` : `- ${Math.abs(n)}°`;
 }
 
 export function CalculatedMarksTable({ marksData, showSpeed }: CalculatedMarksTableProps) {
@@ -49,14 +49,8 @@ export function CalculatedMarksTable({ marksData, showSpeed }: CalculatedMarksTa
 									const speed = arrow_speed_by_angle[angle]?.[i];
 									return (
 										<td key={angle} className={styles.markCell}>
-											<span className={styles.markValue}>
-												{mark != null ? mark.toFixed(2) : '—'}
-											</span>
-											{showSpeed && (
-												<span className={styles.speedValue}>
-													{speed != null ? speed.toFixed(1) : '—'}
-												</span>
-											)}
+											<span className={styles.markValue}>{mark != null ? mark.toFixed(2).replace('.', ',') : '—'}</span>
+											{showSpeed && <span className={styles.speedValue}>{speed != null ? speed.toFixed(1).replace('.', ',') : '—'}</span>}
 										</td>
 									);
 								})}

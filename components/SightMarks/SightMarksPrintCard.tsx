@@ -78,12 +78,12 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 										const mark = sight_marks_by_hill_angle[angle]?.[i];
 										const speed = arrow_speed_by_angle[angle]?.[i];
 										return (
-											<td key={angle} className={styles.tdMark}>
+									<td className={styles.tdMark}>
 												<span className={styles.markValue}>
-													{mark != null ? mark.toFixed(2) : '—'}
+													{mark != null ? mark.toFixed(2).replace('.', ',') : '—'}
 												</span>
 												{showSpeed && speed != null && (
-													<span className={styles.speedValue}>{speed.toFixed(1)}</span>
+													<span className={styles.speedValue}>{speed.toFixed(1).replace('.', ',')}</span>
 												)}
 											</td>
 										);

@@ -82,16 +82,16 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 										: undefined;
 									return (
 										<div key={index} className={styles.markRow}>
-											<span className={styles.distanceValue}>{distance.toFixed(1)} m</span>
-											<span className={styles.markValue}>{givenMark != null ? givenMark.toFixed(2) : '-'}</span>
+											<span className={styles.distanceValue}>{distance.toFixed(1).replace('.', ',')} m</span>
+											<span className={styles.markValue}>{givenMark != null ? givenMark.toFixed(2).replace('.', ',') : '-'}</span>
 											<span className={styles.calculatedValue}>
-												{calculatedMark != null ? calculatedMark.toFixed(2) : '-'}
+												{calculatedMark != null ? calculatedMark.toFixed(2).replace('.', ',') : '-'}
 											</span>
 											<button
 												className={styles.deleteBtn}
 												onClick={(e) => { e.stopPropagation(); onDeleteMark(sm.id, index); }}
 												disabled={isDeleting}
-												aria-label={`Fjern merke for ${distance.toFixed(1)}m`}
+												aria-label={`Fjern merke for ${distance.toFixed(1).replace('.', ',')}m`}
 											>
 												<LuTrash2 size={15} />
 											</button>

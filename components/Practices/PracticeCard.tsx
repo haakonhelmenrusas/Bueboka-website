@@ -15,6 +15,11 @@ export interface PracticeCardProps {
 	onClick?: (id: string) => void;
 }
 
+function formatRoundTypeName(name?: string | null) {
+	if (!name) return name;
+	return name.replace(/(\d)(c?m)\b/g, '$1 $2');
+}
+
 function formatEnvironment(env?: string | null) {
 	if (!env) return null;
 	const normalized = env.toLowerCase();
@@ -65,7 +70,6 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	return (
 		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={`${ariaLabel}. Klikk for å se detaljer`}>
 			<div className={styles.main}>
-				{/* Top row: date + badge */}
 				<div className={styles.topRow}>
 					<div className={styles.date}>{formattedDate}</div>
 					<div className={styles.badgeGroup}>
@@ -80,43 +84,49 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						)}
 					</div>
 				</div>
-
-				{/* Single separator – desktop only */}
-				<span className={styles.separator} aria-hidden="true">|</span>
-
-				{/* Detail chips */}
+				<span className={styles.separator} aria-hidden="true">
+					|
+				</span>
 				<div className={styles.details}>
 					<div className={styles.detailItem}>
-						<span className={styles.detailIcon} aria-hidden="true"><LuTarget size={14} /></span>
+						<span className={styles.detailIcon} aria-hidden="true">
+							<LuTarget size={14} />
+						</span>
 						<span className={styles.detailText}>{arrowsShot} piler</span>
 					</div>
 					{totalScore !== null && totalScore !== undefined && totalScore > 0 && (
 						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true"><LuStar size={14} fill="currentColor" /></span>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<LuStar size={14} fill="currentColor" />
+							</span>
 							<span className={styles.detailText}>{totalScore} poeng</span>
 						</div>
 					)}
 					{roundTypeName && (
 						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true"><LuTarget size={14} /></span>
-							<span className={styles.detailText}>{roundTypeName}</span>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<LuTarget size={14} />
+							</span>
+							<span className={styles.detailText}>{formatRoundTypeName(roundTypeName)}</span>
 						</div>
 					)}
 					{location && (
 						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true"><LuMapPin size={14} /></span>
+							<span className={styles.detailIcon} aria-hidden="true">
+								<LuMapPin size={14} />
+							</span>
 							<span className={styles.detailText}>{location}</span>
 						</div>
 					)}
 					{envText && (
 						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true">{envIcon(environment)}</span>
+							<span className={styles.detailIcon} aria-hidden="true">
+								{envIcon(environment)}
+							</span>
 							<span className={styles.detailText}>{envText}</span>
 						</div>
 					)}
 				</div>
-
-				{/* Chevron – hidden on mobile via CSS */}
 				<div className={styles.openIcon}>
 					<LuChevronRight size={20} aria-hidden="true" />
 				</div>

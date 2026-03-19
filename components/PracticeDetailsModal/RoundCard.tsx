@@ -35,9 +35,9 @@ export const RoundCard: React.FC<RoundCardProps> = ({ end }) => {
 						{(end as any).distanceTo && <MetaItem label="Til" value={`${(end as any).distanceTo}m`} />}
 					</>
 				) : (
-					end.distanceMeters && <MetaItem label="Avstand" value={`${end.distanceMeters}m`} />
+					end.distanceMeters && <MetaItem label="Avstand" value={`${end.distanceMeters} m`} />
 				)}
-				{end.targetSizeCm && <MetaItem label="Blink" value={`${end.targetSizeCm}cm`} />}
+				{end.targetSizeCm && <MetaItem label="Blink" value={`${end.targetSizeCm} cm`} />}
 				{arrows > 0 && <MetaItem label="Piler" value={`${arrows} stk`} />}
 				{scoreSum > 0 && <MetaItem label="Poeng" value={scoreSum} />}
 			</div>
