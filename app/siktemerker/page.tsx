@@ -7,14 +7,8 @@ import * as Sentry from '@sentry/nextjs';
 import { Header, Footer, Button, SightMarksSection } from '@/components';
 import { CalculatedMarksTable } from '@/components/SightMarks/CalculatedMarksTable';
 import { CalculateMarksModal } from '@/components/SightMarks/CalculateMarksModal';
-import {
-	LuArrowLeft,
-	LuChevronDown,
-	LuChartLine,
-	LuRefreshCw,
-	LuTarget,
-	LuWind,
-} from 'react-icons/lu';
+import { SightMarkChooserModal } from '@/components/SightMarks/SightMarkChooserModal';
+import { LuArrowLeft, LuChartLine, LuRefreshCw, LuTarget, LuTrash2, LuWind } from 'react-icons/lu';
 import type { SightMark, SightMarkResult, CalculatedMarks, FullMarksResult } from '@/types/SightMarks';
 import styles from './page.module.css';
 
@@ -34,54 +28,68 @@ export default function SiktemerkerPage() {
 	const [calculatedMarks, setCalculatedMarks] = useState<FullMarksResult | null>(null);
 	const [showSpeed, setShowSpeed] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
+	const [chooserOpen, setChooserOpen] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [deletingResult, setDeletingResult] = useState(false);
 	const [activeResultId, setActiveResultId] = useState<string | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
-	// ── Full data load (initial + switching sight marks) ──────────────────
-	const loadData = useCallback(async (sightMarkId?: string) => {
-		setLoading(true);
-		setError(null);
-		try {
-			const smRes = await fetch('/api/sight-marks');
-			if (!smRes.ok) {
-				if (smRes.status === 401) { router.replace('/logg-inn'); return; }
-				throw new Error('Kunne ikke hente siktemerker');
+	const loadData = useCallback(
+		async (sightMarkId?: string) => {
+			setLoading(true);
+			setError(null);
+			try {
+				const smRes = await fetch('/api/sight-marks');
+				if (!smRes.ok) {
+					if (smRes.status === 401) {
+						router.replace('/logg-inn');
+						return;
+					}
+					throw new Error('Kunne ikke hente siktemerker');
+				}
+				const { sightMarks: marks } = (await smRes.json()) as { sightMarks: SightMark[] };
+				setSightMarks(marks);
+
+				const current = sightMarkId ? (marks.find((m) => m.id === sightMarkId) ?? marks[0] ?? null) : (marks[0] ?? null);
+				setActiveSightMark(current);
+
+				if (!current) {
+					setCalculatedMarks(null);
+					return;
+				}
+
+				const resRes = await fetch(`/api/sight-marks/${current.id}/results`);
+				if (!resRes.ok) {
+					setCalculatedMarks(null);
+					return;
+				}
+				const { sightMarkResults } = (await resRes.json()) as { sightMarkResults: SightMarkResult[] };
+
+				if (sightMarkResults.length === 0) {
+					setCalculatedMarks(null);
+					setActiveResultId(null);
+					return;
+				}
+
+				const latest = sightMarkResults[0];
+				setActiveResultId(latest.id);
+				setCalculatedMarks(mapResult(latest));
+			} catch (err) {
+				Sentry.captureException(err, { tags: { page: 'siktemerker', action: 'loadData' } });
+				setError('En feil oppstod. Prøv igjen.');
+			} finally {
+				setLoading(false);
 			}
-			const { sightMarks: marks } = await smRes.json() as { sightMarks: SightMark[] };
-			setSightMarks(marks);
-
-			const current = sightMarkId
-				? marks.find((m) => m.id === sightMarkId) ?? marks[0] ?? null
-				: marks[0] ?? null;
-			setActiveSightMark(current);
-
-			if (!current) { setCalculatedMarks(null); return; }
-
-			const resRes = await fetch(`/api/sight-marks/${current.id}/results`);
-			if (!resRes.ok) { setCalculatedMarks(null); return; }
-			const { sightMarkResults } = await resRes.json() as { sightMarkResults: SightMarkResult[] };
-
-			if (sightMarkResults.length === 0) { setCalculatedMarks(null); setActiveResultId(null); return; }
-
-			const latest = sightMarkResults[0];
-			setActiveResultId(latest.id);
-			setCalculatedMarks(mapResult(latest));
-		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'siktemerker', action: 'loadData' } });
-			setError('En feil oppstod. Prøv igjen.');
-		} finally {
-			setLoading(false);
-		}
-	}, [router]);
+		},
+		[router]
+	);
 
 	// ── Silent refresh – only updates the selector list, never clears the table ─
 	const silentRefresh = useCallback(async () => {
 		try {
 			const smRes = await fetch('/api/sight-marks');
 			if (!smRes.ok) return;
-			const { sightMarks: marks } = await smRes.json() as { sightMarks: SightMark[] };
+			const { sightMarks: marks } = (await smRes.json()) as { sightMarks: SightMark[] };
 			setSightMarks(marks);
 			// Keep activeSightMark as-is; user can switch via the selector
 		} catch {
@@ -89,11 +97,15 @@ export default function SiktemerkerPage() {
 		}
 	}, []);
 
-	useEffect(() => { loadData(); }, [loadData]);
+	useEffect(() => {
+		loadData();
+	}, [loadData]);
 
-	// ── Action handlers ────────────────────────────────────────────────────
 	async function handleRemoveResult() {
-		if (!activeResultId) { setModalOpen(true); return; }
+		if (!activeResultId) {
+			setModalOpen(true);
+			return;
+		}
 		setDeletingResult(true);
 		try {
 			await fetch(`/api/sight-marks/results/${activeResultId}`, { method: 'DELETE' });
@@ -105,6 +117,25 @@ export default function SiktemerkerPage() {
 		} finally {
 			setDeletingResult(false);
 		}
+	}
+
+	async function handleDeleteResult() {
+		if (!activeResultId) return;
+		setDeletingResult(true);
+		try {
+			await fetch(`/api/sight-marks/results/${activeResultId}`, { method: 'DELETE' });
+			setCalculatedMarks(null);
+			setActiveResultId(null);
+		} catch (err) {
+			Sentry.captureException(err, { tags: { page: 'siktemerker', action: 'deleteResult' } });
+		} finally {
+			setDeletingResult(false);
+		}
+	}
+
+	function handleChooserConfirm(sm: SightMark) {
+		setActiveSightMark(sm);
+		setModalOpen(true);
 	}
 
 	function handleResultCreated(result: FullMarksResult) {
@@ -123,16 +154,13 @@ export default function SiktemerkerPage() {
 	const ballistics = activeSightMark?.ballisticsParameters as CalculatedMarks | null;
 	const hasEnoughDistances = (ballistics?.given_distances?.length ?? 0) >= 2;
 
-	// ── Empty-state for the calculated section ────────────────────────────
 	function renderEmptyState() {
 		if (!activeSightMark) {
 			return (
 				<div className={styles.emptyCard}>
 					<LuTarget size={40} className={styles.emptyIcon} />
 					<h2 className={styles.emptyTitle}>Ingen siktemerker</h2>
-					<p className={styles.emptyText}>
-						Legg inn dine innskytingsavstander i seksjonen over for å beregne et fullsett.
-					</p>
+					<p className={styles.emptyText}>Legg inn dine innskytingsavstander i seksjonen over for å beregne et fullsett.</p>
 				</div>
 			);
 		}
@@ -151,21 +179,15 @@ export default function SiktemerkerPage() {
 			<div className={styles.emptyCard}>
 				<LuChartLine size={40} className={styles.emptyIcon} />
 				<h2 className={styles.emptyTitle}>Ingen beregnede siktemerker</h2>
-				<p className={styles.emptyText}>
-					Trykk på knappen under for å beregne et fullsett med siktemerker basert på dine innskytingsdata.
-				</p>
-				<Button label="Beregn siktemerker" onClick={() => setModalOpen(true)} />
+				<p className={styles.emptyText}>Trykk på knappen over for å beregne et fullsett med siktemerker basert på dine innskytingsdata.</p>
 			</div>
 		);
 	}
 
-	// ── Render ─────────────────────────────────────────────────────────────
 	return (
 		<div className={styles.page}>
 			<Header />
-
 			<main className={styles.main}>
-				{/* ── Page title ── */}
 				<div className={styles.pageHeader}>
 					<div className={styles.breadcrumb}>
 						<Link href="/min-side" className={styles.backLink}>
@@ -178,51 +200,27 @@ export default function SiktemerkerPage() {
 						Siktemerker
 					</h1>
 				</div>
-
-				{/* ── Section 1: Zero / input marks ── */}
 				<SightMarksSection onChanged={silentRefresh} />
-
-				{/* ── Section 2: Calculated full set ── */}
 				<div className={styles.calculatedSection}>
 					<div className={styles.calculatedHeader}>
-						<h2 className={styles.calculatedTitle}>
-							<LuChartLine size={20} aria-hidden="true" />
-							Beregnede siktemerker
-						</h2>
+						<div className={styles.calculatedTitleRow}>
+							<h2 className={styles.calculatedTitle}>
+								<LuChartLine size={20} aria-hidden="true" />
+								Beregnede siktemerker
+							</h2>
+							{sightMarks.length > 0 && (
+								<Button label="Velg og beregn" onClick={() => setChooserOpen(true)} icon={<LuTarget size={16} />} />
+							)}
+						</div>
 
-						{/* Selector (shown when the user has more than one set) */}
-						{sightMarks.length > 1 && (
-							<div className={styles.selectorWrap}>
-								<label htmlFor="sm-select" className={styles.selectorLabel}>Merke</label>
-								<div className={styles.selectWrapper}>
-									<select
-										id="sm-select"
-										className={styles.selectorSelect}
-										value={activeSightMark?.id ?? ''}
-										onChange={(e) => loadData(e.target.value)}
-									>
-										{sightMarks.map((sm) => (
-											<option key={sm.id} value={sm.id}>
-												{sm.name || sm.bowSpec?.bow?.name || 'Ukjent bue'}
-											</option>
-										))}
-									</select>
-									<LuChevronDown size={16} className={styles.selectChevron} aria-hidden="true" />
-								</div>
-							</div>
-						)}
-
-						{/* Info strip */}
 						{activeSightMark && (
 							<div className={styles.infoStrip}>
 								<span className={styles.infoItem}>
-									<strong>Bue:</strong>{' '}
-									{activeSightMark.name || activeSightMark.bowSpec?.bow?.name || 'Ukjent bue'}
+									<strong>Bue:</strong> {activeSightMark.name || activeSightMark.bowSpec?.bow?.name || 'Ukjent bue'}
 								</span>
 								{ballistics?.given_distances && (
 									<span className={styles.infoItem}>
-										<strong>Innskytingsavstander:</strong>{' '}
-										{ballistics.given_distances.map((d) => `${d} m`).join(' · ')}
+										<strong>Innskytingsavstander:</strong> {ballistics.given_distances.map((d) => `${d} m`).join(' · ')}
 									</span>
 								)}
 								{ballistics?.arrow_name && (
@@ -233,13 +231,13 @@ export default function SiktemerkerPage() {
 							</div>
 						)}
 					</div>
-
-					{/* Result card */}
 					<div className={styles.card}>
 						{loading ? (
 							<div className={styles.loadingState}>Laster siktemerker…</div>
 						) : error ? (
-							<div className={styles.errorBox} role="alert">{error}</div>
+							<div className={styles.errorBox} role="alert">
+								{error}
+							</div>
 						) : calculatedMarks ? (
 							<>
 								<CalculatedMarksTable marksData={calculatedMarks} showSpeed={showSpeed} />
@@ -257,6 +255,13 @@ export default function SiktemerkerPage() {
 										disabled={deletingResult}
 										icon={<LuRefreshCw size={16} />}
 									/>
+									<Button
+										label={deletingResult ? 'Sletter…' : 'Fjern beregning'}
+										buttonType="outline"
+										onClick={handleDeleteResult}
+										disabled={deletingResult || !activeResultId}
+										icon={<LuTrash2 size={16} />}
+									/>
 								</div>
 							</>
 						) : (
@@ -265,15 +270,20 @@ export default function SiktemerkerPage() {
 					</div>
 				</div>
 			</main>
-
 			<Footer />
-
 			<CalculateMarksModal
 				open={modalOpen}
 				onClose={() => setModalOpen(false)}
 				ballistics={ballistics}
 				sightMarkId={activeSightMark?.id ?? null}
 				onResultCreated={handleResultCreated}
+			/>
+			<SightMarkChooserModal
+				open={chooserOpen}
+				onClose={() => setChooserOpen(false)}
+				sightMarks={sightMarks}
+				currentId={activeSightMark?.id ?? null}
+				onChoose={handleChooserConfirm}
 			/>
 		</div>
 	);

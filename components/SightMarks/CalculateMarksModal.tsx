@@ -57,12 +57,20 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 		try {
 			const validAngles = (angles.filter((a) => a !== null && !Number.isNaN(a)) as number[]);
 
+			// Build the explicit distances list so the external service computes a mark
+			// for every step, not just the calibration distance.
+			const allDistances: number[] = [];
+			for (let d = distanceFrom; d <= distanceTo + 1e-9; d += interval) {
+				allDistances.push(Math.round(d * 1000) / 1000);
+			}
+
 			const calcRes = await fetch('/api/sight-marks/calculate', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
 					ballistics_pars: ballistics.ballistics_pars,
 					distances_def: [distanceFrom, distanceTo, interval],
+					distances: allDistances,
 					angles: validAngles.length > 0 ? validAngles : [0],
 				}),
 			});
@@ -74,15 +82,15 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 			const rawResult = await calcRes.json();
 
-			// Some external service versions return only the seed distance (or nothing) in
-			// `distances`. Compute the full range from the definition so every row appears.
-			let fullDistances: number[] = Array.isArray(rawResult.distances) ? rawResult.distances : [];
-			if (fullDistances.length <= 1) {
-				fullDistances = [];
-				for (let d = distanceFrom; d <= distanceTo + 1e-9; d += interval) {
-					fullDistances.push(Math.round(d * 1000) / 1000);
-				}
-			}
+			// Use the explicitly-computed distances as the source of truth.
+			// The external service echoes back whichever distances it computed for;
+			// if it understood the explicit list, rawResult.distances will match allDistances.
+			// If it still only returns the seed distance, fall back to allDistances for the
+			// labels but the marks will be sparse – nothing we can do without re-computing.
+			const fullDistances: number[] =
+				Array.isArray(rawResult.distances) && rawResult.distances.length > 1
+					? rawResult.distances
+					: allDistances;
 
 			const result: FullMarksResult = {
 				distances: fullDistances,

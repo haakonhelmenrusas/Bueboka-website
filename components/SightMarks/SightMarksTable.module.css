@@ -5,7 +5,7 @@
 
 .cardGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
     gap: var(--space-5);
 }
 
@@ -93,7 +93,7 @@
 .marksHeader {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 36px;
-    padding: var(--space-3) var(--space-6);
+    padding: var(--space-3) var(--space-4);
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -111,7 +111,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 36px;
     align-items: center;
-    padding: var(--space-4) var(--space-6);
+    padding: var(--space-5) var(--space-4);
     border-bottom: 1px solid var(--border-gray);
     transition: background 0.1s;
 }
@@ -192,7 +192,7 @@
     font-size: 16px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 480px) {
     .cardGrid {
         grid-template-columns: 1fr;
     }

@@ -30,6 +30,14 @@
     gap: var(--space-4);
 }
 
+.calculatedTitleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
 .calculatedTitle {
     margin: 0;
     font-size: 1.4rem;

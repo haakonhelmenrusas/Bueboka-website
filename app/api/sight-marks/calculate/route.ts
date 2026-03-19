@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
 		}
 
 		const result: MarksResult = await response.json();
+		console.log(JSON.stringify(result, null, 2));
 		return NextResponse.json(result);
 	} catch (error) {
 		Sentry.captureException(error, {

@@ -46,9 +46,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 			} else {
 				// Patch the record with the mark removed; also filter calculated_marks from stored ballistics
 				const calc = sm.ballisticsParameters as import('@/types/SightMarks').CalculatedMarks;
-				const newCalculated = Array.isArray(calc?.calculated_marks)
-					? calc.calculated_marks.filter((_, i) => i !== index)
-					: undefined;
+				const newCalculated = Array.isArray(calc?.calculated_marks) ? calc.calculated_marks.filter((_, i) => i !== index) : undefined;
 				const updatedBallistics = newCalculated
 					? { ...calc, calculated_marks: newCalculated, given_marks: newMarks, given_distances: newDistances }
 					: sm.ballisticsParameters;
@@ -191,7 +189,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 		return (
 			<section className={styles.section}>
 				<div className={styles.header}>
-					<h2 className={styles.title}>Siktemerker</h2>
+					<h2 className={styles.title}>Innskyting</h2>
 				</div>
 				<div className={styles.container}>
 					<div className={styles.loading}>Laster...</div>
@@ -203,10 +201,13 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 	return (
 		<section className={styles.section}>
 			<div className={styles.header}>
-				<h2 className={styles.title}>Siktemerker</h2>
+				<h2 className={styles.title}>Innskyting</h2>
 				<Button
-					label="Nytt merke"
-					onClick={() => { setEditingSightMark(null); setIsModalOpen(true); }}
+					label="Ny innskyting"
+					onClick={() => {
+						setEditingSightMark(null);
+						setIsModalOpen(true);
+					}}
 					icon={<LuPlus size={18} />}
 				/>
 			</div>
@@ -240,7 +241,10 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 				onSave={handleCreate}
 				onDelete={
 					editingSightMark
-						? async () => { await deleteSightMark(editingSightMark.id); fetchSightMarks(); }
+						? async () => {
+								await deleteSightMark(editingSightMark.id);
+								fetchSightMarks();
+							}
 						: undefined
 				}
 				bows={bows}

@@ -118,6 +118,9 @@ export interface CalculatedMarks {
 export interface SightMarkCalc {
 	ballistics_pars: number[];
 	distances_def: [number, number, number];
+	/** Explicit list of distances to compute marks for. When provided the service
+	 *  uses this instead of expanding distances_def itself. */
+	distances?: number[];
 	angles: number[];
 }
 
