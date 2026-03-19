@@ -87,16 +87,14 @@ export default function SiktemerkerPage() {
 		[router]
 	);
 
-	// ── Silent refresh – only updates the selector list, never clears the table ─
 	const silentRefresh = useCallback(async () => {
 		try {
 			const smRes = await fetch('/api/sight-marks');
 			if (!smRes.ok) return;
 			const { sightMarks: marks } = (await smRes.json()) as { sightMarks: SightMark[] };
 			setSightMarks(marks);
-			// Keep activeSightMark as-is; user can switch via the selector
 		} catch {
-			// Non-critical – ignore
+			// non-critical
 		}
 	}, []);
 
@@ -104,36 +102,30 @@ export default function SiktemerkerPage() {
 		loadData();
 	}, [loadData]);
 
-	async function handleRemoveResult() {
-		if (!activeResultId) {
-			setModalOpen(true);
-			return;
-		}
+	async function deleteResult(): Promise<boolean> {
 		setDeletingResult(true);
 		try {
 			await fetch(`/api/sight-marks/results/${activeResultId}`, { method: 'DELETE' });
 			setCalculatedMarks(null);
 			setActiveResultId(null);
-			setModalOpen(true);
+			return true;
 		} catch (err) {
 			Sentry.captureException(err, { tags: { page: 'siktemerker', action: 'deleteResult' } });
+			return false;
 		} finally {
 			setDeletingResult(false);
 		}
 	}
 
+	async function handleRemoveResult() {
+		if (!activeResultId) { setModalOpen(true); return; }
+		const ok = await deleteResult();
+		if (ok) setModalOpen(true);
+	}
+
 	async function handleDeleteResult() {
 		if (!activeResultId) return;
-		setDeletingResult(true);
-		try {
-			await fetch(`/api/sight-marks/results/${activeResultId}`, { method: 'DELETE' });
-			setCalculatedMarks(null);
-			setActiveResultId(null);
-		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'siktemerker', action: 'deleteResult' } });
-		} finally {
-			setDeletingResult(false);
-		}
+		await deleteResult();
 	}
 
 	function handleChooserConfirm(sm: SightMark) {
@@ -143,7 +135,6 @@ export default function SiktemerkerPage() {
 
 	function handleResultCreated(result: FullMarksResult) {
 		setCalculatedMarks(result);
-		// Silently refresh the result ID for "Beregn på nytt"
 		if (activeSightMark?.id) {
 			fetch(`/api/sight-marks/${activeSightMark.id}/results`)
 				.then((r) => r.json())

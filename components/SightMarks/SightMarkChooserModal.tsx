@@ -11,7 +11,6 @@ interface SightMarkChooserModalProps {
 	onClose: () => void;
 	sightMarks: SightMark[];
 	currentId?: string | null;
-	/** Called with the chosen SightMark when the user confirms. */
 	onChoose: (sightMark: SightMark) => void;
 }
 
@@ -24,7 +23,6 @@ export function SightMarkChooserModal({
 }: SightMarkChooserModalProps) {
 	const [selected, setSelected] = useState<string | null>(null);
 
-	// Sync selection when modal opens
 	useEffect(() => {
 		if (open) {
 			setSelected(currentId ?? sightMarks[0]?.id ?? null);

@@ -5,8 +5,7 @@ import { getCurrentUser } from '@/lib/session';
 
 /**
  * POST /api/sight-marks/calculate
- * Proxy endpoint for external sight mark calculation service.
- * Takes SightMarkCalc parameters and returns sight mark results by angle.
+ * Proxies sight mark calculation to the external ballistics service.
  */
 export async function POST(request: NextRequest) {
 	try {
@@ -18,7 +17,6 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
 		}
 
-		// Validate required fields for SightMarkCalc
 		const payload = body as SightMarkCalc;
 		const errors: string[] = [];
 
@@ -36,19 +34,17 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Validation error', details: errors }, { status: 400 });
 		}
 
-		// Call external sight mark calculation service
 		const ballisticsUrl = process.env.SIGHTMARKS_CALCULATION_SERVICE_URL || 'http://localhost:8000';
 
-		const response = await fetch(`${ballisticsUrl}`, {
+		const response = await fetch(ballisticsUrl, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(payload),
-			signal: AbortSignal.timeout(30000), // 30 second timeout
+			signal: AbortSignal.timeout(30000),
 		});
 
 		if (!response.ok) {
 			const errorText = await response.text();
-			console.error('[SightMarks Calculate] External service error:', errorText);
 			Sentry.captureException(new Error(`Sight marks service error: ${response.status}`), {
 				tags: { endpoint: 'sight-marks/calculate' },
 				extra: { statusCode: response.status, responseBody: errorText },
@@ -57,7 +53,6 @@ export async function POST(request: NextRequest) {
 		}
 
 		const result: MarksResult = await response.json();
-		console.log(JSON.stringify(result, null, 2));
 		return NextResponse.json(result);
 	} catch (error) {
 		Sentry.captureException(error, {

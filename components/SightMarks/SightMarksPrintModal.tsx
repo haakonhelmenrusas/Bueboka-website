@@ -29,19 +29,21 @@ export function SightMarksPrintModal({ open, onClose, data }: SightMarksPrintMod
 		return res.blob();
 	};
 
+	const triggerDownload = (blob: Blob) => {
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `bueboka-siktemerker-${slug}.png`;
+		a.click();
+		URL.revokeObjectURL(url);
+	};
+
 	const handleDownload = async () => {
 		setDownloading(true);
 		try {
 			const blob = await captureImage();
-			if (!blob) return;
-			const url = URL.createObjectURL(blob);
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = `bueboka-siktemerker-${slug}.png`;
-			a.click();
-			URL.revokeObjectURL(url);
-		} catch (err) {
-			console.error('Nedlasting feilet:', err);
+			if (blob) triggerDownload(blob);
+		} catch {
 			alert('Kunne ikke laste ned bildet. Prøv igjen.');
 		} finally {
 			setDownloading(false);
@@ -58,17 +60,10 @@ export function SightMarksPrintModal({ open, onClose, data }: SightMarksPrintMod
 				setCopied(true);
 				setTimeout(() => setCopied(false), 2500);
 			} else {
-				// Fallback: download instead
-				const url = URL.createObjectURL(blob);
-				const a = document.createElement('a');
-				a.href = url;
-				a.download = `bueboka-siktemerker-${slug}.png`;
-				a.click();
-				URL.revokeObjectURL(url);
+				triggerDownload(blob);
 				alert('Bildet ble lastet ned (utklippstavle ikke tilgjengelig i denne nettleseren).');
 			}
-		} catch (err) {
-			console.error('Kopiering feilet:', err);
+		} catch {
 			alert('Kunne ikke kopiere bildet. Prøv «Last ned» i stedet.');
 		} finally {
 			setCopying(false);
@@ -111,4 +106,3 @@ export function SightMarksPrintModal({ open, onClose, data }: SightMarksPrintMod
 		</Modal>
 	);
 }
-

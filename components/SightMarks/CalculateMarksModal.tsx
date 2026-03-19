@@ -55,10 +55,9 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 		setErrorMsg(null);
 
 		try {
-			const validAngles = (angles.filter((a) => a !== null && !Number.isNaN(a)) as number[]);
+			const validAngles = angles.filter((a) => a !== null && !Number.isNaN(a)) as number[];
 
-			// Build the explicit distances list so the external service computes a mark
-			// for every step, not just the calibration distance.
+			// Send explicit distances so the service computes a mark for every step.
 			const allDistances: number[] = [];
 			for (let d = distanceFrom; d <= distanceTo + 1e-9; d += interval) {
 				allDistances.push(Math.round(d * 1000) / 1000);
@@ -82,11 +81,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 			const rawResult = await calcRes.json();
 
-			// Use the explicitly-computed distances as the source of truth.
-			// The external service echoes back whichever distances it computed for;
-			// if it understood the explicit list, rawResult.distances will match allDistances.
-			// If it still only returns the seed distance, fall back to allDistances for the
-			// labels but the marks will be sparse – nothing we can do without re-computing.
+			// Prefer the service's echoed distances; fall back to the locally-built list.
 			const fullDistances: number[] =
 				Array.isArray(rawResult.distances) && rawResult.distances.length > 1
 					? rawResult.distances

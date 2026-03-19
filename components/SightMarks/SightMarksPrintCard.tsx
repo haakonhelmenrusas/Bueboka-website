@@ -35,7 +35,6 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 
 		return (
 			<div className={styles.card} ref={ref}>
-				{/* ── Header ── */}
 				<div className={styles.header}>
 					<div className={styles.brand}>
 						<div className={styles.brandLogoCircle}>
@@ -46,7 +45,6 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 					<span className={styles.headerBadge}>Siktemerker</span>
 				</div>
 
-				{/* ── Set info ── */}
 				<div className={styles.infoSection}>
 					<div className={styles.infoTitle}>{setName}</div>
 					<div className={styles.infoMeta}>
@@ -59,7 +57,6 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 					<div className={styles.infoDate}>{today}</div>
 				</div>
 
-				{/* ── Marks table ── */}
 				<div className={styles.tableSection}>
 					<table className={styles.table}>
 						<thead>
@@ -97,7 +94,6 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 					</table>
 				</div>
 
-				{/* ── Footer ── */}
 				<div className={styles.footer}>
 					<span className={styles.footerText}>bueboka.no</span>
 				</div>
