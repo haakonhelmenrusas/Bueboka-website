@@ -50,7 +50,7 @@ export async function GET(request: Request) {
 			totalScore: true,
 			practiceCategory: true,
 			roundType: { select: { name: true } },
-			ends: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
+			ends: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, distanceFrom: true, distanceTo: true, targetSizeCm: true } },
 		} satisfies Prisma.PracticeSelect;
 
 		const competitionSelect = {
@@ -113,14 +113,28 @@ export async function GET(request: Request) {
 				(sum, e) => sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0),
 				0
 			);
-			const combinations = [
-				...new Set(
-					p.ends
-						.filter((e) => e.distanceMeters && e.targetSizeCm)
-						.map((e) => `${e.distanceMeters}m - ${e.targetSizeCm}cm`)
-				),
-			];
-			const roundTypeName = combinations.length > 0 ? combinations[0] : (p.roundType?.name ?? null);
+
+			// For range categories (FELT, JAKT_3D), build label from distanceFrom/distanceTo
+			let roundTypeName = p.roundType?.name ?? null;
+			if (!roundTypeName) {
+				const isRangeCategory = p.practiceCategory === 'FELT' || p.practiceCategory === 'JAKT_3D';
+				if (isRangeCategory) {
+					const rangeParts = [
+						...new Set(
+							p.ends
+								.filter((e) => e.distanceFrom != null || e.distanceTo != null)
+								.map((e) => {
+									const from = e.distanceFrom != null ? `${e.distanceFrom} m` : null;
+									const to = e.distanceTo != null ? `${e.distanceTo} m` : null;
+									if (from && to) return `${from} – ${to}`;
+									return from ?? to ?? null;
+								})
+								.filter(Boolean)
+						),
+					];
+					if (rangeParts.length > 0) roundTypeName = rangeParts[0] as string;
+				}
+			}
 
 			return {
 				id: p.id,

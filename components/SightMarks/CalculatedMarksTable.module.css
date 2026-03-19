@@ -20,7 +20,7 @@
 }
 
 .distanceHeader {
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-4) var(--space-5) var(--space-4) var(--space-8);
     text-align: left;
     font-size: 0.75rem;
     font-weight: 700;
@@ -66,7 +66,7 @@
 .bodyRow:hover { background: rgba(12, 130, 172, 0.04); }
 
 .distanceCell {
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-4) var(--space-5) var(--space-4) var(--space-8);
     font-size: 0.875rem;
     font-weight: 700;
     color: var(--text-dark);

@@ -24,6 +24,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 						totalScore: true,
 						ends: {
 							select: {
+								arrows: true,
 								scores: true,
 								arrowsWithoutScore: true,
 							},
@@ -51,7 +52,12 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 				for (const end of practice.ends) {
 					const endScoredArrows = end.scores.length;
 					const endUnscoredArrows = end.arrowsWithoutScore ?? 0;
-					totalArrows += endScoredArrows + endUnscoredArrows;
+					// Use the explicit arrows field when available (covers sessions recorded
+					// without individual scores), falling back to scores.length.
+					const endTotalArrows = end.arrows != null
+						? end.arrows + endUnscoredArrows
+						: endScoredArrows + endUnscoredArrows;
+					totalArrows += endTotalArrows;
 					scoredArrows += endScoredArrows;
 					totalScore += end.scores.reduce((sum, s) => sum + s, 0);
 				}

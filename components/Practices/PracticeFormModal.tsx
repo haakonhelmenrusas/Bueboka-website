@@ -165,6 +165,16 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 		}
 	}, [environment]);
 
+	const handlePracticeCategoryChange = (newCategory: PracticeCategory) => {
+		setPracticeCategory(newCategory);
+		const isRangeCategory = newCategory === 'JAKT_3D' || newCategory === 'FELT';
+		if (isRangeCategory) {
+			setRounds([{ distanceFrom: 0, distanceTo: 0, targetType: '', numberArrows: 0, arrowsWithoutScore: 0, roundScore: 0 }]);
+		} else {
+			setRounds([{ distanceMeters: 0, targetType: '', numberArrows: 0, arrowsWithoutScore: 0, roundScore: 0 }]);
+		}
+	};
+
 	// Helper functions for managing rounds
 	const addRound = () => {
 		const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
@@ -249,7 +259,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 						<Select
 							label="Kategori"
 							value={practiceCategory}
-							onChange={(v) => setPracticeCategory(v as PracticeCategory)}
+							onChange={(v) => handlePracticeCategoryChange(v as PracticeCategory)}
 							options={practiceCategoryOptions}
 							containerClassName={styles.field}
 						/>

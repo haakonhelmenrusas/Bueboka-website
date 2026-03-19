@@ -59,7 +59,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 		`${practiceType === 'KONKURRANSE' ? 'Konkurranse' : 'Trening'} fra ${formattedDate}`,
 		`${arrowsShot} piler skutt`,
 		totalScore && `Score: ${totalScore}`,
-		roundTypeName && `Runde: ${roundTypeName}`,
+		`Runde: ${roundTypeName ? formatRoundTypeName(roundTypeName) : 'Ingen skive'}`,
 		location && `Sted: ${location}`,
 	]
 		.filter(Boolean)
@@ -102,14 +102,14 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 							<span className={styles.detailText}>{totalScore} poeng</span>
 						</div>
 					)}
-					{roundTypeName && (
-						<div className={styles.detailItem}>
-							<span className={styles.detailIcon} aria-hidden="true">
-								<LuTarget size={14} />
-							</span>
-							<span className={styles.detailText}>{formatRoundTypeName(roundTypeName)}</span>
-						</div>
-					)}
+					<div className={styles.detailItem}>
+						<span className={styles.detailIcon} aria-hidden="true">
+							<LuTarget size={14} />
+						</span>
+						<span className={styles.detailText}>
+							{roundTypeName ? formatRoundTypeName(roundTypeName) : 'Ingen skive'}
+						</span>
+					</div>
 					{location && (
 						<div className={styles.detailItem}>
 							<span className={styles.detailIcon} aria-hidden="true">
