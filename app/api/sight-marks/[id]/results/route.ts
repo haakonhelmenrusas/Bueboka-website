@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { parseNumberArray } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/session';
@@ -24,8 +23,6 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
 		return NextResponse.json({ sightMarkResults: results });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]/results', method: 'GET' } });
-		return NextResponse.json({ error: 'Failed to fetch sight mark results' }, { status: 500 });
 	}
 }
 
@@ -88,7 +85,5 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
 		return NextResponse.json({ sightMarkResult: result }, { status: 201 });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]/results', method: 'POST' } });
-		return NextResponse.json({ error: 'Failed to create sight mark result' }, { status: 500 });
 	}
 }

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 
@@ -38,7 +37,5 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
 		return NextResponse.json({ bowSpecification: spec });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'bow-specifications/by-bow', method: 'GET' } });
-		return NextResponse.json({ error: 'Failed to fetch or create bow specification' }, { status: 500 });
 	}
 }

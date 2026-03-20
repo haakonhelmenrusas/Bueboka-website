@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { roundTypesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
@@ -48,10 +47,6 @@ export async function GET() {
 			}
 		);
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'round-types', method: 'GET' },
-			extra: { message: 'Error fetching round types' },
-		});
 		return NextResponse.json({ error: 'Failed to fetch round types' }, { status: 500 });
 	}
 }

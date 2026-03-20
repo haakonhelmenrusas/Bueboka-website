@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { parseOptionalNumberArray } from '@/lib/utils';
@@ -20,8 +19,6 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
 		return NextResponse.json({ sightMark });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]', method: 'GET' } });
-		return NextResponse.json({ error: 'Failed to fetch sight mark' }, { status: 500 });
 	}
 }
 
@@ -72,8 +69,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
 		return NextResponse.json({ sightMark: updated });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]', method: 'PUT' } });
-		return NextResponse.json({ error: 'Failed to update sight mark' }, { status: 500 });
 	}
 }
 
@@ -93,7 +88,5 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/[id]', method: 'DELETE' } });
-		return NextResponse.json({ error: 'Failed to delete sight mark' }, { status: 500 });
 	}
 }

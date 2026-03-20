@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { checkAllAchievements } from '@/lib/achievements/checker';
 import { getCurrentUser } from '@/lib/session';
@@ -128,10 +127,6 @@ export async function GET() {
 			}
 		);
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'achievements', method: 'GET' },
-			extra: { message: 'Error fetching achievements' },
-		});
 
 		return NextResponse.json(
 			{

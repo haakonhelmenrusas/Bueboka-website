@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
 
 export type PracticeCardItem = {
 	id: string;
@@ -79,7 +78,6 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 				pageRef.current = newPage;
 				setTotal(data.total ?? 0);
 			} catch (err) {
-				Sentry.captureException(err, { tags: { area: 'PracticesSection', action: 'fetchPracticeCards' } });
 			} finally {
 				inFlightRef.current = false;
 				setLoading(false);

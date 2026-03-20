@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { statsCache, practicesCache } from '@/lib/cache';
@@ -64,9 +63,6 @@ export async function GET(request: Request, { params }: RouteParams) {
 			},
 		});
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'competitions/[id]', method: 'GET' },
-		});
 
 		return NextResponse.json(
 			{
@@ -203,9 +199,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
 		return NextResponse.json({ competition });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'competitions/[id]', method: 'PATCH' },
-		});
 
 		return NextResponse.json(
 			{
@@ -255,9 +248,6 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'competitions/[id]', method: 'DELETE' },
-		});
 
 		return NextResponse.json(
 			{

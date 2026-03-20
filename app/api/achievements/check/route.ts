@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { getAlmostUnlockedAchievements, getNewlyUnlockedAchievements } from '@/lib/achievements/checker';
 import { getCurrentUser } from '@/lib/session';
@@ -121,10 +120,6 @@ export async function POST(request: Request) {
 			totalNewlyUnlocked: newlyUnlocked.length,
 		});
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'achievements/check', method: 'POST' },
-			extra: { message: 'Error checking achievements' },
-		});
 
 		return NextResponse.json(
 			{

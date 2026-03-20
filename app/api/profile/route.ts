@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { userProfileCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
@@ -37,10 +36,6 @@ export async function GET() {
 
 		return NextResponse.json({ profile });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'profile', method: 'GET' },
-			extra: { message: 'Error fetching profile' },
-		});
 		return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });
 	}
 }

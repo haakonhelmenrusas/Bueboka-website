@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
 import type { Arrow, Bow } from '@/lib/types';
 import { onEquipmentChanged } from '@/lib/events';
 
@@ -24,7 +23,6 @@ export function useEquipmentData() {
 			setBows(data.bows ?? []);
 			setArrows(data.arrows ?? []);
 		} catch (err) {
-			Sentry.captureException(err, { tags: { area: 'useEquipmentData', action: 'refresh' } });
 			setError('Kunne ikke hente utstyr');
 		} finally {
 			setLoading(false);

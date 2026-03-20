@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { parseNumberArray } from '@/lib/utils';
@@ -24,8 +23,6 @@ export async function GET() {
 
 		return NextResponse.json({ sightMarks });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks', method: 'GET' } });
-		return NextResponse.json({ error: 'Failed to fetch sight marks' }, { status: 500 });
 	}
 }
 
@@ -79,8 +76,5 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ sightMark }, { status: 201 });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks', method: 'POST' } });
-		console.error('[POST /api/sight-marks] error:', error);
-		return NextResponse.json({ error: 'Failed to create sight mark', detail: error instanceof Error ? error.message : String(error) }, { status: 500 });
 	}
 }

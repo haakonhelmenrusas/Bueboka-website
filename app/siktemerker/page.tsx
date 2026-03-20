@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import * as Sentry from '@sentry/nextjs';
 import { Header, Footer, Button, SightMarksSection } from '@/components';
 import { CalculatedMarksTable } from '@/components/SightMarks/CalculatedMarksTable';
 import { CalculateMarksModal } from '@/components/SightMarks/CalculateMarksModal';
@@ -78,7 +77,6 @@ export default function SiktemerkerPage() {
 				setActiveResultId(latest.id);
 				setCalculatedMarks(mapResult(latest));
 			} catch (err) {
-				Sentry.captureException(err, { tags: { page: 'siktemerker', action: 'loadData' } });
 				setError('En feil oppstod. Prøv igjen.');
 			} finally {
 				setLoading(false);
@@ -110,7 +108,6 @@ export default function SiktemerkerPage() {
 			setActiveResultId(null);
 			return true;
 		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'siktemerker', action: 'deleteResult' } });
 			return false;
 		} finally {
 			setDeletingResult(false);

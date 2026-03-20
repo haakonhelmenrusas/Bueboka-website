@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { sendEmail } from '@/lib/email';
 import { getCurrentUser } from '@/lib/session';
 
@@ -150,9 +149,6 @@ Mottatt: ${new Date().toLocaleString('nb-NO')}
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'feedback', action: 'POST' },
-		});
 		console.error('Error sending feedback:', error);
 		return NextResponse.json({ error: 'Failed to send feedback' }, { status: 500 });
 	}

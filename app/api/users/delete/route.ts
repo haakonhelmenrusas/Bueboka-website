@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 
@@ -46,10 +45,6 @@ export async function DELETE() {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'users/delete', method: 'DELETE' },
-			extra: { message: 'Error deleting user account' },
-		});
 		return NextResponse.json({ error: 'Failed to delete account' }, { status: 500 });
 	}
 }

@@ -6,7 +6,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
-import * as Sentry from '@sentry/nextjs';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
 import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
@@ -51,10 +50,6 @@ export function Header() {
 			// navigate to front page after logout
 			router.push('/');
 		} catch (err) {
-			Sentry.captureException(err, {
-				tags: { action: 'logout' },
-				extra: { message: 'Logout failed' },
-			});
 			console.error('Logout failed', err);
 		}
 	};

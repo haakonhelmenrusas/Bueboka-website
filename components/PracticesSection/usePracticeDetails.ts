@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
 import type { Practice } from '@/lib/types';
 
 export function usePracticeDetails() {
@@ -28,7 +27,6 @@ export function usePracticeDetails() {
 			const data = await res.json();
 			return (data.practice ?? null) as Practice | null;
 		} catch (err) {
-			Sentry.captureException(err, { tags: { area: 'PracticesSection', action: 'fetchPracticeDetails' } });
 			setError('Kunne ikke hente detaljer');
 			return null;
 		} finally {

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 
@@ -16,7 +15,7 @@ export async function GET() {
 
 		return NextResponse.json({ bowSpecifications: specs });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'bow-specifications', method: 'GET' } });
+		console.error('[bow-specifications GET]', error);
 		return NextResponse.json({ error: 'Failed to fetch bow specifications' }, { status: 500 });
 	}
 }
@@ -60,10 +59,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ bowSpecification: spec }, { status: 201 });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'bow-specifications', method: 'POST' } });
-		if (error instanceof Error && error.message.includes('Unique constraint')) {
-			return NextResponse.json({ error: 'Specification already exists for this bow' }, { status: 409 });
-		}
+		console.error('[bow-specifications POST]', error);
 		return NextResponse.json({ error: 'Failed to create bow specification' }, { status: 500 });
 	}
 }
