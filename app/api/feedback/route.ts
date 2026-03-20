@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 		// Create email content
 		const emailHtml = `
 			<!DOCTYPE html>
-			<html>
+			<html lang="no">
 				<head>
 					<meta charset="utf-8">
 					<style>

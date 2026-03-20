@@ -58,7 +58,7 @@ export const auth = betterAuth({
 		'bueboka://',
 		...(process.env.NODE_ENV === 'production'
 			? // Production: explicit allow-list only
-			  process.env.BETTER_AUTH_TRUSTED_ORIGINS_PROD?.split(',')
+				process.env.BETTER_AUTH_TRUSTED_ORIGINS_PROD?.split(',')
 					.map((origin) => origin.trim())
 					.filter(Boolean) || []
 			: [
@@ -66,14 +66,12 @@ export const auth = betterAuth({
 					process.env.BETTER_AUTH_URL ?? 'http://localhost:3000',
 					// Trust the LAN/device URL so the Expo app can call server APIs
 					// from a physical device (non-OAuth calls: practices, profile, etc.)
-					...(process.env.BETTER_AUTH_URL_MOBILE
-						? [process.env.BETTER_AUTH_URL_MOBILE]
-						: []),
+					...(process.env.BETTER_AUTH_URL_MOBILE ? [process.env.BETTER_AUTH_URL_MOBILE] : []),
 					// Any additional origins from .env (Expo dev server, deep-link scheme, etc.)
 					...(process.env.BETTER_AUTH_TRUSTED_ORIGINS_DEV?.split(',')
 						.map((origin) => origin.trim())
 						.filter(Boolean) ?? ['exp://', 'http://localhost:8081', 'http://localhost:3000']),
-			  ]),
+				]),
 	],
 	baseURL: baseURL,
 	emailAndPassword: {
@@ -251,27 +249,14 @@ export const auth = betterAuth({
 		},
 		autoSignInAfterVerification: true,
 		sendOnSignUp: true,
-		sendVerificationOnSignIn: true, // Send verification email when unverified user tries to sign in
-		// Longer token expiry for mobile users who might check email later
+		sendVerificationOnSignIn: true,
 		verificationTokenExpiresIn: 60 * 60 * 24, // 24 hours
 	},
 	session: {
 		expiresIn: 60 * 60 * 24 * 7,
 		updateAge: 60 * 60 * 24,
-		cookieCache: {
-			enabled: true,
-			maxAge: 5 * 60, // 5 minutes: session data cached in a signed cookie, no DB hit
-		},
 	},
 	account: {
-		// The signed state-cookie is a secondary CSRF guard on top of the primary
-		// DB-stored state verification.  In the Expo OAuth flow the proxy endpoint
-		// is called from the LAN IP (http://192.168.x.x:3000) while the callback
-		// arrives at the public URL (https://ngrok / production domain) — a
-		// different cookie domain, so the browser never sends the cookie back.
-		// Disabling the check is safe because:
-		//   1. State is still stored in and looked up from the DB (primary check).
-		//   2. PKCE (code_challenge / code_verifier) prevents code-injection attacks.
 		skipStateCookieCheck: true,
 	},
 	advanced: {

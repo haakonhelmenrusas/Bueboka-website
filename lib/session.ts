@@ -1,6 +1,12 @@
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { sessionCache } from '@/lib/cache';
+import type { User as BetterAuthUser } from 'better-auth';
+
+// AuthUser is the Better Auth base user type (id, name, email, emailVerified, image, …).
+// We use the library's own exported type rather than deriving from getSession's return
+// because TypeScript fails to propagate the generic fully through the latter.
+type AuthUser = BetterAuthUser;
 
 /**
  * Extract a stable cache key from the request's session credentials.
@@ -38,7 +44,7 @@ function extractSessionToken(request: Request): string | null {
  * function falls back to `next/headers()` which reads the headers from the
  * current Next.js request context.
  */
-export async function getCurrentUser(request?: Request) {
+export async function getCurrentUser(request?: Request): Promise<AuthUser | null> {
 	try {
 		let headerObj: Record<string, string>;
 		let cacheKey: string | null = null;
@@ -52,7 +58,7 @@ export async function getCurrentUser(request?: Request) {
 			const token = extractSessionToken(request);
 			if (token) {
 				cacheKey = `session:${token}`;
-				const cached = sessionCache.get(cacheKey);
+				const cached = sessionCache.get<AuthUser>(cacheKey);
 				if (cached) return cached;
 			}
 		} else {
@@ -62,10 +68,10 @@ export async function getCurrentUser(request?: Request) {
 		}
 
 		const session = await auth.api.getSession({ headers: headerObj });
-		const user = session?.user || null;
+		const user = session?.user ?? null;
 
 		if (cacheKey && user) {
-			sessionCache.set(cacheKey, user, 30000);
+			sessionCache.set<AuthUser>(cacheKey, user, 30000);
 		}
 
 		return user;
