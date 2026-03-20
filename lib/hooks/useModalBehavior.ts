@@ -13,6 +13,14 @@ interface UseModalBehaviorOptions {
 }
 
 /**
+ * Module-level reference counter tracking how many modal instances are
+ * currently locking scroll. Using a counter instead of save/restore
+ * prevents a race condition where two modals closing in the same React
+ * render cycle would restore 'hidden' as the final overflow value.
+ */
+let scrollLockCount = 0;
+
+/**
  * Shared modal UX behavior:
  * - Close on Escape
  * - Disable background scroll while open
@@ -27,15 +35,21 @@ export function useModalBehavior({ open, onClose, lockScroll = true, closeOnEsca
 
 	useEscapeKey(handleEscapeKey, open);
 
-	// Handle scroll locking separately
+	// Handle scroll locking with a reference counter so that any number of
+	// modals can open/close in any order without permanently locking the body.
 	useEffect(() => {
 		if (!open || !lockScroll) return;
 
-		const prevOverflow = document.body.style.overflow;
+		scrollLockCount++;
 		document.body.style.overflow = 'hidden';
 
 		return () => {
-			document.body.style.overflow = prevOverflow ?? '';
+			scrollLockCount = Math.max(0, scrollLockCount - 1);
+			if (scrollLockCount === 0) {
+				document.body.style.overflow = '';
+			}
 		};
 	}, [open, lockScroll]);
 }
+
+
