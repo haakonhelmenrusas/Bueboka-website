@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { statsCache, practicesCache } from '@/lib/cache';
@@ -51,9 +50,6 @@ export async function GET() {
 
 		return NextResponse.json({ competitions: competitionsWithStats });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'competitions', method: 'GET' },
-		});
 
 		return NextResponse.json(
 			{
@@ -173,9 +169,6 @@ export async function POST(request: Request) {
 
 		return NextResponse.json({ competition }, { status: 201 });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'competitions', method: 'POST' },
-		});
 
 		return NextResponse.json(
 			{

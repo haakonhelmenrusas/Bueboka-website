@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
 import { SightMark } from '@/types/SightMarks';
 
 export function useSightMarks() {
@@ -19,7 +18,6 @@ export function useSightMarks() {
 			const data = await res.json();
 			setSightMarks(data.sightMarks || []);
 		} catch (err) {
-			Sentry.captureException(err, { tags: { hook: 'useSightMarks' } });
 			setError('An error occurred');
 		} finally {
 			setLoading(false);
@@ -35,7 +33,6 @@ export function useSightMarks() {
 			}
 			setSightMarks((prev) => prev.filter((sm) => sm.id !== id));
 		} catch (err) {
-			Sentry.captureException(err, { tags: { hook: 'useSightMarks', action: 'delete' } });
 			setError('An error occurred');
 		}
 	}, []);

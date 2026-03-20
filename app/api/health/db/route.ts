@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
@@ -31,10 +30,6 @@ export async function GET() {
 		return NextResponse.json({ ok: true, ms: Date.now() - startedAt, db: dbMeta });
 	} catch (error) {
 		const anyErr = error as any;
-		Sentry.captureException(error, {
-			tags: { endpoint: 'health/db' },
-			extra: { ms: Date.now() - startedAt, db: dbMeta, prismaCode: anyErr?.code },
-		});
 
 		return NextResponse.json(
 			{

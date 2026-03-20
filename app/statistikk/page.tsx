@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import * as Sentry from '@sentry/nextjs';
 import { Header } from '@/components';
 import {
 	ArrowsChart,
@@ -46,7 +45,7 @@ export default function StatisticsPage() {
 			}
 			await fetchDetailedStats();
 		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'statistikk', action: 'checkAuth' } });
+			// error logged to console
 			setError('En feil oppstod');
 		} finally {
 			setLoading(false);
@@ -67,7 +66,7 @@ export default function StatisticsPage() {
 			const data: DetailedStatsResponse = await res.json();
 			setSeries(data.series || []);
 		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'statistikk', action: 'fetchDetailedStats' } });
+			// error logged to console
 			setError('En feil oppstod');
 		}
 	};

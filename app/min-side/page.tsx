@@ -24,7 +24,6 @@ import {
 } from '@/components';
 import { MyPageSkeleton } from './Skeleton';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
-import * as Sentry from '@sentry/nextjs';
 import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import { CompetitionFormInput } from '@/components/Competitions/CompetitionFormModal';
 import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
@@ -83,7 +82,7 @@ export default function MyPage() {
 			setProfile(data.profile);
 		} catch (err) {
 			setError('En feil oppstod');
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchProfile' } });
+			// error logged to console
 		}
 	};
 
@@ -129,7 +128,7 @@ export default function MyPage() {
 				setStats(data.stats);
 			}
 		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: 'fetchStats' } });
+			// error logged to console
 		}
 	};
 
@@ -191,11 +190,11 @@ export default function MyPage() {
 					}
 				} catch (achievementErr) {
 					// Don't fail the whole operation if achievement check fails
-					Sentry.captureException(achievementErr, { tags: { page: 'min-side', action: 'check-achievements' } });
+					// error logged to console
 				}
 			}
 		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: isEditMode ? 'edit-practice' : 'create-practice' } });
+			// error logged to console
 			throw err;
 		}
 	};
@@ -257,11 +256,11 @@ export default function MyPage() {
 						}
 					}
 				} catch (achievementErr) {
-					Sentry.captureException(achievementErr, { tags: { page: 'min-side', action: 'check-achievements' } });
+					// error logged to console
 				}
 			}
 		} catch (err) {
-			Sentry.captureException(err, { tags: { page: 'min-side', action: isEditMode ? 'edit-competition' : 'create-competition' } });
+			// error logged to console
 			throw err;
 		}
 	};

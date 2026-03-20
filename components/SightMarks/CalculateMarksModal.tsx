@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
 import { Button, Modal, NumberInput } from '@/components';
 import { useModalBehavior } from '@/lib/hooks';
 import type { CalculatedMarks, FullMarksResult } from '@/types/SightMarks';
@@ -117,7 +116,6 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 			onResultCreated(result);
 			onClose();
 		} catch (err: unknown) {
-			Sentry.captureException(err, { tags: { component: 'CalculateMarksModal' } });
 			setErrorMsg(err instanceof Error ? err.message : 'Kunne ikke beregne siktemerker');
 			setStatus('error');
 		} finally {

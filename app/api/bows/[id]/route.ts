@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import * as Sentry from '@sentry/nextjs';
 import { updateBowSchema } from '@/lib/validations/bow';
 import { validateRequest } from '@/lib/validations/helpers';
 import { getCurrentUser } from '@/lib/session';
@@ -60,10 +59,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ bow }, { status: 200 });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'bows/[id]', method: 'PATCH' },
-			extra: { message: 'Error updating bow' },
-		});
 		console.error('Error updating bow:', error);
 		return NextResponse.json({ error: 'Failed to update bow' }, { status: 500 });
 	}
@@ -94,10 +89,6 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ success: true }, { status: 200 });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'bows/[id]', method: 'DELETE' },
-			extra: { message: 'Error deleting bow' },
-		});
 		console.error('Error deleting bow:', error);
 		return NextResponse.json({ error: 'Failed to delete bow' }, { status: 500 });
 	}

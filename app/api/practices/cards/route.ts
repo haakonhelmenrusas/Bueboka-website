@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { practicesCache } from '@/lib/cache';
@@ -212,10 +211,6 @@ export async function GET(request: Request) {
 			}
 		);
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'practices/cards', method: 'GET' },
-			extra: { message: 'Error fetching practice cards' },
-		});
 		return NextResponse.json({ error: 'Failed to fetch practice cards' }, { status: 500 });
 	}
 }

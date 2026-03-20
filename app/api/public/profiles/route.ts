@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 
@@ -48,10 +47,6 @@ export async function GET(request: NextRequest) {
 
 		return NextResponse.json({ profiles });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'public/profiles', method: 'GET' },
-			extra: { message: 'Error fetching public profiles' },
-		});
 		return NextResponse.json({ error: 'Failed to fetch profiles' }, { status: 500 });
 	}
 }

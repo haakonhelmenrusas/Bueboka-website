@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { parseOptionalNumberArray } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/session';
@@ -19,8 +18,6 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
 		return NextResponse.json({ sightMarkResult: result });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/results/[id]', method: 'GET' } });
-		return NextResponse.json({ error: 'Failed to fetch sight mark result' }, { status: 500 });
 	}
 }
 
@@ -76,8 +73,6 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 		const updated = await prisma.sightMarkResult.update({ where: { id }, data: updateData });
 		return NextResponse.json({ sightMarkResult: updated });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/results/[id]', method: 'PUT' } });
-		return NextResponse.json({ error: 'Failed to update sight mark result' }, { status: 500 });
 	}
 }
 
@@ -93,7 +88,5 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 		await prisma.sightMarkResult.delete({ where: { id } });
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		Sentry.captureException(error, { tags: { endpoint: 'sight-marks/results/[id]', method: 'DELETE' } });
-		return NextResponse.json({ error: 'Failed to delete sight mark result' }, { status: 500 });
 	}
 }

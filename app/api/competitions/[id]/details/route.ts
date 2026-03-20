@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 
@@ -56,10 +55,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 			}
 		);
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'competitions/[id]/details', method: 'GET' },
-			extra: { message: 'Error fetching competition details' },
-		});
 		return NextResponse.json({ error: 'Failed to fetch competition details' }, { status: 500 });
 	}
 }

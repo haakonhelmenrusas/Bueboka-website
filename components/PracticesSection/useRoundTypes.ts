@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
 
 export type RoundTypeItem = {
 	id: string;
@@ -39,7 +38,6 @@ export function useRoundTypes() {
 			const data = await res.json();
 			setRoundTypes(data.roundTypes ?? []);
 		} catch (err) {
-			Sentry.captureException(err, { tags: { area: 'useRoundTypes', action: 'fetchRoundTypes' } });
 			setError('Kunne ikke hente runder');
 		} finally {
 			setLoading(false);

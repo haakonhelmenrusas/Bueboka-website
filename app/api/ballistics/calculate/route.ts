@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { AimDistanceMark, CalculatedMarks } from '@/types/SightMarks';
 import { getCurrentUser } from '@/lib/session';
 
@@ -41,20 +40,12 @@ export async function POST(request: NextRequest) {
 		});
 		if (!response.ok) {
 			const errorText = await response.text();
-			Sentry.captureException(new Error(`Ballistics service error: ${response.status}`), {
-				tags: { endpoint: 'ballistics/calculate' },
-				extra: { statusCode: response.status, responseBody: errorText },
-			});
 			return NextResponse.json({ error: 'Failed to calculate ballistics', details: errorText }, { status: response.status });
 		}
 
 		const result: CalculatedMarks = await response.json();
 		return NextResponse.json(result);
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'ballistics/calculate', method: 'POST' },
-			extra: { message: 'Ballistics calculation failed' },
-		});
 
 		if (error instanceof Error && error.name === 'AbortError') {
 			return NextResponse.json({ error: 'Ballistics service timeout' }, { status: 504 });

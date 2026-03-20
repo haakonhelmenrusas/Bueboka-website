@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { Environment } from '@/lib/prismaEnums';
@@ -133,15 +132,6 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ practice }, { status: 201 });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'practices', method: 'POST' },
-			extra: {
-				message: 'Error creating practice',
-				errorName: error instanceof Error ? error.name : typeof error,
-				errorMessage: error instanceof Error ? error.message : undefined,
-				errorStack: error instanceof Error ? error.stack : undefined,
-			},
-		});
 		return NextResponse.json(
 			{
 				error: 'Failed to create practice',
@@ -169,10 +159,6 @@ export async function GET() {
 
 		return NextResponse.json({ practices });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'practices', method: 'GET' },
-			extra: { message: 'Error fetching practices' },
-		});
 		return NextResponse.json({ error: 'Failed to fetch practices' }, { status: 500 });
 	}
 }

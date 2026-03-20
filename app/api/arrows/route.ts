@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import * as Sentry from '@sentry/nextjs';
 import { createArrowsSchema } from '@/lib/validations/arrows';
 import { validateRequest } from '@/lib/validations/helpers';
 import { getCurrentUser } from '@/lib/session';
@@ -68,10 +67,6 @@ export async function POST(request: NextRequest) {
 		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ arrows }, { status: 201 });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'arrows', method: 'POST' },
-			extra: { message: 'Error creating arrows' },
-		});
 		console.error('Error creating arrows:', error);
 		return NextResponse.json({ error: 'Failed to create arrows' }, { status: 500 });
 	}
@@ -90,10 +85,6 @@ export async function GET() {
 
 		return NextResponse.json({ arrows });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'arrows', method: 'GET' },
-			extra: { message: 'Error fetching arrows' },
-		});
 		console.error('Error fetching arrows:', error);
 		return NextResponse.json({ error: 'Failed to fetch arrows' }, { status: 500 });
 	}

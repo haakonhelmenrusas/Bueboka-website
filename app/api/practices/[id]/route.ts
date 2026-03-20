@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { Environment } from '@/lib/prismaEnums';
@@ -153,13 +152,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 		return NextResponse.json(mappedPractice);
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'practices/[id]', method: 'PATCH' },
-			extra: {
-				message: 'Error updating practice',
-				errorMessage: error instanceof Error ? error.message : undefined,
-			},
-		});
 
 		if (error instanceof Error && error.message.includes('Unique constraint failed')) {
 			return NextResponse.json({ error: 'A practice with this data already exists' }, { status: 409 });
@@ -208,10 +200,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'practices/[id]', method: 'DELETE' },
-			extra: { message: 'Error deleting practice' },
-		});
 
 		if (error instanceof Error && error.message.includes('Foreign key constraint')) {
 			return NextResponse.json({ error: 'Kunne ikke slette trening. Prøv igjen senere.' }, { status: 409 });

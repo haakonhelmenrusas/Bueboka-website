@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { prisma } from '@/lib/prisma';
 import { userProfileCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
@@ -28,10 +27,6 @@ export async function GET() {
 
 		return NextResponse.json({ users });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'users', method: 'GET' },
-			extra: { message: 'Error fetching users' },
-		});
 		return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
 	}
 }
@@ -83,10 +78,6 @@ export async function PATCH(request: NextRequest) {
 
 		return NextResponse.json({ user: updatedUser });
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'users', method: 'PATCH' },
-			extra: { message: 'Error updating user' },
-		});
 		return NextResponse.json({ error: 'Failed to update user' }, { status: 500 });
 	}
 }

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as Sentry from '@sentry/nextjs';
 import { MarksResult, SightMarkCalc } from '@/types/SightMarks';
 import { getCurrentUser } from '@/lib/session';
 
@@ -45,20 +44,12 @@ export async function POST(request: NextRequest) {
 
 		if (!response.ok) {
 			const errorText = await response.text();
-			Sentry.captureException(new Error(`Sight marks service error: ${response.status}`), {
-				tags: { endpoint: 'sight-marks/calculate' },
-				extra: { statusCode: response.status, responseBody: errorText },
-			});
 			return NextResponse.json({ error: 'Failed to calculate sight marks', details: errorText }, { status: response.status });
 		}
 
 		const result: MarksResult = await response.json();
 		return NextResponse.json(result);
 	} catch (error) {
-		Sentry.captureException(error, {
-			tags: { endpoint: 'sight-marks/calculate', method: 'POST' },
-			extra: { message: 'Sight marks calculation failed' },
-		});
 
 		if (error instanceof Error && error.name === 'AbortError') {
 			return NextResponse.json({ error: 'Calculation service timeout' }, { status: 504 });
