@@ -7,9 +7,9 @@ import { getCurrentUser } from '@/lib/session';
  * GET /api/achievements
  * Returns all achievements with user's progress
  */
-export async function GET() {
+export async function GET(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}

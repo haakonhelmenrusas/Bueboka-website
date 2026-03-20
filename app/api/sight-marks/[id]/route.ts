@@ -10,7 +10,7 @@ async function getOwnedSightMark(userId: string, sightMarkId: string) {
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		const { id } = await params;
 
@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		const { id } = await params;
 
@@ -74,7 +74,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		const { id } = await params;
 

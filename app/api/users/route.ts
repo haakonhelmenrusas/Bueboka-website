@@ -3,9 +3,9 @@ import { prisma } from '@/lib/prisma';
 import { userProfileCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 		}
@@ -33,7 +33,7 @@ export async function GET() {
 
 export async function PATCH(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 		}

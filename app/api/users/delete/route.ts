@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}

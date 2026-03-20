@@ -258,6 +258,10 @@ export const auth = betterAuth({
 	session: {
 		expiresIn: 60 * 60 * 24 * 7,
 		updateAge: 60 * 60 * 24,
+		cookieCache: {
+			enabled: true,
+			maxAge: 5 * 60, // 5 minutes: session data cached in a signed cookie, no DB hit
+		},
 	},
 	account: {
 		// The signed state-cookie is a secondary CSRF guard on top of the primary

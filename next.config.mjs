@@ -14,6 +14,7 @@ const nextConfig = {
 			isrMemoryCacheSize: 0,
 		},
 	}),
+	allowedDevOrigins: ['swirly-uncrookedly-tamara.ngrok-free.dev'],
 
 	// Optimize images
 	images: {

@@ -7,7 +7,7 @@ import { equipmentCache } from '@/lib/cache';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -66,7 +66,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}

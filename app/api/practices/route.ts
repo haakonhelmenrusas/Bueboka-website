@@ -9,7 +9,7 @@ import { getCurrentUser } from '@/lib/session';
 
 export async function POST(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const body = await request.json();
@@ -142,9 +142,9 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const practices = await prisma.practice.findMany({

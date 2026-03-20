@@ -6,7 +6,7 @@ import { getCurrentUser } from '@/lib/session';
 
 export async function GET(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const url = new URL(request.url);
