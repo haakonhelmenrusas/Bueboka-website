@@ -25,9 +25,14 @@ export const SessionShareModal: React.FC<SessionShareModalProps> = ({ open, onCl
 	const captureImage = async (): Promise<Blob | null> => {
 		if (!captureRef.current) return null;
 		const { toPng } = await import('html-to-image');
-		const dataUrl = await toPng(captureRef.current, {
+		const el = captureRef.current;
+		// Use scrollWidth/scrollHeight so the full card is captured on mobile,
+		// even when the element is inside a scrollable modal that may constrain clientHeight.
+		const dataUrl = await toPng(el, {
 			pixelRatio: 2,
 			cacheBust: true,
+			width: el.scrollWidth,
+			height: el.scrollHeight,
 		});
 		const res = await fetch(dataUrl);
 		return res.blob();
