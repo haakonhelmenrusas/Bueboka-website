@@ -5,44 +5,17 @@ import { sendEmail } from './email';
 import { expo } from '@better-auth/expo';
 
 // -- Base URL + cookie-security -----------------------------------------------
-// baseURL must be the canonical server URL that Google (and other OAuth
-// providers) can redirect to.  Only loopback addresses (localhost/127.0.0.1)
-// receive special dev treatment from Google — all other private IPs
-// (192.168.x.x, 10.x.x.x …) are rejected with:
-//   "device_id and device_name are required for private IP"
-//
-// BETTER_AUTH_URL_MOBILE is the LAN IP of the dev machine
-// (e.g. http://192.168.x.x:3000).  It is added to trustedOrigins so the
-// Expo app can call server APIs from a physical device, but it MUST NOT
-// become the baseURL because that puts the private IP into the OAuth
-// redirect_uri, which Google refuses.
-//
-// OAuth on physical devices — options:
-//   A) Test on iOS Simulator  (can reach the host's localhost:3000 directly)
-//   B) Test on Android Emulator  →  BETTER_AUTH_URL=http://10.0.2.2:3000
-//      (Android's special alias for the host machine)
-//   C) Use a public HTTPS tunnel for physical-device + Google OAuth:
-//        1.  npx ngrok http 3000          (or: cloudflare tunnel, ssh -R …)
-//        2.  BETTER_AUTH_URL=https://<tunnel>.ngrok.io  (restart dev server)
-//        3.  Add https://<tunnel>.ngrok.io/api/auth/callback/google
-//            to Google Console → Authorised Redirect URIs
-//        4.  Add https://<tunnel>.ngrok.io
-//            to Google Console → Authorised JavaScript Origins
-//        Keep BETTER_AUTH_URL_MOBILE=http://192.168.x.x:3000 so non-OAuth
-//        API calls from the device continue to be trusted.
+// baseURL must be the canonical server URL. In development this is localhost.
+// In production it is the deployed URL set via BETTER_AUTH_URL.
 
 const baseURL = process.env.BETTER_AUTH_URL ?? 'http://localhost:3000';
 
-// The Next.js server ALWAYS listens on plain HTTP (localhost:3000).
-// The HTTPS layer lives in the reverse proxy (ngrok, nginx, Netlify edge …).
-// useSecureCookies must reflect the server's own transport, NOT the public
-// baseURL protocol — if we derive it from baseURL we get __Secure- cookies
-// that the server tries to set over HTTP, which browsers silently drop,
-// breaking every downstream cookie read (state, session, etc.).
+// useSecureCookies must reflect the server's own transport layer, not the
+// public-facing URL. The Next.js dev server always uses plain HTTP, so
+// __Secure- cookies would be silently dropped by the browser.
 //
-// Rule of thumb:
-//   development → HTTP server  → false  (works for localhost, LAN IP, ngrok)
-//   production  → HTTPS server → true   (Netlify / any properly TLS-terminated host)
+//   development → HTTP  → false
+//   production  → HTTPS → true
 const useSecureCookies = process.env.NODE_ENV === 'production';
 
 export const auth = betterAuth({
@@ -50,24 +23,15 @@ export const auth = betterAuth({
 		provider: 'postgresql',
 	}),
 	trustedOrigins: [
-		// The Expo app's deep-link scheme must ALWAYS be trusted (dev + prod).
-		// The expo plugin's after-hook checks isTrustedOrigin(callbackURL) before
-		// it appends the session cookie to the post-OAuth redirect URL.
-		// Without this, openAuthSessionAsync receives a bare bueboka:// link,
-		// the cookie is never transferred, and the user appears logged-out.
+		// The Expo app's deep-link scheme must always be trusted so the
+		// post-OAuth redirect carries the session cookie correctly.
 		'bueboka://',
 		...(process.env.NODE_ENV === 'production'
-			? // Production: explicit allow-list only
-				process.env.BETTER_AUTH_TRUSTED_ORIGINS_PROD?.split(',')
+			? process.env.BETTER_AUTH_TRUSTED_ORIGINS_PROD?.split(',')
 					.map((origin) => origin.trim())
 					.filter(Boolean) || []
 			: [
-					// Always trust the standard web URL for browser-based dev.
 					process.env.BETTER_AUTH_URL ?? 'http://localhost:3000',
-					// Trust the LAN/device URL so the Expo app can call server APIs
-					// from a physical device (non-OAuth calls: practices, profile, etc.)
-					...(process.env.BETTER_AUTH_URL_MOBILE ? [process.env.BETTER_AUTH_URL_MOBILE] : []),
-					// Any additional origins from .env (Expo dev server, deep-link scheme, etc.)
 					...(process.env.BETTER_AUTH_TRUSTED_ORIGINS_DEV?.split(',')
 						.map((origin) => origin.trim())
 						.filter(Boolean) ?? ['exp://', 'http://localhost:8081', 'http://localhost:3000']),
