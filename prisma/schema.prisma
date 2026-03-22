@@ -189,7 +189,7 @@ model End {
   scores             Int[]
   arrowCoordinates   Json?
   roundScore         Int?
-// ...existing code...
+  distanceMeters     Int?
   distanceFrom       Int?
   distanceTo         Int?
   targetSizeCm       Int?
