@@ -27,7 +27,7 @@
     border: 1px solid var(--bg-gray-200);
     background: var(--card-bg-solid);
     padding: 8px 10px;
-    box-shadow: 0 1px 0 var(--dark-02);
+    box-shadow: 0 1px 0 var(--dark-06);
     transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 

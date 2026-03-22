@@ -98,7 +98,8 @@ export async function POST(request: NextRequest) {
 					return {
 						arrows: round.numberArrows || null,
 						arrowsWithoutScore: round.arrowsWithoutScore || null,
-						scores: [],
+						scores: round.scores || [],
+						arrowCoordinates: round.arrowCoordinates || Prisma.JsonNull,
 						roundScore: round.roundScore || null,
 						distanceMeters: round.distanceMeters || null,
 						distanceFrom: roundAny.distanceFrom || null,

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { statsCache, practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
@@ -119,16 +120,16 @@ export async function POST(request: Request) {
 				userId: user.id,
 				date: new Date(body.date),
 				name: body.name.trim(),
-				location: body.location?.trim(),
-				organizerName: body.organizerName?.trim(),
+				location: body.location?.trim() || null,
+				organizerName: body.organizerName?.trim() || null,
 				environment: body.environment,
 				weather: body.weather || [],
-				practiceCategory: body.practiceCategory,
-				notes: body.notes?.trim(),
-				placement: body.placement,
-				numberOfParticipants: body.numberOfParticipants,
+				practiceCategory: body.practiceCategory || 'SKIVE_OUTDOOR',
+				notes: body.notes?.trim() || null,
+				placement: body.placement || null,
+				numberOfParticipants: body.numberOfParticipants || null,
 				personalBest: body.personalBest || false,
-				totalScore,
+				totalScore: totalScore,
 				bowId: body.bowId || null,
 				arrowsId: body.arrowsId || null,
 				rounds: {
@@ -147,6 +148,7 @@ export async function POST(request: Request) {
 							arrows: round.numberArrows || null,
 							arrowsWithoutScore: round.arrowsWithoutScore || null,
 							scores: round.scores || [],
+							arrowCoordinates: (round as any).arrowCoordinates || Prisma.JsonNull,
 							roundScore: round.roundScore || 0,
 							distanceMeters: round.distanceMeters,
 							targetSizeCm,

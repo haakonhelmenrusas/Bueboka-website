@@ -32,6 +32,15 @@ export const RoundInputSchema = z.object({
 		.optional(),
 	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional(),
 	arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional(),
+	scores: z.array(z.number().int().min(0).max(11)).optional(),
+	arrowCoordinates: z
+		.array(
+			z.object({
+				x: z.number(),
+				y: z.number(),
+			})
+		)
+		.optional(),
 	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
 });
 

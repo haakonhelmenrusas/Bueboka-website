@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { statsCache, practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
@@ -155,6 +156,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 							arrows: round.numberArrows || null,
 							arrowsWithoutScore: round.arrowsWithoutScore || null,
 							scores: round.scores || [],
+							arrowCoordinates: (round as any).arrowCoordinates || Prisma.JsonNull,
 							roundScore: round.roundScore || 0,
 							distanceMeters: round.distanceMeters,
 							targetSizeCm,

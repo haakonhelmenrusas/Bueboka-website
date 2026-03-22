@@ -187,8 +187,9 @@ model End {
   arrows             Int?
   arrowsWithoutScore Int?
   scores             Int[]
+  arrowCoordinates   Json?
   roundScore         Int?
-  distanceMeters     Int?
+// ...existing code...
   distanceFrom       Int?
   distanceTo         Int?
   targetSizeCm       Int?
