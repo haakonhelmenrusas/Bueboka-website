@@ -41,9 +41,8 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 	const [bowLength, setBowLength] = React.useState<number>(initialValues.bowLength);
 	const [isFavorite, setIsFavorite] = React.useState<boolean>(initialValues.isFavorite);
 	const [notes, setNotes] = React.useState<string>(initialValues.notes);
-	const [advancedOpen, setAdvancedOpen] = React.useState<boolean>(
-		!!(initialValues.eyeToNock || initialValues.aimMeasure || initialValues.eyeToSight)
-	);
+	const [sightMarksOpen, setSightMarksOpen] = React.useState<boolean>(false);
+	const [advancedOpen, setAdvancedOpen] = React.useState<boolean>(false);
 
 	return (
 		<form
@@ -51,7 +50,20 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 			className={styles.form}
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await onSubmit({ name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes });
+				await onSubmit({
+					name,
+					type,
+					eyeToNock,
+					aimMeasure,
+					eyeToSight,
+					limbs,
+					riser,
+					handOrientation,
+					drawWeight,
+					bowLength,
+					isFavorite,
+					notes,
+				});
 			}}
 		>
 			<div className={styles.row}>
@@ -61,18 +73,18 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 
 			<Checkbox label="Favorittbue" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittbue" />
 
-			<button type="button" className={styles.advancedToggle} onClick={() => setAdvancedOpen((prev) => !prev)}>
+			<button type="button" className={styles.advancedToggle} onClick={() => setSightMarksOpen((prev) => !prev)}>
 				<div className={styles.advancedLine} />
 				<div className={styles.advancedLabelWrap}>
-					<span className={styles.advancedLabel}>Avansert</span>
-					<div className={styles.advancedChevron} style={{ transform: advancedOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+					<span className={styles.advancedLabel}>Siktemerke</span>
+					<div className={styles.advancedChevron} style={{ transform: sightMarksOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
 						<LuChevronDown size={14} />
 					</div>
 				</div>
 				<div className={styles.advancedLine} />
 			</button>
 
-			{advancedOpen && (
+			{sightMarksOpen && (
 				<div className={styles.advancedContent}>
 					<div className={styles.numberRow}>
 						<NumberInput optional label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={0.01} />
@@ -91,6 +103,22 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 							step={0.01}
 						/>
 					</div>
+				</div>
+			)}
+
+			<button type="button" className={styles.advancedToggle} onClick={() => setAdvancedOpen((prev) => !prev)}>
+				<div className={styles.advancedLine} />
+				<div className={styles.advancedLabelWrap}>
+					<span className={styles.advancedLabel}>Avansert</span>
+					<div className={styles.advancedChevron} style={{ transform: advancedOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+						<LuChevronDown size={14} />
+					</div>
+				</div>
+				<div className={styles.advancedLine} />
+			</button>
+
+			{advancedOpen && (
+				<div className={styles.advancedContent}>
 					<div className={styles.row}>
 						<Input optional label="Lemmer" value={limbs} onChange={(e) => setLimbs(e.target.value)} />
 						<Input optional label="Midtstykke" value={riser} onChange={(e) => setRiser(e.target.value)} />

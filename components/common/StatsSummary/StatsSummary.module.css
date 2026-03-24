@@ -4,9 +4,111 @@
 	gap: var(--space-4);
 }
 
+.carouselWrapper {
+	display: none;
+}
+
 @media (max-width: 900px) {
 	.grid {
-		grid-template-columns: 1fr;
+		display: none;
+	}
+
+	.carouselWrapper {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-4);
+		width: 100%;
+	}
+}
+
+.carousel {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	width: 100%;
+}
+
+.chevronButton {
+	background: var(--card-bg-solid);
+	border: 1px solid var(--border-gray);
+	border-radius: var(--radius-base);
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--primary);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	flex: 0 0 auto;
+}
+
+.chevronButton:hover:not(:disabled) {
+	background: var(--primary);
+	color: var(--white);
+	border-color: var(--primary);
+	transform: scale(1.05);
+}
+
+.chevronButton:active:not(:disabled) {
+	transform: scale(0.95);
+}
+
+.chevronButton:disabled {
+	opacity: 0.3;
+	cursor: not-allowed;
+}
+
+.cardContainer {
+	flex: 1;
+	min-width: 0;
+	animation: fadeIn 0.3s ease;
+}
+
+.dots {
+	display: flex;
+	justify-content: center;
+	gap: var(--space-3);
+	padding: var(--space-2) 0;
+}
+
+.dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var(--border-gray);
+	border: none;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	padding: 0;
+}
+
+.dot:hover {
+	background: var(--dimmed);
+	transform: scale(1.2);
+}
+
+.dotActive {
+	background: var(--primary);
+	width: 24px;
+	border-radius: 4px;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateX(10px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@media (max-width: 600px) {
+	.chevronButton {
+		width: 36px;
+		height: 36px;
 	}
 }
 
