@@ -51,7 +51,7 @@ export default function MyPage() {
 	const [achievementModalOpen, setAchievementModalOpen] = useState(false);
 	const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
 	const { fetchPracticeDetails } = usePracticeDetails();
-	const { bows, arrows } = useEquipmentData();
+	const { bows, arrows, loading: equipmentLoading } = useEquipmentData();
 	const { hasSeenWhatsNew, isLoading: whatsNewLoading, markAsSeen } = useWhatsNew();
 	const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 	const router = useRouter();
@@ -333,6 +333,7 @@ export default function MyPage() {
 				<EquipmentSection
 					bows={bows}
 					arrows={arrows}
+					isLoading={equipmentLoading}
 					onCreateBow={() => {
 						setSelectedBow(null);
 						setBowModalOpen(true);

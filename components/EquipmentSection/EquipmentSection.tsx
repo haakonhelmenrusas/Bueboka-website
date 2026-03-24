@@ -10,10 +10,12 @@ import { formatOneDecimal } from '@/lib/format';
 import { getArrowMaterialLabel, getBowTypeLabel } from '@/lib/labels';
 import { PiStar } from 'react-icons/pi';
 import { EquipmentListSkeleton } from './EquipmentSkeleton';
+import { onEquipmentChanged } from '@/lib/events';
 
 export interface EquipmentSectionProps {
 	bows?: Bow[];
 	arrows?: Arrow[];
+	isLoading?: boolean;
 	onCreateBow: () => void;
 	onCreateArrows: () => void;
 	onSelectBow: (bow: Bow) => void;
@@ -24,6 +26,7 @@ export interface EquipmentSectionProps {
 export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 	bows: bowsProp,
 	arrows: arrowsProp,
+	isLoading: isLoadingProp,
 	onCreateBow,
 	onCreateArrows,
 	onSelectBow,
@@ -40,7 +43,18 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
 	const bows = managed ? equipment.bows : (bowsProp ?? []);
 	const arrows = managed ? equipment.arrows : (arrowsProp ?? []);
-	const isLoading = managed && equipment.loading;
+	const isLoading = isLoadingProp !== undefined ? isLoadingProp : (managed && equipment.loading) || (bowsProp === undefined && equipment.loading);
+
+	// Listen for equipment:changed event and trigger refresh if onDataReady is provided
+	React.useEffect(() => {
+		if (!managed) return;
+		
+		return onEquipmentChanged(() => {
+			equipment.refresh().then(() => {
+				onDataReady?.({ refresh: equipment.refresh });
+			});
+		});
+	}, [managed, onDataReady, equipment.refresh]);
 
 	return (
 		<section className={styles.section} aria-label="Utstyr">

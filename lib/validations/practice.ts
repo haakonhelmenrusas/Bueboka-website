@@ -19,9 +19,9 @@ export const PracticeCategoryEnum = z.enum(['SKIVE_INDOOR', 'SKIVE_OUTDOOR', 'JA
 
 // Round input schema
 export const RoundInputSchema = z.object({
-	distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional(),
-	distanceFrom: z.number().int().min(0).max(1000, 'Fra-avstand må være mindre enn 1000 meter').optional(),
-	distanceTo: z.number().int().min(0).max(1000, 'Til-avstand må være mindre enn 1000 meter').optional(),
+	distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional().nullable(),
+	distanceFrom: z.number().int().min(0).max(1000, 'Fra-avstand må være mindre enn 1000 meter').optional().nullable(),
+	distanceTo: z.number().int().min(0).max(1000, 'Til-avstand må være mindre enn 1000 meter').optional().nullable(),
 	targetType: z
 		.string()
 		.refine((val) => {
@@ -29,10 +29,11 @@ export const RoundInputSchema = z.object({
 			const validTypes = TARGET_TYPE_OPTIONS.map((o) => o.value);
 			return validTypes.includes(val);
 		}, 'Ugyldig blinktype')
-		.optional(),
-	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional(),
-	arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional(),
-	scores: z.array(z.number().int().min(0).max(11)).optional(),
+		.optional()
+		.nullable(),
+	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional().nullable(),
+	arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
+	scores: z.array(z.number().int().min(0).max(11)).optional().nullable(),
 	arrowCoordinates: z
 		.array(
 			z.object({
@@ -40,8 +41,9 @@ export const RoundInputSchema = z.object({
 				y: z.number(),
 			})
 		)
-		.optional(),
-	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
+		.optional()
+		.nullable(),
+	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional().nullable(),
 });
 
 // Schema for creating a practice (training session only)
@@ -50,8 +52,8 @@ export const createPracticeSchema = z
 		date: z.string().min(1, 'Dato er påkrevd'),
 		location: z.string().max(64, 'Sted må være mindre enn 64 tegn').optional().nullable(),
 		environment: EnvironmentEnum,
-		weather: z.array(WeatherConditionEnum).optional().default([]),
-		practiceCategory: PracticeCategoryEnum.optional().default('SKIVE_INDOOR'),
+		weather: z.array(WeatherConditionEnum).optional().nullable().default([]),
+		practiceCategory: PracticeCategoryEnum.optional().nullable().default('SKIVE_INDOOR'),
 		notes: z.string().max(500, 'Notater må være mindre enn 500 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
 		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(20, 'Maksimalt 20 runder er tillatt'),

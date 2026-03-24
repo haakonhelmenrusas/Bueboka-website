@@ -14,7 +14,7 @@ export function useEquipmentData() {
 		setLoading(true);
 		setError(null);
 		try {
-			const res = await fetch('/api/equipment');
+			const res = await fetch(`/api/equipment?t=${Date.now()}`);
 			if (!res.ok) {
 				setError('Kunne ikke hente utstyr');
 				return;

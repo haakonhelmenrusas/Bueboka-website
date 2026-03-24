@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 		if (!validation.success) {
 			return validation.error;
 		}
-
+		console.log('[POST /api/bows] Validated body:', validation.data);
 		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = validation.data;
 
 		const makeFavorite = Boolean(isFavorite);
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
 				},
 			});
 		});
-
+		console.log('[POST /api/bows] Created bow:', bow);
 		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ bow }, { status: 201 });
 	} catch (error) {
