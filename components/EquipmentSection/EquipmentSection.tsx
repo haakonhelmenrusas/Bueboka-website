@@ -43,12 +43,13 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
 	const bows = managed ? equipment.bows : (bowsProp ?? []);
 	const arrows = managed ? equipment.arrows : (arrowsProp ?? []);
-	const isLoading = isLoadingProp !== undefined ? isLoadingProp : (managed && equipment.loading) || (bowsProp === undefined && equipment.loading);
+	const isLoading =
+		isLoadingProp !== undefined ? isLoadingProp : (managed && equipment.loading) || (bowsProp === undefined && equipment.loading);
 
 	// Listen for equipment:changed event and trigger refresh if onDataReady is provided
 	React.useEffect(() => {
 		if (!managed) return;
-		
+
 		return onEquipmentChanged(() => {
 			equipment.refresh().then(() => {
 				onDataReady?.({ refresh: equipment.refresh });
@@ -81,6 +82,9 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 										aria-label={`Rediger bue: ${bow.name}, ${getBowTypeLabel(bow.type)}${bow.isFavorite ? ', favoritt' : ''}`}
 										role="listitem"
 									>
+										<div className={styles.itemIcon} aria-hidden="true">
+											<GiBowArrow size={18} />
+										</div>
 										<div className={styles.itemLeft}>
 											<div className={styles.itemName}>
 												{bow.name}
@@ -91,9 +95,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 												) : null}
 											</div>
 											<div className={styles.itemMeta}>{getBowTypeLabel(bow.type)}</div>
-										</div>
-										<div className={styles.itemIcon} aria-hidden="true">
-											<GiBowArrow size={18} />
 										</div>
 									</button>
 								))
@@ -129,6 +130,9 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 										aria-label={`Rediger pilsett: ${a.name}, ${getArrowMaterialLabel(a.material)}${a.isFavorite ? ', favoritt' : ''}`}
 										role="listitem"
 									>
+										<div className={styles.itemIcon} aria-hidden="true">
+											<GiArrowhead size={18} style={{ transform: 'rotate(225deg)' }} />
+										</div>
 										<div className={styles.itemLeft}>
 											<div className={styles.itemName}>
 												{a.name}
@@ -143,9 +147,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 												{typeof a.length === 'number' ? ` • ${formatOneDecimal(a.length)}cm` : ''}
 												{typeof a.weight === 'number' ? ` • ${formatOneDecimal(a.weight)}g` : ''}
 											</div>
-										</div>
-										<div className={styles.itemIcon} aria-hidden="true">
-											<GiArrowhead size={18} style={{ transform: 'rotate(225deg)' }} />
 										</div>
 									</button>
 								))
