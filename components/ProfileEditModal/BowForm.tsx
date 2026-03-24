@@ -14,6 +14,11 @@ export interface BowFormValues {
 	eyeToNock: number;
 	aimMeasure: number;
 	eyeToSight: number;
+	limbs: string;
+	riser: string;
+	handOrientation: 'RH' | 'LH' | '';
+	drawWeight: number;
+	bowLength: number;
 	isFavorite: boolean;
 	notes: string;
 }
@@ -29,6 +34,11 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 	const [eyeToNock, setEyeToNock] = React.useState<number>(initialValues.eyeToNock);
 	const [aimMeasure, setAimMeasure] = React.useState<number>(initialValues.aimMeasure);
 	const [eyeToSight, setEyeToSight] = React.useState<number>(initialValues.eyeToSight);
+	const [limbs, setLimbs] = React.useState<string>(initialValues.limbs);
+	const [riser, setRiser] = React.useState<string>(initialValues.riser);
+	const [handOrientation, setHandOrientation] = React.useState<'RH' | 'LH' | ''>(initialValues.handOrientation);
+	const [drawWeight, setDrawWeight] = React.useState<number>(initialValues.drawWeight);
+	const [bowLength, setBowLength] = React.useState<number>(initialValues.bowLength);
 	const [isFavorite, setIsFavorite] = React.useState<boolean>(initialValues.isFavorite);
 	const [notes, setNotes] = React.useState<string>(initialValues.notes);
 	const [advancedOpen, setAdvancedOpen] = React.useState<boolean>(
@@ -41,7 +51,7 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 			className={styles.form}
 			onSubmit={async (e) => {
 				e.preventDefault();
-				await onSubmit({ name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes });
+				await onSubmit({ name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes });
 			}}
 		>
 			<div className={styles.row}>
@@ -80,6 +90,25 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 							min={0}
 							step={0.01}
 						/>
+					</div>
+					<div className={styles.row}>
+						<Input optional label="Lemmer" value={limbs} onChange={(e) => setLimbs(e.target.value)} />
+						<Input optional label="Midtstykke" value={riser} onChange={(e) => setRiser(e.target.value)} />
+					</div>
+					<div className={styles.numberRow}>
+						<Select
+							optional
+							label="Hånd"
+							value={handOrientation}
+							onChange={(v) => setHandOrientation(v as 'RH' | 'LH' | '')}
+							options={[
+								{ label: 'Velg hånd', value: '' },
+								{ label: 'Høyre (RH)', value: 'RH' },
+								{ label: 'Venstre (LH)', value: 'LH' },
+							]}
+						/>
+						<NumberInput optional label="Styrke (pund)" value={drawWeight} onChange={setDrawWeight} min={0} step={0.5} />
+						<NumberInput optional label="Lengde (tommer)" value={bowLength} onChange={setBowLength} min={0} step={0.5} />
 					</div>
 				</div>
 			)}

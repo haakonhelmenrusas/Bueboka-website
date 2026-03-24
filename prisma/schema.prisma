@@ -98,6 +98,11 @@ model Bow {
   eyeToNock         Float?
   aimMeasure        Float?
   eyeToSight        Float?
+  limbs             String?
+  riser             String?
+  handOrientation   String?
+  drawWeight        Float?
+  bowLength         Float?
   notes             String?
   isFavorite        Boolean            @default(false)
   createdAt         DateTime           @default(now())

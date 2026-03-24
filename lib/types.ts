@@ -40,6 +40,11 @@ export interface Bow {
 	eyeToNock: number | null;
 	aimMeasure: number | null;
 	eyeToSight: number | null;
+	limbs: string | null;
+	riser: string | null;
+	handOrientation: string | null;
+	drawWeight: number | null;
+	bowLength: number | null;
 	isFavorite: boolean;
 	notes: string | null;
 }

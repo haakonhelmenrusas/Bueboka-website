@@ -379,6 +379,11 @@ export default function MyPage() {
 								eyeToNock: selectedBow.eyeToNock,
 								aimMeasure: selectedBow.aimMeasure,
 								eyeToSight: selectedBow.eyeToSight,
+								limbs: (selectedBow as any).limbs,
+								riser: (selectedBow as any).riser,
+								handOrientation: (selectedBow as any).handOrientation,
+								drawWeight: (selectedBow as any).drawWeight,
+								bowLength: (selectedBow as any).bowLength,
 								isFavorite: selectedBow.isFavorite,
 								notes: selectedBow.notes,
 							}
