@@ -293,6 +293,14 @@
     .profileSummaryGrid {
         grid-template-columns: 1fr;
     }
+
+    .profileContainer {
+        padding: 0;
+    }
+
+    .summaryCard {
+        padding: var(--space-6);
+    }
 }
 
 @keyframes dropdown-in {

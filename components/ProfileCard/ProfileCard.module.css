@@ -174,3 +174,15 @@
         transform: translate(-50%, 0);
     }
 }
+
+@media (max-width: 900px) {
+    .card {
+        padding: var(--space-6);
+    }
+
+    .avatarWrap {
+        width: 100px;
+        height: 100px;
+    }
+}
+

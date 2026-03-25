@@ -126,12 +126,7 @@
     }
 
     .actionButtons {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    .actionButtons > * {
-        flex: 1;
+        display: none;
     }
 
     .practicesList {

@@ -199,6 +199,10 @@
 		grid-template-columns: 1fr;
 	}
 
+	.subHeaderRow button {
+		display: none;
+	}
+
 	.list {
 		max-width: none;
 	}
