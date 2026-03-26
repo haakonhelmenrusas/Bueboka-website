@@ -26,16 +26,16 @@ export async function POST(request: NextRequest) {
 			);
 		}
 
-		const { date, location, environment, weather, practiceCategory, notes, rating, ends, bowId, arrowsId } = validation.data;
+		const { date, location, environment, weather, practiceCategory, notes, rating, rounds, bowId, arrowsId } = validation.data;
 
 		const parsedDate = new Date(date);
 
 		// Calculate total score from all ends
-		const totalScore = ends.reduce((sum, round) => sum + (round.roundScore || 0), 0);
+		const totalScore = rounds.reduce((sum, round) => sum + (round.roundScore || 0), 0);
 
 		// For now, we'll use the first round's data for the practice
 		// TODO: In future, might want to handle multiple rounds differently
-		const firstRound = ends[0];
+		const firstRound = rounds[0];
 		let roundTypeId: string | null = null;
 
 		// Try to find or create a matching RoundType for the first round
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
 			notes: notes || null,
 			rating: rating ?? null,
 			ends: {
-				create: ends.map((round) => {
+				create: rounds.map((round) => {
 					// Parse targetSizeCm from targetType (e.g., "40cm" -> 40)
 					let targetSizeCm = null;
 					if (round.targetType) {
