@@ -4,12 +4,13 @@
     background: var(--card-bg);
     border: 1px solid var(--card-bg);
     border-radius: var(--radius-xl);
-    padding: var(--space-8);
+    padding: var(--space-6);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-6);
     color: var(--text-dark);
+    position: relative;
 }
 
 .avatarContainer {
@@ -113,10 +114,25 @@
     text-align: center;
 }
 
+.trophyButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: none;
+    cursor: pointer;
+    background: var(--primary);
+    border-radius: var(--radius-circle);
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+}
+
 .name {
     margin: 0;
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--text-dark);
 }
 

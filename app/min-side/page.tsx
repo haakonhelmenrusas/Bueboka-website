@@ -310,26 +310,39 @@ export default function MyPage() {
 			<main id="main-content" className={styles.main}>
 				<div className={styles.profileContainer}>
 					<div className={styles.profileSummaryGrid}>
-						<div>
-							<ProfileCard
-								name={profile.name}
-								email={profile.email}
-								club={profile.club}
-								image={profile.image}
-								skytternr={profile.skytternr}
-								onImageUpdate={handleProfileImageUpdate}
-							/>
-						</div>
+						<ProfileCard
+							name={profile.name}
+							email={profile.email}
+							club={profile.club}
+							image={profile.image}
+							onImageUpdate={handleProfileImageUpdate}
+						/>
 						<div className={styles.summaryCard}>
-							<h3 className={styles.summaryTitle}>Oppsummering</h3>
-							<p className={styles.summarySubtitle}>{summarySubtitle}</p>
-							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
-							<div className={styles.statsButtonContainer}>
-								<Button label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} width={240} />
+							<div className={styles.summaryHeader}>
+								<div>
+									<h3 className={styles.summaryTitle}>Oppsummering</h3>
+									<p className={styles.summarySubtitle}>{summarySubtitle}</p>
+								</div>
+								<Button size="small" label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} />
 							</div>
+							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
+							<div className={styles.statsButtonContainer}></div>
 						</div>
 					</div>
 				</div>
+				<PracticesSection
+					onCreate={() => {
+						setPracticeFormMode('create');
+						setPracticeFormOpen(true);
+					}}
+					onCreateCompetition={() => {
+						setCompetitionFormMode('create');
+						setCompetitionFormOpen(true);
+					}}
+					onSelectPractice={handleSelectPractice}
+					reloadKey={practiceReloadKey}
+					deletedPracticeId={deletedPracticeId}
+				/>
 				<EquipmentSection
 					bows={bows}
 					arrows={arrows}
@@ -347,19 +360,6 @@ export default function MyPage() {
 						setSelectedArrows(a);
 						setArrowsModalOpen(true);
 					}}
-				/>
-				<PracticesSection
-					onCreate={() => {
-						setPracticeFormMode('create');
-						setPracticeFormOpen(true);
-					}}
-					onCreateCompetition={() => {
-						setCompetitionFormMode('create');
-						setCompetitionFormOpen(true);
-					}}
-					onSelectPractice={handleSelectPractice}
-					reloadKey={practiceReloadKey}
-					deletedPracticeId={deletedPracticeId}
 				/>
 			</main>
 			<Footer />

@@ -237,11 +237,19 @@
     background: var(--card-bg);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: var(--radius-xl);
-    padding: var(--space-8);
+    padding: var(--space-6);
     color: var(--text-dark);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.summaryHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
 }
 
 .summaryTitle {

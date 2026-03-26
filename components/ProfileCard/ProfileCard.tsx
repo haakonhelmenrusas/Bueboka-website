@@ -15,11 +15,10 @@ export interface ProfileCardProps {
 	email: string;
 	club?: string | null;
 	image?: string | null;
-	skytternr?: string | null;
 	onImageUpdate: (newImage: string | null) => Promise<void>;
 }
 
-export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, skytternr, onImageUpdate }) => {
+export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, onImageUpdate }) => {
 	const displayName = name || email;
 	const displayClub = club || 'Ingen klubb oppgitt';
 	const router = useRouter();
@@ -92,6 +91,9 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 
 	return (
 		<section className={styles.card} aria-label="Profil">
+			<button className={styles.trophyButton} onClick={handleAchievementsClick}>
+				<LuTrophy size={20} color="var(--accent-yellow)" />
+			</button>
 			<div className={styles.avatarContainer} ref={menuRef}>
 				<div
 					className={styles.avatarWrap}
@@ -118,7 +120,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 							<span className={styles.overlayText}>Rediger</span>
 						</div>
 					)}
-
 					{image ? (
 						<Image
 							loading="eager"
@@ -134,7 +135,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 						</div>
 					)}
 				</div>
-
 				{menuOpen && (
 					<div className={styles.menu} role="menu">
 						<button className={styles.menuItem} onClick={handleUploadClick} role="menuitem">
@@ -149,7 +149,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 						)}
 					</div>
 				)}
-
 				<input
 					ref={fileInputRef}
 					type="file"
@@ -164,13 +163,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 				<Badge variant="primary" icon={<LuBuilding2 size={13} />}>
 					{displayClub}
 				</Badge>
-				{skytternr && (
-					<Badge variant="secondary" size="sm" icon={<LuHash size={13} />}>
-						{skytternr}
-					</Badge>
-				)}
 			</header>
-			<Button label="Prestasjoner" onClick={handleAchievementsClick} icon={<LuTrophy size={18} />} size="normal" buttonType="filled" />
 		</section>
 	);
 };
