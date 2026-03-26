@@ -71,11 +71,6 @@
 
 .practicesList {
     width: 100%;
-    background: var(--card-bg);
-    border: 1px solid var(--primary-dark);
-    border-radius: var(--radius-4);
-    padding: var(--space-8);
-    color: var(--text-dark);
 }
 
 .placeholderCard {
@@ -128,8 +123,5 @@
     .actionButtons {
         display: none;
     }
-
-    .practicesList {
-        padding: var(--space-6);
-    }
+    
 }
