@@ -23,37 +23,39 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, 
 	return (
 		<div className={styles.navFooter}>
 			<div className={styles.navRow}>
-				<button
-					type="button"
-					className={`${styles.navArrow}${isFirstStep ? ` ${styles.navArrowDisabled}` : ''}`}
-					onClick={onPrev}
-					disabled={isFirstStep}
-					aria-label="Forrige steg"
-				>
-					<LuChevronLeft size={22} />
-				</button>
-				<span className={styles.navStepName}>{STEP_LABELS[step]}</span>
-				{isLastStep ? (
-					<div className={styles.navArrow} />
-				) : (
-					<button type="button" className={styles.navArrow} onClick={onNext} aria-label="Neste steg">
-						<LuChevronRight size={22} />
-					</button>
-				)}
-			</div>
-			{isLastStep && (
-				<div className={styles.navActions}>
-					<Button type="button" label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" disabled={submitting} />
-					<Button
+				<Button type="button" label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" disabled={submitting} />
+				<div className={styles.navCenter}>
+					<button
 						type="button"
-						label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
-						onClick={onSubmit}
-						variant="standard"
-						disabled={submitting}
-						loading={submitting}
-					/>
+						className={`${styles.navArrow}${isFirstStep ? ` ${styles.navArrowDisabled}` : ''}`}
+						onClick={onPrev}
+						disabled={isFirstStep}
+						aria-label="Forrige steg"
+					>
+						<LuChevronLeft size={22} />
+					</button>
+					<span className={styles.navStepName}>{STEP_LABELS[step]}</span>
+					{isLastStep ? (
+						<div className={styles.navArrow} style={{ visibility: 'hidden' }} />
+					) : (
+						<button type="button" className={styles.navArrow} onClick={onNext} aria-label="Neste steg">
+							<LuChevronRight size={22} />
+						</button>
+					)}
 				</div>
-			)}
+				<div className={styles.navRight}>
+					{isLastStep && (
+						<Button
+							type="button"
+							label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
+							onClick={onSubmit}
+							variant="standard"
+							disabled={submitting}
+							loading={submitting}
+						/>
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

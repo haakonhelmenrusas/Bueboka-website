@@ -2,8 +2,8 @@
 .wizard {
 	display: flex;
 	flex-direction: column;
-	height: 88vh;
-	max-height: 88vh;
+	height: 72vh;
+	max-height: 72vh;
 	overflow: hidden;
 }
 
@@ -98,7 +98,7 @@
 }
 
 .stepLabel {
-	font-size: 0.6875rem;
+	font-size: 0.875rem;
 	color: var(--text-gray-600);
 	white-space: nowrap;
 }
@@ -589,6 +589,21 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	gap: var(--space-3);
+}
+
+.navCenter {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	flex: 1;
+	justify-content: center;
+}
+
+.navRight {
+	display: flex;
+	justify-content: flex-end;
+	min-width: 0;
 }
 
 .navArrow {

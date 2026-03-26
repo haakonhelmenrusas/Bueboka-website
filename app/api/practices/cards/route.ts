@@ -107,6 +107,7 @@ export async function GET(request: Request) {
 		// Transform practices to card format
 		const practiceCards = practices.map((p) => {
 			const arrowsShot = p.ends.reduce((sum, e) => sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0), 0);
+			const arrowsWithScore = p.ends.reduce((sum, e) => sum + (e.arrows ?? 0), 0);
 
 			// For range categories (FELT, JAKT_3D), build label from distanceFrom/distanceTo
 			let roundTypeName = p.roundType?.name ?? null;
@@ -134,6 +135,7 @@ export async function GET(request: Request) {
 				id: p.id,
 				date: p.date,
 				arrowsShot,
+				arrowsWithScore,
 				location: p.location ?? null,
 				environment: p.environment ?? null,
 				rating: p.rating ?? null,
@@ -147,6 +149,7 @@ export async function GET(request: Request) {
 		// Transform competitions to card format
 		const competitionCards = competitions.map((c) => {
 			const arrowsShot = c.rounds.reduce((sum, r) => sum + (r.arrows ?? 0) + (r.arrowsWithoutScore ?? 0), 0);
+			const arrowsWithScore = c.rounds.reduce((sum, r) => sum + (r.arrows ?? 0), 0);
 			const combinations = [
 				...new Set(c.rounds.filter((r) => r.distanceMeters && r.targetSizeCm).map((r) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)),
 			];
@@ -156,6 +159,7 @@ export async function GET(request: Request) {
 				id: c.id,
 				date: c.date,
 				arrowsShot,
+				arrowsWithScore,
 				location: c.location ?? null,
 				environment: c.environment ?? null,
 				rating: null,

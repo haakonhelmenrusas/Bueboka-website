@@ -7,6 +7,7 @@ export interface PracticeCardProps {
 	id: string;
 	date: string; // ISO string
 	arrowsShot: number;
+	arrowsWithScore?: number | null;
 	location?: string | null;
 	environment?: string | null;
 	practiceType?: string | null;
@@ -39,6 +40,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	id,
 	date,
 	arrowsShot,
+	arrowsWithScore,
 	location,
 	environment,
 	practiceType,
@@ -99,7 +101,10 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 							<span className={styles.detailIcon} aria-hidden="true">
 								<LuStar size={14} fill="currentColor" />
 							</span>
-							<span className={styles.detailText}>{totalScore} poeng</span>
+							<span className={styles.detailText}>
+								{totalScore}
+								{arrowsWithScore != null && arrowsWithScore > 0 ? ` / ${arrowsWithScore}` : ''}
+							</span>
 						</div>
 					)}
 					<div className={styles.detailItem}>
