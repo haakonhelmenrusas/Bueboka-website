@@ -450,6 +450,15 @@
 	animation: shimmer 1.4s infinite;
 }
 
+.seeAllLinkSkeleton {
+	width: 72px;
+	height: 16px;
+	border-radius: var(--radius-base);
+	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
 .itemSkeleton {
 	width: 100%;
 	min-height: 72px;

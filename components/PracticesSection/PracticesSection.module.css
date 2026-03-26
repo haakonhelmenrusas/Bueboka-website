@@ -11,6 +11,24 @@
 	margin-bottom: var(--space-4);
 }
 
+.seeAllLink {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	color: var(--white-80);
+	text-decoration: none;
+	font-size: 0.875rem;
+	font-weight: 600;
+	transition: color 150ms ease;
+	white-space: nowrap;
+}
+
+.seeAllLink:hover {
+	color: var(--white);
+	text-decoration: underline;
+	text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+
 .sectionTitle {
 	margin: 0;
 	font-size: 1.4rem;

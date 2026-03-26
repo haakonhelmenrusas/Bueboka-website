@@ -338,6 +338,7 @@ export default function MyPage() {
 					</div>
 				</div>
 				<PracticesSection
+					compact
 					onCreate={() => {
 						setPracticeFormMode('create');
 						setPracticeFormOpen(true);

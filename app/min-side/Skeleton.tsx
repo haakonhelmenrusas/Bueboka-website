@@ -86,13 +86,15 @@ export function MyPageSkeleton() {
 			<section className={styles.practicesSection}>
 				<div className={styles.practicesHeader}>
 					<SkeletonBlock className={styles.practicesTitleSkeleton} />
-					<div style={{ marginLeft: 'auto' }}>
+					<SkeletonBlock className={styles.seeAllLinkSkeleton} />
+					<div style={{ marginLeft: 'auto', display: 'flex', gap: 'var(--space-3)' }}>
+						<SkeletonBlock className={styles.actionButtonSkeleton} />
 						<SkeletonBlock className={styles.actionButtonSkeleton} />
 					</div>
 				</div>
 				<div className={styles.practicesList}>
 					<div className={styles.list} style={{ minHeight: 200 }}>
-						{Array.from({ length: 3 }).map((_, i) => (
+						{Array.from({ length: 5 }).map((_, i) => (
 							<SkeletonBlock key={i} className={styles.itemSkeleton} />
 						))}
 					</div>
