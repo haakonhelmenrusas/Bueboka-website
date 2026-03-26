@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			);
 		}
 
-		const { date, location, environment, weather, practiceCategory, notes, rating, rounds, bowId, arrowsId } = validation.data;
+		const { date, location, environment, weather, practiceCategory, notes, rating, ends, bowId, arrowsId } = validation.data;
 
 		// Verify practice exists and belongs to user
 		const existingPractice = await prisma.practice.findFirst({
@@ -42,12 +42,12 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 		const parsedDate = new Date(date);
 
-		// Calculate total arrows and score from rounds
-		const totalArrows = rounds.reduce((sum, round) => sum + (round.numberArrows || 0), 0);
-		const totalScore = rounds.reduce((sum, round) => sum + (round.roundScore || 0), 0);
+		// Calculate total arrows and score from ends
+		const totalArrows = ends.reduce((sum, round) => sum + (round.numberArrows || 0), 0);
+		const totalScore = ends.reduce((sum, round) => sum + (round.roundScore || 0), 0);
 
 		// Find or create round type for first round (same logic as POST)
-		const firstRound = rounds[0];
+		const firstRound = ends[0];
 		let roundTypeId: string | null = null;
 
 		if (firstRound && (firstRound.distanceMeters || firstRound.targetType || firstRound.numberArrows)) {
@@ -85,8 +85,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			where: { practiceId: practiceId },
 		});
 
-		// Create new ends from rounds
-		const newEnds = rounds.map((round) => {
+		// Create new ends from ends
+		const newEnds = ends.map((round) => {
 			let targetSizeCm = null;
 			if (round.targetType) {
 				const parsed = parseInt(round.targetType);
@@ -101,7 +101,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				practiceId: practiceId,
 				arrows: round.numberArrows || 0,
 				arrowsWithoutScore: round.arrowsWithoutScore || null,
-				scores: [],
+				scores: round.scores || [],
+				arrowCoordinates: round.arrowCoordinates || Prisma.JsonNull,
 				roundScore: round.roundScore || null,
 				distanceMeters: round.distanceMeters || null,
 				distanceFrom: roundAny.distanceFrom || null,
@@ -152,7 +153,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 		return NextResponse.json(mappedPractice);
 	} catch (error) {
-
 		if (error instanceof Error && error.message.includes('Unique constraint failed')) {
 			return NextResponse.json({ error: 'A practice with this data already exists' }, { status: 409 });
 		}
@@ -200,7 +200,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-
 		if (error instanceof Error && error.message.includes('Foreign key constraint')) {
 			return NextResponse.json({ error: 'Kunne ikke slette trening. Prøv igjen senere.' }, { status: 409 });
 		}

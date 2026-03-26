@@ -33,7 +33,7 @@ export interface PracticeFormInput {
 	practiceCategory: PracticeCategory;
 	notes?: string;
 	rating?: number;
-	rounds: RoundInput[];
+	ends: RoundInput[];
 	bowId?: string;
 	arrowsId?: string;
 }
@@ -73,7 +73,6 @@ interface PracticeFormModalProps {
 }
 
 export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onClose, onSave, mode, practice, bows = [], arrows = [] }) => {
-
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [location, setLocation] = useState('');
 	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
@@ -88,7 +87,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	const [arrowsId, setArrowsId] = useState<string>('');
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
-
 
 	useEffect(() => {
 		if (!open) return;
@@ -228,7 +226,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 				practiceCategory,
 				notes: notes || undefined,
 				rating: rating ?? undefined,
-				rounds: validRounds,
+				ends: validRounds,
 				bowId: bowId || undefined,
 				arrowsId: arrowsId || undefined,
 			});
@@ -254,82 +252,82 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 	return (
 		<Modal open={open} onClose={onClose} title={title} maxWidth={720} closeOnBackdrop={false}>
 			<form className={styles.form} onSubmit={handleSubmit}>
-					<div className={styles.row}>
-						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
-						<Select
-							label="Kategori"
-							value={practiceCategory}
-							onChange={(v) => handlePracticeCategoryChange(v as PracticeCategory)}
-							options={practiceCategoryOptions}
-							containerClassName={styles.field}
-						/>
-					</div>
-					<div className={styles.row}>
-						<Select
-							label="Miljø"
-							value={environment}
-							onChange={(v) => setEnvironment(v as Environment)}
-							options={environmentOptions}
-							containerClassName={styles.field}
-						/>
-						<Input
-							label="Sted"
-							value={location}
-							onChange={(e) => setLocation(e.target.value)}
-							helpText={`F.eks. Oslo (${location.length}/64 tegn)`}
-							maxLength={64}
-							containerClassName={styles.field}
-						/>
-					</div>
-					{environment === Environment.OUTDOOR ? (
-						<Select
-							label="Vær"
-							helpText="Velg ett eller flere"
-							value={weather}
-							onChange={(v) => setWeather(v as WeatherCondition[])}
-							multiple
-							maxSelectedLabels={2}
-							placeholderLabel="Velg vær (valgfritt)"
-							options={getWeatherSelectOptions()}
-							containerClassName={styles.field}
-						/>
-					) : null}
-					<div className={styles.row}>
-						<Select
-							label="Bue"
-							value={bowId}
-							onChange={(v) => setBowId(v as string)}
-							placeholderLabel="Velg bue (valgfritt)"
-							options={bowOptions}
-							containerClassName={styles.field}
-						/>
-						<Select
-							label="Piler"
-							value={arrowsId}
-							onChange={(v) => setArrowsId(v as string)}
-							placeholderLabel="Velg piler (valgfritt)"
-							options={arrowsOptions}
-							containerClassName={styles.field}
-						/>
-					</div>
-					<div className={styles.roundsSection}>
-						<h4 className={styles.sectionTitle}>Runder</h4>
-						{rounds.map((round, index) => {
-							const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
+				<div className={styles.row}>
+					<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
+					<Select
+						label="Kategori"
+						value={practiceCategory}
+						onChange={(v) => handlePracticeCategoryChange(v as PracticeCategory)}
+						options={practiceCategoryOptions}
+						containerClassName={styles.field}
+					/>
+				</div>
+				<div className={styles.row}>
+					<Select
+						label="Miljø"
+						value={environment}
+						onChange={(v) => setEnvironment(v as Environment)}
+						options={environmentOptions}
+						containerClassName={styles.field}
+					/>
+					<Input
+						label="Sted"
+						value={location}
+						onChange={(e) => setLocation(e.target.value)}
+						helpText={`F.eks. Oslo (${location.length}/64 tegn)`}
+						maxLength={64}
+						containerClassName={styles.field}
+					/>
+				</div>
+				{environment === Environment.OUTDOOR ? (
+					<Select
+						label="Vær"
+						helpText="Velg ett eller flere"
+						value={weather}
+						onChange={(v) => setWeather(v as WeatherCondition[])}
+						multiple
+						maxSelectedLabels={2}
+						placeholderLabel="Velg vær (valgfritt)"
+						options={getWeatherSelectOptions()}
+						containerClassName={styles.field}
+					/>
+				) : null}
+				<div className={styles.row}>
+					<Select
+						label="Bue"
+						value={bowId}
+						onChange={(v) => setBowId(v as string)}
+						placeholderLabel="Velg bue (valgfritt)"
+						options={bowOptions}
+						containerClassName={styles.field}
+					/>
+					<Select
+						label="Piler"
+						value={arrowsId}
+						onChange={(v) => setArrowsId(v as string)}
+						placeholderLabel="Velg piler (valgfritt)"
+						options={arrowsOptions}
+						containerClassName={styles.field}
+					/>
+				</div>
+				<div className={styles.roundsSection}>
+					<h4 className={styles.sectionTitle}>Runder</h4>
+					{rounds.map((round, index) => {
+						const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
 
-							return (
-								<div key={index} className={styles.roundCard}>
-									<div className={styles.roundHeader}>
-										<span className={styles.roundNumber}>Runde {index + 1}</span>
-										{rounds.length > 1 && (
-											<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
-												<LuX size={16} />
-											</button>
-										)}
-									</div>
-									<div className={styles.roundInputs}>
-										{isRangeCategory ? (
-											<>
+						return (
+							<div key={index} className={styles.roundCard}>
+								<div className={styles.roundHeader}>
+									<span className={styles.roundNumber}>Runde {index + 1}</span>
+									{rounds.length > 1 && (
+										<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
+											<LuX size={16} />
+										</button>
+									)}
+								</div>
+								<div className={styles.roundInputs}>
+									{isRangeCategory ? (
+										<>
 											<NumberInput
 												label="Fra"
 												value={round.distanceFrom || 0}
@@ -352,131 +350,131 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({ open, onCl
 												width={120}
 												containerClassName={styles.roundField}
 											/>
-											</>
-										) : (
-											<>
-												<NumberInput
-													label="Avstand"
-													value={round.distanceMeters || 0}
-													onChange={(v) => updateRound(index, 'distanceMeters', v)}
-													min={0}
-													step={1}
-													startEmpty={true}
-													unit="m"
-													width={180}
-													containerClassName={styles.roundField}
-												/>
-												<Select
-													label="Skive"
-													value={round.targetType}
-													onChange={(v) => updateRound(index, 'targetType', v as string)}
-													placeholderLabel="Velg"
-													searchable
-													options={TARGET_TYPE_OPTIONS}
-													containerClassName={styles.skiveField}
-												/>
-											</>
-										)}
-									</div>
-									<div className={styles.rowFlex}>
-										<NumberInput
-											label="Piler m/score"
-											value={round.numberArrows || 0}
-											onChange={(v) => updateRound(index, 'numberArrows', v || 0)}
-											min={0}
-											step={1}
-											startEmpty={true}
-											optional
-											width={180}
-											containerClassName={styles.roundField}
-										/>
-										<NumberInput
-											label="Score"
-											value={round.roundScore}
-											onChange={(v) => updateRound(index, 'roundScore', v)}
-											min={0}
-											step={1}
-											startEmpty={true}
-											optional
-											width={180}
-											containerClassName={styles.roundField}
-										/>
-									</div>
-									<div className={styles.row}>
-										<NumberInput
-											label="Piler u/score"
-											value={round.arrowsWithoutScore || 0}
-											onChange={(v) => updateRound(index, 'arrowsWithoutScore', v || 0)}
-											min={0}
-											step={1}
-											startEmpty={true}
-											optional
-											width={180}
-											containerClassName={styles.roundField}
-										/>
-									</div>
+										</>
+									) : (
+										<>
+											<NumberInput
+												label="Avstand"
+												value={round.distanceMeters || 0}
+												onChange={(v) => updateRound(index, 'distanceMeters', v)}
+												min={0}
+												step={1}
+												startEmpty={true}
+												unit="m"
+												width={180}
+												containerClassName={styles.roundField}
+											/>
+											<Select
+												label="Skive"
+												value={round.targetType}
+												onChange={(v) => updateRound(index, 'targetType', v as string)}
+												placeholderLabel="Velg"
+												searchable
+												options={TARGET_TYPE_OPTIONS}
+												containerClassName={styles.skiveField}
+											/>
+										</>
+									)}
 								</div>
-							);
-						})}
-						<Button
-							type="button"
-							label="+ Legg til runde"
-							onClick={addRound}
-							variant="standard"
-							buttonType="outline"
-							width="100%"
-							disabled={rounds.length >= 20}
-						/>
-						{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
-					</div>
-					<div className={styles.ratingSection}>
-						<div className={styles.ratingLabel}>
-							Vurdering
-							<span className={styles.ratingOptional}>(valgfritt)</span>
-						</div>
-						<p className={styles.ratingHelpText}>Hvordan vil du vurdere treningen?</p>
-						<div className={styles.ratingButtons}>
-							{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-								<button
-									key={num}
-									type="button"
-									className={`${styles.ratingButton} ${rating === num ? styles.ratingButtonActive : ''}`}
-									onClick={() => setRating(rating === num ? null : num)}
-									aria-label={`Vurdering ${num} av 10`}
-									aria-pressed={rating === num}
-								>
-									{num}
-								</button>
-							))}
-						</div>
-					</div>
-					<TextArea
-						label="Notater"
-						value={notes}
-						onChange={(e) => setNotes(e.target.value)}
-						placeholder="Hvordan gikk treningen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
-						helpText={`Dine tanker og observasjoner om treningen (${notes.length}/500 tegn)`}
-						maxLength={500}
-						containerClassName={styles.field}
+								<div className={styles.rowFlex}>
+									<NumberInput
+										label="Piler m/score"
+										value={round.numberArrows || 0}
+										onChange={(v) => updateRound(index, 'numberArrows', v || 0)}
+										min={0}
+										step={1}
+										startEmpty={true}
+										optional
+										width={180}
+										containerClassName={styles.roundField}
+									/>
+									<NumberInput
+										label="Score"
+										value={round.roundScore}
+										onChange={(v) => updateRound(index, 'roundScore', v)}
+										min={0}
+										step={1}
+										startEmpty={true}
+										optional
+										width={180}
+										containerClassName={styles.roundField}
+									/>
+								</div>
+								<div className={styles.row}>
+									<NumberInput
+										label="Piler u/score"
+										value={round.arrowsWithoutScore || 0}
+										onChange={(v) => updateRound(index, 'arrowsWithoutScore', v || 0)}
+										min={0}
+										step={1}
+										startEmpty={true}
+										optional
+										width={180}
+										containerClassName={styles.roundField}
+									/>
+								</div>
+							</div>
+						);
+					})}
+					<Button
+						type="button"
+						label="+ Legg til runde"
+						onClick={addRound}
+						variant="standard"
+						buttonType="outline"
+						width="100%"
+						disabled={rounds.length >= 20}
 					/>
-					{error && <div className={styles.error}>{error}</div>}
-					<div className={styles.actions}>
-						<Button
-							type="button"
-							label="Avbryt"
-							onClick={onClose}
-							variant="standard"
-							buttonType="outline"
-							width={160}
-							disabled={submitting}
-						/>
-						<Button
-							type="submit"
-							label={submitting ? 'Lagrer...' : submitLabel}
-							variant="standard"
-							disabled={submitting}
-							loading={submitting}
-							width={180}
+					{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
+				</div>
+				<div className={styles.ratingSection}>
+					<div className={styles.ratingLabel}>
+						Vurdering
+						<span className={styles.ratingOptional}>(valgfritt)</span>
+					</div>
+					<p className={styles.ratingHelpText}>Hvordan vil du vurdere treningen?</p>
+					<div className={styles.ratingButtons}>
+						{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+							<button
+								key={num}
+								type="button"
+								className={`${styles.ratingButton} ${rating === num ? styles.ratingButtonActive : ''}`}
+								onClick={() => setRating(rating === num ? null : num)}
+								aria-label={`Vurdering ${num} av 10`}
+								aria-pressed={rating === num}
+							>
+								{num}
+							</button>
+						))}
+					</div>
+				</div>
+				<TextArea
+					label="Notater"
+					value={notes}
+					onChange={(e) => setNotes(e.target.value)}
+					placeholder="Hvordan gikk treningen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
+					helpText={`Dine tanker og observasjoner om treningen (${notes.length}/500 tegn)`}
+					maxLength={500}
+					containerClassName={styles.field}
+				/>
+				{error && <div className={styles.error}>{error}</div>}
+				<div className={styles.actions}>
+					<Button
+						type="button"
+						label="Avbryt"
+						onClick={onClose}
+						variant="standard"
+						buttonType="outline"
+						width={160}
+						disabled={submitting}
+					/>
+					<Button
+						type="submit"
+						label={submitting ? 'Lagrer...' : submitLabel}
+						variant="standard"
+						disabled={submitting}
+						loading={submitting}
+						width={180}
 					/>
 				</div>
 			</form>

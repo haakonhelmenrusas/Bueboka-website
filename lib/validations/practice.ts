@@ -18,33 +18,47 @@ export const WeatherConditionEnum = z.enum([
 export const PracticeCategoryEnum = z.enum(['SKIVE_INDOOR', 'SKIVE_OUTDOOR', 'JAKT_3D', 'FELT']);
 
 // Round input schema
-export const RoundInputSchema = z.object({
-	distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional().nullable(),
-	distanceFrom: z.number().int().min(0).max(1000, 'Fra-avstand må være mindre enn 1000 meter').optional().nullable(),
-	distanceTo: z.number().int().min(0).max(1000, 'Til-avstand må være mindre enn 1000 meter').optional().nullable(),
-	targetType: z
-		.string()
-		.refine((val) => {
-			if (!val) return true; // Optional field
-			const validTypes = TARGET_TYPE_OPTIONS.map((o) => o.value);
-			return validTypes.includes(val);
-		}, 'Ugyldig blinktype')
-		.optional()
-		.nullable(),
-	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional().nullable(),
-	arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
-	scores: z.array(z.number().int().min(0).max(11)).optional().nullable(),
-	arrowCoordinates: z
-		.array(
-			z.object({
-				x: z.number(),
-				y: z.number(),
-			})
-		)
-		.optional()
-		.nullable(),
-	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional().nullable(),
-});
+export const RoundInputSchema = z
+	.object({
+		distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional().nullable(),
+		distanceFrom: z.number().int().min(0).max(1000, 'Fra-avstand må være mindre enn 1000 meter').optional().nullable(),
+		distanceTo: z.number().int().min(0).max(1000, 'Til-avstand må være mindre enn 1000 meter').optional().nullable(),
+		targetType: z
+			.string()
+			.refine((val) => {
+				if (!val) return true; // Optional field
+				const validTypes = TARGET_TYPE_OPTIONS.map((o) => o.value);
+				return validTypes.includes(val);
+			}, 'Ugyldig blinktype')
+			.optional()
+			.nullable(),
+		numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional().nullable(),
+		arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
+		scores: z.array(z.number().int().min(0).max(11)).optional().nullable(),
+		arrowCoordinates: z
+			.array(
+				z.object({
+					x: z.number(),
+					y: z.number(),
+				})
+			)
+			.optional()
+			.nullable(),
+		roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional().nullable(),
+	})
+	.refine(
+		(data) => {
+			// If both scores and numberArrows are provided, ensure scores length doesn't exceed numberArrows
+			if (data.scores && data.numberArrows) {
+				return data.scores.length <= data.numberArrows;
+			}
+			return true;
+		},
+		{
+			message: 'Antall registrerte piler kan ikke overstige antall piler i runden',
+			path: ['scores'],
+		}
+	);
 
 // Schema for creating a practice (training session only)
 export const createPracticeSchema = z
@@ -56,7 +70,7 @@ export const createPracticeSchema = z
 		practiceCategory: PracticeCategoryEnum.optional().nullable().default('SKIVE_INDOOR'),
 		notes: z.string().max(500, 'Notater må være mindre enn 500 tegn').optional().nullable(),
 		rating: z.number().int().min(1).max(10).optional().nullable(),
-		rounds: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(20, 'Maksimalt 20 runder er tillatt'),
+		ends: z.array(RoundInputSchema).min(1, 'Minst én runde er påkrevd').max(20, 'Maksimalt 20 runder er tillatt'),
 		bowId: z.string().optional().nullable(),
 		arrowsId: z.string().optional().nullable(),
 	})

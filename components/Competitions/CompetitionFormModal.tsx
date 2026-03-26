@@ -87,7 +87,6 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	bows = [],
 	arrows = [],
 }) => {
-
 	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [name, setName] = useState('');
 	const [location, setLocation] = useState('');
@@ -246,104 +245,104 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 		<Modal open={open} onClose={onClose} title={mode === 'edit' ? 'Rediger konkurranse' : 'Legg til konkurranse'} maxWidth={720}>
 			<form onSubmit={handleSubmit} className={styles.form}>
 				{error && <div className={styles.error}>{error}</div>}
-					<Input
-						label="Navn på konkurransen"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						required
-						helpText="F.eks. 'NM Innendørs 2026'"
+				<Input
+					label="Navn på konkurransen"
+					value={name}
+					onChange={(e) => setName(e.target.value)}
+					required
+					helpText="F.eks. 'NM Innendørs 2026'"
+					containerClassName={styles.field}
+				/>
+				<div className={styles.row}>
+					<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
+					<Select
+						label="Kategori"
+						value={practiceCategory}
+						onChange={(val) => setPracticeCategory(val as PracticeCategory)}
+						options={practiceCategoryOptions}
 						containerClassName={styles.field}
 					/>
-					<div className={styles.row}>
-						<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
-						<Select
-							label="Kategori"
-							value={practiceCategory}
-							onChange={(val) => setPracticeCategory(val as PracticeCategory)}
-							options={practiceCategoryOptions}
-							containerClassName={styles.field}
-						/>
-					</div>
-					<div className={styles.row}>
-						<Select
-							label="Miljø"
-							value={environment}
-							onChange={(val) => setEnvironment(val as Environment)}
-							options={environmentOptions}
-							containerClassName={styles.field}
-						/>
-						<Input label="Sted" optional value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
-					</div>
-					<div className={styles.row}>
-						<Select
-							label="Bue"
-							value={bowId}
-							onChange={(val) => setBowId(val as string)}
-							options={bowOptions}
-							placeholderLabel="Velg bue (valgfritt)"
-							containerClassName={styles.field}
-						/>
-						<Select
-							label="Piler"
-							value={arrowsId}
-							onChange={(val) => setArrowsId(val as string)}
-							options={arrowsOptions}
-							placeholderLabel="Velg piler (valgfritt)"
-							containerClassName={styles.field}
-						/>
-					</div>
-					<Input
-						label="Arrangør"
+				</div>
+				<div className={styles.row}>
+					<Select
+						label="Miljø"
+						value={environment}
+						onChange={(val) => setEnvironment(val as Environment)}
+						options={environmentOptions}
+						containerClassName={styles.field}
+					/>
+					<Input label="Sted" optional value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
+				</div>
+				<div className={styles.row}>
+					<Select
+						label="Bue"
+						value={bowId}
+						onChange={(val) => setBowId(val as string)}
+						options={bowOptions}
+						placeholderLabel="Velg bue (valgfritt)"
+						containerClassName={styles.field}
+					/>
+					<Select
+						label="Piler"
+						value={arrowsId}
+						onChange={(val) => setArrowsId(val as string)}
+						options={arrowsOptions}
+						placeholderLabel="Velg piler (valgfritt)"
+						containerClassName={styles.field}
+					/>
+				</div>
+				<Input
+					label="Arrangør"
+					optional
+					value={organizerName}
+					onChange={(e) => setOrganizerName(e.target.value)}
+					helpText="Klubb eller organisasjon som arrangerte"
+					containerClassName={styles.field}
+				/>
+				{environment === Environment.OUTDOOR ? (
+					<Select
+						label="Værforhold"
+						value={weather}
+						onChange={(val) => setWeather(val as WeatherCondition[])}
+						options={getWeatherSelectOptions()}
+						multiple
+						maxSelectedLabels={2}
+						placeholderLabel="Velg vær (valgfritt)"
+						helpText="Velg ett eller flere"
+						containerClassName={styles.field}
+					/>
+				) : null}
+				<div className={styles.row}>
+					<NumberInput
+						label="Plassering"
+						value={placement ?? 0}
+						onChange={(val) => setPlacement(val || null)}
+						onEmpty={() => setPlacement(null)}
+						min={1}
+						helpText="Din plassering"
+						startEmpty
 						optional
-						value={organizerName}
-						onChange={(e) => setOrganizerName(e.target.value)}
-						helpText="Klubb eller organisasjon som arrangerte"
+						inputClassName={styles.numberInput}
 						containerClassName={styles.field}
 					/>
-					{environment === Environment.OUTDOOR ? (
-						<Select
-							label="Værforhold"
-							value={weather}
-							onChange={(val) => setWeather(val as WeatherCondition[])}
-							options={getWeatherSelectOptions()}
-							multiple
-							maxSelectedLabels={2}
-							placeholderLabel="Velg vær (valgfritt)"
-							helpText="Velg ett eller flere"
-							containerClassName={styles.field}
-						/>
-					) : null}
-					<div className={styles.row}>
-						<NumberInput
-							label="Plassering"
-							value={placement ?? 0}
-							onChange={(val) => setPlacement(val || null)}
-							onEmpty={() => setPlacement(null)}
-							min={1}
-							helpText="Din plassering"
-							startEmpty
-							optional
-							inputClassName={styles.numberInput}
-							containerClassName={styles.field}
-						/>
-						<NumberInput
-							label="Antall deltakere"
-							value={numberOfParticipants ?? 0}
-							onChange={(val) => setNumberOfParticipants(val || null)}
-							onEmpty={() => setNumberOfParticipants(null)}
-							min={1}
-							helpText="Totalt antall"
-							startEmpty
-							optional
-							containerClassName={styles.field}
-						/>
-					</div>
-					<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
-					<div className={styles.roundsSection}>
-						<h4 className={styles.sectionTitle}>Runder</h4>
-						{rounds.map((round, index) => {
-							const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
-							return (
+					<NumberInput
+						label="Antall deltakere"
+						value={numberOfParticipants ?? 0}
+						onChange={(val) => setNumberOfParticipants(val || null)}
+						onEmpty={() => setNumberOfParticipants(null)}
+						min={1}
+						helpText="Totalt antall"
+						startEmpty
+						optional
+						containerClassName={styles.field}
+					/>
+				</div>
+				<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
+				<div className={styles.roundsSection}>
+					<h4 className={styles.sectionTitle}>Runder</h4>
+					{rounds.map((round, index) => {
+						const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
+						return (
 							<div key={index} className={styles.roundCard}>
 								<div className={styles.roundHeader}>
 									<span className={styles.roundNumber}>Runde {round.roundNumber}</span>
@@ -435,35 +434,35 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 										helpText="Piler uten score"
 										containerClassName={styles.roundField}
 									/>
+								</div>
 							</div>
-						</div>
 						);
-						})}
-						<Button
-							type="button"
-							label="+ Legg til runde"
-							onClick={addRound}
-							variant="standard"
-							buttonType="outline"
-							width="100%"
-							disabled={rounds.length >= 20}
-						/>
-						{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
-					</div>
-					<TextArea
-						label="Notater"
-						value={notes}
-						onChange={(e) => setNotes(e.target.value)}
-						placeholder="Hvordan gikk konkurransen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
-						helpText={`Dine refleksjoner fra konkurransen (${notes.length}/500 tegn)`}
-						maxLength={500}
-						containerClassName={styles.field}
+					})}
+					<Button
+						type="button"
+						label="+ Legg til runde"
+						onClick={addRound}
+						variant="standard"
+						buttonType="outline"
+						width="100%"
+						disabled={rounds.length >= 20}
 					/>
-					<div className={styles.actions}>
-						<Button type="button" label="Avbryt" onClick={onClose} buttonType="outline" disabled={submitting} width={160} />
-						<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre'} disabled={submitting} loading={submitting} width={180} />
-					</div>
-				</form>
+					{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
+				</div>
+				<TextArea
+					label="Notater"
+					value={notes}
+					onChange={(e) => setNotes(e.target.value)}
+					placeholder="Hvordan gikk konkurransen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
+					helpText={`Dine refleksjoner fra konkurransen (${notes.length}/500 tegn)`}
+					maxLength={500}
+					containerClassName={styles.field}
+				/>
+				<div className={styles.actions}>
+					<Button type="button" label="Avbryt" onClick={onClose} buttonType="outline" disabled={submitting} width={160} />
+					<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre'} disabled={submitting} loading={submitting} width={180} />
+				</div>
+			</form>
 		</Modal>
 	);
 };

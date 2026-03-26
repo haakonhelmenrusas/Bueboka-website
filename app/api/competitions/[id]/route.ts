@@ -64,10 +64,11 @@ export async function GET(request: Request, { params }: RouteParams) {
 			},
 		});
 	} catch (error) {
-
+		console.error('Error fetching competition:', error);
 		return NextResponse.json(
 			{
 				error: 'Failed to fetch competition',
+				details: error instanceof Error ? error.message : 'Unknown error',
 			},
 			{ status: 500 }
 		);
@@ -156,7 +157,6 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 							arrows: round.numberArrows || null,
 							arrowsWithoutScore: round.arrowsWithoutScore || null,
 							scores: round.scores || [],
-							arrowCoordinates: (round as any).arrowCoordinates || Prisma.JsonNull,
 							roundScore: round.roundScore || 0,
 							distanceMeters: round.distanceMeters,
 							targetSizeCm,
@@ -201,10 +201,11 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
 		return NextResponse.json({ competition });
 	} catch (error) {
-
+		console.error('Error updating competition:', error);
 		return NextResponse.json(
 			{
 				error: 'Failed to update competition',
+				details: error instanceof Error ? error.message : 'Unknown error',
 			},
 			{ status: 500 }
 		);
@@ -250,10 +251,11 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-
+		console.error('Error deleting competition:', error);
 		return NextResponse.json(
 			{
 				error: 'Failed to delete competition',
+				details: error instanceof Error ? error.message : 'Unknown error',
 			},
 			{ status: 500 }
 		);
