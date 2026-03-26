@@ -269,75 +269,77 @@ export const Select: React.FC<SelectProps> = ({
 					</span>
 				</button>
 
-				{open && menuRect ? createPortal(
-					<ul
-						className={styles.menu}
-						role="listbox"
-						id={listboxId}
-						ref={menuRef}
-						aria-labelledby={buttonId}
-						style={{ position: 'fixed', top: menuRect.top, left: menuRect.left, width: menuRect.width }}
-						onMouseDown={(e) => e.stopPropagation()}
-					>
-						{searchable ? (
-							<li className={styles.searchWrapper}>
-								<input
-									ref={searchInputRef}
-									type="text"
-									className={styles.searchInput}
-									placeholder={searchPlaceholder}
-									value={searchQuery}
-									onChange={(e) => {
-										setSearchQuery(e.target.value);
-										setActiveIndex(0); // Reset to first option when searching
-									}}
-									onClick={(e) => e.stopPropagation()}
-									onKeyDown={(e) => {
-										if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-											e.preventDefault();
-											moveActive(e.key === 'ArrowDown' ? 1 : -1);
-										} else if (e.key === 'Enter' && activeIndex >= 0) {
-											e.preventDefault();
-											commitIndex(activeIndex);
-										} else if (e.key === 'Escape') {
-											e.preventDefault();
-											closeMenu();
-											buttonRef.current?.focus();
-										}
-									}}
-								/>
-							</li>
-						) : null}
-						{filteredOptions.length === 0 || !hasEnabledOptions ? (
-							<li className={`${styles.option} ${styles.optionEmpty}`} role="option" aria-disabled="true">
-								<span className={styles.optionLabel}>{searchQuery ? 'Ingen treff' : emptyText}</span>
-							</li>
-						) : (
-							filteredOptions.map((opt, idx) => {
-								const selected = multiple ? selectedSet.has(opt.value) : opt.value === value;
-								const active = idx === activeIndex;
-								return (
-									<li
-										key={opt.value}
-										role="option"
-										aria-selected={selected}
-										className={`${styles.option} ${selected ? styles.optionSelected : ''} ${active ? styles.optionActive : ''} ${opt.disabled ? styles.optionDisabled : ''}`}
-										onMouseEnter={() => setActiveIndex(idx)}
-										onMouseDown={(e) => e.preventDefault()}
-										onClick={() => commitIndex(idx)}
-									>
-										{opt.icon ? <span className={styles.optionIcon}>{opt.icon}</span> : null}
-										<span className={styles.optionText}>
-											<span className={styles.optionLabel}>{opt.label}</span>
-											{opt.subtitle ? <span className={styles.optionSubtitle}>{opt.subtitle}</span> : null}
-										</span>
+				{open && menuRect
+					? createPortal(
+							<ul
+								className={styles.menu}
+								role="listbox"
+								id={listboxId}
+								ref={menuRef}
+								aria-labelledby={buttonId}
+								style={{ position: 'fixed', top: menuRect.top, left: menuRect.left, width: menuRect.width }}
+								onMouseDown={(e) => e.stopPropagation()}
+							>
+								{searchable ? (
+									<li className={styles.searchWrapper}>
+										<input
+											ref={searchInputRef}
+											type="text"
+											className={styles.searchInput}
+											placeholder={searchPlaceholder}
+											value={searchQuery}
+											onChange={(e) => {
+												setSearchQuery(e.target.value);
+												setActiveIndex(0); // Reset to first option when searching
+											}}
+											onClick={(e) => e.stopPropagation()}
+											onKeyDown={(e) => {
+												if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+													e.preventDefault();
+													moveActive(e.key === 'ArrowDown' ? 1 : -1);
+												} else if (e.key === 'Enter' && activeIndex >= 0) {
+													e.preventDefault();
+													commitIndex(activeIndex);
+												} else if (e.key === 'Escape') {
+													e.preventDefault();
+													closeMenu();
+													buttonRef.current?.focus();
+												}
+											}}
+										/>
 									</li>
-								);
-							})
-						)}
-					</ul>,
-					document.body
-				) : null}
+								) : null}
+								{filteredOptions.length === 0 || !hasEnabledOptions ? (
+									<li className={`${styles.option} ${styles.optionEmpty}`} role="option" aria-disabled="true">
+										<span className={styles.optionLabel}>{searchQuery ? 'Ingen treff' : emptyText}</span>
+									</li>
+								) : (
+									filteredOptions.map((opt, idx) => {
+										const selected = multiple ? selectedSet.has(opt.value) : opt.value === value;
+										const active = idx === activeIndex;
+										return (
+											<li
+												key={opt.value}
+												role="option"
+												aria-selected={selected}
+												className={`${styles.option} ${selected ? styles.optionSelected : ''} ${active ? styles.optionActive : ''} ${opt.disabled ? styles.optionDisabled : ''}`}
+												onMouseEnter={() => setActiveIndex(idx)}
+												onMouseDown={(e) => e.preventDefault()}
+												onClick={() => commitIndex(idx)}
+											>
+												{opt.icon ? <span className={styles.optionIcon}>{opt.icon}</span> : null}
+												<span className={styles.optionText}>
+													<span className={styles.optionLabel}>{opt.label}</span>
+													{opt.subtitle ? <span className={styles.optionSubtitle}>{opt.subtitle}</span> : null}
+												</span>
+											</li>
+										);
+									})
+								)}
+							</ul>,
+							document.body
+						)
+					: null}
 			</div>
 
 			{/* hidden input for native form posts */}

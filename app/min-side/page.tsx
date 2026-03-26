@@ -272,6 +272,13 @@ export default function MyPage() {
 		await fetchStats();
 	};
 
+	const handlePracticeDeletedFromForm = async (id: string) => {
+		setDeletedPracticeId(id);
+		setSelectedPractice(null);
+		setPracticeFormOpen(false);
+		await fetchStats();
+	};
+
 	const handleSelectPractice = async (id: string, practiceType?: string) => {
 		const full = await fetchPracticeDetails(id, practiceType);
 		if (full) {
@@ -442,6 +449,7 @@ export default function MyPage() {
 					}
 				}}
 				onSave={handleSavePractice}
+				onDeleted={handlePracticeDeletedFromForm}
 				practice={
 					practiceFormMode === 'edit' && selectedPractice
 						? {

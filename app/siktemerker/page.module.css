@@ -1,264 +1,265 @@
 .page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
 }
 
 .main {
-    flex: 1;
-    min-height: calc(100vh - 64px);
-    padding: calc(var(--space-14) + 64px) var(--space-6) var(--space-16);
-    max-width: 1000px;
-    margin: 0 auto;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+	flex: 1;
+	min-height: calc(100vh - 64px);
+	padding: calc(var(--space-14) + 64px) var(--space-6) var(--space-16);
+	max-width: 1000px;
+	margin: 0 auto;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
 }
 
 /* ── Calculated section wrapper ── */
 .calculatedSection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
 }
 
 .calculatedHeader {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
 }
 
 .calculatedTitleRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-4);
-    flex-wrap: wrap;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-4);
+	flex-wrap: wrap;
 }
 
 .calculatedTitle {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--section-title-light, var(--white));
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
+	margin: 0;
+	font-size: 1.4rem;
+	font-weight: 700;
+	color: var(--section-title-light, var(--white));
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
 }
 
 /* ── Page header ── */
 .pageHeader {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
 }
 
 .breadcrumb {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .backLink {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    color: var(--white-70, rgba(255,255,255,0.7));
-    text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 600;
-    transition: color 150ms ease;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	color: var(--white-70, rgba(255, 255, 255, 0.7));
+	text-decoration: none;
+	font-size: 0.875rem;
+	font-weight: 600;
+	transition: color 150ms ease;
 }
 
 .backLink:hover {
-    color: var(--white);
+	color: var(--white);
 }
 
 .titleRow {
-    display: flex;
-    align-items: center;
-    gap: var(--space-4);
+	display: flex;
+	align-items: center;
+	gap: var(--space-4);
 }
 
 .pageTitle {
-    margin: 0;
-    font-size: 1.75rem;
-    font-weight: 800;
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    line-height: 1.2;
+	margin: 0;
+	font-size: 1.75rem;
+	font-weight: 800;
+	color: var(--white);
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	line-height: 1.2;
 }
 
 /* ── Selector ── */
 .selectorWrap {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
 }
 
 .selectorLabel {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--white-80, rgba(255,255,255,0.8));
-    white-space: nowrap;
+	font-size: 0.875rem;
+	font-weight: 700;
+	color: var(--white-80, rgba(255, 255, 255, 0.8));
+	white-space: nowrap;
 }
 
 .selectWrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
+	position: relative;
+	display: inline-flex;
+	align-items: center;
 }
 
 .selectorSelect {
-    appearance: none;
-    background: var(--white-10, rgba(255,255,255,0.1));
-    border: 1px solid var(--white-20, rgba(255,255,255,0.2));
-    border-radius: var(--radius-base);
-    color: var(--white);
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: var(--space-2) var(--space-8) var(--space-2) var(--space-4);
-    cursor: pointer;
-    min-width: 180px;
-    transition: border-color 150ms ease, background 150ms ease;
+	appearance: none;
+	background: var(--white-10, rgba(255, 255, 255, 0.1));
+	border: 1px solid var(--white-20, rgba(255, 255, 255, 0.2));
+	border-radius: var(--radius-base);
+	color: var(--white);
+	font-size: 0.9rem;
+	font-weight: 600;
+	padding: var(--space-2) var(--space-8) var(--space-2) var(--space-4);
+	cursor: pointer;
+	min-width: 180px;
+	transition:
+		border-color 150ms ease,
+		background 150ms ease;
 }
 
 .selectorSelect:hover,
 .selectorSelect:focus {
-    border-color: var(--white-50, rgba(255,255,255,0.5));
-    background: var(--white-15, rgba(255,255,255,0.15));
-    outline: none;
+	border-color: var(--white-50, rgba(255, 255, 255, 0.5));
+	background: var(--white-15, rgba(255, 255, 255, 0.15));
+	outline: none;
 }
 
 .selectorSelect option {
-    background: var(--card-bg-solid, #fff);
-    color: var(--text-dark);
+	background: var(--card-bg-solid, #fff);
+	color: var(--text-dark);
 }
 
 .selectChevron {
-    position: absolute;
-    right: var(--space-3);
-    pointer-events: none;
-    color: var(--white-70, rgba(255,255,255,0.7));
+	position: absolute;
+	right: var(--space-3);
+	pointer-events: none;
+	color: var(--white-70, rgba(255, 255, 255, 0.7));
 }
 
 /* ── Info strip ── */
 .infoStrip {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2) var(--space-6);
-    padding: var(--space-3) var(--space-5);
-    background: var(--white-08, rgba(255,255,255,0.08));
-    border: 1px solid var(--white-15, rgba(255,255,255,0.15));
-    border-radius: var(--radius-base);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2) var(--space-6);
+	padding: var(--space-3) var(--space-5);
+	background: var(--white-08, rgba(255, 255, 255, 0.08));
+	border: 1px solid var(--white-15, rgba(255, 255, 255, 0.15));
+	border-radius: var(--radius-base);
 }
 
 .infoItem {
-    font-size: 0.8125rem;
-    color: var(--white-80, rgba(255,255,255,0.8));
+	font-size: 0.8125rem;
+	color: var(--white-80, rgba(255, 255, 255, 0.8));
 }
 
 .infoItem strong {
-    color: var(--white);
-    font-weight: 700;
+	color: var(--white);
+	font-weight: 700;
 }
 
 /* ── Content card ── */
 .card {
-    background: var(--card-bg);
-    border: 1px solid rgba(0,0,0,0.06);
-    border-radius: var(--radius-4);
-    overflow: hidden;
-    box-shadow: 0 8px 32px var(--dark-10, rgba(0,0,0,0.1));
-    color: var(--text-dark);
+	background: var(--card-bg);
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	border-radius: var(--radius-4);
+	overflow: hidden;
+	box-shadow: 0 8px 32px var(--dark-10, rgba(0, 0, 0, 0.1));
+	color: var(--text-dark);
 }
 
 /* ── States ── */
 .loadingState {
-    padding: var(--space-16);
-    text-align: center;
-    color: var(--text-gray-600);
-    font-size: 0.95rem;
+	padding: var(--space-16);
+	text-align: center;
+	color: var(--text-gray-600);
+	font-size: 0.95rem;
 }
 
 .errorBox {
-    margin: var(--space-6);
-    padding: var(--space-4);
-    background: var(--error-bg);
-    border: 1px solid var(--error-border);
-    border-radius: var(--radius-md);
-    color: var(--error);
-    font-weight: 600;
-    font-size: 0.875rem;
+	margin: var(--space-6);
+	padding: var(--space-4);
+	background: var(--error-bg);
+	border: 1px solid var(--error-border);
+	border-radius: var(--radius-md);
+	color: var(--error);
+	font-weight: 600;
+	font-size: 0.875rem;
 }
 
 /* ── Empty state ── */
 .emptyCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: var(--space-16) var(--space-8);
-    gap: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: var(--space-16) var(--space-8);
+	gap: var(--space-4);
 }
 
 .emptyIcon {
-    color: var(--primary);
-    opacity: 0.4;
+	color: var(--primary);
+	opacity: 0.4;
 }
 
 .emptyTitle {
-    margin: 0;
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--text-dark);
+	margin: 0;
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: var(--text-dark);
 }
 
 .emptyText {
-    margin: 0;
-    font-size: 0.9375rem;
-    color: var(--text-gray-600);
-    max-width: 400px;
-    line-height: 1.6;
+	margin: 0;
+	font-size: 0.9375rem;
+	color: var(--text-gray-600);
+	max-width: 400px;
+	line-height: 1.6;
 }
 
 .emptyLink {
-    color: var(--primary);
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+	color: var(--primary);
+	font-weight: 600;
+	text-decoration: underline;
+	text-underline-offset: 2px;
 }
 
 /* ── Toolbar (lives inside the white card) ── */
 .toolbar {
-    display: flex;
-    gap: var(--space-4);
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    padding: var(--space-5) var(--space-5);
-    border-top: 1px solid var(--border-gray);
-    background: var(--bg-gray-50, rgba(0, 0, 0, 0.015));
+	display: flex;
+	gap: var(--space-4);
+	justify-content: flex-end;
+	flex-wrap: wrap;
+	padding: var(--space-5) var(--space-5);
+	border-top: 1px solid var(--border-gray);
+	background: var(--bg-gray-50, rgba(0, 0, 0, 0.015));
 }
 
 @media (max-width: 640px) {
-    .main {
-        padding-left: var(--space-4);
-        padding-right: var(--space-4);
-    }
+	.main {
+		padding-left: var(--space-4);
+		padding-right: var(--space-4);
+	}
 
-    .pageTitle {
-        font-size: 1.35rem;
-    }
+	.pageTitle {
+		font-size: 1.35rem;
+	}
 
-    .toolbar {
-        justify-content: stretch;
-    }
+	.toolbar {
+		justify-content: stretch;
+	}
 
-    .toolbar > * {
-        flex: 1;
-    }
+	.toolbar > * {
+		flex: 1;
+	}
 }
-

@@ -1,4 +1,3 @@
-
 .content {
 	padding: var(--space-2) 0;
 }
@@ -24,7 +23,9 @@
 	font-weight: 800;
 	cursor: pointer;
 	font-size: 1.05rem;
-	transition: transform 120ms ease, box-shadow 200ms ease;
+	transition:
+		transform 120ms ease,
+		box-shadow 200ms ease;
 	min-width: 120px;
 }
 
@@ -69,7 +70,6 @@
 }
 
 @media (max-width: 700px) {
-
 	.actions {
 		flex-direction: column-reverse;
 	}
@@ -78,4 +78,3 @@
 		width: 100%;
 	}
 }
-

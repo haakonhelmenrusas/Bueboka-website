@@ -16,11 +16,7 @@ function formatTargetLabel(targetType: string | null, targetSizeCm: number | nul
 }
 
 /** Format a distance label, preferring a from–to range over a single distance. */
-function formatDistanceLabel(
-	distanceMeters: number | null,
-	distanceFrom: number | null,
-	distanceTo: number | null
-): string {
+function formatDistanceLabel(distanceMeters: number | null, distanceFrom: number | null, distanceTo: number | null): string {
 	if ((typeof distanceFrom === 'number' && distanceFrom > 0) || (typeof distanceTo === 'number' && distanceTo > 0)) {
 		return `${distanceFrom ?? 0}m–${distanceTo ?? 0}m`;
 	}
@@ -224,7 +220,6 @@ export async function GET(request: Request) {
 			},
 		});
 	} catch (error) {
-
 		return NextResponse.json(
 			{
 				error: 'Failed to fetch detailed stats',

@@ -94,9 +94,7 @@ export const AchievementUnlockModal: React.FC<AchievementUnlockModalProps> = ({ 
 				)}
 			</div>
 
-			{totalPoints > 0 && (
-				<p className={styles.totalPoints}>Totalt: +{totalPoints} poeng</p>
-			)}
+			{totalPoints > 0 && <p className={styles.totalPoints}>Totalt: +{totalPoints} poeng</p>}
 		</Modal>
 	);
 };

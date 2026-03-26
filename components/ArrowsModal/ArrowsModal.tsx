@@ -25,7 +25,6 @@ interface ArrowsModalProps {
 }
 
 export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsModalProps) {
-
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 	const [deleting, setDeleting] = useState(false);
@@ -118,47 +117,47 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 		<Modal open={open} onClose={onClose} title={editingArrows ? 'Rediger piler' : 'Legg til piler'} maxWidth={640}>
 			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 			<div className={styles.form}>
-					<ArrowsForm
-						initialValues={
-							editingArrows
-								? {
-										name: editingArrows.name,
-										material: editingArrows.material,
-										arrowsCount: typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null,
-										diameter: typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null,
-										length: typeof editingArrows.length === 'number' ? editingArrows.length : null,
-										weight: typeof editingArrows.weight === 'number' ? editingArrows.weight : null,
-										spine: typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '',
-										isFavorite: Boolean(editingArrows.isFavorite),
-									}
-								: undefined
-						}
-						onSubmit={handleSubmit}
-					/>
+				<ArrowsForm
+					initialValues={
+						editingArrows
+							? {
+									name: editingArrows.name,
+									material: editingArrows.material,
+									arrowsCount: typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null,
+									diameter: typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null,
+									length: typeof editingArrows.length === 'number' ? editingArrows.length : null,
+									weight: typeof editingArrows.weight === 'number' ? editingArrows.weight : null,
+									spine: typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '',
+									isFavorite: Boolean(editingArrows.isFavorite),
+								}
+							: undefined
+					}
+					onSubmit={handleSubmit}
+				/>
 
-					<div className={styles.actions}>
-						{editingArrows ? (
-							<Button
-								label={deleting ? 'Sletter...' : 'Slett piler'}
-								onClick={handleDelete}
-								disabled={loading || deleting}
-								buttonType="outline"
-								variant="warning"
-								icon={<LuTrash2 size={18} />}
-							/>
-						) : null}
-						<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
+				<div className={styles.actions}>
+					{editingArrows ? (
 						<Button
-							label={loading ? (editingArrows ? 'Oppdaterer...' : 'Lagrer...') : editingArrows ? 'Oppdater' : 'Lagre'}
-							onClick={() => {
-								const form = document.getElementById('arrows-form') as HTMLFormElement | null;
-								form?.requestSubmit();
-							}}
-							loading={loading}
-							disabled={deleting}
+							label={deleting ? 'Sletter...' : 'Slett piler'}
+							onClick={handleDelete}
+							disabled={loading || deleting}
+							buttonType="outline"
+							variant="warning"
+							icon={<LuTrash2 size={18} />}
 						/>
-					</div>
+					) : null}
+					<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
+					<Button
+						label={loading ? (editingArrows ? 'Oppdaterer...' : 'Lagrer...') : editingArrows ? 'Oppdater' : 'Lagre'}
+						onClick={() => {
+							const form = document.getElementById('arrows-form') as HTMLFormElement | null;
+							form?.requestSubmit();
+						}}
+						loading={loading}
+						disabled={deleting}
+					/>
 				</div>
+			</div>
 		</Modal>
 	);
 }

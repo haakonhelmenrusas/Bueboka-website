@@ -63,7 +63,7 @@
 	overflow: hidden;
 	z-index: 60;
 	padding: 6px;
-	animation: dropdown-in 160ms cubic-bezier(.2,.9,.2,1) both;
+	animation: dropdown-in 160ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
 }
 
 .item {
@@ -97,4 +97,3 @@
 		transform: translateY(0) scale(1);
 	}
 }
-

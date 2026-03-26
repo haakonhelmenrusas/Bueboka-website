@@ -30,7 +30,7 @@ The web platform is designed to work seamlessly with the Bueboka mobile app ecos
 
 - **Training Log**: Log training sessions with details on distance, target type, weather conditions, and notes.
 - **Competition Tracker**: Record competition results, including placement, scores, and round details.
-- **Sight Mark Tools**: 
+- **Sight Mark Tools**:
   - Manage bow specifications (sight radius, peep height, etc.).
   - Calculate precise sight marks for different distances using an integrated ballistics engine.
   - Generate and print sight mark charts.
@@ -95,6 +95,7 @@ Before you begin, ensure you have the following installed:
 4. **Database Setup**
 
    If using Docker for local Postgres:
+
    ```bash
    npm run db:up
    npm run prisma:migrate
@@ -108,7 +109,7 @@ Before you begin, ensure you have the following installed:
    ```
 
 6. **Open browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 🤝 Contributing
@@ -118,7 +119,7 @@ Contributions are welcome! Please read `CONTRIBUTING.md` for details on our code
 ## 📄 License
 
 This project is licensed under the MIT License - see the `LICENSE` file for details.
-   Navigate to `http://localhost:3000`
+Navigate to `http://localhost:3000`
 
 ### Available Scripts
 
@@ -178,7 +179,8 @@ and [Code of Conduct](CODE_OF_CONDUCT.md) before getting started.
 
 - 🔄 Social features
 - 🔄 Gamification
-- 
+-
+
 ## 🤝 Sponsors and Partners
 
 Interested in sponsoring or partnering with Bueboka? We're always looking for organizations that share our passion for

@@ -81,9 +81,12 @@ export async function GET(request: Request) {
 
 		// Helper to build PeriodStats for a given period
 		const buildPeriod = (
-			endArrows: number, compArrows: number,
-			endUnscored: number, compUnscored: number,
-			endScore: number, compScore: number,
+			endArrows: number,
+			compArrows: number,
+			endUnscored: number,
+			compUnscored: number,
+			endScore: number,
+			compScore: number
 		) => {
 			const scoredArrows = endArrows + compArrows;
 			const unscoredArrows = endUnscored + compUnscored;
@@ -99,19 +102,28 @@ export async function GET(request: Request) {
 		const result = {
 			stats: {
 				last7Days: buildPeriod(
-					overallNumber(endRow?.last7_arrows), overallNumber(compRow?.last7_arrows),
-					overallNumber(endRow?.last7_no_score), overallNumber(compRow?.last7_no_score),
-					overallNumber(endRow?.last7_round_score), overallNumber(compRow?.last7_round_score),
+					overallNumber(endRow?.last7_arrows),
+					overallNumber(compRow?.last7_arrows),
+					overallNumber(endRow?.last7_no_score),
+					overallNumber(compRow?.last7_no_score),
+					overallNumber(endRow?.last7_round_score),
+					overallNumber(compRow?.last7_round_score)
 				),
 				last30Days: buildPeriod(
-					overallNumber(endRow?.last30_arrows), overallNumber(compRow?.last30_arrows),
-					overallNumber(endRow?.last30_no_score), overallNumber(compRow?.last30_no_score),
-					overallNumber(endRow?.last30_round_score), overallNumber(compRow?.last30_round_score),
+					overallNumber(endRow?.last30_arrows),
+					overallNumber(compRow?.last30_arrows),
+					overallNumber(endRow?.last30_no_score),
+					overallNumber(compRow?.last30_no_score),
+					overallNumber(endRow?.last30_round_score),
+					overallNumber(compRow?.last30_round_score)
 				),
 				overall: buildPeriod(
-					overallNumber(endRow?.total_arrows), overallNumber(compRow?.total_arrows),
-					overallNumber(endRow?.total_no_score), overallNumber(compRow?.total_no_score),
-					overallNumber(endRow?.total_round_score), overallNumber(compRow?.total_round_score),
+					overallNumber(endRow?.total_arrows),
+					overallNumber(compRow?.total_arrows),
+					overallNumber(endRow?.total_no_score),
+					overallNumber(compRow?.total_no_score),
+					overallNumber(endRow?.total_round_score),
+					overallNumber(compRow?.total_round_score)
 				),
 			},
 		};
@@ -124,8 +136,7 @@ export async function GET(request: Request) {
 				'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=300',
 			},
 		});
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 function overallNumber(v: bigint | number | null | undefined) {

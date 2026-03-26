@@ -22,8 +22,7 @@ export async function GET(request: NextRequest) {
 		});
 
 		return NextResponse.json({ sightMarks });
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export async function POST(request: NextRequest) {
@@ -49,9 +48,7 @@ export async function POST(request: NextRequest) {
 		const givenMarks = parseNumberArray(body.givenMarks, 'givenMarks', fieldErrors);
 		const givenDistances = parseNumberArray(body.givenDistances, 'givenDistances', fieldErrors);
 		const rawBallistics =
-			typeof body.ballisticsParameters === 'object' && body.ballisticsParameters !== null
-				? body.ballisticsParameters
-				: {};
+			typeof body.ballisticsParameters === 'object' && body.ballisticsParameters !== null ? body.ballisticsParameters : {};
 		const ballisticsParameters: Prisma.InputJsonValue = rawBallistics as Prisma.InputJsonValue;
 
 		if (Object.keys(fieldErrors).length) {
@@ -75,6 +72,5 @@ export async function POST(request: NextRequest) {
 		});
 
 		return NextResponse.json({ sightMark }, { status: 201 });
-	} catch (error) {
-	}
+	} catch (error) {}
 }

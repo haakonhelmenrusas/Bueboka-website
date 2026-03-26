@@ -18,8 +18,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		if (!sightMark) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
 		return NextResponse.json({ sightMark });
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -68,8 +67,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 		});
 
 		return NextResponse.json({ sightMark: updated });
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -87,6 +85,5 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 		]);
 
 		return NextResponse.json({ success: true });
-	} catch (error) {
-	}
+	} catch (error) {}
 }

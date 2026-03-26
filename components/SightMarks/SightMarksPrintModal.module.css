@@ -1,24 +1,23 @@
 .hint {
-    margin: 0;
-    font-size: 14px;
-    color: var(--text-gray-600);
-    line-height: 1.5;
+	margin: 0;
+	font-size: 14px;
+	color: var(--text-gray-600);
+	line-height: 1.5;
 }
 
 .cardWrapper {
-    display: flex;
-    justify-content: center;
-    overflow-x: auto;
-    border-radius: 20px;
-    box-shadow: inset 0 0 0 1px var(--border-gray);
-    background: var(--bg-gray-100, #f3f4f6);
-    padding: 16px;
-    flex-shrink: 0;
+	display: flex;
+	justify-content: center;
+	overflow-x: auto;
+	border-radius: 20px;
+	box-shadow: inset 0 0 0 1px var(--border-gray);
+	background: var(--bg-gray-100, #f3f4f6);
+	padding: 16px;
+	flex-shrink: 0;
 }
 
 .actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
-

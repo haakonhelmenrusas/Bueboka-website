@@ -120,7 +120,6 @@ export async function POST(request: Request) {
 			totalNewlyUnlocked: newlyUnlocked.length,
 		});
 	} catch (error) {
-
 		return NextResponse.json(
 			{
 				error: 'Failed to check achievements',

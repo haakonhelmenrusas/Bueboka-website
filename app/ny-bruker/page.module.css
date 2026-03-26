@@ -1,10 +1,10 @@
 .container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    position: relative;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	position: relative;
 }
 
 .themeBackground {
@@ -204,31 +204,31 @@
 }
 
 .formWrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
 }
 
 .header {
-    text-align: center;
+	text-align: center;
 }
 
 .title {
-    font-size: 1.75rem;
-    line-height: 2rem;
-    font-weight: 700;
+	font-size: 1.75rem;
+	line-height: 2rem;
+	font-weight: 700;
 }
 
 .subtitle {
-    margin-top: var(--space-2);
-    font-size: 0.95rem;
-    color: var(--text-gray-600);
+	margin-top: var(--space-2);
+	font-size: 0.95rem;
+	color: var(--text-gray-600);
 }
 
 .subtitle a {
-    color: var(--primary);
-    text-decoration: underline;
+	color: var(--primary);
+	text-decoration: underline;
 }
 
 .errorBox {
@@ -254,9 +254,9 @@
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
 }
 
 .form > button {
@@ -264,9 +264,9 @@
 }
 
 .inputGroup {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
 	border: none;
 	padding: 0;
 	margin: 0;

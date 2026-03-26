@@ -50,7 +50,6 @@ export async function POST(request: NextRequest) {
 		const result: MarksResult = await response.json();
 		return NextResponse.json(result);
 	} catch (error) {
-
 		if (error instanceof Error && error.name === 'AbortError') {
 			return NextResponse.json({ error: 'Calculation service timeout' }, { status: 504 });
 		}

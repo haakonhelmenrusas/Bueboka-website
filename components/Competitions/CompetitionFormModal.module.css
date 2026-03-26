@@ -1,238 +1,236 @@
-
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-6);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	margin-top: var(--space-4);
 }
 
 .numberInput {
-    max-width: 120px;
+	max-width: 120px;
 }
 
 .row {
-    display: grid;
-    gap: var(--space-5);
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    align-items: end;
-    justify-content: flex-end;
+	display: grid;
+	gap: var(--space-5);
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	align-items: end;
+	justify-content: flex-end;
 }
 
 .rowFlex {
-    display: flex;
-    gap: var(--space-4);
-    align-items: flex-end;
+	display: flex;
+	gap: var(--space-4);
+	align-items: flex-end;
 }
 
 .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-4);
-    margin-top: var(--space-2);
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--space-4);
+	margin-top: var(--space-2);
 }
 
 .error {
-    color: var(--error-light);
-    background: var(--error-bg);
-    border: 1px solid var(--error-border);
-    padding: var(--space-3);
-    border-radius: var(--radius-base);
-    font-size: 0.95rem;
+	color: var(--error-light);
+	background: var(--error-bg);
+	border: 1px solid var(--error-border);
+	padding: var(--space-3);
+	border-radius: var(--radius-base);
+	font-size: 0.95rem;
 }
 
 /* Rounds section */
 .roundsSection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	margin-top: var(--space-4);
 }
 
 .sectionTitle {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin: 0;
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin: 0;
 }
 
 .roundCard {
-    background: var(--tertiary);
-    border: 1px solid var(--border-gray);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+	background: var(--tertiary);
+	border: 1px solid var(--border-gray);
+	border-radius: var(--radius-lg);
+	padding: var(--space-5);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
 }
 
 .roundHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .roundNumber {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--primary);
+	font-weight: 700;
+	font-size: 0.95rem;
+	color: var(--primary);
 }
 
 .removeRoundBtn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--text-gray-600);
-    padding: var(--space-2);
-    border-radius: var(--radius-base);
-    transition: all 150ms ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: var(--text-gray-600);
+	padding: var(--space-2);
+	border-radius: var(--radius-base);
+	transition: all 150ms ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .removeRoundBtn:hover {
-    background: var(--error-bg);
-    color: var(--error-light);
+	background: var(--error-bg);
+	color: var(--error-light);
 }
 
 .roundInputs {
-    display: flex;
-    gap: 0;
-    align-items: flex-start;
+	display: flex;
+	gap: 0;
+	align-items: flex-start;
 }
 
 .skiveField {
-    flex: 1;
+	flex: 1;
 }
 
 @media (max-width: 640px) {
-    .roundInputs {
-        flex-wrap: wrap;
-    }
+	.roundInputs {
+		flex-wrap: wrap;
+	}
 
-    .skiveField {
-        flex: 1 1 100%;
-    }
+	.skiveField {
+		flex: 1 1 100%;
+	}
 
-    .rowFlex {
-        flex-wrap: wrap;
-    }
+	.rowFlex {
+		flex-wrap: wrap;
+	}
 
-    .rowFlex > * {
-        flex: 1 1 140px;
-        min-width: 0;
-    }
+	.rowFlex > * {
+		flex: 1 1 140px;
+		min-width: 0;
+	}
 }
 
 .targetField {
-    flex: 1;
+	flex: 1;
 }
 
 .limitMessage {
-    font-size: 0.875rem;
-    color: var(--text-gray-600);
-    text-align: center;
-    margin: 0;
-    padding: var(--space-2);
+	font-size: 0.875rem;
+	color: var(--text-gray-600);
+	text-align: center;
+	margin: 0;
+	padding: var(--space-2);
 }
 
 .arrowsWithoutScoreSection {
-    margin-top: var(--space-2);
+	margin-top: var(--space-2);
 }
 
 .narrowInput > div:nth-child(3) {
-    max-width: 140px;
+	max-width: 140px;
 }
 
 .ratingSection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+	margin-top: var(--space-4);
 }
 
 .ratingLabel {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--text-dark);
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	color: var(--text-dark);
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
 }
 
 .ratingOptional {
-    font-size: 0.8125rem;
-    font-weight: 400;
-    color: var(--text-gray-600);
+	font-size: 0.8125rem;
+	font-weight: 400;
+	color: var(--text-gray-600);
 }
 
 .ratingHelpText {
-    font-size: 0.875rem;
-    color: var(--text-gray-600);
-    margin: 0;
+	font-size: 0.875rem;
+	color: var(--text-gray-600);
+	margin: 0;
 }
 
 .ratingButtons {
-    display: flex;
-    gap: var(--space-3);
-    flex-wrap: wrap;
+	display: flex;
+	gap: var(--space-3);
+	flex-wrap: wrap;
 }
 
 .ratingButton {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-md);
-    border: 2px solid var(--border-gray);
-    background: var(--background);
-    color: var(--text-dark);
-    font-size: 0.9375rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+	width: 44px;
+	height: 44px;
+	border-radius: var(--radius-md);
+	border: 2px solid var(--border-gray);
+	background: var(--background);
+	color: var(--text-dark);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .ratingButton:hover {
-    border-color: var(--primary);
-    background: var(--primary-06);
-    transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(5, 53, 70, 0.15);
+	border-color: var(--primary);
+	background: var(--primary-06);
+	transform: translateY(-2px);
+	box-shadow: 0 2px 8px rgba(5, 53, 70, 0.15);
 }
 
 .ratingButton:active {
-    transform: translateY(0);
+	transform: translateY(0);
 }
 
 .ratingButtonActive {
-    border-color: var(--primary);
-    background: var(--primary);
-    color: white;
-    box-shadow: 0 2px 8px rgba(5, 53, 70, 0.2);
+	border-color: var(--primary);
+	background: var(--primary);
+	color: white;
+	box-shadow: 0 2px 8px rgba(5, 53, 70, 0.2);
 }
 
 .ratingButtonActive:hover {
-    background: var(--primary-dark);
-    border-color: var(--primary-dark);
-    transform: translateY(-2px);
+	background: var(--primary-dark);
+	border-color: var(--primary-dark);
+	transform: translateY(-2px);
 }
 
-
 @media (max-width: 640px) {
-    .ratingButtons {
-        gap: var(--space-2);
-    }
+	.ratingButtons {
+		gap: var(--space-2);
+	}
 
-    .ratingButton {
-        width: 40px;
-        height: 40px;
-        font-size: 0.875rem;
-    }
+	.ratingButton {
+		width: 40px;
+		height: 40px;
+		font-size: 0.875rem;
+	}
 }

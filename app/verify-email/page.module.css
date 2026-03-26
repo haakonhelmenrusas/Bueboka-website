@@ -3,12 +3,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(
-		180deg,
-		var(--page-gradient-start) 0%,
-		var(--page-gradient-mid) 40%,
-		var(--page-gradient-end) 100%
-	);
+	background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
 	padding: var(--space-8);
 }
 
@@ -96,4 +91,3 @@
 [data-theme='dark'] .message {
 	color: var(--text-gray-700);
 }
-

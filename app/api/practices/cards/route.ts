@@ -49,7 +49,9 @@ export async function GET(request: Request) {
 			totalScore: true,
 			practiceCategory: true,
 			roundType: { select: { name: true } },
-			ends: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, distanceFrom: true, distanceTo: true, targetSizeCm: true } },
+			ends: {
+				select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, distanceFrom: true, distanceTo: true, targetSizeCm: true },
+			},
 		} satisfies Prisma.PracticeSelect;
 
 		const competitionSelect = {
@@ -79,9 +81,7 @@ export async function GET(request: Request) {
 				: Promise.resolve([]);
 
 		const practiceCountPromise: Promise<number> =
-			filterType === 'all' || filterType === 'TRENING'
-				? prisma.practice.count({ where: { userId: user.id } })
-				: Promise.resolve(0);
+			filterType === 'all' || filterType === 'TRENING' ? prisma.practice.count({ where: { userId: user.id } }) : Promise.resolve(0);
 
 		const competitionsPromise: Promise<CompetitionRow[]> =
 			filterType === 'all' || filterType === 'KONKURRANSE'
@@ -95,9 +95,7 @@ export async function GET(request: Request) {
 				: Promise.resolve([]);
 
 		const competitionCountPromise: Promise<number> =
-			filterType === 'all' || filterType === 'KONKURRANSE'
-				? prisma.competition.count({ where: { userId: user.id } })
-				: Promise.resolve(0);
+			filterType === 'all' || filterType === 'KONKURRANSE' ? prisma.competition.count({ where: { userId: user.id } }) : Promise.resolve(0);
 
 		const [practices, competitions, practiceCount, competitionCount] = await Promise.all([
 			practicesPromise,
@@ -108,10 +106,7 @@ export async function GET(request: Request) {
 
 		// Transform practices to card format
 		const practiceCards = practices.map((p) => {
-			const arrowsShot = p.ends.reduce(
-				(sum, e) => sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0),
-				0
-			);
+			const arrowsShot = p.ends.reduce((sum, e) => sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0), 0);
 
 			// For range categories (FELT, JAKT_3D), build label from distanceFrom/distanceTo
 			let roundTypeName = p.roundType?.name ?? null;
@@ -151,16 +146,9 @@ export async function GET(request: Request) {
 
 		// Transform competitions to card format
 		const competitionCards = competitions.map((c) => {
-			const arrowsShot = c.rounds.reduce(
-				(sum, r) => sum + (r.arrows ?? 0) + (r.arrowsWithoutScore ?? 0),
-				0
-			);
+			const arrowsShot = c.rounds.reduce((sum, r) => sum + (r.arrows ?? 0) + (r.arrowsWithoutScore ?? 0), 0);
 			const combinations = [
-				...new Set(
-					c.rounds
-						.filter((r) => r.distanceMeters && r.targetSizeCm)
-						.map((r) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)
-				),
+				...new Set(c.rounds.filter((r) => r.distanceMeters && r.targetSizeCm).map((r) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)),
 			];
 			const roundTypeName = combinations.length > 0 ? combinations[0] : null;
 
@@ -200,16 +188,13 @@ export async function GET(request: Request) {
 			practicesCache.set(cacheKey, responseData);
 		}
 
-		return NextResponse.json(
-			responseData,
-			{
-				headers: {
-					'Cache-Control':
-						process.env.NODE_ENV === 'development' ? 'no-store, no-cache, must-revalidate' : 'private, max-age=10, must-revalidate',
-					Vary: 'Cookie',
-				},
-			}
-		);
+		return NextResponse.json(responseData, {
+			headers: {
+				'Cache-Control':
+					process.env.NODE_ENV === 'development' ? 'no-store, no-cache, must-revalidate' : 'private, max-age=10, must-revalidate',
+				Vary: 'Cookie',
+			},
+		});
 	} catch (error) {
 		return NextResponse.json({ error: 'Failed to fetch practice cards' }, { status: 500 });
 	}

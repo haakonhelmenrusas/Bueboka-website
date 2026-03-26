@@ -81,7 +81,5 @@ export function getAchievementTierLabel(tier: string): string {
 	return ACHIEVEMENT_TIER_LABELS[tier] || tier;
 }
 
-
-
 // Public profile
 export const ANONYMOUS_ARCHER_LABEL = 'Anonym bueskytter';

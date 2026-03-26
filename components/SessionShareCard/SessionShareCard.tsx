@@ -25,7 +25,6 @@ interface SessionShareCardProps {
 	data: SessionShareData;
 }
 
-
 export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCardProps>(({ data }, ref) => {
 	const formattedDate = new Date(data.date).toLocaleDateString('nb-NO', {
 		year: 'numeric',
@@ -46,29 +45,21 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 			<div className={styles.header}>
 				<div className={styles.brand}>
 					<div className={styles.brandLogoCircle}>
-						<img
-							src="/assets/logo.png"
-							alt="Bueboka"
-							className={styles.brandLogo}
-						/>
+						<img src="/assets/logo.png" alt="Bueboka" className={styles.brandLogo} />
 					</div>
 					<span className={styles.brandName}>Bueboka</span>
 				</div>
-				<Badge variant="ghost" uppercase>{typeLabel}</Badge>
+				<Badge variant="ghost" uppercase>
+					{typeLabel}
+				</Badge>
 			</div>
 			{data.totalScore > 0 ? (
 				<div className={styles.scoreHero}>
 					<div className={styles.scoreLabel}>Totalscore</div>
 					<div className={styles.scoreValue}>{data.totalScore}</div>
 					<div className={styles.scoreArrowsRow}>
-						<span className={styles.scoreArrowsChip}>
-							{scoredArrows} med scoring
-						</span>
-						{unscoredArrows > 0 && (
-							<span className={styles.scoreArrowsChipDim}>
-								{unscoredArrows} uten scoring
-							</span>
-						)}
+						<span className={styles.scoreArrowsChip}>{scoredArrows} med scoring</span>
+						{unscoredArrows > 0 && <span className={styles.scoreArrowsChipDim}>{unscoredArrows} uten scoring</span>}
 					</div>
 				</div>
 			) : (
@@ -152,4 +143,3 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 });
 
 SessionShareCard.displayName = 'SessionShareCard';
-

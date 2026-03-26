@@ -1,471 +1,469 @@
-
 .closeBtn {
-  position: absolute;
-  top: var(--space-6);
-  right: var(--space-6);
-  background: var(--white-10);
-  border: none;
-  border-radius: var(--radius-full);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-gray-600);
-  transition: all 0.2s ease;
-  z-index: 10;
+	position: absolute;
+	top: var(--space-6);
+	right: var(--space-6);
+	background: var(--white-10);
+	border: none;
+	border-radius: var(--radius-full);
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: var(--text-gray-600);
+	transition: all 0.2s ease;
+	z-index: 10;
 }
 
 .closeBtn:hover {
-  background: var(--dark-05);
-  color: var(--text-dark);
-  transform: rotate(90deg);
+	background: var(--dark-05);
+	color: var(--text-dark);
+	transform: rotate(90deg);
 }
 
 /* Content */
 .content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	overflow-y: auto;
 }
 
 .header {
-  padding: var(--space-8) var(--space-8) var(--space-6);
-  text-align: center;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  color: white;
+	padding: var(--space-8) var(--space-8) var(--space-6);
+	text-align: center;
+	background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+	color: white;
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: 800;
-  margin: 0 0 var(--space-3) 0;
-  line-height: 1.2;
+	font-size: 2rem;
+	font-weight: 800;
+	margin: 0 0 var(--space-3) 0;
+	line-height: 1.2;
 }
 
 .subtitle {
-  font-size: 1.125rem;
-  font-weight: 500;
-  margin: 0;
-  opacity: 0.95;
+	font-size: 1.125rem;
+	font-weight: 500;
+	margin: 0;
+	opacity: 0.95;
 }
 
 .body {
-  padding: var(--space-8);
-  flex: 1;
-  overflow-y: auto;
+	padding: var(--space-8);
+	flex: 1;
+	overflow-y: auto;
 }
 
 /* Welcome Content */
 .welcomeContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-8);
 }
 
 .heroSection {
-  text-align: center;
-  padding: var(--space-6) 0;
+	text-align: center;
+	padding: var(--space-6) 0;
 }
 
 .heroIcon {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto var(--space-6);
-  background: linear-gradient(135deg, var(--primary-06) 0%, var(--primary-08) 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--primary);
-  animation: pulse 2s ease-in-out infinite;
+	width: 120px;
+	height: 120px;
+	margin: 0 auto var(--space-6);
+	background: linear-gradient(135deg, var(--primary-06) 0%, var(--primary-08) 100%);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--primary);
+	animation: pulse 2s ease-in-out infinite;
 }
 
 .heroText {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  color: var(--text-gray-700);
-  margin: 0;
-  max-width: 600px;
-  margin: 0 auto;
+	font-size: 1.25rem;
+	line-height: 1.6;
+	color: var(--text-gray-700);
+	margin: 0;
+	max-width: 600px;
+	margin: 0 auto;
 }
 
 .featureGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-5);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: var(--space-5);
 }
 
 .featureCard {
-  background: var(--background);
-  border: 1px solid var(--border-gray);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  text-align: center;
-  transition: all 0.2s ease;
+	background: var(--background);
+	border: 1px solid var(--border-gray);
+	border-radius: var(--radius-lg);
+	padding: var(--space-6);
+	text-align: center;
+	transition: all 0.2s ease;
 }
 
 .featureCard:hover {
-  border-color: var(--primary);
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(5, 53, 70, 0.12);
+	border-color: var(--primary);
+	transform: translateY(-4px);
+	box-shadow: 0 8px 24px rgba(5, 53, 70, 0.12);
 }
 
 .featureIconWrapper {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto var(--space-4);
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  border-radius: var(--radius-lg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
+	width: 64px;
+	height: 64px;
+	margin: 0 auto var(--space-4);
+	background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+	border-radius: var(--radius-lg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
 }
 
 .featureCard h4 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin: 0 0 var(--space-2) 0;
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin: 0 0 var(--space-2) 0;
 }
 
 .featureCard p {
-  font-size: 0.9375rem;
-  color: var(--text-gray-600);
-  margin: 0;
-  line-height: 1.5;
+	font-size: 0.9375rem;
+	color: var(--text-gray-600);
+	margin: 0;
+	line-height: 1.5;
 }
 
 /* Steps Content */
 .stepsContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-6);
-  max-width: 600px;
-  margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-6);
+	max-width: 600px;
+	margin: 0 auto;
 }
 
 .stepItem {
-  display: flex;
-  gap: var(--space-5);
-  align-items: flex-start;
+	display: flex;
+	gap: var(--space-5);
+	align-items: flex-start;
 }
 
 .stepNumber {
-  width: 48px;
-  height: 48px;
-  flex-shrink: 0;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  box-shadow: 0 4px 12px rgba(5, 53, 70, 0.2);
+	width: 48px;
+	height: 48px;
+	flex-shrink: 0;
+	background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+	color: white;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	font-weight: 700;
+	box-shadow: 0 4px 12px rgba(5, 53, 70, 0.2);
 }
 
 .stepText h4 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin: 0 0 var(--space-2) 0;
+	font-size: 1.125rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin: 0 0 var(--space-2) 0;
 }
 
 .stepText p {
-  font-size: 1rem;
-  color: var(--text-gray-600);
-  margin: 0;
-  line-height: 1.6;
+	font-size: 1rem;
+	color: var(--text-gray-600);
+	margin: 0;
+	line-height: 1.6;
 }
 
 .stepText strong {
-  color: var(--primary);
-  font-weight: 600;
+	color: var(--primary);
+	font-weight: 600;
 }
 
 /* Tips Content */
 .tipsContent {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
-  max-width: 600px;
-  margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-5);
+	max-width: 600px;
+	margin: 0 auto;
 }
 
 .tipItem {
-  display: flex;
-  gap: var(--space-4);
-  align-items: flex-start;
-  padding: var(--space-4);
-  background: var(--background);
-  border: 1px solid var(--border-gray);
-  border-radius: var(--radius-lg);
-  transition: all 0.2s ease;
+	display: flex;
+	gap: var(--space-4);
+	align-items: flex-start;
+	padding: var(--space-4);
+	background: var(--background);
+	border: 1px solid var(--border-gray);
+	border-radius: var(--radius-lg);
+	transition: all 0.2s ease;
 }
 
 .tipItem:hover {
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(5, 53, 70, 0.08);
+	border-color: var(--primary);
+	box-shadow: 0 4px 12px rgba(5, 53, 70, 0.08);
 }
 
 .tipIcon {
-  color: var(--primary);
-  flex-shrink: 0;
-  background: var(--primary-06);
-  border-radius: 50%;
-  padding: var(--space-2);
-  width: 32px;
-  height: 32px;
+	color: var(--primary);
+	flex-shrink: 0;
+	background: var(--primary-06);
+	border-radius: 50%;
+	padding: var(--space-2);
+	width: 32px;
+	height: 32px;
 }
 
 .tipItem strong {
-  display: block;
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin-bottom: var(--space-1);
+	display: block;
+	font-size: 1rem;
+	font-weight: 700;
+	color: var(--text-dark);
+	margin-bottom: var(--space-1);
 }
 
 .tipItem p {
-  font-size: 0.9375rem;
-  color: var(--text-gray-600);
-  margin: 0;
-  line-height: 1.5;
+	font-size: 0.9375rem;
+	color: var(--text-gray-600);
+	margin: 0;
+	line-height: 1.5;
 }
 
 /* Footer */
 .footer {
-  padding: var(--space-6) var(--space-8);
-  border-top: 1px solid var(--border-gray);
-  background: var(--bg-gray-50);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+	padding: var(--space-6) var(--space-8);
+	border-top: 1px solid var(--border-gray);
+	background: var(--bg-gray-50);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
 }
 
 .progressDots {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-2);
+	display: flex;
+	justify-content: center;
+	gap: var(--space-2);
 }
 
 .dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--border-gray);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: var(--border-gray);
+	border: none;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	padding: 0;
 }
 
 .dot:hover {
-  background: var(--primary-25);
-  transform: scale(1.2);
+	background: var(--primary-25);
+	transform: scale(1.2);
 }
 
 .dotActive {
-  background: var(--primary);
-  width: 32px;
-  border-radius: 6px;
+	background: var(--primary);
+	width: 32px;
+	border-radius: 6px;
 }
 
 .dotCompleted {
-  background: var(--primary-25);
+	background: var(--primary-25);
 }
 
 .actions {
-  display: flex;
-  justify-content: center;
-  gap: var(--space-4);
+	display: flex;
+	justify-content: center;
+	gap: var(--space-4);
 }
 
 /* Animations */
 @keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
 }
 
 /* Responsive */
 @media (max-width: 768px) {
+	.closeBtn {
+		top: var(--space-4);
+		right: var(--space-4);
+		background: rgba(255, 255, 255, 0.2);
+		color: var(--white);
+		width: 44px; /* Larger touch target */
+		height: 44px;
+	}
 
-  .closeBtn {
-    top: var(--space-4);
-    right: var(--space-4);
-    background: rgba(255, 255, 255, 0.2);
-    color: var(--white);
-    width: 44px; /* Larger touch target */
-    height: 44px;
-  }
+	.closeBtn:hover {
+		background: rgba(255, 255, 255, 0.3);
+		color: var(--white);
+	}
 
-  .closeBtn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    color: var(--white);
-  }
+	.header {
+		padding: var(--space-10) var(--space-5) var(--space-6); /* More top padding for status bar/notch area if needed */
+		text-align: left; /* Optional: Left align usually looks better on mobile, but center is fine */
+		text-align: center;
+	}
 
-  .header {
-    padding: var(--space-10) var(--space-5) var(--space-6); /* More top padding for status bar/notch area if needed */
-    text-align: left; /* Optional: Left align usually looks better on mobile, but center is fine */
-    text-align: center;
-  }
+	.title {
+		font-size: 1.5rem;
+		margin-bottom: var(--space-2);
+	}
 
-  .title {
-    font-size: 1.5rem;
-    margin-bottom: var(--space-2);
-  }
+	.subtitle {
+		font-size: 1rem;
+		line-height: 1.5;
+	}
 
-  .subtitle {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
+	.body {
+		padding: var(--space-5);
+	}
 
-  .body {
-    padding: var(--space-5);
-  }
+	/* Welcome Content specifics */
+	.welcomeContent {
+		gap: var(--space-6);
+	}
 
-  /* Welcome Content specifics */
-  .welcomeContent {
-    gap: var(--space-6);
-  }
+	.heroSection {
+		padding: var(--space-4) 0;
+	}
 
-  .heroSection {
-    padding: var(--space-4) 0;
-  }
+	.heroIcon {
+		width: 80px;
+		height: 80px;
+		margin-bottom: var(--space-4);
+	}
 
-  .heroIcon {
-    width: 80px;
-    height: 80px;
-    margin-bottom: var(--space-4);
-  }
+	.heroIcon svg {
+		width: 40px;
+		height: 40px;
+	}
 
-  .heroIcon svg {
-    width: 40px;
-    height: 40px;
-  }
+	.heroText {
+		font-size: 1rem;
+	}
 
-  .heroText {
-    font-size: 1rem;
-  }
+	.featureGrid {
+		grid-template-columns: 1fr; /* Stack vertically */
+		gap: var(--space-4);
+	}
 
-  .featureGrid {
-    grid-template-columns: 1fr; /* Stack vertically */
-    gap: var(--space-4);
-  }
+	.featureCard {
+		display: flex;
+		align-items: center;
+		text-align: left;
+		padding: var(--space-4);
+		gap: var(--space-4);
+	}
 
-  .featureCard {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    padding: var(--space-4);
-    gap: var(--space-4);
-  }
+	.featureIconWrapper {
+		margin: 0; /* Reset margin since we are using flex gap */
+		width: 48px;
+		height: 48px;
+		flex-shrink: 0;
+	}
 
-  .featureIconWrapper {
-    margin: 0; /* Reset margin since we are using flex gap */
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-  }
+	.featureIconWrapper svg {
+		width: 24px;
+		height: 24px;
+	}
 
-  .featureIconWrapper svg {
-    width: 24px;
-    height: 24px;
-  }
+	.featureCard div:last-child {
+		/* Container for text inside flex card */
+		flex: 1;
+	}
 
-  .featureCard div:last-child {
-    /* Container for text inside flex card */
-    flex: 1;
-  }
+	.featureCard h4 {
+		margin-bottom: var(--space-1);
+		font-size: 1rem;
+	}
 
-  .featureCard h4 {
-    margin-bottom: var(--space-1);
-    font-size: 1rem;
-  }
+	.featureCard p {
+		font-size: 0.875rem;
+	}
 
-  .featureCard p {
-    font-size: 0.875rem;
-  }
+	/* Steps Content specifics */
+	.stepsContent {
+		gap: var(--space-6);
+	}
 
-  /* Steps Content specifics */
-  .stepsContent {
-    gap: var(--space-6);
-  }
+	.stepItem {
+		gap: var(--space-4);
+	}
 
-  .stepItem {
-    gap: var(--space-4);
-  }
+	.stepNumber {
+		width: 36px;
+		height: 36px;
+		font-size: 1.125rem;
+	}
 
-  .stepNumber {
-    width: 36px;
-    height: 36px;
-    font-size: 1.125rem;
-  }
+	.stepText h4 {
+		font-size: 1rem;
+	}
 
-  .stepText h4 {
-    font-size: 1rem;
-  }
+	.stepText p {
+		font-size: 0.9375rem;
+	}
 
-  .stepText p {
-    font-size: 0.9375rem;
-  }
+	/* Tips Content specifics */
+	.tipsContent {
+		gap: var(--space-4);
+	}
 
-  /* Tips Content specifics */
-  .tipsContent {
-    gap: var(--space-4);
-  }
+	.tipItem {
+		padding: var(--space-4);
+		gap: var(--space-3);
+	}
 
-  .tipItem {
-    padding: var(--space-4);
-    gap: var(--space-3);
-  }
+	.tipIcon {
+		width: 28px;
+		height: 28px;
+		padding: 6px;
+	}
 
-  .tipIcon {
-    width: 28px;
-    height: 28px;
-    padding: 6px;
-  }
+	.tipItem strong {
+		font-size: 0.9375rem;
+	}
 
-  .tipItem strong {
-    font-size: 0.9375rem;
-  }
+	.tipItem p {
+		font-size: 0.875rem;
+	}
 
-  .tipItem p {
-    font-size: 0.875rem;
-  }
+	/* Footer */
+	.footer {
+		padding: var(--space-4) var(--space-5) var(--space-6); /* Bottom padding for safe area */
+		gap: var(--space-5);
+	}
 
-  /* Footer */
-  .footer {
-    padding: var(--space-4) var(--space-5) var(--space-6); /* Bottom padding for safe area */
-    gap: var(--space-5);
-  }
+	.actions {
+		width: 100%;
+		display: grid;
+		grid-template-columns: 1fr 1fr; /* Two equal buttons if both exist */
+		gap: var(--space-3);
+	}
 
-  .actions {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two equal buttons if both exist */
-    gap: var(--space-3);
-  }
+	.actions button {
+		width: 100% !important; /* Override inline style from Button component */
+	}
 
-  .actions button {
-    width: 100% !important; /* Override inline style from Button component */
-  }
-
-  /* If only one button (Next/Get Started) makes sure it fills appropriately or stays centered?
+	/* If only one button (Next/Get Started) makes sure it fills appropriately or stays centered?
      The JS logic renders "Previous" only if step > 0.
      If single child, we might want it full width.
   */
-  .actions:has(> :only-child) {
-    grid-template-columns: 1fr;
-  }
+	.actions:has(> :only-child) {
+		grid-template-columns: 1fr;
+	}
 }
-

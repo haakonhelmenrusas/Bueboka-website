@@ -1,17 +1,17 @@
 :root {
 	/* Primary Brand Colors */
 	--primary: #053546;
-	--primary-dark: #00171F;
+	--primary-dark: #00171f;
 	--primary-light: #0c82ac;
-	--primary-lighter: #227B9A;
+	--primary-lighter: #227b9a;
 
 	/* Secondary Colors */
-	--secondary: #227B9A;
-	--tertiary: #D8F5FF;
+	--secondary: #227b9a;
+	--tertiary: #d8f5ff;
 
 	/* Neutral Colors */
-	--white: #FFFFFF;
-	--background: #F2F2F2;
+	--white: #ffffff;
+	--background: #f2f2f2;
 	--bg-light: #f0f9ff;
 	--bg-lighter: #f8fafc;
 	--bg-gray-50: #f9fafb;
@@ -23,13 +23,13 @@
 	--text-gray-800: #1f2937;
 
 	/* Semantic Colors */
-	--dimmed: #D3D4DF;
-	--inactive: #9697B6;
-	--error: #DD0000;
+	--dimmed: #d3d4df;
+	--inactive: #9697b6;
+	--error: #dd0000;
 	--error-light: #dc7f79;
 	--error-bg: rgba(239, 68, 68, 0.1);
 	--error-border: rgba(239, 68, 68, 0.2);
-	--warning: #FFA500;
+	--warning: #ffa500;
 	--success: #008000;
 
 	/* Accent Colors */
@@ -37,7 +37,7 @@
 	--accent-red: #c01c24;
 
 	/* Star/Favorite Colors */
-	--star-bg: rgba(255, 214, 0, 0.20);
+	--star-bg: rgba(255, 214, 0, 0.2);
 	--star-border: rgba(255, 214, 0, 0.35);
 	--star-color: rgba(110, 80, 0, 0.95);
 
@@ -208,8 +208,6 @@ body {
 	outline-offset: 2px;
 }
 
-
-
 /* Ensure interactive elements have visible focus */
 button:focus-visible,
 a:focus-visible,
@@ -219,7 +217,6 @@ select:focus-visible {
 	outline: 2px solid var(--primary);
 	outline-offset: 2px;
 }
-
 
 /* Screen reader only text - visually hidden but accessible */
 .sr-only {

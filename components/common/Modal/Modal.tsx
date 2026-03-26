@@ -73,12 +73,7 @@ export const Modal: React.FC<ModalProps> = ({
 	if (!open) return null;
 
 	return (
-		<div
-			className={styles.overlay}
-			style={{ zIndex }}
-			onClick={closeOnBackdrop ? onClose : undefined}
-			role="presentation"
-		>
+		<div className={styles.overlay} style={{ zIndex }} onClick={closeOnBackdrop ? onClose : undefined} role="presentation">
 			<div
 				className={`${styles.panel}${panelClassName ? ` ${panelClassName}` : ''}`}
 				style={{ maxWidth, ...panelStyle }}
@@ -92,13 +87,7 @@ export const Modal: React.FC<ModalProps> = ({
 						<h2 id={titleId} className={styles.title}>
 							{title}
 						</h2>
-						<button
-							className={styles.closeBtn}
-							onClick={onClose}
-							aria-label="Lukk"
-							type="button"
-							disabled={closeButtonDisabled}
-						>
+						<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk" type="button" disabled={closeButtonDisabled}>
 							<LuX size={20} />
 						</button>
 					</div>
@@ -108,4 +97,3 @@ export const Modal: React.FC<ModalProps> = ({
 		</div>
 	);
 };
-

@@ -8,7 +8,9 @@
 	padding: var(--space-4) var(--space-6);
 	text-decoration: none;
 	color: var(--text-dark);
-	transition: box-shadow 150ms ease, transform 150ms ease;
+	transition:
+		box-shadow 150ms ease,
+		transform 150ms ease;
 }
 
 .card:hover {
@@ -76,4 +78,3 @@
 	flex: 0 0 auto;
 	line-height: 1;
 }
-

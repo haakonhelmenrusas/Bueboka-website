@@ -1,58 +1,57 @@
 .body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-7);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-7);
 }
 
 .fieldGroup {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
 }
 
 .groupLabel {
-    margin: 0;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-gray-600);
+	margin: 0;
+	font-size: 0.8125rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--text-gray-600);
 }
 
 .groupHint {
-    margin: 0;
-    font-size: 0.85rem;
-    color: var(--text-gray-600);
-    line-height: 1.4;
+	margin: 0;
+	font-size: 0.85rem;
+	color: var(--text-gray-600);
+	line-height: 1.4;
 }
 
 .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
-    align-items: flex-start;
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-5);
+	align-items: flex-start;
 }
 
 .row > * {
-    flex: 1 1 90px;
-    min-width: 80px;
-    max-width: 130px;
+	flex: 1 1 90px;
+	min-width: 80px;
+	max-width: 130px;
 }
 
 .errorBox {
-    background: var(--error-bg);
-    border: 1px solid var(--error-border);
-    border-radius: var(--radius-md);
-    padding: var(--space-4);
-    color: var(--error);
-    font-size: 0.875rem;
-    font-weight: 600;
+	background: var(--error-bg);
+	border: 1px solid var(--error-border);
+	border-radius: var(--radius-md);
+	padding: var(--space-4);
+	color: var(--error);
+	font-size: 0.875rem;
+	font-weight: 600;
 }
 
 .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-3);
-    padding-top: var(--space-2);
+	display: flex;
+	justify-content: flex-end;
+	gap: var(--space-3);
+	padding-top: var(--space-2);
 }
-

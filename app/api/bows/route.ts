@@ -18,7 +18,8 @@ export async function POST(request: NextRequest) {
 		if (!validation.success) {
 			return validation.error;
 		}
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes } = validation.data;
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes } =
+			validation.data;
 
 		const makeFavorite = Boolean(isFavorite);
 

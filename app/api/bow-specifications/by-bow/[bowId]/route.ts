@@ -36,6 +36,5 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		}
 
 		return NextResponse.json({ bowSpecification: spec });
-	} catch (error) {
-	}
+	} catch (error) {}
 }

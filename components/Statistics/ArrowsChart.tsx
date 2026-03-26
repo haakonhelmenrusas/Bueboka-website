@@ -28,7 +28,6 @@ const CHART_COLORS = [
 ] as const;
 
 export function ArrowsChart({ data, series, formatDate, selectedCategory, onCategoryChange }: ArrowsChartProps) {
-
 	// Category options for Select component
 	const categoryOptions = [
 		{ value: 'SKIVE_INDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR },

@@ -40,7 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
 		<html lang="no-nb">
 			<body className={inter.className}>
 				<ClarityInit />
-					<FeedbackProvider>{children}</FeedbackProvider>
+				<FeedbackProvider>{children}</FeedbackProvider>
 			</body>
 		</html>
 	);

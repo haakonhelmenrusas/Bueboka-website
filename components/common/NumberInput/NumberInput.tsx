@@ -53,8 +53,7 @@ const roundToStep = (n: number, step: number): number => {
 
 const toDisplay = (value: number) => (Number.isFinite(value) ? String(value) : '');
 
-const initialDisplay = (value: number, startEmpty: boolean) =>
-	startEmpty && value === 0 ? '' : toDisplay(value);
+const initialDisplay = (value: number, startEmpty: boolean) => (startEmpty && value === 0 ? '' : toDisplay(value));
 
 // ----------------------------------------------------------------------------
 
@@ -108,7 +107,6 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 
 		setDisplayValue(toDisplay(value));
 	}, [value]);
-
 
 	// --- Input handlers -----------------------------------------------------
 
@@ -224,7 +222,11 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						aria-invalid={errorMessage ? 'true' : 'false'}
 						aria-describedby={describedById}
 					/>
-					{unit && <span className={styles.unit} style={{ transform: `translateX(${unitOffset}px)` }}>{unit}</span>}
+					{unit && (
+						<span className={styles.unit} style={{ transform: `translateX(${unitOffset}px)` }}>
+							{unit}
+						</span>
+					)}
 					{rightAddon && <span className={styles.rightAddon}>{rightAddon}</span>}
 				</div>
 			</div>

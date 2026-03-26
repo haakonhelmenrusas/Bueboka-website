@@ -186,7 +186,10 @@ export default function StatisticsPage() {
 	// Calculate average score per arrow grouped by practice type (training vs competition)
 	const getScoreChartData = () => {
 		// Group by date and practice type, only counting arrows that have a score
-		const dateMap = new Map<string, { training: { score: number; scoredArrows: number }; competition: { score: number; scoredArrows: number } }>();
+		const dateMap = new Map<
+			string,
+			{ training: { score: number; scoredArrows: number }; competition: { score: number; scoredArrows: number } }
+		>();
 
 		filteredSeries.forEach((s) => {
 			s.data.forEach((d) => {
@@ -305,7 +308,7 @@ export default function StatisticsPage() {
 					) : (
 						<>
 							<FilterControls dateRange={dateRange} onDateRangeChange={setDateRange} onDownloadCSV={downloadCSV} />
-								<BreakdownSection items={getBreakdownItems()} />
+							<BreakdownSection items={getBreakdownItems()} />
 							<div className={styles.chartSection}>
 								<ArrowsChart
 									data={getArrowsChartData()}

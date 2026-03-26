@@ -106,9 +106,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						<span className={styles.detailIcon} aria-hidden="true">
 							<LuTarget size={14} />
 						</span>
-						<span className={styles.detailText}>
-							{roundTypeName ? formatRoundTypeName(roundTypeName) : 'Ingen skive'}
-						</span>
+						<span className={styles.detailText}>{roundTypeName ? formatRoundTypeName(roundTypeName) : 'Ingen skive'}</span>
 					</div>
 					{location && (
 						<div className={styles.detailItem}>

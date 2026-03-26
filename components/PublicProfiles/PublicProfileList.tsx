@@ -25,9 +25,7 @@ export const PublicProfileList: React.FC<PublicProfileListProps> = ({ profiles, 
 	if (searched && profiles.length === 0) {
 		return (
 			<div className={styles.status}>
-				{query.trim()
-					? `Ingen profiler funnet for «${query.trim()}».`
-					: 'Ingen offentlige profiler funnet.'}
+				{query.trim() ? `Ingen profiler funnet for «${query.trim()}».` : 'Ingen offentlige profiler funnet.'}
 			</div>
 		);
 	}
@@ -44,4 +42,3 @@ export const PublicProfileList: React.FC<PublicProfileListProps> = ({ profiles, 
 		</ul>
 	);
 };
-

@@ -194,7 +194,6 @@
 		transform 120ms ease;
 }
 
-
 .creditLink:hover {
 	color: var(--white); /* hover:text-white */
 }

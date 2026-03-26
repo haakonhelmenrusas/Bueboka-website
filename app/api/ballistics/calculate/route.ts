@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
 		const result: CalculatedMarks = await response.json();
 		return NextResponse.json(result);
 	} catch (error) {
-
 		if (error instanceof Error && error.name === 'AbortError') {
 			return NextResponse.json({ error: 'Ballistics service timeout' }, { status: 504 });
 		}

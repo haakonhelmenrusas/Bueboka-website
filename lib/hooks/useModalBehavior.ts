@@ -51,5 +51,3 @@ export function useModalBehavior({ open, onClose, lockScroll = true, closeOnEsca
 		};
 	}, [open, lockScroll]);
 }
-
-

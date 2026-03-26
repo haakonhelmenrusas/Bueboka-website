@@ -1,199 +1,200 @@
 .tableWrapper {
-    overflow-x: auto;
-    width: 100%;
+	overflow-x: auto;
+	width: 100%;
 }
 
 .cardGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
-    gap: var(--space-5);
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 340px));
+	gap: var(--space-5);
 }
 
 .card {
-    background: var(--card-bg-solid);
-    border: 1px solid var(--border-gray);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+	background: var(--card-bg-solid);
+	border: 1px solid var(--border-gray);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .cardClickable {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .cardClickable:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-    border-color: var(--primary-35, var(--primary));
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+	border-color: var(--primary-35, var(--primary));
 }
 
 .cardClickable:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
+	outline: 2px solid var(--primary);
+	outline-offset: 2px;
 }
 
 .editHint {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.7;
-    flex-shrink: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0.7;
+	flex-shrink: 0;
 }
 
 .cardHeader {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-5) var(--space-6);
-    background: var(--primary);
-    color: var(--white);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	padding: var(--space-5) var(--space-6);
+	background: var(--primary);
+	color: var(--white);
 }
 
 .cardTitleRow {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
 }
 
 .cardIcon {
-    flex: 0 0 auto;
-    opacity: 0.8;
+	flex: 0 0 auto;
+	opacity: 0.8;
 }
 
 .cardTitle {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 800;
-    flex: 1;
-    line-height: 1.2;
+	margin: 0;
+	font-size: 1.05rem;
+	font-weight: 800;
+	flex: 1;
+	line-height: 1.2;
 }
 
 .markCount {
-    font-size: 0.75rem;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.18);
-    padding: 3px 10px;
-    border-radius: 20px;
-    white-space: nowrap;
-    flex-shrink: 0;
+	font-size: 0.75rem;
+	font-weight: 600;
+	background: rgba(255, 255, 255, 0.18);
+	padding: 3px 10px;
+	border-radius: 20px;
+	white-space: nowrap;
+	flex-shrink: 0;
 }
 
 .badgeRow {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2);
 }
-
 
 /* Marks inner table */
 .marksTable {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 .marksHeader {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 36px;
-    padding: var(--space-3) var(--space-4);
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-gray-600);
-    border-bottom: 1px solid var(--border-gray);
-    background: var(--bg-gray-50);
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 36px;
+	padding: var(--space-3) var(--space-4);
+	font-size: 0.72rem;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--text-gray-600);
+	border-bottom: 1px solid var(--border-gray);
+	background: var(--bg-gray-50);
 }
 
 .calculatedHeader {
-    color: var(--primary);
+	color: var(--primary);
 }
 
 .markRow {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 36px;
-    align-items: center;
-    padding: var(--space-5) var(--space-4);
-    border-bottom: 1px solid var(--border-gray);
-    transition: background 0.1s;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 36px;
+	align-items: center;
+	padding: var(--space-5) var(--space-4);
+	border-bottom: 1px solid var(--border-gray);
+	transition: background 0.1s;
 }
 
 .markRow:last-child {
-    border-bottom: none;
+	border-bottom: none;
 }
 
 .markRow:hover {
-    background: var(--bg-gray-50);
+	background: var(--bg-gray-50);
 }
 
 .distanceValue {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-dark);
+	font-size: 0.9rem;
+	font-weight: 600;
+	color: var(--text-dark);
 }
 
 .markValue {
-    font-size: 0.9rem;
-    color: var(--text-gray-600);
+	font-size: 0.9rem;
+	color: var(--text-gray-600);
 }
 
 .calculatedValue {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--primary);
+	font-size: 0.9rem;
+	font-weight: 700;
+	color: var(--primary);
 }
 
 .deleteBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: transparent;
-    border: none;
-    border-radius: var(--radius-base);
-    color: var(--text-gray-600);
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	background: transparent;
+	border: none;
+	border-radius: var(--radius-base);
+	color: var(--text-gray-600);
+	cursor: pointer;
+	transition:
+		background 0.15s,
+		color 0.15s;
+	padding: 0;
 }
 
 .deleteBtn:hover:not(:disabled) {
-    background: var(--error-bg);
-    color: var(--error);
+	background: var(--error-bg);
+	color: var(--error);
 }
 
 .deleteBtn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+	opacity: 0.4;
+	cursor: not-allowed;
 }
 
 .noMarks {
-    padding: var(--space-4) var(--space-5);
-    margin: 0;
-    font-size: 0.875rem;
-    color: var(--text-gray-600);
+	padding: var(--space-4) var(--space-5);
+	margin: 0;
+	font-size: 0.875rem;
+	color: var(--text-gray-600);
 }
 
 .emptyState {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 20px;
-    background-color: var(--primary-20);
-    border-radius: var(--radius-base);
-    border: 1px dashed var(--primary-20);
-    text-align: center;
-    color: var(--text-gray-700);
-    font-weight: 600;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 40px 20px;
+	background-color: var(--primary-20);
+	border-radius: var(--radius-base);
+	border: 1px dashed var(--primary-20);
+	text-align: center;
+	color: var(--text-gray-700);
+	font-weight: 600;
 }
 
 .emptyState p {
-    margin: 0;
-    font-size: 16px;
+	margin: 0;
+	font-size: 16px;
 }
 
 @media (max-width: 480px) {
-    .cardGrid {
-        grid-template-columns: 1fr;
-    }
+	.cardGrid {
+		grid-template-columns: 1fr;
+	}
 }

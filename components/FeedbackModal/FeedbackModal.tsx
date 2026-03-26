@@ -11,7 +11,6 @@ interface FeedbackModalProps {
 }
 
 export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
-
 	const [rating, setRating] = useState<number>(0);
 	const [hoveredRating, setHoveredRating] = useState<number>(0);
 	const [feedback, setFeedback] = useState<string>('');
@@ -73,49 +72,49 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 		<Modal open={open} onClose={handleClose} title="Gi tilbakemelding" maxWidth={540} zIndex={10000}>
 			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 			<form className={styles.form} onSubmit={handleSubmit}>
-					<div className={styles.ratingSection}>
-						<label className={styles.label}>Hvordan vil du vurdere Bueboka?</label>
-						<div className={styles.stars}>
-							{[1, 2, 3, 4, 5].map((star) => (
-								<button
-									key={star}
-									type="button"
-									className={`${styles.starButton} ${star <= (hoveredRating || rating) ? styles.starActive : ''}`}
-									onClick={() => setRating(star)}
-									onMouseEnter={() => setHoveredRating(star)}
-									onMouseLeave={() => setHoveredRating(0)}
-									aria-label={`Gi ${star} stjerner`}
-								>
-									<LuStar size={32} fill={star <= (hoveredRating || rating) ? 'currentColor' : 'none'} />
-								</button>
-							))}
-						</div>
+				<div className={styles.ratingSection}>
+					<label className={styles.label}>Hvordan vil du vurdere Bueboka?</label>
+					<div className={styles.stars}>
+						{[1, 2, 3, 4, 5].map((star) => (
+							<button
+								key={star}
+								type="button"
+								className={`${styles.starButton} ${star <= (hoveredRating || rating) ? styles.starActive : ''}`}
+								onClick={() => setRating(star)}
+								onMouseEnter={() => setHoveredRating(star)}
+								onMouseLeave={() => setHoveredRating(0)}
+								aria-label={`Gi ${star} stjerner`}
+							>
+								<LuStar size={32} fill={star <= (hoveredRating || rating) ? 'currentColor' : 'none'} />
+							</button>
+						))}
 					</div>
+				</div>
 
-					<div className={styles.feedbackSection}>
-						<label htmlFor="feedback-text" className={styles.label}>
-							Din tilbakemelding
-						</label>
-						<textarea
-							id="feedback-text"
-							className={styles.textarea}
-							value={feedback}
-							onChange={(e) => setFeedback(e.target.value)}
-							placeholder="Fortell oss hva du synes om Bueboka, eller hva vi kan gjøre bedre..."
-							rows={6}
-							disabled={loading}
-						/>
-					</div>
+				<div className={styles.feedbackSection}>
+					<label htmlFor="feedback-text" className={styles.label}>
+						Din tilbakemelding
+					</label>
+					<textarea
+						id="feedback-text"
+						className={styles.textarea}
+						value={feedback}
+						onChange={(e) => setFeedback(e.target.value)}
+						placeholder="Fortell oss hva du synes om Bueboka, eller hva vi kan gjøre bedre..."
+						rows={6}
+						disabled={loading}
+					/>
+				</div>
 
-					<div className={styles.actions}>
-						<Button type="button" onClick={handleClose} disabled={loading} buttonType="outline" label="Avbryt" />
-						<Button
-							type="submit"
-							disabled={loading || rating === 0 || !feedback.trim()}
-							label={loading ? 'Sender...' : 'Send tilbakemelding'}
-						/>
-					</div>
-				</form>
+				<div className={styles.actions}>
+					<Button type="button" onClick={handleClose} disabled={loading} buttonType="outline" label="Avbryt" />
+					<Button
+						type="submit"
+						disabled={loading || rating === 0 || !feedback.trim()}
+						label={loading ? 'Sender...' : 'Send tilbakemelding'}
+					/>
+				</div>
+			</form>
 		</Modal>
 	);
 }

@@ -61,8 +61,8 @@
 	color: var(--white);
 	font-size: 0.875rem;
 	font-weight: 500;
-    margin: var(--space-1) 0 0;
-    font-style: italic;
+	margin: var(--space-1) 0 0;
+	font-style: italic;
 }
 
 .closeButton {

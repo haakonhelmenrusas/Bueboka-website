@@ -22,8 +22,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		});
 
 		return NextResponse.json({ sightMarkResults: results });
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -84,6 +83,5 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 		});
 
 		return NextResponse.json({ sightMarkResult: result }, { status: 201 });
-	} catch (error) {
-	}
+	} catch (error) {}
 }

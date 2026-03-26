@@ -19,13 +19,7 @@ export const PublicUserCard: React.FC<PublicUserCardProps> = ({ profile }) => {
 		<Link href={`/profil/${profile.id}`} className={styles.card}>
 			<div className={styles.avatarWrap}>
 				{profile.image ? (
-					<Image
-						src={profile.image}
-						alt={`${displayName} profilbilde`}
-						width={56}
-						height={56}
-						className={styles.avatar}
-					/>
+					<Image src={profile.image} alt={`${displayName} profilbilde`} width={56} height={56} className={styles.avatar} />
 				) : (
 					<div className={styles.avatarPlaceholder} aria-hidden="true">
 						<LuUser size={24} strokeWidth={1.5} />
@@ -47,8 +41,9 @@ export const PublicUserCard: React.FC<PublicUserCardProps> = ({ profile }) => {
 					</span>
 				)}
 			</div>
-			<div className={styles.arrow} aria-hidden="true">›</div>
+			<div className={styles.arrow} aria-hidden="true">
+				›
+			</div>
 		</Link>
 	);
 };
-

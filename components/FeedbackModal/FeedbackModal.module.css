@@ -1,4 +1,3 @@
-
 .message {
 	padding: var(--space-3) var(--space-4);
 	border-radius: var(--radius-base);
@@ -106,7 +105,6 @@
 }
 
 @media (max-width: 700px) {
-
 	.stars {
 		gap: var(--space-1);
 	}
@@ -125,4 +123,3 @@
 		width: 100%;
 	}
 }
-

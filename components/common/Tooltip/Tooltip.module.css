@@ -15,7 +15,9 @@
 	width: 28px;
 	height: 28px;
 	cursor: pointer;
-	transition: background-color 120ms ease, border-color 120ms ease;
+	transition:
+		background-color 120ms ease,
+		border-color 120ms ease;
 }
 
 .button:hover {
@@ -50,4 +52,3 @@
 	border-style: solid;
 	border-color: transparent transparent var(--text-dark) transparent;
 }
-

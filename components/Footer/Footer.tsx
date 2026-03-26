@@ -16,9 +16,7 @@ export function Footer() {
 						<span className={styles.brandText}>Bueboka</span>
 					</div>
 
-					<p className={styles.lead}>
-						Last ned Bueboka-appen og ta treningsdagboken med deg overalt.
-					</p>
+					<p className={styles.lead}>Last ned Bueboka-appen og ta treningsdagboken med deg overalt.</p>
 					<div className={styles.badgesRow}>
 						<AppStoreBadge store="ios" href="https://apps.apple.com/app/bueboka" />
 						<AppStoreBadge store="android" href="https://play.google.com/store/apps/details?id=com.bueboka" />
@@ -39,12 +37,7 @@ export function Footer() {
 								</div>
 								<h3 className={styles.sponsorName}>Arctic bueskyting</h3>
 								<p className={styles.sponsorDesc}>Premium utstyr for alle bueskyttere</p>
-								<a
-									href="https://www.arcticbuesport.no"
-									target="_blank"
-									rel="noopener noreferrer"
-									className={styles.sponsorLink}
-								>
+								<a href="https://www.arcticbuesport.no" target="_blank" rel="noopener noreferrer" className={styles.sponsorLink}>
 									Besøk nettside
 									<LuExternalLink size={14} />
 								</a>

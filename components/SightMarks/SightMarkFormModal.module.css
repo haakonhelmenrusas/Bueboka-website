@@ -1,160 +1,159 @@
 /* Info box */
 .infoBox {
-    display: flex;
-    gap: var(--space-3);
-    align-items: flex-start;
-    background: var(--bg-light);
-    border: 1px solid var(--primary-20);
-    border-radius: var(--radius-base);
-    padding: var(--space-4);
-    margin-bottom: var(--space-5);
+	display: flex;
+	gap: var(--space-3);
+	align-items: flex-start;
+	background: var(--bg-light);
+	border: 1px solid var(--primary-20);
+	border-radius: var(--radius-base);
+	padding: var(--space-4);
+	margin-bottom: var(--space-5);
 }
 
 .infoIcon {
-    flex: 0 0 auto;
-    color: var(--primary);
-    margin-top: 2px;
+	flex: 0 0 auto;
+	color: var(--primary);
+	margin-top: 2px;
 }
 
 .infoText {
-    margin: 0;
-    font-size: 0.875rem;
-    color: var(--text-gray-700);
-    line-height: 1.5;
+	margin: 0;
+	font-size: 0.875rem;
+	color: var(--text-gray-700);
+	line-height: 1.5;
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
 }
 
 .field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	flex: 1;
 }
 
 .label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-gray-700);
+	font-size: 0.875rem;
+	font-weight: 600;
+	color: var(--text-gray-700);
 }
 
 .textInput,
 .select {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid var(--border-gray);
-    border-radius: var(--radius-base);
-    font-size: 0.95rem;
-    color: var(--text-dark);
-    background: var(--card-bg-solid);
-    cursor: pointer;
-    box-sizing: border-box;
+	width: 100%;
+	padding: 10px 14px;
+	border: 1px solid var(--border-gray);
+	border-radius: var(--radius-base);
+	font-size: 0.95rem;
+	color: var(--text-dark);
+	background: var(--card-bg-solid);
+	cursor: pointer;
+	box-sizing: border-box;
 }
 
 .textInput {
-    cursor: text;
+	cursor: text;
 }
 
 .textInput:focus,
 .select:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(5, 53, 70, 0.1);
+	outline: none;
+	border-color: var(--primary);
+	box-shadow: 0 0 0 3px rgba(5, 53, 70, 0.1);
 }
 
 .textInput::placeholder {
-    color: var(--text-gray-600);
-    opacity: 0.7;
+	color: var(--text-gray-600);
+	opacity: 0.7;
 }
 
 .selectRow {
-    display: flex;
-    gap: var(--space-4);
+	display: flex;
+	gap: var(--space-4);
 }
 
 .selectField {
-    flex: 1;
-    min-width: 0;
+	flex: 1;
+	min-width: 0;
 }
 
-
 .divider {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    margin: var(--space-5) 0;
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	margin: var(--space-5) 0;
 }
 
 .divider::before,
 .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border-gray);
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: var(--border-gray);
 }
 
 .dividerLabel {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--text-gray-600);
-    white-space: nowrap;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+	font-size: 0.8rem;
+	font-weight: 700;
+	color: var(--text-gray-600);
+	white-space: nowrap;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
 }
 
 .inputsRow {
-    display: flex;
-    flex-direction: row;
-    gap: var(--space-4);
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-4);
 }
 
 .inputsRow > div {
-    flex: 1;
+	flex: 1;
 }
 
 @media (max-width: 640px) {
-    .selectRow {
-        flex-direction: column;
-    }
+	.selectRow {
+		flex-direction: column;
+	}
 
-    .inputsRow {
-        flex-direction: column;
-    }
+	.inputsRow {
+		flex-direction: column;
+	}
 }
 
 .footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-2);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--space-3);
+	margin-top: var(--space-2);
 }
 
 .footerActions {
-    display: flex;
-    gap: var(--space-3);
-    margin-left: auto;
+	display: flex;
+	gap: var(--space-3);
+	margin-left: auto;
 }
 
 .error {
-    color: var(--error);
-    font-size: 0.875rem;
+	color: var(--error);
+	font-size: 0.875rem;
 }
 
 @media screen {
-    .footer {
-        margin-top: var(--space-8);
-        flex-direction: column-reverse;
-        align-items: stretch;
-    }
+	.footer {
+		margin-top: var(--space-8);
+		flex-direction: column-reverse;
+		align-items: stretch;
+	}
 
-    .footerActions {
-        flex-direction: column-reverse;
-        gap: var(--space-2);
-        margin-left: 0;
-    }
+	.footerActions {
+		flex-direction: column-reverse;
+		gap: var(--space-2);
+		margin-left: 0;
+	}
 }

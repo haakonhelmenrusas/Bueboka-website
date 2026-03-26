@@ -117,4 +117,3 @@ export const NORWEGIAN_ARCHERY_CLUBS = [
 ] as const;
 
 export type NorwegianArcheryClub = (typeof NORWEGIAN_ARCHERY_CLUBS)[number]['value'];
-

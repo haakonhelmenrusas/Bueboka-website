@@ -77,4 +77,3 @@ export const statsCache = new MemoryCache(180000); // 3 minutes for statistics
 export const practicesCache = new MemoryCache(30000); // 30 seconds for practice cards
 export const equipmentCache = new MemoryCache(60000); // 60 seconds for bows + arrows
 export const sessionCache = new MemoryCache(30000); // 30 seconds for session lookups
-

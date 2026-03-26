@@ -82,9 +82,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 			// Prefer the service's echoed distances; fall back to the locally-built list.
 			const fullDistances: number[] =
-				Array.isArray(rawResult.distances) && rawResult.distances.length > 1
-					? rawResult.distances
-					: allDistances;
+				Array.isArray(rawResult.distances) && rawResult.distances.length > 1 ? rawResult.distances : allDistances;
 
 			const result: FullMarksResult = {
 				distances: fullDistances,
@@ -195,14 +193,9 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 				<div className={styles.actions}>
 					<Button label="Lukk" buttonType="outline" onClick={onClose} disabled={status === 'pending'} />
-					<Button
-						label={status === 'pending' ? 'Beregner...' : 'Beregn'}
-						onClick={handleSubmit}
-						disabled={status === 'pending'}
-					/>
+					<Button label={status === 'pending' ? 'Beregner...' : 'Beregn'} onClick={handleSubmit} disabled={status === 'pending'} />
 				</div>
 			</div>
 		</Modal>
 	);
 }
-

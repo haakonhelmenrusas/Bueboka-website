@@ -2,152 +2,155 @@
 
 /* Hidden on desktop */
 .wrapper {
-    display: none;
+	display: none;
 }
 
 /* Show only on small screens */
 @media (max-width: 767px) {
-    .wrapper {
-        display: block;
-        position: fixed;
-        bottom: var(--space-6);
-        right: var(--space-6);
-        z-index: 200;
-    }
+	.wrapper {
+		display: block;
+		position: fixed;
+		bottom: var(--space-6);
+		right: var(--space-6);
+		z-index: 200;
+	}
 }
 
 /* Semi-transparent backdrop that closes the menu when tapped */
 .backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
+	position: fixed;
+	inset: 0;
+	z-index: -1;
 }
 
 /* ── FAB (main round button) ──────────────────────────────── */
 .fab {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: var(--white);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-    transition: transform 200ms ease, box-shadow 200ms ease;
-    position: relative;
-    z-index: 1;
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	background: var(--primary);
+	color: var(--white);
+	border: none;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+	transition:
+		transform 200ms ease,
+		box-shadow 200ms ease;
+	position: relative;
+	z-index: 1;
 }
 
 .fab:hover {
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
-    transform: scale(1.05);
+	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.32);
+	transform: scale(1.05);
 }
 
 .fab:active {
-    transform: scale(0.95);
+	transform: scale(0.95);
 }
 
 /* Rotate the icon container when open */
 .fabOpen {
-    background: var(--primary-dark, var(--primary));
+	background: var(--primary-dark, var(--primary));
 }
 
 /* ── Action items menu ─────────────────────────────────────── */
 .menu {
-    position: absolute;
-    bottom: calc(56px + var(--space-3)); /* FAB height + gap */
-    right: 0;
-    display: flex;
-    flex-direction: column-reverse; /* first item is closest to FAB */
-    align-items: flex-end;
-    gap: var(--space-3);
-    pointer-events: none;
-    /* Frosted-glass backdrop (invisible while closed) */
-    padding: var(--space-4) var(--space-3);
-    border-radius: 20px;
-    border: 1px solid transparent;
-    background: rgba(5, 53, 70, 0);
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
-    transition: background 220ms ease,
-    backdrop-filter 220ms ease,
-    border-color 220ms ease;
+	position: absolute;
+	bottom: calc(56px + var(--space-3)); /* FAB height + gap */
+	right: 0;
+	display: flex;
+	flex-direction: column-reverse; /* first item is closest to FAB */
+	align-items: flex-end;
+	gap: var(--space-3);
+	pointer-events: none;
+	/* Frosted-glass backdrop (invisible while closed) */
+	padding: var(--space-4) var(--space-3);
+	border-radius: 20px;
+	border: 1px solid transparent;
+	background: rgba(5, 53, 70, 0);
+	backdrop-filter: blur(0px);
+	-webkit-backdrop-filter: blur(0px);
+	transition:
+		background 220ms ease,
+		backdrop-filter 220ms ease,
+		border-color 220ms ease;
 }
 
 .menu[aria-hidden='false'] {
-    pointer-events: auto;
-    background: rgba(5, 53, 70, 0.52);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-color: rgba(255, 255, 255, 0.1);
+	pointer-events: auto;
+	background: rgba(5, 53, 70, 0.52);
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
+	border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Individual action button row: label + icon */
 .actionItem {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    padding: 0;
-    /* Each item slides up and fades in with a staggered delay */
-    opacity: 0;
-    transform: translateY(8px) scale(0.92);
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	padding: 0;
+	/* Each item slides up and fades in with a staggered delay */
+	opacity: 0;
+	transform: translateY(8px) scale(0.92);
 }
 
 .menu[aria-hidden='false'] .actionItem {
-    animation: item-in 200ms ease forwards;
-    animation-delay: calc(var(--item-index, 0) * 40ms);
+	animation: item-in 200ms ease forwards;
+	animation-delay: calc(var(--item-index, 0) * 40ms);
 }
 
 @keyframes item-in {
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
 }
 
 /* Label pill */
 .actionLabel {
-    background: var(--white);
-    color: var(--text-primary, #1a1a1a);
-    font-size: 0.875rem;
-    font-weight: 600;
-    padding: var(--space-2) var(--space-4);
-    border-radius: 999px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    white-space: nowrap;
-    font-family: inherit;
+	background: var(--white);
+	color: var(--text-primary, #1a1a1a);
+	font-size: 0.875rem;
+	font-weight: 600;
+	padding: var(--space-2) var(--space-4);
+	border-radius: 999px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	white-space: nowrap;
+	font-family: inherit;
 }
 
 /* Icon bubble */
 .actionIcon {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    flex-shrink: 0;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	background: var(--primary);
+	color: var(--white);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	flex-shrink: 0;
 }
 
 /* Accessibility: respect prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-    .fab,
-    .actionItem {
-        transition: none;
-        animation: none !important;
-    }
+	.fab,
+	.actionItem {
+		transition: none;
+		animation: none !important;
+	}
 
-    .menu[aria-hidden='false'] .actionItem {
-        opacity: 1;
-        transform: none;
-    }
+	.menu[aria-hidden='false'] .actionItem {
+		opacity: 1;
+		transform: none;
+	}
 }

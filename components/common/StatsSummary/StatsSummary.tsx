@@ -2,7 +2,16 @@
 
 import React from 'react';
 import styles from './StatsSummary.module.css';
-import { LuCalendarDays, LuChartBar, LuChevronLeft, LuChevronRight, LuCircleCheck, LuCircleX, LuTarget, LuTrendingUp } from 'react-icons/lu';
+import {
+	LuCalendarDays,
+	LuChartBar,
+	LuChevronLeft,
+	LuChevronRight,
+	LuCircleCheck,
+	LuCircleX,
+	LuTarget,
+	LuTrendingUp,
+} from 'react-icons/lu';
 import type { PeriodStats } from '@/lib/types';
 
 export type StatsSummaryProps = {

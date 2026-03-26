@@ -37,7 +37,16 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 						onClick={() => onCardClick?.(sm)}
 						role={onCardClick ? 'button' : undefined}
 						tabIndex={onCardClick ? 0 : undefined}
-						onKeyDown={onCardClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onCardClick(sm); } } : undefined}
+						onKeyDown={
+							onCardClick
+								? (e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											onCardClick(sm);
+										}
+									}
+								: undefined
+						}
 						aria-label={onCardClick ? `Rediger siktemerker for ${title}` : undefined}
 					>
 						<div className={styles.cardHeader}>
@@ -51,18 +60,18 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 									</span>
 								)}
 							</div>
-						<div className={styles.badgeRow}>
-							{showBowBadge && (
-								<Badge variant="ghost" size="sm" icon={<LuTarget size={12} />}>
-									{bowName}
-								</Badge>
-							)}
-							{arrowBadge && (
-								<Badge variant="ghost" size="sm" icon={<LuArrowRight size={12} />}>
-									{arrowBadge}
-								</Badge>
-							)}
-						</div>
+							<div className={styles.badgeRow}>
+								{showBowBadge && (
+									<Badge variant="ghost" size="sm" icon={<LuTarget size={12} />}>
+										{bowName}
+									</Badge>
+								)}
+								{arrowBadge && (
+									<Badge variant="ghost" size="sm" icon={<LuArrowRight size={12} />}>
+										{arrowBadge}
+									</Badge>
+								)}
+							</div>
 						</div>
 
 						{sm.givenDistances.length === 0 ? (
@@ -77,9 +86,7 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 								</div>
 								{sm.givenDistances.map((distance, index) => {
 									const givenMark = sm.givenMarks[index];
-									const calculatedMark = Array.isArray(calc?.calculated_marks)
-										? calc.calculated_marks[index]
-										: undefined;
+									const calculatedMark = Array.isArray(calc?.calculated_marks) ? calc.calculated_marks[index] : undefined;
 									return (
 										<div key={index} className={styles.markRow}>
 											<span className={styles.distanceValue}>{distance.toFixed(1).replace('.', ',')} m</span>
@@ -89,7 +96,10 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 											</span>
 											<button
 												className={styles.deleteBtn}
-												onClick={(e) => { e.stopPropagation(); onDeleteMark(sm.id, index); }}
+												onClick={(e) => {
+													e.stopPropagation();
+													onDeleteMark(sm.id, index);
+												}}
 												disabled={isDeleting}
 												aria-label={`Fjern merke for ${distance.toFixed(1).replace('.', ',')}m`}
 											>

@@ -53,9 +53,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 					const endUnscoredArrows = end.arrowsWithoutScore ?? 0;
 					// Use the explicit arrows field when available (covers sessions recorded
 					// without individual scores), falling back to scores.length.
-					const endTotalArrows = end.arrows != null
-						? end.arrows + endUnscoredArrows
-						: endScoredArrows + endUnscoredArrows;
+					const endTotalArrows = end.arrows != null ? end.arrows + endUnscoredArrows : endScoredArrows + endUnscoredArrows;
 					totalArrows += endTotalArrows;
 					scoredArrows += endScoredArrows;
 					totalScore += end.scores.reduce((sum, s) => sum + s, 0);

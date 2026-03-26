@@ -51,7 +51,6 @@ export async function GET(request: Request) {
 
 		return NextResponse.json({ competitions: competitionsWithStats });
 	} catch (error) {
-
 		return NextResponse.json(
 			{
 				error: 'Failed to fetch competitions',

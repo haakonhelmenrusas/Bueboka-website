@@ -21,7 +21,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return validation.error;
 		}
 
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes } = validation.data;
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes } =
+			validation.data;
 
 		// Verify the bow belongs to the user
 		const existingBow = await prisma.bow.findUnique({
