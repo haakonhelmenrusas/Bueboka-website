@@ -5,6 +5,7 @@ import styles from './WhatsNewModal.module.css';
 import { LuChevronRight } from 'react-icons/lu';
 import { Button, Modal } from '@/components';
 import { LiaFireAltSolid } from 'react-icons/lia';
+import Image from 'next/image';
 import { PiChartBarLight, PiCheckSquareLight } from 'react-icons/pi';
 import { IoMdTrendingUp } from 'react-icons/io';
 import { HiOutlineXMark } from 'react-icons/hi2';
@@ -34,7 +35,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 				<div className={styles.welcomeContent}>
 					<div className={styles.heroSection}>
 						<div className={styles.heroIcon}>
-							<LiaFireAltSolid className="w-16 h-16 stroke-1" />
+							<Image src="/assets/logo.png" alt="Bueboka" width={96} height={96} className={styles.heroLogoImg} />
 						</div>
 						<p className={styles.heroText}>
 							Bueboka hjelper deg å holde oversikt over treningene dine, følge din utvikling, og forbedre skytingen din.

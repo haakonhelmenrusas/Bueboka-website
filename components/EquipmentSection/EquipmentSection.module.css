@@ -146,13 +146,13 @@
 }
 
 .placeholder {
-	background: var(--primary-06);
-	border: 1px dashed var(--primary-20);
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(12, 130, 172, 0.15) 100%);
+	border: 1px dashed rgba(255, 255, 255, 0.25);
 	border-radius: var(--radius-lg);
-	padding: var(--space-5) var(--space-6);
-	color: var(--text-gray-700);
+	padding: var(--space-8) var(--space-6);
+	color: var(--white-80);
 	font-weight: 600;
-	min-height: 56px;
+	min-height: 200px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

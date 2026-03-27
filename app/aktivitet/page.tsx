@@ -15,6 +15,7 @@ import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData
 import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import { CompetitionFormInput } from '@/components/Competitions/CompetitionFormModal';
 import type { Practice } from '@/lib/types';
+import { LuActivity, LuBookOpen, LuTrendingUp, LuTrophy } from 'react-icons/lu';
 
 export default function AktivitetPage() {
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
@@ -97,6 +98,33 @@ export default function AktivitetPage() {
 					<div className={styles.titleGroup}>
 						<h1 className={styles.pageTitle}>Aktivitet</h1>
 						<p className={styles.pageSubtitle}>Alle dine treninger og konkurranser</p>
+					</div>
+				</div>
+
+				<div className={styles.introBanner}>
+					<div className={styles.introBannerIcon}>
+						<LuActivity size={32} />
+					</div>
+					<div className={styles.introBannerText}>
+						<h2 className={styles.introBannerTitle}>Din treningslogg</h2>
+						<p className={styles.introBannerDescription}>
+							Her finner du alle treningene og konkurransene du har registrert. Bla gjennom historikken, se detaljer om enkeltøkter, og
+							hold oversikt over fremgangen din over tid.
+						</p>
+					</div>
+					<div className={styles.introBannerPills}>
+						<div className={styles.introPill}>
+							<LuBookOpen size={16} />
+							Treningslogg
+						</div>
+						<div className={styles.introPill}>
+							<LuTrophy size={16} />
+							Konkurranser
+						</div>
+						<div className={styles.introPill}>
+							<LuTrendingUp size={16} />
+							Fremgang
+						</div>
 					</div>
 				</div>
 
