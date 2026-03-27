@@ -14,7 +14,6 @@ export async function POST(request: NextRequest) {
 
 		const body = await request.json();
 		// Validate input using Zod schema
-		console.log('Received body:', body);
 		const validation = createPracticeSchema.safeParse(body);
 		if (!validation.success) {
 			return NextResponse.json(

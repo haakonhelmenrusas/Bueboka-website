@@ -5,49 +5,22 @@ import styles from './CompetitionFormModal.module.css';
 import { LuX } from 'react-icons/lu';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
-import { Button, Checkbox, DateInput, Input, Modal, NumberInput, Select, TextArea } from '@/components';
-import {
-	type ArrowsOption,
-	type EquipmentOption,
-	getArrowsOptions,
-	getBowOptions,
-	getEnvironmentOptions,
-	getPracticeCategoryOptions,
-	getWeatherSelectOptions,
-} from '@/lib/formUtils';
-import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
+import { ConfirmModal, Modal } from '@/components';
+import { type CompetitionFormInput, type CompetitionRoundInput, emptyRound } from './CompetitionFormModal.types';
+import { CompetitionFormStepIndicator } from './CompetitionFormStepIndicator';
+import { CompetitionFormInfoStep } from './CompetitionFormInfoStep';
+import { CompetitionFormRoundsStep } from './CompetitionFormRoundsStep';
+import { CompetitionFormResultStep } from './CompetitionFormResultStep';
+import { CompetitionFormReflectionStep } from './CompetitionFormReflectionStep';
+import { CompetitionFormNavFooter } from './CompetitionFormNavFooter';
 
-export interface CompetitionRoundInput {
-	roundNumber: number;
-	distanceMeters?: number;
-	targetType: string; // Changed from targetSizeCm to match practice form
-	numberArrows?: number;
-	arrowsWithoutScore?: number;
-	roundScore: number;
-	scores?: number[];
-}
-
-export interface CompetitionFormInput {
-	date: string; // ISO
-	name: string;
-	location?: string;
-	organizerName?: string;
-	environment: Environment;
-	weather: WeatherCondition[];
-	practiceCategory: PracticeCategory;
-	notes?: string;
-	placement?: number;
-	numberOfParticipants?: number;
-	personalBest?: boolean;
-	rounds: CompetitionRoundInput[];
-	bowId?: string;
-	arrowsId?: string;
-}
+export type { CompetitionFormInput, CompetitionRoundInput };
 
 interface CompetitionFormModalProps {
 	open: boolean;
 	onClose: () => void;
 	onSave: (input: CompetitionFormInput) => Promise<void>;
+	onDeleted?: (id: string) => void;
 	mode: 'create' | 'edit';
 	competition?: {
 		id: string;
@@ -69,50 +42,61 @@ interface CompetitionFormModalProps {
 			roundNumber: number;
 			arrows: number;
 			distanceMeters?: number | null;
+			distanceFrom?: number | null;
+			distanceTo?: number | null;
 			targetSizeCm?: number | null;
+			targetType?: string | null;
+			arrowsWithoutScore?: number | null;
 			roundScore?: number | null;
-			scores?: number[];
 		}>;
 	};
-	bows?: EquipmentOption[];
-	arrows?: ArrowsOption[];
+	bows?: Array<{ id: string; name: string; type: string; isFavorite?: boolean }>;
+	arrows?: Array<{ id: string; name: string; material: string; isFavorite?: boolean }>;
 }
 
 export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	open,
 	onClose,
 	onSave,
+	onDeleted,
 	mode,
 	competition,
 	bows = [],
 	arrows = [],
 }) => {
-	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
+	const [step, setStep] = useState(0);
+
 	const [name, setName] = useState('');
+	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 	const [location, setLocation] = useState('');
 	const [organizerName, setOrganizerName] = useState('');
 	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
 	const [weather, setWeather] = useState<WeatherCondition[]>([]);
 	const [practiceCategory, setPracticeCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
-	const [notes, setNotes] = useState('');
+	const [rounds, setRounds] = useState<CompetitionRoundInput[]>([emptyRound('SKIVE_INDOOR')]);
 	const [placement, setPlacement] = useState<number | null>(null);
 	const [numberOfParticipants, setNumberOfParticipants] = useState<number | null>(null);
 	const [personalBest, setPersonalBest] = useState(false);
-	const [rounds, setRounds] = useState<CompetitionRoundInput[]>([
-		{ roundNumber: 1, distanceMeters: 18, targetType: '40cm', numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 },
-	]);
-	const [bowId, setBowId] = useState<string>('');
-	const [arrowsId, setArrowsId] = useState<string>('');
-	const [submitting, setSubmitting] = useState(false);
-	const [error, setError] = useState<string | null>(null);
+	const [notes, setNotes] = useState('');
+	const [bowId, setBowId] = useState('');
+	const [arrowsId, setArrowsId] = useState('');
 
-	// Initialize form based on mode
+	const [submitting, setSubmitting] = useState(false);
+	const [deleting, setDeleting] = useState(false);
+	const [error, setError] = useState<string | null>(null);
+	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+
+	const isEditMode = mode === 'edit';
+
 	useEffect(() => {
 		if (!open) return;
 
+		setStep(0);
+		setError(null);
+
 		if (mode === 'edit' && competition) {
-			setDate(competition.date.split('T')[0]);
 			setName(competition.name);
+			setDate(competition.date.split('T')[0]);
 			setLocation(competition.location || '');
 			setOrganizerName(competition.organizerName || '');
 			setEnvironment(competition.environment);
@@ -122,26 +106,27 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			setPlacement(competition.placement ?? null);
 			setNumberOfParticipants(competition.numberOfParticipants ?? null);
 			setPersonalBest(competition.personalBest ?? false);
-
-			if (competition.rounds && competition.rounds.length > 0) {
-				const extractedRounds = competition.rounds.map((round) => ({
-					roundNumber: round.roundNumber,
-					distanceMeters: round.distanceMeters || undefined,
-					targetType: round.targetSizeCm ? `${round.targetSizeCm}cm` : '',
-					numberArrows: round.arrows || 0,
-					arrowsWithoutScore: (round as any).arrowsWithoutScore || 0,
-					roundScore: round.roundScore || 0,
-					scores: round.scores,
-				}));
-				setRounds(extractedRounds);
-			}
-
 			setBowId(competition.bowId || '');
 			setArrowsId(competition.arrowsId || '');
+
+			if (competition.rounds && competition.rounds.length > 0) {
+				setRounds(
+					competition.rounds.map((r) => ({
+						distanceMeters: r.distanceMeters ?? undefined,
+						distanceFrom: r.distanceFrom ?? undefined,
+						distanceTo: r.distanceTo ?? undefined,
+						targetType: r.targetType || (r.targetSizeCm ? `${r.targetSizeCm}cm` : ''),
+						numberArrows: r.arrows || undefined,
+						arrowsWithoutScore: r.arrowsWithoutScore ?? undefined,
+						roundScore: r.roundScore ?? 0,
+					}))
+				);
+			} else {
+				setRounds([emptyRound(competition.practiceCategory)]);
+			}
 		} else {
-			// Create mode: reset to defaults
-			setDate(new Date().toISOString().slice(0, 10));
 			setName('');
+			setDate(new Date().toISOString().slice(0, 10));
 			setLocation('');
 			setOrganizerName('');
 			setEnvironment(Environment.INDOOR);
@@ -151,38 +136,77 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			setPlacement(null);
 			setNumberOfParticipants(null);
 			setPersonalBest(false);
-			setRounds([{ roundNumber: 1, distanceMeters: 18, targetType: '40cm', numberArrows: 30, arrowsWithoutScore: 0, roundScore: 0 }]);
-			// Set defaults based on favorites
-			const favoriteBow = bows.find((b) => b.isFavorite);
-			setBowId(favoriteBow ? favoriteBow.id : '');
-
-			const favoriteArrows = arrows.find((a) => a.isFavorite);
-			setArrowsId(favoriteArrows ? favoriteArrows.id : '');
+			setRounds([emptyRound('SKIVE_INDOOR')]);
+			setBowId(bows.find((b) => b.isFavorite)?.id || '');
+			setArrowsId(arrows.find((a) => a.isFavorite)?.id || '');
 		}
-		setError(null);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [open, mode, competition]);
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
-		if (submitting) return;
+	useEffect(() => {
+		if (environment !== Environment.OUTDOOR) setWeather([]);
+	}, [environment]);
 
-		setError(null);
+	const handleCategoryChange = (cat: PracticeCategory) => {
+		setPracticeCategory(cat);
+		setRounds([emptyRound(cat)]);
+	};
 
-		// Validation
+	const addRound = () => {
+		if (rounds.length < 20) setRounds((prev) => [...prev, emptyRound(practiceCategory)]);
+	};
+
+	const removeRound = (index: number) => {
+		if (rounds.length > 1) setRounds((prev) => prev.filter((_, i) => i !== index));
+	};
+
+	const updateRound = (index: number, field: keyof CompetitionRoundInput, value: CompetitionRoundInput[keyof CompetitionRoundInput]) => {
+		setRounds((prev) => {
+			const next = [...prev];
+			next[index] = { ...next[index], [field]: value };
+			return next;
+		});
+	};
+
+	const toggleWeather = (condition: WeatherCondition) => {
+		setWeather((prev) => (prev.includes(condition) ? prev.filter((w) => w !== condition) : [...prev, condition]));
+	};
+
+	const handleDelete = async () => {
+		if (!competition?.id) return;
+		setDeleting(true);
+		try {
+			const res = await fetch(`/api/competitions/${competition.id}`, { method: 'DELETE' });
+			if (!res.ok) throw new Error('Kunne ikke slette konkurranse');
+			onDeleted?.(competition.id);
+			onClose();
+		} catch (err) {
+			setError(err instanceof Error ? err.message : 'Kunne ikke slette konkurranse');
+		} finally {
+			setDeleting(false);
+			setConfirmDeleteOpen(false);
+		}
+	};
+
+	const handleSubmit = async () => {
 		if (!name.trim()) {
 			setError('Navn på konkurransen er påkrevd');
 			return;
 		}
 
-		const validRounds = rounds.filter((r) => (r.numberArrows ?? 0) > 0 || (r.arrowsWithoutScore ?? 0) > 0);
-		if (validRounds.length === 0) {
-			setError('Minst én runde med piler er påkrevd');
-			return;
-		}
-
 		setSubmitting(true);
+		setError(null);
 		try {
+			const validRounds = rounds.filter(
+				(r) =>
+					(r.distanceMeters && r.distanceMeters > 0) ||
+					(r.distanceFrom && r.distanceFrom > 0) ||
+					(r.distanceTo && r.distanceTo > 0) ||
+					r.targetType ||
+					(r.numberArrows ?? 0) > 0 ||
+					r.roundScore > 0
+			);
+
 			await onSave({
 				date: new Date(date).toISOString(),
 				name: name.trim(),
@@ -195,274 +219,115 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				placement: placement ?? undefined,
 				numberOfParticipants: numberOfParticipants ?? undefined,
 				personalBest: personalBest || undefined,
-				rounds: validRounds,
+				rounds: validRounds.length > 0 ? validRounds : rounds,
 				bowId: bowId || undefined,
 				arrowsId: arrowsId || undefined,
 			});
 			onClose();
 		} catch (err) {
-			console.error('Error saving competition:', err);
 			setError(err instanceof Error ? err.message : 'Kunne ikke lagre konkurranse.');
 		} finally {
 			setSubmitting(false);
 		}
 	};
 
-	const addRound = () => {
-		setRounds([
-			...rounds,
-			{
-				roundNumber: rounds.length + 1,
-				distanceMeters: rounds[rounds.length - 1]?.distanceMeters || 18,
-				targetType: rounds[rounds.length - 1]?.targetType || '40cm',
-				numberArrows: 30,
-				arrowsWithoutScore: 0,
-				roundScore: 0,
-			},
-		]);
-	};
-
-	const removeRound = (index: number) => {
-		if (rounds.length > 1) {
-			setRounds(rounds.filter((_, i) => i !== index));
-		}
-	};
-
-	const updateRound = (index: number, field: keyof CompetitionRoundInput, value: any) => {
-		const updated = [...rounds];
-		updated[index] = { ...updated[index], [field]: value };
-		setRounds(updated);
-	};
-
 	if (!open) return null;
 
-	const environmentOptions = getEnvironmentOptions();
-	const practiceCategoryOptions = getPracticeCategoryOptions();
-	const bowOptions = getBowOptions(bows);
-	const arrowsOptions = getArrowsOptions(arrows);
+	const title = isEditMode ? 'Rediger konkurranse' : 'Ny konkurranse';
 
 	return (
-		<Modal open={open} onClose={onClose} title={mode === 'edit' ? 'Rediger konkurranse' : 'Legg til konkurranse'} maxWidth={720}>
-			<form onSubmit={handleSubmit} className={styles.form}>
-				{error && <div className={styles.error}>{error}</div>}
-				<Input
-					label="Navn på konkurransen"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					required
-					helpText="F.eks. 'NM Innendørs 2026'"
-					containerClassName={styles.field}
-				/>
-				<div className={styles.row}>
-					<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
-					<Select
-						label="Kategori"
-						value={practiceCategory}
-						onChange={(val) => setPracticeCategory(val as PracticeCategory)}
-						options={practiceCategoryOptions}
-						containerClassName={styles.field}
+		<>
+			<Modal
+				open={open}
+				onClose={onClose}
+				title={title}
+				maxWidth={760}
+				closeOnBackdrop={false}
+				hideHeader
+				panelStyle={{ padding: 0, gap: 0, overflow: 'hidden' }}
+			>
+				<div className={styles.wizard}>
+					<div className={styles.wizardHeader}>
+						<h2 className={styles.wizardTitle}>{title}</h2>
+						<button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+							<LuX size={20} />
+						</button>
+					</div>
+
+					<CompetitionFormStepIndicator step={step} onStepChange={setStep} />
+
+					<div className={styles.scrollArea}>
+						{step === 0 && (
+							<CompetitionFormInfoStep
+								name={name}
+								setName={setName}
+								date={date}
+								setDate={setDate}
+								practiceCategory={practiceCategory}
+								onCategoryChange={handleCategoryChange}
+								environment={environment}
+								setEnvironment={setEnvironment}
+								location={location}
+								setLocation={setLocation}
+								organizerName={organizerName}
+								setOrganizerName={setOrganizerName}
+								weather={weather}
+								toggleWeather={toggleWeather}
+								bowId={bowId}
+								setBowId={setBowId}
+								arrowsId={arrowsId}
+								setArrowsId={setArrowsId}
+								bows={bows}
+								arrows={arrows}
+								isEditMode={isEditMode}
+								onDeleteRequest={() => setConfirmDeleteOpen(true)}
+							/>
+						)}
+						{step === 1 && (
+							<CompetitionFormRoundsStep
+								rounds={rounds}
+								practiceCategory={practiceCategory}
+								addRound={addRound}
+								removeRound={removeRound}
+								updateRound={updateRound}
+							/>
+						)}
+						{step === 2 && (
+							<CompetitionFormResultStep
+								placement={placement}
+								setPlacement={setPlacement}
+								numberOfParticipants={numberOfParticipants}
+								setNumberOfParticipants={setNumberOfParticipants}
+								personalBest={personalBest}
+								setPersonalBest={setPersonalBest}
+							/>
+						)}
+						{step === 3 && <CompetitionFormReflectionStep notes={notes} setNotes={setNotes} error={error} />}
+					</div>
+
+					<CompetitionFormNavFooter
+						step={step}
+						onPrev={() => setStep((s) => Math.max(s - 1, 0))}
+						onNext={() => setStep((s) => Math.min(s + 1, 3))}
+						isEditMode={isEditMode}
+						submitting={submitting}
+						onClose={onClose}
+						onSubmit={handleSubmit}
 					/>
 				</div>
-				<div className={styles.row}>
-					<Select
-						label="Miljø"
-						value={environment}
-						onChange={(val) => setEnvironment(val as Environment)}
-						options={environmentOptions}
-						containerClassName={styles.field}
-					/>
-					<Input label="Sted" optional value={location} onChange={(e) => setLocation(e.target.value)} containerClassName={styles.field} />
-				</div>
-				<div className={styles.row}>
-					<Select
-						label="Bue"
-						value={bowId}
-						onChange={(val) => setBowId(val as string)}
-						options={bowOptions}
-						placeholderLabel="Velg bue (valgfritt)"
-						containerClassName={styles.field}
-					/>
-					<Select
-						label="Piler"
-						value={arrowsId}
-						onChange={(val) => setArrowsId(val as string)}
-						options={arrowsOptions}
-						placeholderLabel="Velg piler (valgfritt)"
-						containerClassName={styles.field}
-					/>
-				</div>
-				<Input
-					label="Arrangør"
-					optional
-					value={organizerName}
-					onChange={(e) => setOrganizerName(e.target.value)}
-					helpText="Klubb eller organisasjon som arrangerte"
-					containerClassName={styles.field}
-				/>
-				{environment === Environment.OUTDOOR ? (
-					<Select
-						label="Værforhold"
-						value={weather}
-						onChange={(val) => setWeather(val as WeatherCondition[])}
-						options={getWeatherSelectOptions()}
-						multiple
-						maxSelectedLabels={2}
-						placeholderLabel="Velg vær (valgfritt)"
-						helpText="Velg ett eller flere"
-						containerClassName={styles.field}
-					/>
-				) : null}
-				<div className={styles.row}>
-					<NumberInput
-						label="Plassering"
-						value={placement ?? 0}
-						onChange={(val) => setPlacement(val || null)}
-						onEmpty={() => setPlacement(null)}
-						min={1}
-						helpText="Din plassering"
-						startEmpty
-						optional
-						inputClassName={styles.numberInput}
-						containerClassName={styles.field}
-					/>
-					<NumberInput
-						label="Antall deltakere"
-						value={numberOfParticipants ?? 0}
-						onChange={(val) => setNumberOfParticipants(val || null)}
-						onEmpty={() => setNumberOfParticipants(null)}
-						min={1}
-						helpText="Totalt antall"
-						startEmpty
-						optional
-						containerClassName={styles.field}
-					/>
-				</div>
-				<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
-				<div className={styles.roundsSection}>
-					<h4 className={styles.sectionTitle}>Runder</h4>
-					{rounds.map((round, index) => {
-						const isRangeCategory = practiceCategory === 'JAKT_3D' || practiceCategory === 'FELT';
-						return (
-							<div key={index} className={styles.roundCard}>
-								<div className={styles.roundHeader}>
-									<span className={styles.roundNumber}>Runde {round.roundNumber}</span>
-									{rounds.length > 1 && (
-										<button type="button" onClick={() => removeRound(index)} className={styles.removeRoundBtn} aria-label="Fjern runde">
-											<LuX size={16} />
-										</button>
-									)}
-								</div>
-								<div className={styles.roundInputs}>
-									{isRangeCategory ? (
-										<>
-											<NumberInput
-												label="Fra"
-												value={(round as any).distanceFrom ?? 0}
-												onChange={(val) => updateRound(index, 'distanceFrom' as any, val || undefined)}
-												min={0}
-												startEmpty
-												width={120}
-												unit="m"
-											/>
-											<NumberInput
-												label="Til"
-												value={(round as any).distanceTo ?? 0}
-												onChange={(val) => updateRound(index, 'distanceTo' as any, val || undefined)}
-												min={0}
-												startEmpty
-												width={120}
-												unit="m"
-											/>
-										</>
-									) : (
-										<>
-											<NumberInput
-												label="Avstand"
-												value={round.distanceMeters ?? 0}
-												onChange={(val) => updateRound(index, 'distanceMeters', val || undefined)}
-												onEmpty={() => updateRound(index, 'distanceMeters', undefined)}
-												min={1}
-												startEmpty
-												width={180}
-												unit="m"
-											/>
-											<Select
-												label="Skive"
-												value={round.targetType}
-												onChange={(val) => updateRound(index, 'targetType', val as string)}
-												options={TARGET_TYPE_OPTIONS}
-												placeholderLabel="Velg skive"
-												searchable
-												searchPlaceholder="Søk etter skive..."
-												containerClassName={styles.skiveField}
-											/>
-										</>
-									)}
-								</div>
-								<div className={styles.rowFlex}>
-									<NumberInput
-										label="Piler"
-										value={round.numberArrows ?? 0}
-										onChange={(val) => updateRound(index, 'numberArrows', val || 0)}
-										onEmpty={() => updateRound(index, 'numberArrows', 0)}
-										min={0}
-										optional
-										startEmpty
-										width={180}
-										helpText="Ant. piler med score"
-									/>
-									<NumberInput
-										label="Score"
-										value={round.roundScore}
-										onChange={(val) => updateRound(index, 'roundScore', val || 0)}
-										min={0}
-										optional
-										startEmpty
-										width={180}
-									/>
-								</div>
-								<div className={styles.row}>
-									<NumberInput
-										label="Piler u/score"
-										value={round.arrowsWithoutScore ?? 0}
-										onChange={(val) => updateRound(index, 'arrowsWithoutScore', val || 0)}
-										onEmpty={() => updateRound(index, 'arrowsWithoutScore', 0)}
-										min={0}
-										optional
-										startEmpty
-										width={180}
-										helpText="Piler uten score"
-										containerClassName={styles.roundField}
-									/>
-								</div>
-							</div>
-						);
-					})}
-					<Button
-						type="button"
-						label="+ Legg til runde"
-						onClick={addRound}
-						variant="standard"
-						buttonType="outline"
-						width="100%"
-						disabled={rounds.length >= 20}
-					/>
-					{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
-				</div>
-				<TextArea
-					label="Notater"
-					value={notes}
-					onChange={(e) => setNotes(e.target.value)}
-					placeholder="Hvordan gikk konkurransen?&#10;&#10;Hva gikk bra?&#10;Hva kan forbedres?&#10;Noen spesielle forhold eller observasjoner?"
-					helpText={`Dine refleksjoner fra konkurransen (${notes.length}/500 tegn)`}
-					maxLength={500}
-					containerClassName={styles.field}
-				/>
-				<div className={styles.actions}>
-					<Button type="button" label="Avbryt" onClick={onClose} buttonType="outline" disabled={submitting} width={160} />
-					<Button type="submit" label={submitting ? 'Lagrer...' : 'Lagre'} disabled={submitting} loading={submitting} width={180} />
-				</div>
-			</form>
-		</Modal>
+			</Modal>
+
+			<ConfirmModal
+				open={confirmDeleteOpen}
+				onClose={() => setConfirmDeleteOpen(false)}
+				onConfirm={handleDelete}
+				title="Slett konkurranse"
+				message="Er du sikker på at du vil slette denne konkurransen? Handlingen kan ikke angres."
+				confirmLabel="Slett"
+				cancelLabel="Avbryt"
+				variant="danger"
+				isLoading={deleting}
+			/>
+		</>
 	);
 };

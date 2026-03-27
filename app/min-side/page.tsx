@@ -280,6 +280,13 @@ export default function MyPage() {
 		await fetchStats();
 	};
 
+	const handleCompetitionDeleted = async (id: string) => {
+		setDeletedPracticeId(id);
+		setSelectedCompetition(null);
+		setCompetitionFormOpen(false);
+		await fetchStats();
+	};
+
 	const handleSelectPractice = async (id: string, practiceType?: string) => {
 		const full = await fetchPracticeDetails(id, practiceType);
 		if (full) {
@@ -487,6 +494,7 @@ export default function MyPage() {
 					}
 				}}
 				onSave={handleSaveCompetition}
+				onDeleted={handleCompetitionDeleted}
 				competition={
 					competitionFormMode === 'edit' && selectedCompetition
 						? {
