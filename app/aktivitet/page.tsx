@@ -1,16 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 import {
-	AchievementUnlockModal,
-	ArrowsModal,
-	BowModal,
 	CompetitionFormModal,
 	Footer,
 	Header,
-	MobileActionButton,
 	PracticeDetailsModal,
 	PracticeFormModal,
 	PracticesSection,
@@ -19,129 +14,53 @@ import {
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import { CompetitionFormInput } from '@/components/Competitions/CompetitionFormModal';
-import type { Arrow, Bow, Practice } from '@/lib/types';
-import type { Achievement } from '@/lib/achievements/types';
+import type { Practice } from '@/lib/types';
 
 export default function AktivitetPage() {
-	const router = useRouter();
-
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
 	const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
 	const [practiceFormOpen, setPracticeFormOpen] = useState(false);
-	const [practiceFormMode, setPracticeFormMode] = useState<'create' | 'edit'>('create');
 	const [competitionFormOpen, setCompetitionFormOpen] = useState(false);
-	const [competitionFormMode, setCompetitionFormMode] = useState<'create' | 'edit'>('create');
 	const [selectedCompetition, setSelectedCompetition] = useState<any>(null);
-	const [bowModalOpen, setBowModalOpen] = useState(false);
-	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
-	const [selectedBow, setSelectedBow] = useState<Bow | null>(null);
-	const [selectedArrows, setSelectedArrows] = useState<Arrow | null>(null);
-	const [practiceReloadKey, setPracticeReloadKey] = useState(0);
 	const [deletedPracticeId, setDeletedPracticeId] = useState<string | null>(null);
-	const [achievementModalOpen, setAchievementModalOpen] = useState(false);
-	const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
 
 	const { fetchPracticeDetails } = usePracticeDetails();
 	const { bows, arrows } = useEquipmentData();
 
 	const handleSavePractice = async (input: PracticeFormInput) => {
-		const isEditMode = practiceFormMode === 'edit';
-		const url = isEditMode && selectedPractice ? `/api/practices/${selectedPractice.id}` : '/api/practices';
-		const method = isEditMode ? 'PATCH' : 'POST';
-
-		const res = await fetch(url, {
-			method,
+		if (!selectedPractice) return;
+		const res = await fetch(`/api/practices/${selectedPractice.id}`, {
+			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(input),
 		});
-
 		if (!res.ok) {
 			let details: any = null;
-			try {
-				details = await res.json();
-			} catch {
-				/* ignore */
-			}
-			let errMsg = `Kunne ikke ${isEditMode ? 'oppdatere' : 'lagre'} trening`;
-			const fieldErrors = details?.fieldErrors;
-			if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
-				errMsg = `Manglende/ugyldige felt:\n${Object.entries(fieldErrors)
-					.map(([f, m]) => `${f}: ${m}`)
-					.join('\n')}`;
-			} else if (details != null && typeof details === 'object' && 'error' in details) {
-				errMsg = (details as any).error;
-			}
+			try { details = await res.json(); } catch { /* ignore */ }
+			let errMsg = 'Kunne ikke oppdatere trening';
+			if (details != null && typeof details === 'object' && 'error' in details) errMsg = (details as any).error;
 			return Promise.reject(new Error(errMsg));
 		}
-
-		setPracticeReloadKey((k) => k + 1);
 		setPracticeFormOpen(false);
-		if (isEditMode) setSelectedPractice(null);
-
-		if (!isEditMode) {
-			try {
-				const achievementRes = await fetch('/api/achievements/check', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-				if (achievementRes.ok) {
-					const achievementData = await achievementRes.json();
-					if (achievementData.newAchievements?.length > 0) {
-						setUnlockedAchievements(achievementData.newAchievements);
-						setAchievementModalOpen(true);
-					}
-				}
-			} catch {
-				/* ignore */
-			}
-		}
+		setSelectedPractice(null);
 	};
 
 	const handleSaveCompetition = async (input: CompetitionFormInput) => {
-		const isEditMode = competitionFormMode === 'edit';
-		const url = isEditMode && selectedCompetition ? `/api/competitions/${selectedCompetition.id}` : '/api/competitions';
-		const method = isEditMode ? 'PATCH' : 'POST';
-
-		const res = await fetch(url, {
-			method,
+		if (!selectedCompetition) return;
+		const res = await fetch(`/api/competitions/${selectedCompetition.id}`, {
+			method: 'PATCH',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(input),
 		});
-
 		if (!res.ok) {
 			let details: any = null;
-			try {
-				details = await res.json();
-			} catch {
-				/* ignore */
-			}
-			let errMsg = `Kunne ikke ${isEditMode ? 'oppdatere' : 'lagre'} konkurranse`;
-			const fieldErrors = details?.fieldErrors;
-			if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
-				errMsg = `Manglende/ugyldige felt:\n${Object.entries(fieldErrors)
-					.map(([f, m]) => `${f}: ${m}`)
-					.join('\n')}`;
-			} else if (details != null && typeof details === 'object' && 'error' in details) {
-				errMsg = (details as any).error;
-			}
+			try { details = await res.json(); } catch { /* ignore */ }
+			let errMsg = 'Kunne ikke oppdatere konkurranse';
+			if (details != null && typeof details === 'object' && 'error' in details) errMsg = (details as any).error;
 			return Promise.reject(new Error(errMsg));
 		}
-
-		setPracticeReloadKey((k) => k + 1);
 		setCompetitionFormOpen(false);
-		if (isEditMode) setSelectedCompetition(null);
-
-		if (!isEditMode) {
-			try {
-				const achievementRes = await fetch('/api/achievements/check', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-				if (achievementRes.ok) {
-					const achievementData = await achievementRes.json();
-					if (achievementData.newAchievements?.length > 0) {
-						setUnlockedAchievements(achievementData.newAchievements);
-						setAchievementModalOpen(true);
-					}
-				}
-			} catch {
-				/* ignore */
-			}
-		}
+		setSelectedCompetition(null);
 	};
 
 	const handlePracticeDeleted = (id: string) => {
@@ -175,19 +94,7 @@ export default function AktivitetPage() {
 					</div>
 				</div>
 
-				<PracticesSection
-					onCreate={() => {
-						setPracticeFormMode('create');
-						setPracticeFormOpen(true);
-					}}
-					onCreateCompetition={() => {
-						setCompetitionFormMode('create');
-						setCompetitionFormOpen(true);
-					}}
-					onSelectPractice={handleSelectPractice}
-					reloadKey={practiceReloadKey}
-					deletedPracticeId={deletedPracticeId}
-				/>
+				<PracticesSection onSelectPractice={handleSelectPractice} deletedPracticeId={deletedPracticeId} />
 			</main>
 			<Footer />
 
@@ -202,10 +109,8 @@ export default function AktivitetPage() {
 					setPracticeModalOpen(false);
 					if (selectedPractice?.practiceType === 'KONKURRANSE') {
 						setSelectedCompetition(selectedPractice);
-						setCompetitionFormMode('edit');
 						setCompetitionFormOpen(true);
 					} else {
-						setPracticeFormMode('edit');
 						setPracticeFormOpen(true);
 					}
 				}}
@@ -214,15 +119,15 @@ export default function AktivitetPage() {
 
 			<PracticeFormModal
 				open={practiceFormOpen}
-				mode={practiceFormMode}
+				mode="edit"
 				onClose={() => {
 					setPracticeFormOpen(false);
-					if (practiceFormMode === 'edit') setSelectedPractice(null);
+					setSelectedPractice(null);
 				}}
 				onSave={handleSavePractice}
 				onDeleted={handlePracticeDeletedFromForm}
 				practice={
-					practiceFormMode === 'edit' && selectedPractice
+					selectedPractice
 						? {
 								id: selectedPractice.id,
 								date: selectedPractice.date,
@@ -245,14 +150,14 @@ export default function AktivitetPage() {
 
 			<CompetitionFormModal
 				open={competitionFormOpen}
-				mode={competitionFormMode}
+				mode="edit"
 				onClose={() => {
 					setCompetitionFormOpen(false);
-					if (competitionFormMode === 'edit') setSelectedCompetition(null);
+					setSelectedCompetition(null);
 				}}
 				onSave={handleSaveCompetition}
 				competition={
-					competitionFormMode === 'edit' && selectedCompetition
+					selectedCompetition
 						? {
 								id: selectedCompetition.id,
 								date: selectedCompetition.date,
@@ -283,83 +188,6 @@ export default function AktivitetPage() {
 				}
 				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
-			/>
-
-			<BowModal
-				open={bowModalOpen}
-				onClose={() => {
-					setBowModalOpen(false);
-					setSelectedBow(null);
-				}}
-				editingBow={
-					selectedBow
-						? {
-								id: selectedBow.id,
-								name: selectedBow.name,
-								type: selectedBow.type as any,
-								eyeToNock: selectedBow.eyeToNock,
-								aimMeasure: selectedBow.aimMeasure,
-								eyeToSight: selectedBow.eyeToSight,
-								limbs: (selectedBow as any).limbs,
-								riser: (selectedBow as any).riser,
-								handOrientation: (selectedBow as any).handOrientation,
-								drawWeight: (selectedBow as any).drawWeight,
-								bowLength: (selectedBow as any).bowLength,
-								isFavorite: selectedBow.isFavorite,
-								notes: selectedBow.notes,
-							}
-						: undefined
-				}
-			/>
-
-			<ArrowsModal
-				open={arrowsModalOpen}
-				onClose={() => {
-					setArrowsModalOpen(false);
-					setSelectedArrows(null);
-				}}
-				editingArrows={
-					selectedArrows
-						? {
-								id: selectedArrows.id,
-								name: selectedArrows.name,
-								material: selectedArrows.material as any,
-								isFavorite: (selectedArrows as any).isFavorite,
-								arrowsCount: (selectedArrows as any).arrowsCount ?? null,
-								diameter: (selectedArrows as any).diameter ?? null,
-								length: selectedArrows.length ?? null,
-								weight: (selectedArrows as any).weight ?? null,
-								spine: (selectedArrows as any).spine ?? '',
-							}
-						: undefined
-				}
-			/>
-
-			{achievementModalOpen && unlockedAchievements.length > 0 && (
-				<AchievementUnlockModal
-					achievements={unlockedAchievements}
-					onClose={() => setAchievementModalOpen(false)}
-					onViewAll={() => {
-						setAchievementModalOpen(false);
-						router.push('/achievements');
-					}}
-				/>
-			)}
-
-			<MobileActionButton
-				onCreatePractice={() => {
-					setPracticeFormMode('create');
-					setPracticeFormOpen(true);
-				}}
-				onCreateCompetition={() => {
-					setCompetitionFormMode('create');
-					setCompetitionFormOpen(true);
-				}}
-				onCreateBow={() => {
-					setSelectedBow(null);
-					setBowModalOpen(true);
-				}}
-				onCreateArrows={() => setArrowsModalOpen(true)}
 			/>
 		</div>
 	);

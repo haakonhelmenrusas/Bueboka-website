@@ -59,9 +59,9 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Day
 	const [activeIndex, setActiveIndex] = React.useState(0);
 
 	const cards = [
-		{ title: 'Siste 7 dager', icon: <LuCalendarDays size={18} />, data: last7Days },
-		{ title: 'Siste 30 dager', icon: <LuTrendingUp size={18} />, data: last30Days },
 		{ title: 'Totalt', icon: <LuChartBar size={18} />, data: overall },
+		{ title: 'Siste 30 dager', icon: <LuTrendingUp size={18} />, data: last30Days },
+		{ title: 'Siste 7 dager', icon: <LuCalendarDays size={18} />, data: last7Days },
 	];
 
 	const handlePrev = () => {

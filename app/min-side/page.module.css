@@ -459,6 +459,15 @@
 	animation: shimmer 1.4s infinite;
 }
 
+.toolButtonSkeleton {
+	aspect-ratio: 1 / 1;
+	width: 100%;
+	border-radius: var(--radius-xl);
+	background: linear-gradient(90deg, var(--white-10), var(--white-15), var(--white-10));
+	background-size: 200% 100%;
+	animation: shimmer 1.4s infinite;
+}
+
 .itemSkeleton {
 	width: 100%;
 	min-height: 72px;

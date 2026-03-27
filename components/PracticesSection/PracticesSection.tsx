@@ -7,7 +7,7 @@ import styles from './PracticesSection.module.css';
 import { LuArrowRight, LuPlus, LuTrophy } from 'react-icons/lu';
 
 interface PracticesSectionProps {
-	onCreate: () => void;
+	onCreate?: () => void;
 	onCreateCompetition?: () => void;
 	onSelectPractice: (id: string, practiceType?: string) => void;
 	reloadKey?: string | number;
@@ -48,12 +48,8 @@ export function PracticesSection({
 					<h2 className={styles.sectionTitle}>Siste aktivitet</h2>
 					<Link href="/aktivitet" className={styles.seeAllLink}>
 						Se alle
-						<LuArrowRight size={14} />
+						<LuArrowRight size={16} />
 					</Link>
-					<div className={styles.actionButtons}>
-						<Button label="Ny trening" onClick={onCreate} icon={<LuPlus size={18} />} />
-						{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<LuTrophy size={18} />} />}
-					</div>
 				</div>
 				<div className={styles.practicesList}>
 					{hasPractices ? (
@@ -95,10 +91,12 @@ export function PracticesSection({
 						Konkurranser
 					</button>
 				</div>
-				<div className={styles.actionButtons}>
-					<Button label="Ny trening" onClick={onCreate} icon={<LuPlus size={18} />} />
-					{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<LuTrophy size={18} />} />}
-				</div>
+				{(onCreate || onCreateCompetition) && (
+					<div className={styles.actionButtons}>
+						{onCreate && <Button label="Ny trening" onClick={onCreate} icon={<LuPlus size={18} />} />}
+						{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<LuTrophy size={18} />} />}
+					</div>
+				)}
 			</div>
 			<div className={styles.practicesList}>
 				{hasPractices ? (

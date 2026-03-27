@@ -17,6 +17,7 @@ import {
 	PracticeFormModal,
 	PracticesSection,
 	ProfileCard,
+	QuickActions,
 	StatsSummary,
 	usePracticeDetails,
 	useWhatsNew,
@@ -309,8 +310,6 @@ export default function MyPage() {
 		);
 	}
 
-	const summarySubtitle = `Piler skutt siste 7 dager, siste 30 dager og totalt`;
-
 	return (
 		<div className={styles.page}>
 			<Header />
@@ -328,7 +327,6 @@ export default function MyPage() {
 							<div className={styles.summaryHeader}>
 								<div>
 									<h3 className={styles.summaryTitle}>Oppsummering</h3>
-									<p className={styles.summarySubtitle}>{summarySubtitle}</p>
 								</div>
 								<Button size="small" label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} />
 							</div>
@@ -337,9 +335,8 @@ export default function MyPage() {
 						</div>
 					</div>
 				</div>
-				<PracticesSection
-					compact
-					onCreate={() => {
+				<QuickActions
+					onCreatePractice={() => {
 						setPracticeFormMode('create');
 						setPracticeFormOpen(true);
 					}}
@@ -347,6 +344,14 @@ export default function MyPage() {
 						setCompetitionFormMode('create');
 						setCompetitionFormOpen(true);
 					}}
+					onCreateBow={() => {
+						setSelectedBow(null);
+						setBowModalOpen(true);
+					}}
+					onCreateArrows={() => setArrowsModalOpen(true)}
+				/>
+				<PracticesSection
+					compact
 					onSelectPractice={handleSelectPractice}
 					reloadKey={practiceReloadKey}
 					deletedPracticeId={deletedPracticeId}

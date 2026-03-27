@@ -52,44 +52,30 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 			</main>
-			<section className={equipmentStyles.section}>
-				<div className={equipmentStyles.header}>
-					<SkeletonBlock className={styles.sectionTitleSkeletonLight} />
-				</div>
-				<div className={equipmentStyles.panel}>
-					<div className={equipmentStyles.grid}>
-						<div>
-							<div className={equipmentStyles.subHeaderRow}>
-								<SkeletonBlock className={styles.equipmentTitleSkeleton} />
-								<SkeletonBlock className={styles.smallButtonSkeleton} />
-							</div>
-							<div className={equipmentStyles.list}>
-								{Array.from({ length: 2 }).map((_, i) => (
-									<SkeletonBlock key={i} className={styles.itemSkeleton} />
-								))}
-							</div>
-						</div>
-						<div>
-							<div className={equipmentStyles.subHeaderRow}>
-								<SkeletonBlock className={styles.equipmentTitleSkeleton} />
-								<SkeletonBlock className={styles.smallButtonSkeleton} />
-							</div>
-							<div className={equipmentStyles.list}>
-								{Array.from({ length: 2 }).map((_, i) => (
-									<SkeletonBlock key={i} className={styles.itemSkeleton} />
-								))}
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+
+			{/* ── Quick-action tools ── */}
+			<div
+				style={{
+					maxWidth: 1200,
+					margin: '0 auto var(--space-2)',
+					width: '100%',
+					padding: '0 var(--space-8)',
+					display: 'grid',
+					gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 130px))',
+					gap: 'var(--space-4)',
+				}}
+			>
+				{Array.from({ length: 4 }).map((_, i) => (
+					<SkeletonBlock key={i} className={styles.toolButtonSkeleton} />
+				))}
+			</div>
+
+			{/* ── Siste aktivitet ── */}
 			<section className={styles.practicesSection}>
 				<div className={styles.practicesHeader}>
 					<SkeletonBlock className={styles.practicesTitleSkeleton} />
-					<SkeletonBlock className={styles.seeAllLinkSkeleton} />
-					<div style={{ marginLeft: 'auto', display: 'flex', gap: 'var(--space-3)' }}>
-						<SkeletonBlock className={styles.actionButtonSkeleton} />
-						<SkeletonBlock className={styles.actionButtonSkeleton} />
+					<div style={{ marginLeft: 'auto' }}>
+						<SkeletonBlock className={styles.seeAllLinkSkeleton} />
 					</div>
 				</div>
 				<div className={styles.practicesList}>
@@ -100,6 +86,27 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 			</section>
+
+			{/* ── Equipment ── */}
+			<section className={equipmentStyles.section}>
+				<div className={equipmentStyles.header}>
+					<SkeletonBlock className={styles.sectionTitleSkeletonLight} />
+				</div>
+				<div className={equipmentStyles.grid}>
+					<div className={equipmentStyles.list}>
+						{Array.from({ length: 2 }).map((_, i) => (
+							<SkeletonBlock key={i} className={styles.itemSkeleton} />
+						))}
+					</div>
+					<div className={equipmentStyles.list}>
+						{Array.from({ length: 2 }).map((_, i) => (
+							<SkeletonBlock key={i} className={styles.itemSkeleton} />
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ── Sight marks ── */}
 			<section className={sightMarksStyles.section}>
 				<div className={sightMarksStyles.header}>
 					<SkeletonBlock className={styles.sectionTitleSkeletonLight} />

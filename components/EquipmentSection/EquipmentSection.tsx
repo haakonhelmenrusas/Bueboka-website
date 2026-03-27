@@ -2,7 +2,6 @@
 
 import React from 'react';
 import styles from './EquipmentSection.module.css';
-import { Button } from '@/components';
 import type { Arrow, Bow } from '@/lib/types';
 import { useEquipmentData } from './useEquipmentData';
 import { GiArrowhead, GiBowArrow } from 'react-icons/gi';
@@ -16,8 +15,8 @@ export interface EquipmentSectionProps {
 	bows?: Bow[];
 	arrows?: Arrow[];
 	isLoading?: boolean;
-	onCreateBow: () => void;
-	onCreateArrows: () => void;
+	onCreateBow?: () => void;
+	onCreateArrows?: () => void;
 	onSelectBow: (bow: Bow) => void;
 	onSelectArrows: (arrows: Arrow) => void;
 	onDataReady?: (api: { refresh: () => Promise<void> }) => void;
@@ -27,8 +26,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 	bows: bowsProp,
 	arrows: arrowsProp,
 	isLoading: isLoadingProp,
-	onCreateBow,
-	onCreateArrows,
 	onSelectBow,
 	onSelectArrows,
 	onDataReady,
@@ -65,9 +62,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 
 			<div className={styles.grid}>
 				<div>
-					<div className={styles.subHeaderRow}>
-						<Button label="Ny bue" onClick={onCreateBow} icon={<GiBowArrow size={18} />} width={160} />
-					</div>
 					<div className={styles.list} role="list">
 						{isLoading ? (
 							<EquipmentListSkeleton count={2} />
@@ -105,15 +99,6 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 					</div>
 				</div>
 				<div>
-					<div className={styles.subHeaderRow}>
-						<Button
-							label="Nye piler"
-							onClick={onCreateArrows}
-							icon={<GiArrowhead size={18} style={{ transform: 'rotate(225deg)' }} />}
-							width={160}
-							disabled={arrows.length >= 5}
-						/>
-					</div>
 					{arrows.length >= 5 && <div className={styles.limitMessage}>Maksimalt 5 pilsett tillatt</div>}
 					<div className={styles.list} role="list">
 						{isLoading ? (

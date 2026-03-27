@@ -1,0 +1,69 @@
+/* ─── Quick-action tools grid ──────────────────────────────────────────────── */
+.section {
+    max-width: 1200px;
+    margin: 0 auto var(--space-2);
+    width: 100%;
+    margin-top: var(--space-10);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 120px));
+    gap: var(--space-4);
+}
+
+.button {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--white-15);
+    border: 1px solid var(--white-25);
+    border-radius: var(--radius-xl);
+    color: var(--white);
+    cursor: pointer;
+    transition: all 200ms ease;
+    font-family: inherit;
+}
+
+.button:hover {
+    background: var(--white-25);
+    border-color: var(--white-50);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.button:active {
+    transform: translateY(-1px);
+    box-shadow: none;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.95;
+}
+
+.label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 640px) {
+    .label {
+        font-size: 0.75rem;
+    }
+
+    .grid {
+        grid-template-columns: repeat(auto-fill, minmax(64px, 88px));
+        gap: var(--space-6);
+    }
+}
+
