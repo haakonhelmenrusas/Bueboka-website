@@ -110,10 +110,13 @@ export async function GET(request: Request) {
 			const arrowsWithScore = p.ends.reduce((sum, e) => sum + (e.arrows ?? 0), 0);
 
 			// For range categories (FELT, JAKT_3D), build label from distanceFrom/distanceTo
-			let roundTypeName = p.roundType?.name ?? null;
-			if (!roundTypeName) {
-				const isRangeCategory = p.practiceCategory === 'FELT' || p.practiceCategory === 'JAKT_3D';
-				if (isRangeCategory) {
+			const isRangeCategory = p.practiceCategory === 'FELT' || p.practiceCategory === 'JAKT_3D';
+			let roundTypeName: string | null = null;
+
+			if (isRangeCategory) {
+				// Keep existing behaviour: prefer roundType name, fall back to distanceFrom/distanceTo ranges
+				roundTypeName = p.roundType?.name ?? null;
+				if (!roundTypeName) {
 					const rangeParts = [
 						...new Set(
 							p.ends
@@ -129,6 +132,23 @@ export async function GET(request: Request) {
 					];
 					if (rangeParts.length > 0) roundTypeName = rangeParts[0] as string;
 				}
+			} else {
+				// For SKIVE categories always derive from the stored end data (distanceMeters + targetSizeCm)
+				// so the card is always accurate regardless of what the linked roundType name says.
+				const combinations = [
+					...new Set(
+						p.ends
+							.filter((e) => e.distanceMeters || e.targetSizeCm)
+							.map((e) => {
+								const parts: string[] = [];
+								if (e.distanceMeters) parts.push(`${e.distanceMeters}m`);
+								if (e.targetSizeCm) parts.push(`${e.targetSizeCm}cm`);
+								return parts.join(' - ');
+							})
+							.filter(Boolean)
+					),
+				];
+				roundTypeName = combinations.length > 0 ? combinations[0] : (p.roundType?.name ?? null);
 			}
 
 			return {

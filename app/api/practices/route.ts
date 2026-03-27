@@ -39,13 +39,12 @@ export async function POST(request: NextRequest) {
 
 		// Try to find or create a matching RoundType for the first round
 		if (firstRound && (firstRound.distanceMeters || firstRound.targetType || firstRound.numberArrows)) {
-			// Try to find existing round type
+			// Build the canonical name that encodes both distance and target type,
+			// then match on name so we never conflate e.g. "18m 60cm" with "18m 80cm".
+			const expectedName = `${firstRound.distanceMeters || 0}m - ${firstRound.targetType || 'Custom'}`;
+
 			const existingRoundType = await prisma.roundType.findFirst({
-				where: {
-					distanceMeters: firstRound.distanceMeters || null,
-					// Note: targetType is JSON, so we can't easily match on it
-					// For now, we'll just match on distance
-				},
+				where: { name: expectedName },
 			});
 
 			if (existingRoundType) {

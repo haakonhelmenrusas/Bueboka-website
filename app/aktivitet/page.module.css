@@ -32,7 +32,7 @@
 .pageSubtitle {
     margin: var(--space-2) 0 0;
     font-size: 0.9375rem;
-    color: var(--white-70);
+    color: var(--white-50);
     font-weight: 500;
 }
 
@@ -57,8 +57,8 @@
 }
 
 .introBannerIcon {
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
     border-radius: var(--radius-lg);
     display: flex;
@@ -82,7 +82,7 @@
 .introBannerDescription {
     margin: 0;
     font-size: 0.9375rem;
-    color: var(--white-70);
+    color: var(--white-50);
     line-height: 1.6;
 }
 

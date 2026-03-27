@@ -37,7 +37,11 @@ export default function AktivitetPage() {
 		});
 		if (!res.ok) {
 			let details: any = null;
-			try { details = await res.json(); } catch { /* ignore */ }
+			try {
+				details = await res.json();
+			} catch {
+				/* ignore */
+			}
 			let errMsg = 'Kunne ikke oppdatere trening';
 			if (details != null && typeof details === 'object' && 'error' in details) errMsg = (details as any).error;
 			return Promise.reject(new Error(errMsg));
@@ -55,7 +59,11 @@ export default function AktivitetPage() {
 		});
 		if (!res.ok) {
 			let details: any = null;
-			try { details = await res.json(); } catch { /* ignore */ }
+			try {
+				details = await res.json();
+			} catch {
+				/* ignore */
+			}
 			let errMsg = 'Kunne ikke oppdatere konkurranse';
 			if (details != null && typeof details === 'object' && 'error' in details) errMsg = (details as any).error;
 			return Promise.reject(new Error(errMsg));
@@ -103,13 +111,13 @@ export default function AktivitetPage() {
 
 				<div className={styles.introBanner}>
 					<div className={styles.introBannerIcon}>
-						<LuActivity size={32} />
+						<LuActivity size={24} />
 					</div>
 					<div className={styles.introBannerText}>
 						<h2 className={styles.introBannerTitle}>Din treningslogg</h2>
 						<p className={styles.introBannerDescription}>
-							Her finner du alle treningene og konkurransene du har registrert. Bla gjennom historikken, se detaljer om enkeltøkter, og
-							hold oversikt over fremgangen din over tid.
+							Her finner du alle treningene og konkurransene du har registrert. Bla gjennom historikken, se detaljer om enkeltøkter, og hold
+							oversikt over fremgangen din over tid.
 						</p>
 					</div>
 					<div className={styles.introBannerPills}>
