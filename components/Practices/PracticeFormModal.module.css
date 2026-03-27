@@ -1,689 +1,693 @@
 /* ─── Wizard shell ──────────────────────────────────────────────────────────── */
 .wizard {
-	display: flex;
-	flex-direction: column;
-	height: 72vh;
-	max-height: 72vh;
-	overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+    max-height: 72vh;
+    overflow: hidden;
 }
 
 /* ─── Custom header ─────────────────────────────────────────────────────────── */
 .wizardHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: var(--space-6) var(--space-8);
-	border-bottom: 1px solid var(--border-gray);
-	flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-6) var(--space-8);
+    border-bottom: 1px solid var(--border-gray);
+    flex-shrink: 0;
 }
 
 .wizardTitle {
-	font-size: 1.25rem;
-	font-weight: 800;
-	color: var(--primary);
-	margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0;
 }
 
 .closeBtn {
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	color: var(--text-gray-600);
-	padding: var(--space-2);
-	border-radius: var(--radius-base);
-	transition: background 150ms ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray-600);
+    padding: var(--space-2);
+    border-radius: var(--radius-base);
+    transition: background 150ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .closeBtn:hover {
-	background: var(--dark-05);
+    background: var(--dark-05);
 }
 
 /* ─── Step indicator ────────────────────────────────────────────────────────── */
 .stepIndicator {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: var(--space-5) var(--space-8);
-	border-bottom: 1px solid var(--border-gray);
-	background: var(--bg-gray-50);
-	flex-shrink: 0;
-	gap: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5) var(--space-8);
+    border-bottom: 1px solid var(--border-gray);
+    background: var(--bg-gray-50);
+    flex-shrink: 0;
+    gap: 0;
 }
 
 .stepItem {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--space-2);
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	padding: 0 var(--space-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 var(--space-3);
 }
 
 .stepDot {
-	width: 28px;
-	height: 28px;
-	border-radius: var(--radius-circle);
-	border: 2px solid var(--border-gray);
-	background: var(--white);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: all 200ms ease;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-circle);
+    border: 2px solid var(--border-gray);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
 }
 
 .stepDotActive {
-	border-color: var(--primary);
-	background: var(--primary);
+    border-color: var(--primary);
+    background: var(--primary);
 }
 
 .stepDotCompleted {
-	border-color: var(--secondary);
-	background: var(--secondary);
+    border-color: var(--secondary);
+    background: var(--secondary);
 }
 
 .stepDotText {
-	font-size: 0.75rem;
-	font-weight: 600;
-	color: var(--text-gray-600);
-	line-height: 1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-gray-600);
+    line-height: 1;
 }
 
 .stepDotTextActive {
-	color: var(--white);
+    color: var(--white);
 }
 
 .stepLabel {
-	font-size: 0.875rem;
-	color: var(--text-gray-600);
-	white-space: nowrap;
+    font-size: 0.875rem;
+    color: var(--text-gray-600);
+    white-space: nowrap;
 }
 
 .stepLabelActive {
-	color: var(--primary);
-	font-weight: 600;
+    color: var(--primary);
+    font-weight: 600;
 }
 
 .stepLabelCompleted {
-	color: var(--secondary);
+    color: var(--secondary);
 }
 
 .stepConnector {
-	flex: 1;
-	height: 2px;
-	background: var(--border-gray);
-	margin-bottom: 18px;
-	min-width: 20px;
-	max-width: 60px;
+    flex: 1;
+    height: 2px;
+    background: var(--border-gray);
+    margin-bottom: 18px;
+    min-width: 20px;
+    max-width: 60px;
 }
 
 .stepConnectorCompleted {
-	background: var(--secondary);
+    background: var(--secondary);
 }
 
 /* ─── Scrollable content area ───────────────────────────────────────────────── */
 .scrollArea {
-	flex: 1;
-	overflow-y: auto;
-	overflow-x: hidden;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* ─── Step content wrapper ──────────────────────────────────────────────────── */
 .stepContent {
-	padding: var(--space-7) var(--space-8);
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-6);
+    padding: var(--space-7) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
 }
 
 .stepDescription {
-	font-size: 0.875rem;
-	color: var(--text-gray-600);
-	margin: 0;
-	line-height: 1.5;
+    font-size: 0.875rem;
+    color: var(--text-gray-600);
+    margin: 0;
+    line-height: 1.5;
 }
 
 /* ─── Layout helpers ────────────────────────────────────────────────────────── */
 .row {
-	display: grid;
-	gap: var(--space-5);
-	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-	align-items: end;
+    display: grid;
+    gap: var(--space-5);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    align-items: end;
 }
 
 .field {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
 }
 
 /* ─── Section title ─────────────────────────────────────────────────────────── */
 .sectionTitle {
-	font-size: 0.9375rem;
-	font-weight: 600;
-	color: var(--primary);
-	margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0;
 }
 
 /* ─── Weather chips ─────────────────────────────────────────────────────────── */
 .weatherSection {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
 }
 
 .weatherLabel {
-	font-size: 0.875rem;
-	font-weight: 500;
-	color: var(--text-dark);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-dark);
 }
 
 .weatherChips {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
 }
 
 .weatherChip {
-	padding: var(--space-2) var(--space-5);
-	border-radius: var(--radius-full);
-	border: 1px solid var(--border-gray);
-	background: var(--bg-gray-100);
-	color: var(--text-gray-600);
-	font-size: 0.8125rem;
-	cursor: pointer;
-	transition: all 150ms ease;
-	white-space: nowrap;
+    padding: var(--space-2) var(--space-5);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-gray);
+    background: var(--bg-gray-100);
+    color: var(--text-gray-600);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
 }
 
 .weatherChip:hover {
-	border-color: var(--primary);
+    border-color: var(--primary);
 }
 
 .weatherChipActive {
-	border-color: var(--primary);
-	background: var(--primary);
-	color: var(--white);
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--white);
 }
 
 /* ─── Rounds section ────────────────────────────────────────────────────────── */
 .roundsSection {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
 }
 
 .roundCard {
-	background: var(--bg-gray-50);
-	border: 1px solid var(--border-gray);
-	border-radius: var(--radius-md);
-	padding: var(--space-5);
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-4);
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
 }
 
 .roundHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .roundNumber {
-	font-size: 0.875rem;
-	font-weight: 600;
-	color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
 }
 
 .removeRoundBtn {
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	color: var(--text-gray-600);
-	padding: var(--space-2);
-	border-radius: var(--radius-base);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: all 150ms ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray-600);
+    padding: var(--space-2);
+    border-radius: var(--radius-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 150ms ease;
 }
 
 .removeRoundBtn:hover {
-	background: var(--error-bg);
-	color: var(--error);
+    background: var(--error-bg);
+    color: var(--error);
 }
 
 .roundInputs {
-	display: flex;
-	gap: var(--space-4);
-	align-items: flex-end;
-	flex-wrap: wrap;
+    display: flex;
+    gap: var(--space-4);
+    align-items: flex-end;
+    flex-wrap: wrap;
 }
 
 .roundInputsNarrow {
-	display: flex;
+    display: flex;
 }
 
 .roundField {
-	flex: 1;
-	min-width: 120px;
+    flex: 1;
+    min-width: 120px;
 }
 
 .skiveField {
-	flex: 2;
-	min-width: 160px;
+    flex: 2;
+    min-width: 160px;
 }
 
 .addRoundBtn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--space-3);
-	border: 1.5px dashed var(--primary);
-	background: transparent;
-	border-radius: var(--radius-base);
-	padding: var(--space-4) var(--space-6);
-	color: var(--primary);
-	font-size: 0.875rem;
-	font-weight: 600;
-	cursor: pointer;
-	transition: background 150ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    border: 1.5px dashed var(--primary);
+    background: transparent;
+    border-radius: var(--radius-base);
+    padding: var(--space-4) var(--space-6);
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 150ms ease;
 }
 
 .addRoundBtn:hover:not(:disabled) {
-	background: var(--primary-06);
+    background: var(--primary-06);
 }
 
 .addRoundBtn:disabled {
-	opacity: 0.4;
-	cursor: not-allowed;
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 
 .limitMessage {
-	font-size: 0.8125rem;
-	color: var(--text-gray-600);
-	text-align: center;
-	margin: 0;
+    font-size: 0.8125rem;
+    color: var(--text-gray-600);
+    text-align: center;
+    margin: 0;
 }
 
 /* ─── Scoring step ──────────────────────────────────────────────────────────── */
 .emptyScoring {
-	padding: var(--space-8);
-	background: var(--bg-gray-50);
-	border: 1px solid var(--border-gray);
-	border-radius: var(--radius-md);
-	text-align: center;
+    padding: var(--space-8);
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    text-align: center;
 }
 
 .emptyScoringText {
-	font-size: 0.875rem;
-	color: var(--text-gray-600);
-	margin: 0;
-	line-height: 1.5;
+    font-size: 0.875rem;
+    color: var(--text-gray-600);
+    margin: 0;
+    line-height: 1.5;
 }
 
 .scoringCard {
-	background: var(--bg-gray-50);
-	border: 1px solid var(--border-gray);
-	border-radius: var(--radius-md);
-	padding: var(--space-5);
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-4);
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
 }
 
 .scoringCardHeader {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .scoringRoundTitle {
-	font-size: 0.875rem;
-	font-weight: 600;
-	color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
 }
 
 .scoringRoundMeta {
-	font-size: 0.75rem;
-	color: var(--text-gray-600);
+    font-size: 0.75rem;
+    color: var(--text-gray-600);
 }
 
 .arrowChipsRow {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
 }
 
 .arrowChip {
-	width: 32px;
-	height: 32px;
-	border-radius: var(--radius-circle);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 0.75rem;
-	font-weight: 600;
-	border: 1.5px solid;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1.5px solid;
 }
 
 .arrowChipFilled {
-	background: var(--primary);
-	border-color: var(--primary);
-	color: var(--white);
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
 }
 
 .arrowChipEmpty {
-	background: var(--bg-gray-100);
-	border-color: var(--border-gray);
-	border-style: dashed;
-	color: var(--dimmed);
+    background: var(--bg-gray-100);
+    border-color: var(--border-gray);
+    border-style: dashed;
+    color: var(--dimmed);
 }
 
 .scoringProgress {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .scoringProgressText {
-	font-size: 0.75rem;
-	color: var(--text-gray-600);
+    font-size: 0.75rem;
+    color: var(--text-gray-600);
 }
 
 .scoringTotal {
-	font-size: 0.875rem;
-	font-weight: 700;
-	color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--primary);
 }
 
 .scoreButtonsGrid {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--space-2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
 }
 
 .scoreButton {
-	width: 48px;
-	height: 48px;
-	border-radius: var(--radius-base);
-	border: 1.5px solid var(--border-gray);
-	background: var(--white);
-	color: var(--text-dark);
-	font-size: 0.9375rem;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 150ms ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-base);
+    border: 1.5px solid var(--border-gray);
+    background: var(--white);
+    color: var(--text-dark);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 150ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .scoreButton:hover {
-	border-color: var(--primary);
-	background: var(--primary-06);
+    border-color: var(--primary);
+    background: var(--primary-06);
 }
 
 .scoreButtonX {
-	border-color: var(--star-border);
-	background: var(--star-bg);
-	color: var(--star-color);
+    border-color: var(--star-border);
+    background: var(--star-bg);
+    color: var(--star-color);
 }
 
 .scoreButtonX:hover {
-	background: var(--star-bg);
-	border-color: var(--accent-yellow);
+    background: var(--star-bg);
+    border-color: var(--accent-yellow);
 }
 
 .scoreButtonMiss {
-	border-color: var(--error-border);
-	background: var(--error-bg);
-	color: var(--error);
+    border-color: var(--error-border);
+    background: var(--error-bg);
+    color: var(--error);
 }
 
 .scoreButtonMiss:hover {
-	background: var(--error-bg);
-	border-color: var(--error);
+    background: var(--error-bg);
+    border-color: var(--error);
 }
 
 .scoringComplete {
-	padding: var(--space-3) var(--space-5);
-	background: rgba(0, 128, 0, 0.08);
-	border: 1px solid rgba(0, 128, 0, 0.2);
-	border-radius: var(--radius-base);
-	font-size: 0.8125rem;
-	color: var(--success);
-	font-weight: 600;
-	text-align: center;
+    padding: var(--space-3) var(--space-5);
+    background: rgba(0, 128, 0, 0.08);
+    border: 1px solid rgba(0, 128, 0, 0.2);
+    border-radius: var(--radius-base);
+    font-size: 0.8125rem;
+    color: var(--success);
+    font-weight: 600;
+    text-align: center;
 }
 
 .backspaceBtn {
-	display: flex;
-	align-items: center;
-	gap: var(--space-2);
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	color: var(--text-gray-600);
-	font-size: 0.8125rem;
-	padding: 0;
-	transition: color 150ms ease;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray-600);
+    font-size: 0.8125rem;
+    padding: 0;
+    transition: color 150ms ease;
 }
 
 .backspaceBtn:hover {
-	color: var(--primary);
+    color: var(--primary);
 }
 
 /* ─── Rating section ────────────────────────────────────────────────────────── */
 .ratingSection {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
 }
 
 .ratingLabel {
-	font-size: 0.9375rem;
-	font-weight: 600;
-	color: var(--text-dark);
-	display: flex;
-	align-items: center;
-	gap: var(--space-2);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 
 .ratingOptional {
-	font-size: 0.8125rem;
-	font-weight: 400;
-	color: var(--text-gray-600);
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--text-gray-600);
 }
 
 .ratingHelpText {
-	font-size: 0.875rem;
-	color: var(--text-gray-600);
-	margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-gray-600);
+    margin: 0;
 }
 
 .ratingButtons {
-	display: flex;
-	gap: var(--space-2);
-	flex-wrap: wrap;
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
 }
 
 .ratingButton {
-	width: 44px;
-	height: 44px;
-	border-radius: var(--radius-md);
-	border: 2px solid var(--border-gray);
-	background: var(--background);
-	color: var(--text-dark);
-	font-size: 0.9375rem;
-	font-weight: 600;
-	cursor: pointer;
-	transition: all 200ms ease;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    border: 2px solid var(--border-gray);
+    background: var(--background);
+    color: var(--text-dark);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 200ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .ratingButton:hover {
-	border-color: var(--primary);
-	background: var(--primary-06);
-	transform: translateY(-2px);
+    border-color: var(--primary);
+    background: var(--primary-06);
+    transform: translateY(-2px);
 }
 
 .ratingButtonActive {
-	border-color: var(--primary);
-	background: var(--primary);
-	color: var(--white);
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--white);
 }
 
 .ratingButtonActive:hover {
-	background: var(--primary-dark);
-	border-color: var(--primary-dark);
-	transform: translateY(-2px);
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-2px);
 }
 
 /* ─── Delete section ────────────────────────────────────────────────────────── */
 .deleteSection {
-	margin-top: var(--space-4);
-	padding-top: var(--space-6);
-	border-top: 1px solid var(--error-border);
-	display: flex;
-	justify-content: center;
+    margin-top: var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--error-border);
+    display: flex;
+    justify-content: center;
 }
 
 .deleteLink {
-	display: flex;
-	align-items: center;
-	gap: var(--space-3);
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	color: var(--error);
-	font-size: 0.875rem;
-	font-weight: 500;
-	padding: var(--space-3) var(--space-5);
-	border-radius: var(--radius-base);
-	transition: background 150ms ease;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--error);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-base);
+    transition: background 150ms ease;
 }
 
 .deleteLink:hover {
-	background: var(--error-bg);
+    background: var(--error-bg);
 }
 
 /* ─── Navigation footer ─────────────────────────────────────────────────────── */
 .navFooter {
-	border-top: 1px solid var(--border-gray);
-	padding: var(--space-5) var(--space-8);
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-4);
-	background: var(--white);
-	flex-shrink: 0;
+    border-top: 1px solid var(--border-gray);
+    padding: var(--space-5) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    background: var(--white);
+    flex-shrink: 0;
 }
 
 .navRow {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
 }
 
 .navCenter {
-	display: flex;
-	align-items: center;
-	gap: var(--space-3);
-	flex: 1;
-	justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex: 1;
+    justify-content: center;
 }
 
 .navRight {
-	display: flex;
-	justify-content: flex-end;
-	min-width: 0;
+    display: flex;
+    justify-content: flex-end;
+    min-width: 0;
 }
 
 .navArrow {
-	width: 44px;
-	height: 44px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border-radius: var(--radius-circle);
-	border: 1px solid var(--border-gray);
-	background: var(--bg-gray-50);
-	cursor: pointer;
-	color: var(--primary);
-	transition: all 150ms ease;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-circle);
+    border: 1px solid var(--border-gray);
+    background: var(--bg-gray-50);
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 150ms ease;
 }
 
 .navArrow:hover:not(:disabled) {
-	background: var(--primary-06);
-	border-color: var(--primary);
+    background: var(--primary-06);
+    border-color: var(--primary);
 }
 
 .navArrowDisabled {
-	opacity: 0.35;
-	cursor: not-allowed;
+    opacity: 0.35;
+    cursor: not-allowed;
 }
 
 .navStepName {
-	font-size: 0.875rem;
-	font-weight: 600;
-	color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
 }
 
 .navActions {
-	display: flex;
-	gap: var(--space-4);
-	justify-content: flex-end;
+    display: flex;
+    gap: var(--space-4);
+    justify-content: flex-end;
 }
 
 /* ─── Error ─────────────────────────────────────────────────────────────────── */
 .error {
-	color: var(--error-light);
-	background: var(--error-bg);
-	border: 1px solid var(--error-border);
-	padding: var(--space-3) var(--space-5);
-	border-radius: var(--radius-base);
-	font-size: 0.875rem;
-	margin: 0;
+    color: var(--error-light);
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
+    padding: var(--space-3) var(--space-5);
+    border-radius: var(--radius-base);
+    font-size: 0.875rem;
+    margin: 0;
 }
 
 /* ─── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
-	.wizardHeader {
-		padding: var(--space-5) var(--space-6);
-	}
+    .wizard {
+        height: 70vh;
+    }
 
-	.stepContent {
-		padding: var(--space-6) var(--space-6);
-	}
+    .wizardHeader {
+        padding: var(--space-5) var(--space-6);
+    }
 
-	.navFooter {
-		padding: var(--space-4) var(--space-6);
-	}
+    .stepContent {
+        padding: var(--space-6) var(--space-6);
+    }
 
-	.stepConnector {
-		min-width: 10px;
-	}
+    .navFooter {
+        padding: var(--space-4) var(--space-6);
+    }
 
-	.ratingButtons {
-		gap: var(--space-1);
-	}
+    .stepConnector {
+        min-width: 10px;
+    }
 
-	.ratingButton {
-		width: 38px;
-		height: 38px;
-		font-size: 0.875rem;
-	}
+    .ratingButtons {
+        gap: var(--space-1);
+    }
 
-	.scoreButton {
-		width: 42px;
-		height: 42px;
-		font-size: 0.875rem;
-	}
+    .ratingButton {
+        width: 38px;
+        height: 38px;
+        font-size: 0.875rem;
+    }
+
+    .scoreButton {
+        width: 42px;
+        height: 42px;
+        font-size: 0.875rem;
+    }
 }

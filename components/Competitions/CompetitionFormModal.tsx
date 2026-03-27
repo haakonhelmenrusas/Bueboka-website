@@ -219,7 +219,10 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				placement: placement ?? undefined,
 				numberOfParticipants: numberOfParticipants ?? undefined,
 				personalBest: personalBest || undefined,
-				rounds: validRounds.length > 0 ? validRounds : rounds,
+				rounds: (validRounds.length > 0 ? validRounds : rounds).map((r, i) => ({
+					...r,
+					roundNumber: i + 1,
+				})),
 				bowId: bowId || undefined,
 				arrowsId: arrowsId || undefined,
 			});

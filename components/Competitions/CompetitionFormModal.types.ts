@@ -19,6 +19,7 @@ export const WEATHER_OPTIONS: { value: WeatherCondition; label: string }[] = [
 ];
 
 export interface CompetitionRoundInput {
+	roundNumber?: number;
 	distanceMeters?: number;
 	distanceFrom?: number;
 	distanceTo?: number;

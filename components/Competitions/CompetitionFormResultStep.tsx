@@ -27,9 +27,8 @@ export const CompetitionFormResultStep: React.FC<ResultStepProps> = ({
 			<div className={styles.resultLabel}>
 				<LuTrophy size={18} />
 				Plassering
-				<span className={styles.resultOptional}>(valgfritt)</span>
 			</div>
-			<p className={styles.resultHelpText}>Fyll inn din plassering og antall deltakere i konkurransen.</p>
+			<p className={styles.resultHelpText}>Fyll inn din plassering og antall deltakere i din klasse.</p>
 			<div className={styles.row}>
 				<NumberInput
 					label="Plassering"
@@ -59,4 +58,3 @@ export const CompetitionFormResultStep: React.FC<ResultStepProps> = ({
 		<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
 	</div>
 );
-
