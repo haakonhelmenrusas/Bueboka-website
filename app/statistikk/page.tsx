@@ -26,7 +26,7 @@ export default function StatisticsPage() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [dateRange, setDateRange] = useState<DateRange>('all');
-	const [selectedCategory, setSelectedCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
+	const [selectedCategory, setSelectedCategory] = useState<PracticeCategory>('all');
 	const [scoreCategory, setScoreCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
 	const router = useRouter();
 
