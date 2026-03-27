@@ -72,7 +72,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 	return (
 		<div className={styles.wrapper} ref={containerRef}>
 			{open && <div className={styles.backdrop} onClick={close} aria-hidden="true" />}
-			<div className={styles.menu}>
+			<div className={styles.menu} aria-hidden={!open}>
 				{actions.map((action, index) => (
 					<button
 						key={action.label}

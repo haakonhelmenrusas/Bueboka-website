@@ -422,12 +422,17 @@ export default function MyPage() {
 								id: selectedArrows.id,
 								name: selectedArrows.name,
 								material: selectedArrows.material as any,
-								isFavorite: (selectedArrows as any).isFavorite,
-								arrowsCount: (selectedArrows as any).arrowsCount ?? null,
-								diameter: (selectedArrows as any).diameter ?? null,
+								isFavorite: selectedArrows.isFavorite,
+								arrowsCount: selectedArrows.arrowsCount ?? null,
+								diameter: selectedArrows.diameter ?? null,
 								length: selectedArrows.length ?? null,
-								weight: (selectedArrows as any).weight ?? null,
-								spine: (selectedArrows as any).spine ?? '',
+								weight: selectedArrows.weight ?? null,
+								spine: selectedArrows.spine ?? '',
+								pointType: selectedArrows.pointType ?? '',
+								pointWeight: selectedArrows.pointWeight ?? null,
+								vanes: selectedArrows.vanes ?? '',
+								nock: selectedArrows.nock ?? '',
+								notes: selectedArrows.notes ?? '',
 							}
 						: undefined
 				}

@@ -20,6 +20,11 @@ interface ArrowsModalProps {
 		length?: number | null;
 		weight?: number | null;
 		spine?: string | null;
+		pointType?: string | null;
+		pointWeight?: number | null;
+		vanes?: string | null;
+		nock?: string | null;
+		notes?: string | null;
 		isFavorite?: boolean;
 	};
 }
@@ -44,11 +49,16 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 			!editingArrows ||
 			values.name !== editingArrows.name ||
 			values.material !== editingArrows.material ||
-			(values.arrowsCount ?? null) !== (typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null) ||
-			(values.diameter ?? null) !== (typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null) ||
-			(values.length ?? null) !== (typeof editingArrows.length === 'number' ? editingArrows.length : null) ||
-			(values.weight ?? null) !== (typeof editingArrows.weight === 'number' ? editingArrows.weight : null) ||
-			(values.spine ?? '') !== (typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '') ||
+			(values.arrowsCount ?? null) !== (editingArrows.arrowsCount ?? null) ||
+			(values.diameter ?? null) !== (editingArrows.diameter ?? null) ||
+			(values.length ?? null) !== (editingArrows.length ?? null) ||
+			(values.weight ?? null) !== (editingArrows.weight ?? null) ||
+			(values.spine || '') !== (editingArrows.spine || '') ||
+			(values.pointType || '') !== (editingArrows.pointType || '') ||
+			(values.pointWeight ?? null) !== (editingArrows.pointWeight ?? null) ||
+			(values.vanes || '') !== (editingArrows.vanes || '') ||
+			(values.nock || '') !== (editingArrows.nock || '') ||
+			(values.notes || '') !== (editingArrows.notes || '') ||
 			values.isFavorite !== Boolean(editingArrows.isFavorite);
 
 		setLoading(true);
@@ -123,11 +133,16 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 							? {
 									name: editingArrows.name,
 									material: editingArrows.material,
-									arrowsCount: typeof editingArrows.arrowsCount === 'number' ? editingArrows.arrowsCount : null,
-									diameter: typeof (editingArrows as any).diameter === 'number' ? (editingArrows as any).diameter : null,
-									length: typeof editingArrows.length === 'number' ? editingArrows.length : null,
-									weight: typeof editingArrows.weight === 'number' ? editingArrows.weight : null,
-									spine: typeof (editingArrows as any).spine === 'string' ? (editingArrows as any).spine : '',
+									arrowsCount: editingArrows.arrowsCount ?? null,
+									diameter: editingArrows.diameter ?? null,
+									length: editingArrows.length ?? null,
+									weight: editingArrows.weight ?? null,
+									spine: editingArrows.spine ?? '',
+									pointType: editingArrows.pointType ?? '',
+									pointWeight: editingArrows.pointWeight ?? null,
+									vanes: editingArrows.vanes ?? '',
+									nock: editingArrows.nock ?? '',
+									notes: editingArrows.notes ?? '',
 									isFavorite: Boolean(editingArrows.isFavorite),
 								}
 							: undefined

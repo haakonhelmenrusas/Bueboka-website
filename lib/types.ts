@@ -57,6 +57,12 @@ export interface Arrow {
 	diameter?: number | null;
 	length?: number | null;
 	weight?: number | null;
+	spine?: string | null;
+	pointType?: string | null;
+	pointWeight?: number | null;
+	vanes?: string | null;
+	nock?: string | null;
+	notes?: string | null;
 	isFavorite: boolean;
 }
 
