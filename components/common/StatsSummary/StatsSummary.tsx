@@ -1,17 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './StatsSummary.module.css';
-import {
-	LuCalendarDays,
-	LuChartBar,
-	LuChevronLeft,
-	LuChevronRight,
-	LuCircleCheck,
-	LuCircleX,
-	LuTarget,
-	LuTrendingUp,
-} from 'react-icons/lu';
+import { LuCalendarDays, LuChartBar, LuCircleCheck, LuCircleX, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import type { PeriodStats } from '@/lib/types';
 
 export type StatsSummaryProps = {
@@ -56,7 +47,8 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 }
 
 export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Days, overall }) => {
-	const [activeIndex, setActiveIndex] = React.useState(0);
+	const [activeIndex, setActiveIndex] = useState(0);
+	const trackRef = useRef<HTMLDivElement>(null);
 
 	const cards = [
 		{ title: 'Totalt', icon: <LuChartBar size={18} />, data: overall },
@@ -64,15 +56,34 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Day
 		{ title: 'Siste 7 dager', icon: <LuCalendarDays size={18} />, data: last7Days },
 	];
 
-	const handlePrev = () => {
-		setActiveIndex((prev) => Math.max(0, prev - 1));
-	};
+	// Keep active dot in sync with the snapped card as the user swipes.
+	useEffect(() => {
+		const track = trackRef.current;
+		if (!track) return;
 
-	const handleNext = () => {
-		setActiveIndex((prev) => Math.min(cards.length - 1, prev + 1));
-	};
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const index = Array.from(track.children).indexOf(entry.target as HTMLElement);
+						if (index !== -1) setActiveIndex(index);
+					}
+				});
+			},
+			{ root: track, threshold: 0.6 }
+		);
 
-	const currentCard = cards[activeIndex];
+		Array.from(track.children).forEach((child) => observer.observe(child));
+		return () => observer.disconnect();
+	}, []);
+
+	const scrollToIndex = (index: number) => {
+		const track = trackRef.current;
+		if (!track) return;
+		const slide = track.children[index] as HTMLElement;
+		slide?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+		setActiveIndex(index);
+	};
 
 	return (
 		<>
@@ -83,30 +94,14 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Day
 				))}
 			</div>
 
-			{/* Carousel view for smaller screens */}
+			{/* Swipeable carousel for smaller screens */}
 			<div className={styles.carouselWrapper}>
-				<div className={styles.carousel}>
-					<button
-						type="button"
-						className={styles.chevronButton}
-						onClick={handlePrev}
-						disabled={activeIndex === 0}
-						aria-label="Forrige periode"
-					>
-						<LuChevronLeft size={24} />
-					</button>
-					<div className={styles.cardContainer}>
-						<PeriodCard title={currentCard.title} icon={currentCard.icon} data={currentCard.data} />
-					</div>
-					<button
-						type="button"
-						className={styles.chevronButton}
-						onClick={handleNext}
-						disabled={activeIndex === cards.length - 1}
-						aria-label="Neste periode"
-					>
-						<LuChevronRight size={24} />
-					</button>
+				<div className={styles.track} ref={trackRef}>
+					{cards.map((card) => (
+						<div key={card.title} className={styles.slide}>
+							<PeriodCard title={card.title} icon={card.icon} data={card.data} />
+						</div>
+					))}
 				</div>
 				<div className={styles.dots}>
 					{cards.map((_, index) => (
@@ -114,7 +109,7 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Day
 							key={index}
 							type="button"
 							className={`${styles.dot} ${index === activeIndex ? styles.dotActive : ''}`}
-							onClick={() => setActiveIndex(index)}
+							onClick={() => scrollToIndex(index)}
 							aria-label={`Gå til ${cards[index].title}`}
 						/>
 					))}

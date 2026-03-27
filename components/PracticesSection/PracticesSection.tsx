@@ -51,8 +51,6 @@ export function PracticesSection({
 			pageSize: compact ? 5 : 10,
 		});
 
-	// Prevent hydration mismatch: server and the first client render both
-	// see mounted=false → skeleton. After hydration the real state takes over.
 	const [mounted, setMounted] = useState(false);
 	useEffect(() => setMounted(true), []);
 
@@ -67,7 +65,7 @@ export function PracticesSection({
 	}, [deletedPracticeId, removeLocal]);
 
 	const hasPractices = cards.length > 0;
-	const showSkeleton = !mounted || (loading && cards.length === 0);
+	const showSkeleton = mounted && loading && cards.length === 0;
 
 	if (compact) {
 		return (

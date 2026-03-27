@@ -1,531 +1,534 @@
 .page {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
-	color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, var(--page-gradient-start) 0%, var(--page-gradient-mid) 40%, var(--page-gradient-end) 100%);
+    color: var(--white);
 }
 
 .main {
-	padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
-	max-width: 1200px;
-	margin: 0 auto;
-	width: 100%;
+    padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .card {
-	background: var(--card-bg);
-	border: 1px solid rgba(0, 0, 0, 0.06);
-	border-radius: var(--radius-4);
-	padding: var(--space-8);
-	box-shadow: 0 20px 60px var(--dark-20);
-	display: block;
-	color: var(--text-dark);
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-4);
+    padding: var(--space-8);
+    box-shadow: 0 20px 60px var(--dark-20);
+    display: block;
+    color: var(--text-dark);
 }
 
 .profileContainer {
-	background: transparent;
-	border: none;
-	border-radius: var(--radius-0);
-	padding: 0;
-	box-shadow: none;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-0);
+    padding: 0;
+    box-shadow: none;
 }
 
 .card .empty {
-	color: var(--text-gray-700);
+    color: var(--text-gray-700);
 }
 
 .profileSummaryGrid {
-	display: grid;
-	grid-template-columns: 420px 1fr;
-	gap: var(--space-8);
-	align-items: stretch;
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: var(--space-8);
+    align-items: stretch;
 }
 
 .editButton {
-	margin-top: var(--space-6);
-	padding: var(--space-3) var(--space-5);
-	background: var(--white-15);
-	border: 1px solid var(--white-30);
-	color: var(--white);
-	border-radius: var(--radius-base);
-	cursor: pointer;
-	font-weight: 600;
-	display: flex;
-	align-items: center;
-	gap: var(--space-3);
-	transition: all 150ms ease;
+    margin-top: var(--space-6);
+    padding: var(--space-3) var(--space-5);
+    background: var(--white-15);
+    border: 1px solid var(--white-30);
+    color: var(--white);
+    border-radius: var(--radius-base);
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    transition: all 150ms ease;
 }
 
 .editButton:hover {
-	background: var(--white-25);
-	border-color: var(--white-50);
+    background: var(--white-25);
+    border-color: var(--white-50);
 }
 
 .sectionTitleRow {
-	display: flex;
-	align-items: center;
-	gap: var(--space-5);
-	margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    margin-bottom: var(--space-4);
 }
 
 .sectionTitle {
-	font-weight: 800;
-	margin-bottom: var(--space-4);
-	font-size: 1.1rem;
-	color: var(--text-gray-800);
+    font-weight: 800;
+    margin-bottom: var(--space-4);
+    font-size: 1.1rem;
+    color: var(--text-gray-800);
 }
 
 .sectionTitleLight {
-	margin: 0;
-	font-size: 1.4rem;
-	font-weight: 900;
-	color: var(--white);
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--white);
 }
 
 .list {
-	display: grid;
-	gap: var(--space-4);
-	width: min(980px, 100%);
+    display: grid;
+    gap: var(--space-4);
+    width: min(980px, 100%);
 }
 
 .right {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-10);
-	padding-left: var(--space-10);
-	align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+    padding-left: var(--space-10);
+    align-items: flex-end;
 }
 
 .topRightRow {
-	width: 100%;
-	display: flex;
-	justify-content: flex-end;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .rightContent {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-10);
-	align-items: flex-end;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+    align-items: flex-end;
 }
 
 .item {
-	background: rgba(12, 130, 172, 0.06);
-	padding: var(--space-5) var(--space-6);
-	border-radius: var(--radius-lg);
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--space-7);
-	box-shadow: 0 8px 18px var(--dark-06);
-	cursor: pointer;
-	transition: all 200ms ease;
-	border: 1px solid rgba(12, 130, 172, 0.14);
-	width: 100%;
-	min-height: 56px;
+    background: rgba(12, 130, 172, 0.06);
+    padding: var(--space-5) var(--space-6);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-7);
+    box-shadow: 0 8px 18px var(--dark-06);
+    cursor: pointer;
+    transition: all 200ms ease;
+    border: 1px solid rgba(12, 130, 172, 0.14);
+    width: 100%;
+    min-height: 56px;
 }
 
 .item:hover {
-	background: var(--card-bg-light);
-	box-shadow: 0 10px 28px var(--dark-30);
-	transform: translateY(-2px);
+    background: var(--card-bg-light);
+    box-shadow: 0 10px 28px var(--dark-30);
+    transform: translateY(-2px);
 }
 
 .item:active {
-	transform: translateY(0);
+    transform: translateY(0);
 }
 
 .itemLeft {
-	display: flex;
-	flex-direction: column;
-	gap: var(--space-3);
-	flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    flex: 1;
 }
 
 .itemLeft > div:first-child {
-	font-weight: 650;
-	color: var(--text-dark);
-	font-size: 1.05rem;
+    font-weight: 650;
+    color: var(--text-dark);
+    font-size: 1.05rem;
 }
 
 .itemMeta {
-	color: var(--text-gray-700);
-	font-size: 0.95rem;
-	font-weight: 550;
+    color: var(--text-gray-700);
+    font-size: 0.95rem;
+    font-weight: 550;
 }
 
 .itemIcon {
-	width: 42px;
-	height: 42px;
-	border-radius: var(--radius-md);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	background: rgba(12, 130, 172, 0.1);
-	flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(12, 130, 172, 0.1);
+    flex-shrink: 0;
 }
 
 .itemIcon svg {
-	color: rgba(5, 53, 70, 0.9);
-	transition: transform 200ms ease;
+    color: rgba(5, 53, 70, 0.9);
+    transition: transform 200ms ease;
 }
 
 .item:hover .itemIcon svg {
-	transform: scale(1.1);
+    transform: scale(1.1);
 }
 
 .empty {
-	color: var(--white-50);
-	padding: var(--space-3) var(--space-0);
+    color: var(--white-50);
+    padding: var(--space-3) var(--space-0);
 }
 
 .rightActions {
-	display: flex;
-	gap: var(--space-4);
-	align-items: center;
-	justify-content: flex-end;
-	margin-bottom: var(--space-3);
+    display: flex;
+    gap: var(--space-4);
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: var(--space-3);
 }
 
 .practicesSection {
-	max-width: 1200px;
-	margin: 0 auto;
-	width: 100%;
-	padding: 0 var(--space-8) var(--space-14);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 var(--space-8) var(--space-14);
 }
 
 .practicesHeader {
-	display: flex;
-	align-items: center;
-	gap: var(--space-6);
-	margin-bottom: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
 }
 
 .practicesTitle {
-	margin: 0;
-	font-size: 1.4rem;
-	font-weight: 900;
-	color: var(--text-gray-800);
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--text-gray-800);
 }
 
 .practicesList {
-	background: var(--card-bg);
-	border: 1px solid rgba(0, 0, 0, 0.06);
-	border-radius: var(--radius-4);
-	box-shadow: 0 20px 60px var(--dark-20);
-	padding: var(--space-8);
-	color: var(--text-dark);
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-4);
+    box-shadow: 0 20px 60px var(--dark-20);
+    padding: var(--space-8);
+    color: var(--text-dark);
 }
 
 .placeholderCard {
-	background: rgba(12, 130, 172, 0.05);
-	border: 1px dashed rgba(12, 130, 172, 0.26);
-	border-radius: var(--radius-lg);
-	padding: var(--space-5) var(--space-6);
-	color: var(--text-gray-700);
-	font-weight: 600;
-	min-height: 56px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
+    background: rgba(12, 130, 172, 0.05);
+    border: 1px dashed rgba(12, 130, 172, 0.26);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5) var(--space-6);
+    color: var(--text-gray-700);
+    font-weight: 600;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .summaryCard {
-	background: var(--card-bg);
-	border: 1px solid rgba(0, 0, 0, 0.06);
-	border-radius: var(--radius-xl);
-	padding: var(--space-6);
-	color: var(--text-dark);
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+    background: var(--card-bg);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .summaryHeader {
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
-	justify-content: space-between;
-	gap: var(--space-5);
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-5);
 }
 
 .summaryTitle {
-	margin: 0 0 var(--space-5);
-	font-weight: 900;
-	font-size: 1.2rem;
-	color: var(--text-gray-800);
+    margin: 0 0 var(--space-5);
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--text-gray-800);
 }
 
 .summarySubtitle {
-	margin: calc(var(--space-1) * -1) 0 var(--space-6);
-	font-size: 0.95rem;
-	font-weight: 650;
-	color: var(--text-gray-700);
+    margin: calc(var(--space-1) * -1) 0 var(--space-6);
+    font-size: 0.95rem;
+    font-weight: 650;
+    color: var(--text-gray-700);
 }
 
 .statsButtonContainer {
-	margin-top: var(--space-6);
-	display: flex;
-	justify-content: center;
+    margin-top: var(--space-6);
+    display: flex;
+    justify-content: center;
 }
 
 @media (max-width: 900px) {
-	.twoColumn {
-		grid-template-columns: 1fr;
-		padding-right: 0;
-	}
+    .twoColumn {
+        grid-template-columns: 1fr;
+        padding-right: 0;
+    }
 
-	.right {
-		padding-left: 0;
-	}
+    .right {
+        padding-left: 0;
+    }
 
-	.main {
-		padding: var(--space-20) var(--space-4);
-	}
+    .main {
+        padding: var(--space-20) var(--space-4);
+        overflow-x: hidden;
+    }
 
-	.rightActions {
-		flex-wrap: wrap;
-	}
+    .rightActions {
+        flex-wrap: wrap;
+    }
 
-	.practicesSection {
-		padding: 0 var(--space-4) var(--space-10);
-	}
+    .practicesSection {
+        padding: 0 var(--space-4) var(--space-10);
+    }
 
-	.practicesList {
-		padding: var(--space-6);
-	}
+    .practicesList {
+        padding: var(--space-6);
+    }
 
-	.profileSummaryGrid {
-		grid-template-columns: 1fr;
-	}
+    .profileSummaryGrid {
+        grid-template-columns: 1fr;
+    }
 
-	.profileContainer {
-		padding: 0;
-	}
+    .profileContainer {
+        padding: 0;
+    }
 
-	.summaryCard {
-		padding: var(--space-6);
-	}
+    .summaryCard {
+        margin: 0;
+        padding: var(--space-6);
+        width: 90%;
+    }
 }
 
 @keyframes dropdown-in {
-	from {
-		opacity: 0;
-		transform: translateY(-6px) scale(0.98);
-	}
-	to {
-		opacity: 1;
-		transform: translateY(0) scale(1);
-	}
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .skeletonItem {
-	height: 88px;
-	border-radius: var(--radius-md);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-50));
-	animation: shimmer 1.4s infinite;
-	background-size: 200% 100%;
+    height: 88px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-50));
+    animation: shimmer 1.4s infinite;
+    background-size: 200% 100%;
 }
 
 @keyframes shimmer {
-	0% {
-		background-position: 200% 0;
-	}
-	100% {
-		background-position: -200% 0;
-	}
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 .circleSkeleton {
-	width: 40px;
-	height: 40px;
-	border-radius: var(--radius-full);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .itemSkeleton {
-	width: 100%;
-	min-height: 72px;
-	border-radius: var(--radius-lg);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
-	border: 1px solid var(--white-10);
+    width: 100%;
+    min-height: 72px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border: 1px solid var(--white-10);
 }
 
 .sectionTitleSkeletonLight {
-	width: 180px;
-	height: 22px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 180px;
+    height: 22px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .equipmentTitleSkeleton {
-	width: 80px;
-	height: 18px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 80px;
+    height: 18px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .smallButtonSkeleton {
-	width: 120px;
-	height: 36px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 120px;
+    height: 36px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .statsSkeleton {
-	width: 100%;
-	height: 60px;
-	border-radius: var(--radius-md);
-	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 100%;
+    height: 60px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .lineSkeletonWide {
-	width: 220px;
-	height: 18px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 220px;
+    height: 18px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .lineSkeleton {
-	width: 170px;
-	height: 14px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 170px;
+    height: 14px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .buttonSkeleton {
-	width: 180px;
-	height: 40px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
-	margin-top: var(--space-4);
+    width: 180px;
+    height: 40px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    margin-top: var(--space-4);
 }
 
 .actionButtonSkeleton {
-	width: 170px;
-	height: 32px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 170px;
+    height: 32px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .sectionTitleSkeleton {
-	width: 120px;
-	height: 16px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
-	margin-bottom: var(--space-3);
+    width: 120px;
+    height: 16px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    margin-bottom: var(--space-3);
 }
 
 .practicesTitleSkeleton {
-	width: 180px;
-	height: 20px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 180px;
+    height: 20px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .seeAllLinkSkeleton {
-	width: 72px;
-	height: 16px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 72px;
+    height: 16px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .toolButtonSkeleton {
-	aspect-ratio: 1 / 1;
-	width: 100%;
-	border-radius: var(--radius-xl);
-	background: linear-gradient(90deg, var(--white-10), var(--white-15), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(90deg, var(--white-10), var(--white-15), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .quickActionsSkeleton {
-	max-width: 1200px;
-	margin: 0 auto var(--space-2);
-	width: 100%;
-	padding: 0 var(--space-8);
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(100px, 130px));
-	gap: var(--space-4);
+    max-width: 1200px;
+    margin: 0 auto var(--space-2);
+    width: 100%;
+    padding: 0 var(--space-8);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 130px));
+    gap: var(--space-4);
 }
 
 @media (max-width: 640px) {
-	.quickActionsSkeleton {
-		display: none;
-	}
+    .quickActionsSkeleton {
+        display: none;
+    }
 }
 
 .itemSkeleton {
-	width: 100%;
-	min-height: 72px;
-	border-radius: var(--radius-lg);
-	background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
-	border: 1px solid var(--white-10);
+    width: 100%;
+    min-height: 72px;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+    border: 1px solid var(--white-10);
 }
 
 .sectionTitleSkeletonLight {
-	width: 180px;
-	height: 22px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 180px;
+    height: 22px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .equipmentTitleSkeleton {
-	width: 80px;
-	height: 18px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 80px;
+    height: 18px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .smallButtonSkeleton {
-	width: 120px;
-	height: 36px;
-	border-radius: var(--radius-base);
-	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 120px;
+    height: 36px;
+    border-radius: var(--radius-base);
+    background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }
 
 .statsSkeleton {
-	width: 100%;
-	height: 60px;
-	border-radius: var(--radius-md);
-	background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
-	background-size: 200% 100%;
-	animation: shimmer 1.4s infinite;
+    width: 100%;
+    height: 60px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(90deg, var(--dark-05), var(--dark-08), var(--dark-05));
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
 }

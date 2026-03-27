@@ -7,7 +7,7 @@
 }
 
 .main {
-    padding: calc(var(--space-20) + 60px) var(--space-8) var(--space-14);
+    padding: calc(var(--space-10) + 60px) var(--space-8) var(--space-14);
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;

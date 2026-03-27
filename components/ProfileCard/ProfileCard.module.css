@@ -1,204 +1,205 @@
 .card {
-	width: 100%;
-	height: 100%;
-	background: var(--card-bg);
-	border: 1px solid var(--card-bg);
-	border-radius: var(--radius-xl);
-	padding: var(--space-6);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--space-6);
-	color: var(--text-dark);
-	position: relative;
+    width: 100%;
+    height: 100%;
+    background: var(--card-bg);
+    border: 1px solid var(--card-bg);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+    color: var(--text-dark);
+    position: relative;
 }
 
 .avatarContainer {
-	position: relative;
-	width: fit-content;
+    position: relative;
+    width: fit-content;
 }
 
 .avatarWrap {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-	cursor: pointer;
-	border-radius: var(--radius-circle);
-	overflow: hidden;
-	width: 140px;
-	height: 140px;
-	border: 3px solid var(--secondary);
-	transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    border-radius: var(--radius-circle);
+    overflow: hidden;
+    width: 120px;
+    height: 120px;
+    border: 3px solid var(--secondary);
+    transition: all 0.2s ease;
 }
 
 .avatarWrap:hover {
-	border-color: var(--primary);
+    border-color: var(--primary);
 }
 
 .avatarWrap:focus-visible {
-	outline: 2px solid var(--primary);
-	outline-offset: 4px;
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
 }
 
 .avatar {
-	width: 100%;
-	height: 100%;
-	border-radius: var(--radius-circle);
-	object-fit: cover;
-	border: none;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-circle);
+    object-fit: cover;
+    border: none;
 }
 
 .avatarPlaceholder {
-	width: 100%;
-	height: 100%;
-	border-radius: var(--radius-circle);
-	background: var(--background);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	color: var(--text-gray-600);
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-circle);
+    background: var(--background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-gray-600);
 }
 
 .hiddenInput {
-	display: none;
+    display: none;
 }
 
 .hoverOverlay,
 .loadingOverlay {
-	position: absolute;
-	inset: 0;
-	background-color: rgba(5, 53, 70, 0.75); /* var(--primary) with opacity */
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	color: var(--white);
-	opacity: 0;
-	transition: opacity 0.2s ease;
-	border-radius: var(--radius-circle);
-	z-index: 10;
+    position: absolute;
+    inset: 0;
+    background-color: rgba(5, 53, 70, 0.75); /* var(--primary) with opacity */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: var(--radius-circle);
+    z-index: 10;
 }
 
 .avatarWrap:hover .hoverOverlay,
 .loadingOverlay {
-	/* Always show loading overlay if present */
-	opacity: 1;
+    /* Always show loading overlay if present */
+    opacity: 1;
 }
 
 .overlayText {
-	font-size: 0.875rem;
-	font-weight: 600;
-	margin-top: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: 4px;
 }
 
 .spinner {
-	animation: spin 1s linear infinite;
-	width: 2rem;
-	height: 2rem;
+    animation: spin 1s linear infinite;
+    width: 2rem;
+    height: 2rem;
 }
 
 @keyframes spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .header {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 6px;
-	text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
 }
 
 .trophyButton {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 44px;
-	height: 44px;
-	border: none;
-	cursor: pointer;
-	background: var(--primary);
-	border-radius: var(--radius-circle);
-	position: absolute;
-	top: var(--space-4);
-	right: var(--space-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+    background: var(--primary);
+    border-radius: var(--radius-circle);
+    border: 1px var(--white-50) solid;
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
 }
 
 .name {
-	margin: 0;
-	font-size: 1.25rem;
-	font-weight: 700;
-	color: var(--text-dark);
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
 }
 
 .menu {
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	transform: translateX(-50%);
-	margin-top: var(--space-3);
-	background: var(--white);
-	border-radius: var(--radius-md);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	min-width: 180px;
-	z-index: 50;
-	overflow: hidden;
-	animation: fadeIn 0.1s ease-out;
-	border: 1px solid var(--border-gray);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: var(--space-3);
+    background: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    z-index: 50;
+    overflow: hidden;
+    animation: fadeIn 0.1s ease-out;
+    border: 1px solid var(--border-gray);
 }
 
 .menuItem {
-	display: flex;
-	align-items: center;
-	gap: var(--space-3);
-	width: 100%;
-	padding: var(--space-3) var(--space-4);
-	background: transparent;
-	border: none;
-	cursor: pointer;
-	text-align: left;
-	font-size: 0.95rem;
-	color: var(--text-dark);
-	transition: background-color 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    transition: background-color 0.1s ease;
 }
 
 .menuItem:hover {
-	background-color: var(--bg-gray-100);
+    background-color: var(--bg-gray-100);
 }
 
 .menuItemDelete {
-	color: var(--error);
-	border-top: 1px solid var(--border-gray);
+    color: var(--error);
+    border-top: 1px solid var(--border-gray);
 }
 
 .menuItemDelete:hover {
-	background-color: var(--error-bg);
+    background-color: var(--error-bg);
 }
 
 @keyframes fadeIn {
-	from {
-		opacity: 0;
-		transform: translate(-50%, -10px);
-	}
-	to {
-		opacity: 1;
-		transform: translate(-50%, 0);
-	}
+    from {
+        opacity: 0;
+        transform: translate(-50%, -10px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
 }
 
 @media (max-width: 900px) {
-	.card {
-		padding: var(--space-6);
-	}
+    .card {
+        padding: var(--space-6);
+        margin: 0;
+    }
 
-	.avatarWrap {
-		width: 100px;
-		height: 100px;
-	}
+    .avatarWrap {
+        width: 100px;
+        height: 100px;
+    }
 }
