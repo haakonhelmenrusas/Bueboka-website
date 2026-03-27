@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button, PracticesList, usePracticeCards } from '@/components';
 import styles from './PracticesSection.module.css';
@@ -16,6 +16,28 @@ interface PracticesSectionProps {
 	compact?: boolean;
 }
 
+function SkeletonCards({ count }: { count: number }) {
+	return (
+		<div className={styles.skeletonList} aria-hidden="true">
+			{Array.from({ length: count }).map((_, i) => (
+				<div key={i} className={styles.skeletonCard}>
+					<div className={styles.skeletonRow}>
+						<div className={styles.skeletonDate} />
+						<div className={styles.skeletonBadge} />
+						<span className={styles.skeletonSep} />
+						<div className={styles.skeletonChips}>
+							<div className={styles.skeletonChip} />
+							<div className={styles.skeletonChip} />
+							<div className={styles.skeletonChip} />
+							<div className={styles.skeletonChip} />
+						</div>
+					</div>
+				</div>
+			))}
+		</div>
+	);
+}
+
 export function PracticesSection({
 	onCreate,
 	onCreateCompetition,
@@ -29,6 +51,11 @@ export function PracticesSection({
 			pageSize: compact ? 5 : 10,
 		});
 
+	// Prevent hydration mismatch: server and the first client render both
+	// see mounted=false → skeleton. After hydration the real state takes over.
+	const [mounted, setMounted] = useState(false);
+	useEffect(() => setMounted(true), []);
+
 	useEffect(() => {
 		if (reloadKey === undefined) return;
 		fetchPage(1);
@@ -40,6 +67,7 @@ export function PracticesSection({
 	}, [deletedPracticeId, removeLocal]);
 
 	const hasPractices = cards.length > 0;
+	const showSkeleton = !mounted || (loading && cards.length === 0);
 
 	if (compact) {
 		return (
@@ -52,7 +80,9 @@ export function PracticesSection({
 					</Link>
 				</div>
 				<div className={styles.practicesList}>
-					{hasPractices ? (
+					{showSkeleton ? (
+						<SkeletonCards count={3} />
+					) : hasPractices ? (
 						<PracticesList practices={cards} onSelectPractice={onSelectPractice} />
 					) : (
 						<div className={styles.placeholderCard}>Ingen treninger registrert ennå.</div>
@@ -99,7 +129,9 @@ export function PracticesSection({
 				)}
 			</div>
 			<div className={styles.practicesList}>
-				{hasPractices ? (
+				{showSkeleton ? (
+					<SkeletonCards count={8} />
+				) : hasPractices ? (
 					<PracticesList practices={cards} onSelectPractice={onSelectPractice} />
 				) : (
 					<div className={styles.placeholderCard}>Ingen treninger registrert ennå.</div>

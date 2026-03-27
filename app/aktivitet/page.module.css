@@ -7,7 +7,7 @@
 }
 
 .main {
-    padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
+    padding: calc(var(--space-20) + 60px) var(--space-8) var(--space-14);
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
@@ -29,13 +29,6 @@
     color: var(--white);
 }
 
-.pageSubtitle {
-    margin: var(--space-2) 0 0;
-    font-size: 0.9375rem;
-    color: var(--white-50);
-    font-weight: 500;
-}
-
 .titleGroup {
     display: flex;
     flex-direction: column;
@@ -53,7 +46,7 @@
     margin-bottom: var(--space-10);
     display: flex;
     align-items: center;
-    gap: var(--space-10);
+    gap: var(--space-8);
 }
 
 .introBannerIcon {
@@ -86,30 +79,9 @@
     line-height: 1.6;
 }
 
-.introBannerPills {
-    display: flex;
-    gap: var(--space-4);
-    flex-shrink: 0;
-    flex-wrap: wrap;
-}
-
-.introPill {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-5);
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: var(--radius-full);
-    color: var(--white-80);
-    font-size: 0.875rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
 @media (max-width: 900px) {
     .main {
-        padding: var(--space-20) var(--space-4) var(--space-10);
+        padding: calc(var(--space-20) + 60px) var(--space-4) var(--space-10);
     }
 
     .pageTitle {
@@ -121,10 +93,6 @@
         align-items: flex-start;
         gap: var(--space-6);
         padding: var(--space-6);
-    }
-
-    .introBannerPills {
-        width: 100%;
     }
 }
 
