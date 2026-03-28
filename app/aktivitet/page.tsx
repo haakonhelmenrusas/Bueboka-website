@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 import {
+	AktivitetBanner,
 	CompetitionFormModal,
 	Footer,
 	Header,
@@ -15,7 +16,6 @@ import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData
 import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import { CompetitionFormInput } from '@/components/Competitions/CompetitionFormModal';
 import type { Practice } from '@/lib/types';
-import { LuActivity } from 'react-icons/lu';
 
 export default function AktivitetPage() {
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
@@ -107,24 +107,10 @@ export default function AktivitetPage() {
 						<h1 className={styles.pageTitle}>Aktivitet</h1>
 					</div>
 				</div>
-
-				<div className={styles.introBanner}>
-					<div className={styles.introBannerIcon}>
-						<LuActivity size={24} />
-					</div>
-					<div className={styles.introBannerText}>
-						<h2 className={styles.introBannerTitle}>Din treningslogg</h2>
-						<p className={styles.introBannerDescription}>
-							Her finner du alle treningene og konkurransene du har registrert. Bla gjennom historikken, se detaljer om enkeltøkter, og hold
-							oversikt over fremgangen din over tid.
-						</p>
-					</div>
-				</div>
-
+				<AktivitetBanner />
 				<PracticesSection onSelectPractice={handleSelectPractice} deletedPracticeId={deletedPracticeId} />
 			</main>
 			<Footer />
-
 			<PracticeDetailsModal
 				open={practiceModalOpen}
 				practice={selectedPractice || undefined}

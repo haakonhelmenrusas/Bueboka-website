@@ -35,49 +35,10 @@
 }
 
 /* ===================================
-   INTRO BANNER
+   INTRO BANNER styles moved to
+   components/AktivitetBanner/AktivitetBanner.module.css
    =================================== */
 
-.introBanner {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(12, 130, 172, 0.18) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius-xl);
-    padding: var(--space-8) var(--space-10);
-    margin-bottom: var(--space-10);
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-}
-
-.introBannerIcon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
-    border-radius: var(--radius-lg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    flex-shrink: 0;
-}
-
-.introBannerText {
-    flex: 1;
-}
-
-.introBannerTitle {
-    margin: 0 0 var(--space-2) 0;
-    font-size: 1.25rem;
-    font-weight: 800;
-    color: var(--white);
-}
-
-.introBannerDescription {
-    margin: 0;
-    font-size: 0.9375rem;
-    color: var(--white-50);
-    line-height: 1.6;
-}
 
 @media (max-width: 900px) {
     .main {
@@ -86,13 +47,6 @@
 
     .pageTitle {
         font-size: 1.5rem;
-    }
-
-    .introBanner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--space-6);
-        padding: var(--space-6);
     }
 }
 

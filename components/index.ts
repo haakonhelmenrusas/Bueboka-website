@@ -50,6 +50,7 @@ import { SessionShareCard } from './SessionShareCard';
 import { QuickActions } from './QuickActions/QuickActions';
 import { PublicUserCard } from './PublicProfiles/PublicUserCard';
 import { PublicProfileList } from './PublicProfiles/PublicProfileList';
+import { AktivitetBanner } from './AktivitetBanner/AktivitetBanner';
 
 export {
 	Header,
@@ -104,6 +105,7 @@ export {
 	PublicUserCard,
 	PublicProfileList,
 	QuickActions,
+	AktivitetBanner,
 };
 
 export * from './common/StatsSummary/StatsSummary';
