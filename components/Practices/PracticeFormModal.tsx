@@ -276,6 +276,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 
 	if (!open) return null;
 
+	const isFormValid = !!date;
 	const title = isEditMode ? 'Rediger trening' : 'Ny trening';
 
 	return (
@@ -346,6 +347,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 						onNext={() => setStep((s) => Math.min(s + 1, 3))}
 						isEditMode={isEditMode}
 						submitting={submitting}
+						canSave={isFormValid}
 						onClose={onClose}
 						onSubmit={handleSubmit}
 					/>

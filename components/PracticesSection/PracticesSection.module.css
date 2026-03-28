@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     gap: var(--space-6);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
 }
 
 .seeAllLink {
@@ -42,7 +42,7 @@
     justify-content: space-between;
     align-items: center;
     gap: var(--space-4);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-6);
     padding: 0 var(--space-2);
 }
 
@@ -97,8 +97,12 @@
    =================================== */
 
 @keyframes shimmer {
-    0%   { background-position: -500px 0; }
-    100% { background-position: 500px 0; }
+    0% {
+        background-position: -500px 0;
+    }
+    100% {
+        background-position: 500px 0;
+    }
 }
 
 .skeletonList {
@@ -125,10 +129,10 @@
 .skeletonBadge,
 .skeletonChip {
     background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.07) 0%,
-        rgba(255, 255, 255, 0.16) 40%,
-        rgba(255, 255, 255, 0.07) 80%
+            90deg,
+            rgba(255, 255, 255, 0.07) 0%,
+            rgba(255, 255, 255, 0.16) 40%,
+            rgba(255, 255, 255, 0.07) 80%
     );
     background-size: 500px 100%;
     animation: shimmer 1.4s ease-in-out infinite;
@@ -167,10 +171,21 @@
     height: 14px;
 }
 
-.skeletonChip:nth-child(1) { width: 56px; }
-.skeletonChip:nth-child(2) { width: 80px; }
-.skeletonChip:nth-child(3) { width: 116px; }
-.skeletonChip:nth-child(4) { width: 60px; }
+.skeletonChip:nth-child(1) {
+    width: 56px;
+}
+
+.skeletonChip:nth-child(2) {
+    width: 80px;
+}
+
+.skeletonChip:nth-child(3) {
+    width: 116px;
+}
+
+.skeletonChip:nth-child(4) {
+    width: 60px;
+}
 
 @media (max-width: 700px) {
     .skeletonCard {
@@ -183,9 +198,13 @@
         gap: var(--space-3);
     }
 
-    .skeletonSep { display: none; }
+    .skeletonSep {
+        display: none;
+    }
 
-    .skeletonBadge { width: 88px; }
+    .skeletonBadge {
+        width: 88px;
+    }
 }
 
 .placeholderCard {

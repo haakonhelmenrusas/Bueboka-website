@@ -236,6 +236,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 
 	if (!open) return null;
 
+	const isFormValid = !!date && !!name.trim();
 	const title = isEditMode ? 'Rediger konkurranse' : 'Ny konkurranse';
 
 	return (
@@ -314,6 +315,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						onNext={() => setStep((s) => Math.min(s + 1, 3))}
 						isEditMode={isEditMode}
 						submitting={submitting}
+						canSave={isFormValid}
 						onClose={onClose}
 						onSubmit={handleSubmit}
 					/>

@@ -12,11 +12,12 @@ interface NavFooterProps {
 	onNext: () => void;
 	isEditMode: boolean;
 	submitting: boolean;
+	canSave: boolean;
 	onClose: () => void;
 	onSubmit: () => void;
 }
 
-export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, onNext, isEditMode, submitting, onClose, onSubmit }) => {
+export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, onNext, isEditMode, submitting, canSave, onClose, onSubmit }) => {
 	const isFirstStep = step === 0;
 	const isLastStep = step === TOTAL_STEPS - 1;
 
@@ -44,16 +45,14 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, 
 					)}
 				</div>
 				<div className={styles.navRight}>
-					{isLastStep && (
-						<Button
-							type="button"
-							label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
-							onClick={onSubmit}
-							variant="standard"
-							disabled={submitting}
-							loading={submitting}
-						/>
-					)}
+					<Button
+						type="button"
+						label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
+						onClick={onSubmit}
+						variant="standard"
+						disabled={submitting || !canSave}
+						loading={submitting}
+					/>
 				</div>
 			</div>
 		</div>
