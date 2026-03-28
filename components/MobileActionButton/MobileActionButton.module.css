@@ -5,8 +5,8 @@
 	display: none;
 }
 
-/* Show only on small screens */
-@media (max-width: 767px) {
+/* Show only between 641px and 767px — below 641px the QuickActions grid is shown instead */
+@media (min-width: 641px) and (max-width: 767px) {
 	.wrapper {
 		display: block;
 		position: fixed;
