@@ -202,17 +202,6 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 		});
 	};
 
-	const removeLastArrowScore = (roundIndex: number) => {
-		const current = rounds[roundIndex].scores ?? [];
-		if (current.length === 0) return;
-		const newScores = current.slice(0, -1);
-		setRounds((prev) => {
-			const next = [...prev];
-			next[roundIndex] = { ...next[roundIndex], scores: newScores, roundScore: newScores.reduce((a, b) => a + b, 0) };
-			return next;
-		});
-	};
-
 	const updateArrowScore = (roundIndex: number, arrowIndex: number, score: number) => {
 		setRounds((prev) => {
 			const next = [...prev];
@@ -353,7 +342,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 							/>
 						)}
 						{step === 2 && (
-							<PracticeFormScoringStep rounds={rounds} environment={environment} addArrowScore={addArrowScore} removeLastArrowScore={removeLastArrowScore} updateArrowScore={updateArrowScore} />
+							<PracticeFormScoringStep rounds={rounds} environment={environment} addArrowScore={addArrowScore} updateArrowScore={updateArrowScore} />
 						)}
 						{step === 3 && (
 							<PracticeFormReflectionStep rating={rating} setRating={setRating} notes={notes} setNotes={setNotes} error={error} />

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import styles from './PracticeFormModal.module.css';
-import { LuDelete, LuChevronLeft, LuChevronRight, LuInfo } from 'react-icons/lu';
+import { LuChevronLeft, LuChevronRight, LuInfo } from 'react-icons/lu';
 import { ARROW_SCORE_OPTIONS, type RoundInput, getRoundSummary } from './PracticeFormModal.types';
 import { Environment } from '@/lib/prismaEnums';
 
@@ -47,17 +47,10 @@ interface ScoringStepProps {
 	rounds: RoundInput[];
 	environment: Environment;
 	addArrowScore: (roundIndex: number, score: number) => void;
-	removeLastArrowScore: (roundIndex: number) => void;
 	updateArrowScore: (roundIndex: number, arrowIndex: number, score: number) => void;
 }
 
-export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({
-	rounds,
-	environment,
-	addArrowScore,
-	removeLastArrowScore,
-	updateArrowScore,
-}) => {
+export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, environment, addArrowScore, updateArrowScore }) => {
 	const hasAnyActionable = rounds.some((r) => (r.numberArrows ?? 0) > 0 || r.roundScore > 0);
 
 	const scoreOptions = environment === Environment.OUTDOOR ? ARROW_SCORE_OPTIONS : ARROW_SCORE_OPTIONS.filter((opt) => opt.label !== 'X');
@@ -266,13 +259,6 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({
 									</button>
 								)}
 							</div>
-						)}
-
-						{filledCount > 0 && isActiveEnd && !isEditing && (
-							<button type="button" className={styles.backspaceBtn} onClick={() => removeLastArrowScore(roundIndex)}>
-								<LuDelete size={15} />
-								Fjern siste
-							</button>
 						)}
 					</div>
 				);

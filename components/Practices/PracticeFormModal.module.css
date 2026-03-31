@@ -2,8 +2,8 @@
 .wizard {
     display: flex;
     flex-direction: column;
-    height: 80vh;
-    max-height: 80vh;
+    height: 78dvh;
+    max-height: 78dvh;
     overflow: hidden;
 }
 
@@ -816,9 +816,6 @@
 .navFooter {
     border-top: 1px solid var(--border-gray);
     padding: var(--space-5) var(--space-8);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
     background: var(--white);
     flex-shrink: 0;
 }
@@ -826,37 +823,36 @@
 .navRow {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
+    gap: var(--space-4);
 }
 
-.navCenter {
+.navStepName {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.navRowRight {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
-    flex: 1;
-    justify-content: center;
-}
-
-.navRight {
-    display: flex;
     justify-content: flex-end;
-    min-width: 0;
-    margin-left: auto;
 }
 
 .navArrow {
-    width: 44px;
-    height: 44px;
+    width: 54px;
+    height: 54px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-circle);
-    border: 1px solid var(--border-gray);
+    border: 1.5px solid var(--border-gray);
     background: var(--bg-gray-50);
     cursor: pointer;
     color: var(--primary);
     transition: all 150ms ease;
+    flex-shrink: 0;
 }
 
 .navArrow:hover:not(:disabled) {
@@ -869,17 +865,6 @@
     cursor: not-allowed;
 }
 
-.navStepName {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--primary);
-}
-
-.navActions {
-    display: flex;
-    gap: var(--space-4);
-    justify-content: flex-end;
-}
 
 /* ─── Error ─────────────────────────────────────────────────────────────────── */
 .error {
@@ -895,8 +880,8 @@
 /* ─── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
     .wizard {
-        height: 90vh;
-        max-height: 90vh;
+        height: 95dvh;
+        max-height: 95dvh;
     }
 
     .wizardHeader {
@@ -938,9 +923,5 @@
         width: 54px;
         height: 54px;
         font-size: 1rem;
-    }
-
-    .cancelBtnHideMobile {
-        display: none;
     }
 }

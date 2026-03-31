@@ -33,38 +33,20 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 	return (
 		<div className={styles.navFooter}>
 			<div className={styles.navRow}>
-				<div className={styles.navCenter}>
-					<button
-						type="button"
-						className={`${styles.navArrow}${isFirstStep ? ` ${styles.navArrowDisabled}` : ''}`}
-						onClick={onPrev}
-						disabled={isFirstStep}
-						aria-label="Forrige steg"
-					>
-						<LuChevronLeft size={22} />
-					</button>
-					<span className={styles.navStepName}>{STEP_LABELS[step]}</span>
-					{isLastStep ? (
-						<div className={styles.navArrow} style={{ visibility: 'hidden' }} />
-					) : (
-						<button type="button" className={styles.navArrow} onClick={onNext} aria-label="Neste steg">
-							<LuChevronRight size={22} />
-						</button>
-					)}
-				</div>
-			</div>
-			<div className={styles.navRow}>
-				<Button
+				<button
 					type="button"
-					label="Avbryt"
-					onClick={onClose}
-					variant="standard"
-					buttonType="outline"
-					disabled={submitting}
-					className={styles.cancelBtnHideMobile}
-				/>
-				<div className={styles.navRight}>
-					{isLastStep && (
+					className={`${styles.navArrow}${isFirstStep ? ` ${styles.navArrowDisabled}` : ''}`}
+					onClick={onPrev}
+					disabled={isFirstStep}
+					aria-label="Forrige steg"
+				>
+					<LuChevronLeft size={26} />
+				</button>
+
+				<span className={styles.navStepName}>{STEP_LABELS[step]}</span>
+
+				<div className={styles.navRowRight}>
+					{isLastStep ? (
 						<Button
 							type="button"
 							label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
@@ -73,6 +55,10 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 							disabled={submitting || !canSave}
 							loading={submitting}
 						/>
+					) : (
+						<button type="button" className={styles.navArrow} onClick={onNext} aria-label="Neste steg">
+							<LuChevronRight size={26} />
+						</button>
 					)}
 				</div>
 			</div>

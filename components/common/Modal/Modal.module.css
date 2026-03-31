@@ -15,7 +15,7 @@
 	border-radius: var(--radius-lg);
 	width: 100%;
 	/* max-width set via inline style from props */
-	max-height: 92vh;
+	max-height: 96dvh;
 	overflow-y: auto;
 	padding: var(--space-8);
 	display: flex;

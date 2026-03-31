@@ -85,6 +85,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	const [deleting, setDeleting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
 
 	const isEditMode = mode === 'edit';
 
@@ -188,6 +189,11 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 		}
 	};
 
+	const handleCloseRequest = () => {
+		if (submitting) return;
+		setConfirmDiscardOpen(true);
+	};
+
 	const handleSubmit = async () => {
 		if (!name.trim()) {
 			setError('Navn på konkurransen er påkrevd');
@@ -253,7 +259,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				<div className={styles.wizard}>
 					<div className={styles.wizardHeader}>
 						<h2 className={styles.wizardTitle}>{title}</h2>
-						<button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+						<button type="button" className={styles.closeBtn} onClick={handleCloseRequest} aria-label="Lukk">
 							<LuX size={20} />
 						</button>
 					</div>
@@ -316,7 +322,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 						isEditMode={isEditMode}
 						submitting={submitting}
 						canSave={isFormValid}
-						onClose={onClose}
+						onClose={handleCloseRequest}
 						onSubmit={handleSubmit}
 					/>
 				</div>
@@ -332,6 +338,20 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				cancelLabel="Avbryt"
 				variant="danger"
 				isLoading={deleting}
+			/>
+
+			<ConfirmModal
+				open={confirmDiscardOpen}
+				onClose={() => setConfirmDiscardOpen(false)}
+				onConfirm={() => {
+					setConfirmDiscardOpen(false);
+					onClose();
+				}}
+				title="Forkast endringer"
+				message="Er du sikker på at du vil avbryte? Endringene du har gjort vil ikke bli lagret."
+				confirmLabel="Forkast"
+				cancelLabel="Fortsett"
+				variant="danger"
 			/>
 		</>
 	);
