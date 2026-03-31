@@ -54,16 +54,26 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 				</div>
 			</div>
 			<div className={styles.navRow}>
-				<Button type="button" label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" disabled={submitting} />
+				<Button
+					type="button"
+					label="Avbryt"
+					onClick={onClose}
+					variant="standard"
+					buttonType="outline"
+					disabled={submitting}
+					className={styles.cancelBtnHideMobile}
+				/>
 				<div className={styles.navRight}>
-					<Button
-						type="button"
-						label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
-						onClick={onSubmit}
-						variant="standard"
-						disabled={submitting || !canSave}
-						loading={submitting}
-					/>
+					{isLastStep && (
+						<Button
+							type="button"
+							label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
+							onClick={onSubmit}
+							variant="standard"
+							disabled={submitting || !canSave}
+							loading={submitting}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

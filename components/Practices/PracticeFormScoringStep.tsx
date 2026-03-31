@@ -96,10 +96,6 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({
 
 	return (
 		<div className={styles.stepContent}>
-			<p className={styles.stepDescription}>
-				Legg inn poengsetting per pil (valgfritt). Poengsummen beregnes automatisk og oppdaterer rundescore.
-			</p>
-
 			{!hasAnyActionable && (
 				<div className={styles.emptyScoring}>
 					<p className={styles.emptyScoringText}>
