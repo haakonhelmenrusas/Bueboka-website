@@ -411,6 +411,24 @@
     background: var(--primary);
     border-color: var(--primary);
     color: var(--white);
+    cursor: pointer;
+    transition: box-shadow 150ms ease, transform 150ms ease;
+}
+
+.arrowChipFilled:hover {
+    box-shadow: 0 0 0 3px var(--primary-20, rgba(0,0,0,0.15));
+    transform: scale(1.08);
+}
+
+.arrowChipEditing {
+    background: var(--white);
+    border-color: var(--primary);
+    border-style: solid;
+    border-width: 2.5px;
+    color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-20, rgba(0,0,0,0.12));
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .arrowChipEmpty {
@@ -418,6 +436,38 @@
     border-color: var(--border-gray);
     border-style: dashed;
     color: var(--dimmed);
+}
+
+/* ─── Arrow chip zone colours (mirror WA target face) ───────────────────────── */
+.arrowChipGold {
+    background: #ffd700;
+    border-color: #e6ac00;
+    color: #5c4200;
+}
+.arrowChipRed {
+    background: #d93025;
+    border-color: #aa2318;
+    color: #fff;
+}
+.arrowChipBlue {
+    background: #1e90d0;
+    border-color: #1565a8;
+    color: #fff;
+}
+.arrowChipBlack {
+    background: #2c2c2c;
+    border-color: #111;
+    color: #fff;
+}
+.arrowChipWhite {
+    background: #f0f0f0;
+    border-color: #aaa;
+    color: #333;
+}
+.arrowChipMiss {
+    background: var(--error-bg);
+    border-color: var(--error-border);
+    color: var(--error);
 }
 
 .scoringProgress {
@@ -540,6 +590,14 @@
 
 .endNextBtn:hover {
     opacity: 0.75;
+}
+
+.editingHint {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin: 0;
+    text-align: center;
 }
 
 .scoreButton:hover {

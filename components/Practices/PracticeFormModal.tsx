@@ -211,6 +211,16 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 		});
 	};
 
+	const updateArrowScore = (roundIndex: number, arrowIndex: number, score: number) => {
+		setRounds((prev) => {
+			const next = [...prev];
+			const scores = [...(next[roundIndex].scores ?? [])];
+			scores[arrowIndex] = score;
+			next[roundIndex] = { ...next[roundIndex], scores, roundScore: scores.reduce((a, b) => a + b, 0) };
+			return next;
+		});
+	};
+
 	// ─── Weather ─────────────────────────────────────────────────────────────
 	const toggleWeather = (condition: WeatherCondition) => {
 		setWeather((prev) => (prev.includes(condition) ? prev.filter((w) => w !== condition) : [...prev, condition]));
@@ -341,7 +351,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 							/>
 						)}
 						{step === 2 && (
-							<PracticeFormScoringStep rounds={rounds} environment={environment} addArrowScore={addArrowScore} removeLastArrowScore={removeLastArrowScore} />
+							<PracticeFormScoringStep rounds={rounds} environment={environment} addArrowScore={addArrowScore} removeLastArrowScore={removeLastArrowScore} updateArrowScore={updateArrowScore} />
 						)}
 						{step === 3 && (
 							<PracticeFormReflectionStep rating={rating} setRating={setRating} notes={notes} setNotes={setNotes} error={error} />

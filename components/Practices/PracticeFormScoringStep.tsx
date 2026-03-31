@@ -34,20 +34,38 @@ function getScoreButtonClass(label: string, s: Record<string, string>): string {
 	}
 }
 
+function getChipColorClass(score: number, s: Record<string, string>): string {
+	if (score >= 9) return s.arrowChipGold;
+	if (score >= 7) return s.arrowChipRed;
+	if (score >= 5) return s.arrowChipBlue;
+	if (score >= 3) return s.arrowChipBlack;
+	if (score >= 1) return s.arrowChipWhite;
+	return s.arrowChipMiss; // 0 = M
+}
+
 interface ScoringStepProps {
 	rounds: RoundInput[];
 	environment: Environment;
 	addArrowScore: (roundIndex: number, score: number) => void;
 	removeLastArrowScore: (roundIndex: number) => void;
+	updateArrowScore: (roundIndex: number, arrowIndex: number, score: number) => void;
 }
 
-export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, environment, addArrowScore, removeLastArrowScore }) => {
+export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({
+	rounds,
+	environment,
+	addArrowScore,
+	removeLastArrowScore,
+	updateArrowScore,
+}) => {
 	const hasAnyActionable = rounds.some((r) => (r.numberArrows ?? 0) > 0 || r.roundScore > 0);
 
 	const scoreOptions = environment === Environment.OUTDOOR ? ARROW_SCORE_OPTIONS : ARROW_SCORE_OPTIONS.filter((opt) => opt.label !== 'X');
 
 	// Track which end page is visible per round
 	const [endPages, setEndPages] = useState<Record<number, number>>({});
+	// Track which absolute arrow index is being edited per round (null = append mode)
+	const [editingIndices, setEditingIndices] = useState<Record<number, number | null>>({});
 
 	// Clamp endPages whenever scores change (e.g. after backspace)
 	useEffect(() => {
@@ -67,7 +85,13 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 	}, [rounds]);
 
 	const setEndPage = (roundIndex: number, page: number) => {
+		// Clear editing when navigating between ends
+		setEditingIndices((prev) => ({ ...prev, [roundIndex]: null }));
 		setEndPages((prev) => ({ ...prev, [roundIndex]: page }));
+	};
+
+	const setEditingIndex = (roundIndex: number, idx: number | null) => {
+		setEditingIndices((prev) => ({ ...prev, [roundIndex]: idx }));
 	};
 
 	return (
@@ -134,12 +158,17 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 				const canGoPrev = currentEndPage > 0;
 				const canGoNext = currentEndPage < activeEndPage;
 
+				const editingIdx = editingIndices[roundIndex] ?? null;
+				const isEditing = editingIdx !== null;
+				const showScoreButtons = (isActiveEnd && !isEndFilled) || isEditing;
+
 				return (
 					<div key={roundIndex} className={styles.scoringCard}>
 						<div className={styles.scoringCardHeader}>
 							<span className={styles.scoringRoundTitle}>Runde {roundIndex + 1}</span>
 							<span className={styles.scoringRoundMeta}>{getRoundSummary(round)}</span>
 						</div>
+
 						{totalEnds > 1 && (
 							<div className={styles.endNav}>
 								<button
@@ -165,13 +194,26 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 								</button>
 							</div>
 						)}
+
 						<div className={styles.arrowChipsRow}>
 							{Array.from({ length: arrowsInThisEnd }).map((_, i) => {
+								const absIdx = startIdx + i;
 								const scored = endScores[i] !== undefined;
+								const isThisChipEditing = editingIdx === absIdx;
+
+								let chipClass = `${styles.arrowChip} ${styles.arrowChipLarge}`;
+								if (isThisChipEditing) chipClass += ` ${styles.arrowChipEditing}`;
+								else if (scored) chipClass += ` ${styles.arrowChipFilled} ${getChipColorClass(endScores[i], styles)}`;
+								else chipClass += ` ${styles.arrowChipEmpty}`;
+
 								return (
 									<div
 										key={i}
-										className={`${styles.arrowChip} ${styles.arrowChipLarge} ${scored ? styles.arrowChipFilled : styles.arrowChipEmpty}`}
+										className={chipClass}
+										onClick={scored ? () => setEditingIndex(roundIndex, isThisChipEditing ? null : absIdx) : undefined}
+										role={scored ? 'button' : undefined}
+										aria-label={scored ? `Endre pil ${i + 1}: ${endScores[i]} poeng` : undefined}
+										title={scored ? 'Klikk for å endre' : undefined}
 									>
 										{scored ? endScores[i] : '–'}
 									</div>
@@ -186,27 +228,36 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 							{filledCount > 0 && <span className={styles.scoringTotal}>Sum: {total}</span>}
 						</div>
 
-						{/* Score buttons – only on active end and not yet full */}
-						{isActiveEnd && !isEndFilled && (
-							<div className={styles.scoreButtonsGrid}>
-								{scoreOptions.map((opt) => (
-									<button
-										key={opt.label}
-										type="button"
-										className={`${styles.scoreButton} ${getScoreButtonClass(opt.label, styles)}`}
-										onClick={() => addArrowScore(roundIndex, opt.value)}
-									>
-										{opt.label}
-									</button>
-								))}
-							</div>
+						{showScoreButtons && (
+							<>
+								{isEditing && <p className={styles.editingHint}>Velg ny verdi for pil {editingIdx! - startIdx + 1}</p>}
+								<div className={styles.scoreButtonsGrid}>
+									{scoreOptions.map((opt) => (
+										<button
+											key={opt.label}
+											type="button"
+											className={`${styles.scoreButton} ${getScoreButtonClass(opt.label, styles)}`}
+											onClick={() => {
+												if (isEditing) {
+													updateArrowScore(roundIndex, editingIdx!, opt.value);
+													setEditingIndex(roundIndex, null);
+												} else {
+													addArrowScore(roundIndex, opt.value);
+												}
+											}}
+										>
+											{opt.label}
+										</button>
+									))}
+								</div>
+							</>
 						)}
 
 						{/* End complete / all done banners */}
-						{isFull && currentEndPage === totalEnds - 1 && (
+						{isFull && !isEditing && currentEndPage === totalEnds - 1 && (
 							<div className={styles.scoringComplete}>✓ Alle piler registrert – score: {total}</div>
 						)}
-						{!isFull && isEndFilled && !isActiveEnd && (
+						{!isFull && isEndFilled && !isActiveEnd && !isEditing && (
 							<div className={styles.endComplete}>
 								<span className={styles.endCompleteText}>
 									Serie {currentEndPage + 1} ferdig – {endTotal} poeng
@@ -219,7 +270,7 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 							</div>
 						)}
 
-						{filledCount > 0 && isActiveEnd && (
+						{filledCount > 0 && isActiveEnd && !isEditing && (
 							<button type="button" className={styles.backspaceBtn} onClick={() => removeLastArrowScore(roundIndex)}>
 								<LuDelete size={15} />
 								Fjern siste
