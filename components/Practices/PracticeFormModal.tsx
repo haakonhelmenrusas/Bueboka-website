@@ -334,7 +334,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 							/>
 						)}
 						{step === 2 && (
-							<PracticeFormScoringStep rounds={rounds} addArrowScore={addArrowScore} removeLastArrowScore={removeLastArrowScore} />
+							<PracticeFormScoringStep rounds={rounds} environment={environment} addArrowScore={addArrowScore} removeLastArrowScore={removeLastArrowScore} />
 						)}
 						{step === 3 && (
 							<PracticeFormReflectionStep rating={rating} setRating={setRating} notes={notes} setNotes={setNotes} error={error} />

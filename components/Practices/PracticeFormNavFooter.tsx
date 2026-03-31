@@ -17,14 +17,22 @@ interface NavFooterProps {
 	onSubmit: () => void;
 }
 
-export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, onNext, isEditMode, submitting, canSave, onClose, onSubmit }) => {
+export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
+	step,
+	onPrev,
+	onNext,
+	isEditMode,
+	submitting,
+	canSave,
+	onClose,
+	onSubmit,
+}) => {
 	const isFirstStep = step === 0;
 	const isLastStep = step === TOTAL_STEPS - 1;
 
 	return (
 		<div className={styles.navFooter}>
 			<div className={styles.navRow}>
-				<Button type="button" label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" disabled={submitting} />
 				<div className={styles.navCenter}>
 					<button
 						type="button"
@@ -44,6 +52,9 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, 
 						</button>
 					)}
 				</div>
+			</div>
+			<div className={styles.navRow}>
+				<Button type="button" label="Avbryt" onClick={onClose} variant="standard" buttonType="outline" disabled={submitting} />
 				<div className={styles.navRight}>
 					<Button
 						type="button"

@@ -106,8 +106,6 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 					</div>
 				</div>
 			)}
-
-			<div className={styles.sectionTitle}>Utstyr</div>
 			<div className={styles.row}>
 				<Select
 					label="Bue"
