@@ -254,6 +254,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				maxWidth={760}
 				closeOnBackdrop={false}
 				hideHeader
+				fullScreenMobile
 				panelStyle={{ padding: 0, gap: 0, overflow: 'hidden' }}
 			>
 				<div className={styles.wizard}>

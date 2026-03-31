@@ -7,6 +7,7 @@
 	justify-content: center;
 	padding: var(--space-4);
 	overflow-y: auto;
+	overscroll-behavior: contain;
 	/* z-index set via inline style from props */
 }
 
@@ -66,5 +67,19 @@
 	.panel {
 		max-width: 100% !important;
 		padding: var(--space-7);
+	}
+}
+
+/* ─── Full-screen mobile variant ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+	.overlayFullScreen {
+		padding: 0;
+		align-items: stretch;
+	}
+
+	.panelFullScreen {
+		border-radius: 0 !important;
+		max-height: 100dvh;
+		max-width: 100% !important;
 	}
 }

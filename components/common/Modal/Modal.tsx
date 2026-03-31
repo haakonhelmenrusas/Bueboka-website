@@ -48,6 +48,11 @@ export interface ModalProps {
 	 * Useful for modals that should not be dismissed while an async operation is running.
 	 */
 	closeButtonDisabled?: boolean;
+	/**
+	 * When true, removes overlay padding and panel border-radius on mobile
+	 * so the modal fills the entire screen like a native page.
+	 */
+	fullScreenMobile?: boolean;
 	children: React.ReactNode;
 }
 
@@ -63,6 +68,7 @@ export const Modal: React.FC<ModalProps> = ({
 	panelStyle,
 	hideHeader = false,
 	closeButtonDisabled = false,
+	fullScreenMobile = false,
 	children,
 }) => {
 	const generatedId = useId();
@@ -73,9 +79,14 @@ export const Modal: React.FC<ModalProps> = ({
 	if (!open) return null;
 
 	return (
-		<div className={styles.overlay} style={{ zIndex }} onClick={closeOnBackdrop ? onClose : undefined} role="presentation">
+		<div
+			className={`${styles.overlay}${fullScreenMobile ? ` ${styles.overlayFullScreen}` : ''}`}
+			style={{ zIndex }}
+			onClick={closeOnBackdrop ? onClose : undefined}
+			role="presentation"
+		>
 			<div
-				className={`${styles.panel}${panelClassName ? ` ${panelClassName}` : ''}`}
+				className={`${styles.panel}${panelClassName ? ` ${panelClassName}` : ''}${fullScreenMobile ? ` ${styles.panelFullScreen}` : ''}`}
 				style={{ maxWidth, ...panelStyle }}
 				onClick={(e) => e.stopPropagation()}
 				role="dialog"

@@ -126,6 +126,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    overscroll-behavior: contain;
 }
 
 .stepContent {
@@ -407,8 +408,8 @@
 
 @media (max-width: 640px) {
     .wizard {
-        height: 95dvh;
-        max-height: 95dvh;
+        height: 100dvh;
+        max-height: 100dvh;
     }
 
     .wizardHeader {

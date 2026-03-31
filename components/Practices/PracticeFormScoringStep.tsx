@@ -5,6 +5,7 @@ import styles from './PracticeFormModal.module.css';
 import { LuChevronLeft, LuChevronRight, LuInfo } from 'react-icons/lu';
 import { ARROW_SCORE_OPTIONS, type RoundInput, getRoundSummary } from './PracticeFormModal.types';
 import { Environment } from '@/lib/prismaEnums';
+import { Button } from '@/components';
 
 const DEFAULT_ARROWS_PER_END = 3;
 
@@ -254,9 +255,13 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 									Serie {currentEndPage + 1} ferdig – {endTotal} poeng
 								</span>
 								{canGoNext && (
-									<button type="button" className={styles.endNextBtn} onClick={() => setEndPage(roundIndex, currentEndPage + 1)}>
-										Neste serie →
-									</button>
+									<Button
+										type="button"
+										label="Neste serie →"
+										onClick={() => setEndPage(roundIndex, currentEndPage + 1)}
+										variant="standard"
+										width="100%"
+									/>
 								)}
 							</div>
 						)}

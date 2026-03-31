@@ -130,6 +130,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    overscroll-behavior: contain;
 }
 
 /* ─── Step content wrapper ──────────────────────────────────────────────────── */
@@ -559,35 +560,19 @@
 /* ─── End complete banner ────────────────────────────────────────────────────── */
 .endComplete {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     gap: var(--space-3);
-    padding: var(--space-3) var(--space-5);
+    padding: var(--space-4) var(--space-5);
     background: rgba(0, 128, 0, 0.08);
     border: 1px solid rgba(0, 128, 0, 0.2);
     border-radius: var(--radius-base);
 }
 
 .endCompleteText {
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     color: var(--success);
     font-weight: 600;
-}
-
-.endNextBtn {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--primary);
-    font-size: 0.875rem;
-    font-weight: 600;
-    padding: 0;
-    white-space: nowrap;
-    transition: opacity 150ms ease;
-}
-
-.endNextBtn:hover {
-    opacity: 0.75;
+    text-align: center;
 }
 
 .editingHint {
@@ -880,8 +865,8 @@
 /* ─── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
     .wizard {
-        height: 95dvh;
-        max-height: 95dvh;
+        height: 100dvh;
+        max-height: 100dvh;
     }
 
     .wizardHeader {

@@ -24,7 +24,6 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 	isEditMode,
 	submitting,
 	canSave,
-	onClose,
 	onSubmit,
 }) => {
 	const isFirstStep = step === 0;
