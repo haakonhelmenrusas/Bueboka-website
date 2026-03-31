@@ -46,6 +46,7 @@ interface PracticeFormModalProps {
 			targetType?: string | null;
 			arrowsWithoutScore?: number | null;
 			roundScore?: number | null;
+			arrowsPerEnd?: number | null;
 		}>;
 	};
 	bows?: Array<{ id: string; name: string; type: string; isFavorite?: boolean }>;
@@ -115,6 +116,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 							distanceTo: end.distanceTo ?? undefined,
 							targetType: end.targetType || (end.targetSizeCm ? `${end.targetSizeCm}cm` : ''),
 							numberArrows: derivedArrows,
+							arrowsPerEnd: end.arrowsPerEnd ?? undefined,
 							arrowsWithoutScore: end.arrowsWithoutScore ?? undefined,
 							roundScore: end.roundScore ?? 0,
 							scores: savedScores,

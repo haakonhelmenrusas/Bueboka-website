@@ -33,6 +33,7 @@ export const RoundInputSchema = z
 			.optional()
 			.nullable(),
 		numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional().nullable(),
+		arrowsPerEnd: z.number().int().min(1).max(20, 'Maksimalt 20 piler per serie').optional().nullable(),
 		arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
 		scores: z.array(z.number().int().min(0).max(11)).optional().nullable(),
 		arrowCoordinates: z

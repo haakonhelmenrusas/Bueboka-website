@@ -94,6 +94,20 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 								containerClassName={styles.roundField}
 							/>
 							<NumberInput
+								label="Piler / serie"
+								value={round.arrowsPerEnd ?? 0}
+								onChange={(v) => updateRound(index, 'arrowsPerEnd', v || undefined)}
+								min={1}
+								max={20}
+								step={1}
+								startEmpty
+								optional
+								containerClassName={styles.roundField}
+							/>
+						</div>
+
+						<div className={styles.roundInputs}>
+							<NumberInput
 								label="Score"
 								value={round.roundScore}
 								onChange={(v) => updateRound(index, 'roundScore', v)}
@@ -103,9 +117,6 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 								optional
 								containerClassName={styles.roundField}
 							/>
-						</div>
-
-						<div className={styles.roundInputsNarrow}>
 							<NumberInput
 								label="Piler u/score"
 								value={round.arrowsWithoutScore ?? 0}

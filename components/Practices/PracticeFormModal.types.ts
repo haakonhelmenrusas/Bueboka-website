@@ -43,6 +43,7 @@ export interface RoundInput {
 	distanceTo?: number;
 	targetType: string;
 	numberArrows?: number;
+	arrowsPerEnd?: number;
 	arrowsWithoutScore?: number;
 	roundScore: number;
 	scores?: number[];

@@ -6,7 +6,7 @@ import { LuDelete, LuChevronLeft, LuChevronRight, LuInfo } from 'react-icons/lu'
 import { ARROW_SCORE_OPTIONS, type RoundInput, getRoundSummary } from './PracticeFormModal.types';
 import { Environment } from '@/lib/prismaEnums';
 
-const ARROWS_PER_END = 3;
+const DEFAULT_ARROWS_PER_END = 3;
 
 function getScoreButtonClass(label: string, s: Record<string, string>): string {
 	switch (label) {
@@ -74,9 +74,10 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({
 			rounds.forEach((round, idx) => {
 				const maxArrows = round.numberArrows ?? 0;
 				if (maxArrows === 0) return;
+				const arrowsPerEnd = round.arrowsPerEnd ?? DEFAULT_ARROWS_PER_END;
 				const filledCount = (round.scores ?? []).length;
-				const totalEnds = Math.ceil(maxArrows / ARROWS_PER_END);
-				const activeEndPage = filledCount >= maxArrows ? totalEnds - 1 : Math.floor(filledCount / ARROWS_PER_END);
+				const totalEnds = Math.ceil(maxArrows / arrowsPerEnd);
+				const activeEndPage = filledCount >= maxArrows ? totalEnds - 1 : Math.floor(filledCount / arrowsPerEnd);
 				const currentPage = prev[idx] ?? activeEndPage;
 				next[idx] = Math.max(0, Math.min(currentPage, activeEndPage));
 			});
@@ -138,12 +139,13 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({
 				const total = currentScores.reduce((a, b) => a + b, 0);
 				const isFull = filledCount >= maxArrows;
 
-				const totalEnds = Math.ceil(maxArrows / ARROWS_PER_END);
-				const activeEndPage = isFull ? totalEnds - 1 : Math.floor(filledCount / ARROWS_PER_END);
+				const arrowsPerEnd = round.arrowsPerEnd ?? DEFAULT_ARROWS_PER_END;
+				const totalEnds = Math.ceil(maxArrows / arrowsPerEnd);
+				const activeEndPage = isFull ? totalEnds - 1 : Math.floor(filledCount / arrowsPerEnd);
 				const currentEndPage = Math.min(endPages[roundIndex] ?? activeEndPage, activeEndPage);
 
-				const startIdx = currentEndPage * ARROWS_PER_END;
-				const endIdx = Math.min(startIdx + ARROWS_PER_END, maxArrows);
+				const startIdx = currentEndPage * arrowsPerEnd;
+				const endIdx = Math.min(startIdx + arrowsPerEnd, maxArrows);
 				const arrowsInThisEnd = endIdx - startIdx;
 				const endScores = currentScores.slice(startIdx, endIdx);
 				const endTotal = endScores.reduce((a, b) => a + b, 0);
