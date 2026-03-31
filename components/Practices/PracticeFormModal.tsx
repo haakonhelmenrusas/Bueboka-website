@@ -82,6 +82,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 	const [deleting, setDeleting] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
 
 	const isEditMode = mode === 'edit';
 
@@ -232,6 +233,12 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 		}
 	};
 
+	// ─── Close guard ─────────────────────────────────────────────────────────
+	const handleCloseRequest = () => {
+		if (submitting) return;
+		setConfirmDiscardOpen(true);
+	};
+
 	// ─── Submit ──────────────────────────────────────────────────────────────
 	const handleSubmit = async () => {
 		setSubmitting(true);
@@ -294,7 +301,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 					{/* Header */}
 					<div className={styles.wizardHeader}>
 						<h2 className={styles.wizardTitle}>{title}</h2>
-						<button type="button" className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+						<button type="button" className={styles.closeBtn} onClick={handleCloseRequest} aria-label="Lukk">
 							<LuX size={20} />
 						</button>
 					</div>
@@ -345,11 +352,11 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 						step={step}
 						onPrev={() => setStep((s) => Math.max(s - 1, 0))}
 						onNext={() => setStep((s) => Math.min(s + 1, 3))}
-						isEditMode={isEditMode}
-						submitting={submitting}
-						canSave={isFormValid}
-						onClose={onClose}
-						onSubmit={handleSubmit}
+					isEditMode={isEditMode}
+					submitting={submitting}
+					canSave={isFormValid}
+					onClose={handleCloseRequest}
+					onSubmit={handleSubmit}
 					/>
 				</div>
 			</Modal>
@@ -364,6 +371,20 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 				cancelLabel="Avbryt"
 				variant="danger"
 				isLoading={deleting}
+			/>
+
+			<ConfirmModal
+				open={confirmDiscardOpen}
+				onClose={() => setConfirmDiscardOpen(false)}
+				onConfirm={() => {
+					setConfirmDiscardOpen(false);
+					onClose();
+				}}
+				title="Forkast endringer"
+				message="Er du sikker på at du vil avbryte? Endringene du har gjort vil ikke bli lagret."
+				confirmLabel="Forkast"
+				cancelLabel="Fortsett"
+				variant="danger"
 			/>
 		</>
 	);
