@@ -7,7 +7,7 @@
 }
 
 .main {
-    padding: calc(var(--space-10) + 60px) var(--space-8) var(--space-14);
+    padding: calc(var(--space-7) + 60px) var(--space-5) var(--space-10);
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
@@ -18,8 +18,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-6);
-    margin-bottom: var(--space-8);
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
 }
 
 .pageTitle {
@@ -42,7 +42,7 @@
 
 @media (max-width: 900px) {
     .main {
-        padding: calc(var(--space-20) + 60px) var(--space-4) var(--space-10);
+        padding: calc(var(--space-13) + 60px) var(--space-2) var(--space-7);
     }
 
     .pageTitle {

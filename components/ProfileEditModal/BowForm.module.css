@@ -1,30 +1,30 @@
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-7);
+	gap: var(--space-5);
 }
 
 .row {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	gap: var(--space-6);
+	gap: var(--space-4);
 	align-items: end;
 }
 
 .numberRow {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	gap: var(--space-6);
+	gap: var(--space-4);
 	align-items: end;
 }
 
 .advancedToggle {
 	display: flex;
 	align-items: center;
-	gap: var(--space-4);
+	gap: var(--space-2);
 	cursor: pointer;
-	padding: var(--space-2) 0;
-	margin: var(--space-2) 0;
+	padding: var(--space-1) 0;
+	margin: var(--space-1) 0;
 	color: var(--text-gray-600);
 	transition: color 0.15s ease;
 	background: none;
@@ -50,7 +50,7 @@
 .advancedLabelWrap {
 	display: flex;
 	align-items: center;
-	gap: var(--space-2);
+	gap: var(--space-1);
 }
 
 .advancedLabel {
@@ -68,7 +68,7 @@
 .advancedContent {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-6);
+	gap: var(--space-4);
 	animation: slideDown 0.3s ease-out forwards;
 	transform-origin: top;
 }

@@ -1,6 +1,6 @@
 .button {
 	--btn-bg: var(--primary);
-	--btn-color: var(--btn-text-light);
+	--btn-color: var(--white);
 	--btn-border-color: transparent;
 	--btn-padding: 8px 24px;
 	--btn-height: 40px;
@@ -63,7 +63,7 @@
 /* Variants */
 .standard {
 	--btn-bg: var(--primary);
-	--btn-color: var(--btn-text-light);
+	--btn-color: var(--white);
 }
 
 .standard.outline {
@@ -73,7 +73,7 @@
 
 .warning {
 	--btn-bg: var(--error);
-	--btn-color: var(--btn-text-light);
+	--btn-color: var(--white);
 }
 
 .warning.outline {
@@ -84,7 +84,7 @@
 
 .button:hover:not(:disabled) {
 	background-color: var(--secondary);
-	color: var(--btn-text-light);
+	color: var(--white);
 	border-color: rgba(255, 255, 255, 0.35);
 }
 

@@ -7,17 +7,17 @@
 }
 
 .main {
-    padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
+    padding: calc(var(--space-10) + 60px) var(--space-5) var(--space-10);
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
 .card {
-    background: var(--card-bg);
+    background: var(--white);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: var(--radius-4);
-    padding: var(--space-8);
+    padding: var(--space-5);
     box-shadow: 0 20px 60px var(--dark-20);
     display: block;
     color: var(--text-dark);
@@ -38,13 +38,13 @@
 .profileSummaryGrid {
     display: grid;
     grid-template-columns: 420px 1fr;
-    gap: var(--space-8);
+    gap: var(--space-5);
     align-items: stretch;
 }
 
 .editButton {
-    margin-top: var(--space-6);
-    padding: var(--space-3) var(--space-5);
+    margin-top: var(--space-4);
+    padding: var(--space-2) var(--space-3);
     background: var(--white-15);
     border: 1px solid var(--white-30);
     color: var(--white);
@@ -53,7 +53,7 @@
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-2);
     transition: all 150ms ease;
 }
 
@@ -65,13 +65,13 @@
 .sectionTitleRow {
     display: flex;
     align-items: center;
-    gap: var(--space-5);
-    margin-bottom: var(--space-4);
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
 }
 
 .sectionTitle {
     font-weight: 800;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-2);
     font-size: 1.1rem;
     color: var(--text-gray-800);
 }
@@ -85,15 +85,15 @@
 
 .list {
     display: grid;
-    gap: var(--space-4);
+    gap: var(--space-2);
     width: min(980px, 100%);
 }
 
 .right {
     display: flex;
     flex-direction: column;
-    gap: var(--space-10);
-    padding-left: var(--space-10);
+    gap: var(--space-7);
+    padding-left: var(--space-7);
     align-items: flex-end;
 }
 
@@ -107,18 +107,18 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--space-10);
+    gap: var(--space-7);
     align-items: flex-end;
 }
 
 .item {
     background: rgba(12, 130, 172, 0.06);
-    padding: var(--space-5) var(--space-6);
+    padding: var(--space-3) var(--space-4);
     border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-7);
+    gap: var(--space-5);
     box-shadow: 0 8px 18px var(--dark-06);
     cursor: pointer;
     transition: all 200ms ease;
@@ -128,7 +128,7 @@
 }
 
 .item:hover {
-    background: var(--card-bg-light);
+    background: var(--white-10);
     box-shadow: 0 10px 28px var(--dark-30);
     transform: translateY(-2px);
 }
@@ -140,7 +140,7 @@
 .itemLeft {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
     flex: 1;
 }
 
@@ -178,29 +178,29 @@
 
 .empty {
     color: var(--white-50);
-    padding: var(--space-3) var(--space-0);
+    padding: var(--space-2) var(--space-0);
 }
 
 .rightActions {
     display: flex;
-    gap: var(--space-4);
+    gap: var(--space-2);
     align-items: center;
     justify-content: flex-end;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
 }
 
 .practicesSection {
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
-    padding: 0 var(--space-8) var(--space-14);
+    padding: 0 var(--space-5) var(--space-10);
 }
 
 .practicesHeader {
     display: flex;
     align-items: center;
-    gap: var(--space-6);
-    margin-bottom: var(--space-6);
+    gap: var(--space-4);
+    margin-bottom: var(--space-4);
 }
 
 .practicesTitle {
@@ -211,11 +211,11 @@
 }
 
 .practicesList {
-    background: var(--card-bg);
+    background: var(--white);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: var(--radius-4);
     box-shadow: 0 20px 60px var(--dark-20);
-    padding: var(--space-8);
+    padding: var(--space-5);
     color: var(--text-dark);
 }
 
@@ -223,7 +223,7 @@
     background: rgba(12, 130, 172, 0.05);
     border: 1px dashed rgba(12, 130, 172, 0.26);
     border-radius: var(--radius-lg);
-    padding: var(--space-5) var(--space-6);
+    padding: var(--space-3) var(--space-4);
     color: var(--text-gray-700);
     font-weight: 600;
     min-height: 56px;
@@ -234,10 +234,10 @@
 }
 
 .summaryCard {
-    background: var(--card-bg);
+    background: var(--white);
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: var(--radius-xl);
-    padding: var(--space-6);
+    padding: var(--space-4);
     color: var(--text-dark);
     display: flex;
     flex-direction: column;
@@ -249,25 +249,25 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--space-5);
+    gap: var(--space-3);
 }
 
 .summaryTitle {
-    margin: 0 0 var(--space-5);
+    margin: 0 0 var(--space-3);
     font-weight: 900;
     font-size: 1.2rem;
     color: var(--text-gray-800);
 }
 
 .summarySubtitle {
-    margin: calc(var(--space-1) * -1) 0 var(--space-6);
+    margin: calc(var(--space-1) * -1) 0 var(--space-4);
     font-size: 0.95rem;
     font-weight: 650;
     color: var(--text-gray-700);
 }
 
 .statsButtonContainer {
-    margin-top: var(--space-6);
+    margin-top: var(--space-4);
     display: flex;
     justify-content: center;
 }
@@ -283,7 +283,7 @@
     }
 
     .main {
-        padding: var(--space-20) var(--space-4);
+        padding: var(--space-13) var(--space-2);
         overflow-x: hidden;
     }
 
@@ -292,11 +292,11 @@
     }
 
     .practicesSection {
-        padding: 0 var(--space-4) var(--space-10);
+        padding: 0 var(--space-2) var(--space-7);
     }
 
     .practicesList {
-        padding: var(--space-6);
+        padding: var(--space-4);
     }
 
     .profileSummaryGrid {
@@ -309,7 +309,7 @@
 
     .summaryCard {
         margin: 0;
-        padding: var(--space-6);
+        padding: var(--space-4);
         width: 90%;
     }
 }
@@ -422,7 +422,7 @@
     background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
-    margin-top: var(--space-4);
+    margin-top: var(--space-2);
 }
 
 .actionButtonSkeleton {
@@ -441,7 +441,7 @@
     background: linear-gradient(90deg, var(--white-10), var(--white-08), var(--white-10));
     background-size: 200% 100%;
     animation: shimmer 1.4s infinite;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-2);
 }
 
 .practicesTitleSkeleton {
@@ -473,12 +473,12 @@
 
 .quickActionsSkeleton {
     max-width: 1200px;
-    margin: 0 auto var(--space-2);
+    margin: 0 auto var(--space-1);
     width: 100%;
-    padding: 0 var(--space-8);
+    padding: 0 var(--space-5);
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 130px));
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 @media (max-width: 640px) {

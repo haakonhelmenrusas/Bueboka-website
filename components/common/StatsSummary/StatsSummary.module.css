@@ -1,7 +1,7 @@
 .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 .carouselWrapper {
@@ -17,7 +17,7 @@
     .carouselWrapper {
         display: flex;
         flex-direction: column;
-        gap: var(--space-4);
+        gap: var(--space-2);
         width: 100%;
     }
 }
@@ -31,11 +31,11 @@
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    gap: var(--space-4);
+    gap: var(--space-2);
     padding: var(--space-1) 0;
     /* reserve space at the leading/trailing edge so snapped cards
        centre correctly and the neighbour card peeks through */
-    scroll-padding-inline: var(--space-5);
+    scroll-padding-inline: var(--space-3);
 }
 
 .track::-webkit-scrollbar {
@@ -50,8 +50,8 @@
 .dots {
     display: flex;
     justify-content: center;
-    gap: var(--space-3);
-    padding: var(--space-2) 0;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
 }
 
 .dot {
@@ -78,21 +78,21 @@
 
 
 .card {
-    background: var(--card-bg-solid);
+    background: var(--white);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-lg);
-    padding: var(--space-5);
+    padding: var(--space-3);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-2);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .cardHeader {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
-    padding-bottom: var(--space-3);
+    gap: var(--space-2);
+    padding-bottom: var(--space-2);
     border-bottom: 2px solid var(--primary);
 }
 
@@ -119,7 +119,7 @@
 .cardStats {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-1);
 }
 
 .statRow {
@@ -131,7 +131,7 @@
 .statLabel {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
     color: var(--text-gray-600);
     font-size: 0.9rem;
     font-weight: 500;

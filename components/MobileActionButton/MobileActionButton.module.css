@@ -10,8 +10,8 @@
 	.wrapper {
 		display: block;
 		position: fixed;
-		bottom: var(--space-6);
-		right: var(--space-6);
+		bottom: var(--space-4);
+		right: var(--space-4);
 		z-index: 200;
 	}
 }
@@ -60,15 +60,15 @@
 /* ── Action items menu ─────────────────────────────────────── */
 .menu {
 	position: absolute;
-	bottom: calc(56px + var(--space-3)); /* FAB height + gap */
+	bottom: calc(56px + var(--space-2)); /* FAB height + gap */
 	right: 0;
 	display: flex;
 	flex-direction: column-reverse; /* first item is closest to FAB */
 	align-items: flex-end;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	pointer-events: none;
 	/* Frosted-glass backdrop (invisible while closed) */
-	padding: var(--space-4) var(--space-3);
+	padding: var(--space-2) var(--space-2);
 	border-radius: 20px;
 	border: 1px solid transparent;
 	background: rgba(5, 53, 70, 0);
@@ -92,7 +92,7 @@
 .actionItem {
 	display: flex;
 	align-items: center;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	border: none;
 	background: transparent;
 	cursor: pointer;
@@ -120,7 +120,7 @@
 	color: var(--text-primary, #1a1a1a);
 	font-size: 0.875rem;
 	font-weight: 600;
-	padding: var(--space-2) var(--space-4);
+	padding: var(--space-1) var(--space-2);
 	border-radius: 999px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 	white-space: nowrap;

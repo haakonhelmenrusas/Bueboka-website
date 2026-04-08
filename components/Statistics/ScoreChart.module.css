@@ -1,8 +1,8 @@
 .chartCard {
-	background: var(--card-bg);
+	background: var(--white);
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: var(--radius-xl);
-	padding: var(--space-6);
+	padding: var(--space-4);
 	box-shadow: 0 20px 60px var(--dark-20);
 }
 
@@ -10,7 +10,7 @@
 	font-size: 1.5rem;
 	font-weight: 800;
 	color: var(--primary);
-	margin: 0 0 var(--space-2) 0;
+	margin: 0 0 var(--space-1) 0;
 }
 
 .chartSubtitle {
@@ -23,15 +23,15 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-start;
-	margin-bottom: var(--space-6);
+	margin-bottom: var(--space-4);
 	flex-wrap: wrap;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .filterGroup {
 	display: flex;
 	align-items: flex-start;
-	gap: var(--space-2);
+	gap: var(--space-1);
 	min-width: 200px;
 }
 

@@ -8,7 +8,7 @@
 }
 
 .main {
-	padding: calc(var(--space-14) + 60px) var(--space-6) var(--space-8);
+	padding: calc(var(--space-10) + 60px) var(--space-4) var(--space-5);
 	max-width: 1400px;
 	margin: 0 auto;
 }
@@ -16,7 +16,7 @@
 .content {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-8);
+	gap: var(--space-5);
 }
 
 /* ===================================
@@ -27,7 +27,7 @@
 .error,
 .emptyState {
 	text-align: center;
-	padding: var(--space-8);
+	padding: var(--space-5);
 	border-radius: var(--radius-lg);
 }
 
@@ -43,7 +43,7 @@
 }
 
 .emptyState {
-	background: var(--card-bg);
+	background: var(--white);
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: var(--radius-xl);
 	color: var(--text-gray-600);
@@ -51,7 +51,7 @@
 }
 
 .emptyState p {
-	margin: var(--space-2) 0;
+	margin: var(--space-1) 0;
 	font-size: 1.125rem;
 }
 
@@ -62,7 +62,7 @@
 .chartSection {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-6);
+	gap: var(--space-4);
 }
 
 /* ===================================
@@ -71,6 +71,6 @@
 
 @media (max-width: 768px) {
 	.main {
-		padding: calc(var(--space-12) + 60px) var(--space-4) var(--space-6);
+		padding: calc(var(--space-8) + 60px) var(--space-2) var(--space-4);
 	}
 }

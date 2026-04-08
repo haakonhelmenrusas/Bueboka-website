@@ -12,7 +12,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: var(--space-6) var(--space-8);
+    padding: var(--space-4) var(--space-5);
     border-bottom: 1px solid var(--border-gray);
     flex-shrink: 0;
 }
@@ -29,7 +29,7 @@
     border: none;
     cursor: pointer;
     color: var(--text-gray-600);
-    padding: var(--space-2);
+    padding: var(--space-1);
     border-radius: var(--radius-base);
     transition: background 150ms ease;
     display: flex;
@@ -46,7 +46,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-5) var(--space-8);
+    padding: var(--space-3) var(--space-5);
     border-bottom: 1px solid var(--border-gray);
     background: var(--bg-gray-50);
     flex-shrink: 0;
@@ -57,11 +57,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
     background: transparent;
     border: none;
     cursor: pointer;
-    padding: 0 var(--space-3);
+    padding: 0 var(--space-2);
 }
 
 .stepDot {
@@ -135,16 +135,16 @@
 
 /* ─── Step content wrapper ──────────────────────────────────────────────────── */
 .stepContent {
-    padding: var(--space-7) var(--space-8);
+    padding: var(--space-5) var(--space-5);
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
+    gap: var(--space-4);
 }
 
 /* ─── Layout helpers ────────────────────────────────────────────────────────── */
 .row {
     display: grid;
-    gap: var(--space-5);
+    gap: var(--space-3);
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     align-items: end;
 }
@@ -152,7 +152,7 @@
 .field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-1);
 }
 
 /* ─── Section title ─────────────────────────────────────────────────────────── */
@@ -167,7 +167,7 @@
 .weatherSection {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
 }
 
 .weatherLabel {
@@ -179,11 +179,11 @@
 .weatherChips {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-3);
+    gap: var(--space-2);
 }
 
 .weatherChip {
-    padding: var(--space-2) var(--space-5);
+    padding: var(--space-1) var(--space-3);
     border-radius: var(--radius-full);
     border: 1px solid var(--border-gray);
     background: var(--bg-gray-100);
@@ -208,17 +208,17 @@
 .roundsSection {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 .roundCard {
     background: var(--bg-gray-50);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-md);
-    padding: var(--space-5);
+    padding: var(--space-3);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 .roundHeader {
@@ -238,7 +238,7 @@
     border: none;
     cursor: pointer;
     color: var(--text-gray-600);
-    padding: var(--space-2);
+    padding: var(--space-1);
     border-radius: var(--radius-base);
     display: flex;
     align-items: center;
@@ -253,7 +253,7 @@
 
 .roundInputs {
     display: flex;
-    gap: var(--space-4);
+    gap: var(--space-2);
     align-items: flex-end;
     flex-wrap: wrap;
 }
@@ -276,11 +276,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-3);
+    gap: var(--space-2);
     border: 1.5px dashed var(--primary);
     background: transparent;
     border-radius: var(--radius-base);
-    padding: var(--space-4) var(--space-6);
+    padding: var(--space-2) var(--space-4);
     color: var(--primary);
     font-size: 0.875rem;
     font-weight: 600;
@@ -305,7 +305,7 @@
 }
 
 .emptyScoring {
-    padding: var(--space-8);
+    padding: var(--space-5);
     background: var(--bg-gray-50);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-md);
@@ -323,8 +323,8 @@
 .manualScoreNotice {
     display: flex;
     align-items: flex-start;
-    gap: var(--space-4);
-    padding: var(--space-4) var(--space-5);
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
     background: var(--bg-gray-100);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-base);
@@ -359,10 +359,10 @@
     background: var(--bg-gray-50);
     border: 1px solid var(--border-gray);
     border-radius: var(--radius-md);
-    padding: var(--space-5);
+    padding: var(--space-3);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 .scoringCardHeader {
@@ -385,7 +385,7 @@
 .arrowChipsRow {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2);
+    gap: var(--space-1);
     justify-content: center;
 }
 
@@ -489,7 +489,7 @@
 .scoreButtonsGrid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: var(--space-2);
+    gap: var(--space-1);
 }
 
 .scoreButton {
@@ -520,8 +520,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-4);
-    padding: var(--space-2) 0;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
 }
 
 .endNavBtn {
@@ -561,8 +561,8 @@
 .endComplete {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-4) var(--space-5);
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
     background: rgba(0, 128, 0, 0.08);
     border: 1px solid rgba(0, 128, 0, 0.2);
     border-radius: var(--radius-base);
@@ -674,7 +674,7 @@
 }
 
 .scoringComplete {
-    padding: var(--space-3) var(--space-5);
+    padding: var(--space-2) var(--space-3);
     background: rgba(0, 128, 0, 0.08);
     border: 1px solid rgba(0, 128, 0, 0.2);
     border-radius: var(--radius-base);
@@ -687,13 +687,13 @@
 .backspaceBtn {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
     background: transparent;
     border: none;
     cursor: pointer;
     color: var(--text-gray-600);
     font-size: 0.8125rem;
-    padding: var(--space-2);
+    padding: var(--space-1);
     transition: color 150ms ease;
 }
 
@@ -705,7 +705,7 @@
 .ratingSection {
     display: flex;
     flex-direction: column;
-    gap: var(--space-3);
+    gap: var(--space-2);
 }
 
 .ratingLabel {
@@ -714,7 +714,7 @@
     color: var(--text-dark);
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
 }
 
 .ratingOptional {
@@ -731,7 +731,7 @@
 
 .ratingButtons {
     display: flex;
-    gap: var(--space-2);
+    gap: var(--space-1);
     flex-wrap: wrap;
 }
 
@@ -771,8 +771,8 @@
 
 /* ─── Delete section ────────────────────────────────────────────────────────── */
 .deleteSection {
-    margin-top: var(--space-4);
-    padding-top: var(--space-6);
+    margin-top: var(--space-2);
+    padding-top: var(--space-4);
     border-top: 1px solid var(--error-border);
     display: flex;
     justify-content: center;
@@ -781,14 +781,14 @@
 .deleteLink {
     display: flex;
     align-items: center;
-    gap: var(--space-3);
+    gap: var(--space-2);
     background: transparent;
     border: none;
     cursor: pointer;
     color: var(--error);
     font-size: 0.875rem;
     font-weight: 500;
-    padding: var(--space-3) var(--space-5);
+    padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-base);
     transition: background 150ms ease;
 }
@@ -800,7 +800,7 @@
 /* ─── Navigation footer ─────────────────────────────────────────────────────── */
 .navFooter {
     border-top: 1px solid var(--border-gray);
-    padding: var(--space-5) var(--space-8);
+    padding: var(--space-3) var(--space-5);
     background: var(--white);
     flex-shrink: 0;
 }
@@ -808,7 +808,7 @@
 .navRow {
     display: flex;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 .navStepName {
@@ -856,7 +856,7 @@
     color: var(--error-light);
     background: var(--error-bg);
     border: 1px solid var(--error-border);
-    padding: var(--space-3) var(--space-5);
+    padding: var(--space-2) var(--space-3);
     border-radius: var(--radius-base);
     font-size: 0.875rem;
     margin: 0;
@@ -870,15 +870,15 @@
     }
 
     .wizardHeader {
-        padding: var(--space-5) var(--space-6);
+        padding: var(--space-3) var(--space-4);
     }
 
     .stepContent {
-        padding: var(--space-6) var(--space-6);
+        padding: var(--space-4) var(--space-4);
     }
 
     .navFooter {
-        padding: var(--space-4) var(--space-6);
+        padding: var(--space-2) var(--space-4);
     }
 
     .stepConnector {

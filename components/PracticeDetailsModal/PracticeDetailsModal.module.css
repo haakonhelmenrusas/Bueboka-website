@@ -1,7 +1,7 @@
 .badges {
 	display: flex;
 	align-items: center;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	flex-wrap: wrap;
 }
 
@@ -9,7 +9,7 @@
 .scoreCard {
 	background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
 	border-radius: var(--radius-xl);
-	padding: var(--space-6);
+	padding: var(--space-4);
 	text-align: center;
 	color: white;
 	box-shadow: 0 8px 24px var(--primary-20);
@@ -21,14 +21,14 @@
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
 	opacity: 0.9;
-	margin-bottom: var(--space-2);
+	margin-bottom: var(--space-1);
 }
 
 .scoreValue {
 	font-size: 2.5rem;
 	font-weight: 600;
 	line-height: 1;
-	margin-bottom: var(--space-2);
+	margin-bottom: var(--space-1);
 }
 
 .scoreSubtext {
@@ -41,30 +41,30 @@
 .statsGrid {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
-	gap: var(--space-5);
+	gap: var(--space-3);
 }
 
 .statCard {
 	background: var(--background);
 	border: 1px solid var(--border-gray);
 	border-radius: var(--radius-md);
-	padding: var(--space-5) var(--space-5);
+	padding: var(--space-3) var(--space-3);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .statCardFull {
 	background: var(--background);
 	border: 1px solid var(--border-gray);
 	border-radius: var(--radius-md);
-	padding: var(--space-5) var(--space-5);
+	padding: var(--space-3) var(--space-3);
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: var(--space-4);
-	margin-top: var(--space-3);
+	gap: var(--space-2);
+	margin-top: var(--space-2);
 }
 
 .statIcon {
@@ -102,13 +102,13 @@
 .roundsSection {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .sectionTitle {
 	display: flex;
 	align-items: center;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	font-size: 1.125rem;
 	font-weight: 800;
 	color: var(--primary);
@@ -118,24 +118,24 @@
 .roundsList {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .roundCard {
 	background: var(--background);
 	border: 1px solid var(--border-gray);
 	border-radius: var(--radius-lg);
-	padding: var(--space-4);
+	padding: var(--space-2);
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	align-items: center;
 }
 
 .roundMeta {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-	gap: var(--space-3);
+	gap: var(--space-2);
 	width: 100%;
 }
 
@@ -164,13 +164,13 @@
 .roundScores {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-2);
+	gap: var(--space-1);
 }
 
 .scoreChip {
 	background: var(--primary-08);
 	color: var(--primary);
-	padding: var(--space-2) var(--space-3);
+	padding: var(--space-1) var(--space-2);
 	border-radius: var(--radius-base);
 	font-size: 0.875rem;
 	font-weight: 700;
@@ -182,14 +182,14 @@
 .notesSection {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .notesContent {
 	background: var(--background);
 	border: 1px solid var(--border-gray);
 	border-radius: var(--radius-lg);
-	padding: var(--space-5);
+	padding: var(--space-3);
 	color: var(--text-gray-700);
 	line-height: 1.6;
 	white-space: pre-wrap;
@@ -203,8 +203,8 @@
 .actions {
 	display: flex;
 	justify-content: flex-end;
-	gap: var(--space-4);
-	margin-top: var(--space-2);
+	gap: var(--space-2);
+	margin-top: var(--space-1);
 }
 
 /* On desktop, Lukk + Del flow as individual items inside .actions */
@@ -216,7 +216,7 @@
 	background: var(--error-bg);
 	border: 1px solid var(--error-border);
 	border-radius: var(--radius-lg);
-	padding: var(--space-4);
+	padding: var(--space-2);
 	color: var(--error);
 	font-weight: 600;
 }
@@ -243,7 +243,7 @@
 	.closeShareRow {
 		display: flex;
 		flex-direction: row;
-		gap: var(--space-4);
+		gap: var(--space-2);
 		width: 100%;
 	}
 

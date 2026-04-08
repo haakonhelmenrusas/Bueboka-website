@@ -1,14 +1,14 @@
 .section {
-	padding-top: var(--space-20);
-	padding-bottom: var(--space-20);
+	padding-top: var(--space-13);
+	padding-bottom: var(--space-13);
 	background: var(--white);
 }
 
 .container {
 	max-width: 1200px;
 	margin: 0 auto;
-	padding-left: var(--space-6);
-	padding-right: var(--space-6);
+	padding-left: var(--space-4);
+	padding-right: var(--space-4);
 }
 
 .textCenter {
@@ -16,7 +16,7 @@
 }
 
 .headerBlock {
-	margin-bottom: var(--space-18);
+	margin-bottom: var(--space-12);
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -41,7 +41,7 @@
 	line-height: 1.2;
 	font-weight: 700;
 	color: var(--primary);
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .subtitle {
@@ -57,7 +57,7 @@
 
 .grid {
 	display: grid;
-	gap: var(--space-8);
+	gap: var(--space-5);
 }
 
 @media (min-width: 768px) {
@@ -74,7 +74,7 @@
 
 .card {
 	background: linear-gradient(135deg, var(--bg-light), var(--white));
-	padding: var(--space-8);
+	padding: var(--space-5);
 	border-radius: var(--radius-2xl);
 	border: 1px solid var(--tertiary);
 	box-shadow: 0 20px 35px var(--dark-06);
@@ -89,7 +89,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: var(--space-6);
+	margin-bottom: var(--space-4);
 }
 
 .icon {
@@ -101,7 +101,7 @@
 	font-size: 1.25rem;
 	font-weight: 700;
 	color: var(--primary);
-	margin-bottom: var(--space-3);
+	margin-bottom: var(--space-2);
 }
 
 .cardText {
@@ -109,29 +109,29 @@
 }
 
 .cta {
-	margin-top: var(--space-18); /* mt-16 */
+	margin-top: var(--space-12); /* mt-16 */
 	background: linear-gradient(90deg, var(--primary), var(--primary-light));
 	border-radius: var(--radius-2xl); /* rounded-3xl */
-	padding: var(--space-8); /* p-8 */
+	padding: var(--space-5); /* p-8 */
 	text-align: center;
 	color: var(--white);
 }
 
 @media (min-width: 1024px) {
 	.cta {
-		padding: var(--space-14); /* lg:p-12 */
+		padding: var(--space-10); /* lg:p-12 */
 	}
 }
 
 .ctaTitle {
 	font-size: 1.875rem; /* text-3xl */
 	font-weight: 700;
-	margin-bottom: var(--space-4); /* mb-4 */
+	margin-bottom: var(--space-2); /* mb-4 */
 }
 
 .ctaText {
 	color: var(--white-80);
-	margin-bottom: var(--space-8);
+	margin-bottom: var(--space-5);
 	max-width: 42rem;
 	margin-left: auto;
 	margin-right: auto;
@@ -141,7 +141,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .bullet {
@@ -150,12 +150,12 @@
 	height: 12px;
 	border-radius: var(--radius-circle);
 	background-color: var(--tertiary);
-	margin-right: var(--space-2);
+	margin-right: var(--space-1);
 }
 
 .tiles {
 	display: grid;
-	gap: var(--space-8); /* gap-8 */
+	gap: var(--space-5); /* gap-8 */
 	max-width: 64rem; /* max-w-4xl */
 	margin: 0 auto;
 }

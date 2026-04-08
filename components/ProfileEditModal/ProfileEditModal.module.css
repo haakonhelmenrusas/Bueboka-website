@@ -1,5 +1,5 @@
 .content {
-	padding: var(--space-2) 0;
+	padding: var(--space-1) 0;
 	flex: 1;
 	overflow-y: auto;
 	display: flex;
@@ -9,19 +9,19 @@
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-6);
+	gap: var(--space-4);
 }
 
 .form > form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-6);
+	gap: var(--space-4);
 }
 
 .message {
-	padding: var(--space-3) var(--space-4);
+	padding: var(--space-2) var(--space-2);
 	border-radius: var(--radius-base);
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 	font-weight: 500;
 	font-size: 0.95rem;
 }

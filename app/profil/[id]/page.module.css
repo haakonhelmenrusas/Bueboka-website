@@ -7,7 +7,7 @@
 }
 
 .main {
-	padding: calc(var(--space-14) + 60px) var(--space-8) var(--space-14);
+	padding: calc(var(--space-10) + 60px) var(--space-5) var(--space-10);
 	max-width: 600px;
 	margin: 0 auto;
 	width: 100%;
@@ -17,14 +17,14 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-6);
+	gap: var(--space-4);
 }
 
 .backLink {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--space-2);
-	color: var(--section-title-light);
+	gap: var(--space-1);
+	color: var(--white);
 	text-decoration: none;
 	font-size: 0.95rem;
 	font-weight: 600;
@@ -36,14 +36,14 @@
 }
 
 .card {
-	background: var(--card-bg);
+	background: var(--white);
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: var(--radius-xl);
-	padding: var(--space-10);
+	padding: var(--space-7);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: var(--space-6);
+	gap: var(--space-4);
 	color: var(--text-dark);
 }
 
@@ -82,7 +82,7 @@
 .badges {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--space-2);
+	gap: var(--space-1);
 	justify-content: center;
 }
 
@@ -113,11 +113,11 @@
 .statsSection {
 	width: 100%;
 	border-top: 1px solid var(--border-gray);
-	padding-top: var(--space-6);
+	padding-top: var(--space-4);
 }
 
 .statsTitle {
-	margin: 0 0 var(--space-4);
+	margin: 0 0 var(--space-2);
 	font-size: 1rem;
 	font-weight: 700;
 	color: var(--text-gray-700);
@@ -128,7 +128,7 @@
 
 .statsGrid {
 	display: flex;
-	gap: var(--space-6);
+	gap: var(--space-4);
 	justify-content: center;
 	flex-wrap: wrap;
 }
@@ -158,6 +158,6 @@
 
 @media (max-width: 600px) {
 	.main {
-		padding: var(--space-24) var(--space-4);
+		padding: var(--space-14) var(--space-2);
 	}
 }

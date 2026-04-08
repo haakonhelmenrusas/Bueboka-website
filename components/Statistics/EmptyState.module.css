@@ -3,14 +3,14 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: var(--space-12) var(--space-6);
+	padding: var(--space-8) var(--space-4);
 	min-height: 500px;
 	text-align: center;
 }
 
 .graphic {
 	position: relative;
-	margin-bottom: var(--space-8);
+	margin-bottom: var(--space-5);
 	animation: fadeInUp 0.6s ease-out;
 }
 
@@ -79,29 +79,29 @@
 	font-size: 2rem;
 	font-weight: 700;
 	color: var(--white);
-	margin-bottom: var(--space-3);
+	margin-bottom: var(--space-2);
 }
 
 .description {
 	font-size: 1.125rem;
 	color: var(--tertiary);
-	margin-bottom: var(--space-8);
+	margin-bottom: var(--space-5);
 	line-height: 1.6;
 }
 
 .features {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
-	margin-bottom: var(--space-8);
+	gap: var(--space-2);
+	margin-bottom: var(--space-5);
 	text-align: left;
 }
 
 .feature {
 	display: flex;
 	align-items: flex-start;
-	gap: var(--space-4);
-	padding: var(--space-4);
+	gap: var(--space-2);
+	padding: var(--space-2);
 	background: var(--background);
 	border: 1px solid var(--border-gray);
 	border-radius: var(--radius-md);
@@ -184,7 +184,7 @@
 /* Responsive */
 @media (max-width: 768px) {
 	.container {
-		padding: var(--space-8) var(--space-4);
+		padding: var(--space-5) var(--space-2);
 		min-height: 400px;
 	}
 
@@ -217,11 +217,11 @@
 	}
 
 	.features {
-		gap: var(--space-3);
+		gap: var(--space-2);
 	}
 
 	.feature {
-		padding: var(--space-3);
+		padding: var(--space-2);
 	}
 
 	.featureIcon {

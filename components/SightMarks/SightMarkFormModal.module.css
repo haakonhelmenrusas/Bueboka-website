@@ -1,13 +1,13 @@
 /* Info box */
 .infoBox {
 	display: flex;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	align-items: flex-start;
 	background: var(--bg-light);
 	border: 1px solid var(--primary-20);
 	border-radius: var(--radius-base);
-	padding: var(--space-4);
-	margin-bottom: var(--space-5);
+	padding: var(--space-2);
+	margin-bottom: var(--space-3);
 }
 
 .infoIcon {
@@ -26,13 +26,13 @@
 .form {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .field {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-2);
+	gap: var(--space-1);
 	flex: 1;
 }
 
@@ -50,7 +50,7 @@
 	border-radius: var(--radius-base);
 	font-size: 0.95rem;
 	color: var(--text-dark);
-	background: var(--card-bg-solid);
+	background: var(--white);
 	cursor: pointer;
 	box-sizing: border-box;
 }
@@ -73,7 +73,7 @@
 
 .selectRow {
 	display: flex;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .selectField {
@@ -84,8 +84,8 @@
 .divider {
 	display: flex;
 	align-items: center;
-	gap: var(--space-3);
-	margin: var(--space-5) 0;
+	gap: var(--space-2);
+	margin: var(--space-3) 0;
 }
 
 .divider::before,
@@ -108,7 +108,7 @@
 .inputsRow {
 	display: flex;
 	flex-direction: row;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .inputsRow > div {
@@ -129,13 +129,13 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	gap: var(--space-3);
-	margin-top: var(--space-2);
+	gap: var(--space-2);
+	margin-top: var(--space-1);
 }
 
 .footerActions {
 	display: flex;
-	gap: var(--space-3);
+	gap: var(--space-2);
 	margin-left: auto;
 }
 
@@ -146,14 +146,14 @@
 
 @media screen {
 	.footer {
-		margin-top: var(--space-8);
+		margin-top: var(--space-5);
 		flex-direction: column-reverse;
 		align-items: stretch;
 	}
 
 	.footerActions {
 		flex-direction: column-reverse;
-		gap: var(--space-2);
+		gap: var(--space-1);
 		margin-left: 0;
 	}
 }

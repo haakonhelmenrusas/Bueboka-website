@@ -41,7 +41,7 @@ export function MyPageSkeleton() {
 						<div className={styles.summaryCard}>
 							<SkeletonBlock className={styles.sectionTitleSkeleton} />
 							<SkeletonBlock className={styles.lineSkeleton} />
-							<div style={{ marginTop: 'var(--space-4)' }}>
+							<div style={{ marginTop: 'var(--space-2)' }}>
 								<SkeletonBlock className={styles.statsSkeleton} />
 							</div>
 							<div className={styles.statsButtonContainer}>

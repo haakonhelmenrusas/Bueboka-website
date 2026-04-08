@@ -1,6 +1,6 @@
 .section {
 	position: relative;
-	padding: var(--space-20) var(--space-6);
+	padding: var(--space-13) var(--space-4);
 	background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
 	overflow: hidden;
 }
@@ -15,15 +15,15 @@
 .badge {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--space-2);
-	padding: var(--space-2) var(--space-4);
+	gap: var(--space-1);
+	padding: var(--space-1) var(--space-2);
 	background: linear-gradient(135deg, var(--primary) 0%, #0891b2 100%);
 	color: white;
 	border-radius: var(--radius-full);
 	font-weight: 700;
 	font-size: 0.875rem;
 	letter-spacing: 0.025em;
-	margin-bottom: var(--space-8);
+	margin-bottom: var(--space-5);
 	box-shadow: 0 4px 12px rgba(8, 145, 178, 0.3);
 	animation: badge-pulse 2s ease-in-out infinite;
 }
@@ -43,7 +43,7 @@
 .content {
 	background: white;
 	border-radius: var(--radius-2xl);
-	padding: var(--space-12);
+	padding: var(--space-8);
 	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
 	border: 1px solid rgba(8, 145, 178, 0.1);
 }
@@ -53,7 +53,7 @@
 	font-weight: 900;
 	line-height: 1.2;
 	color: var(--text-dark);
-	margin-bottom: var(--space-6);
+	margin-bottom: var(--space-4);
 	text-align: center;
 }
 
@@ -83,20 +83,20 @@
 	color: var(--text-gray-700);
 	text-align: center;
 	max-width: 800px;
-	margin: 0 auto var(--space-12);
+	margin: 0 auto var(--space-8);
 }
 
 .features {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-	gap: var(--space-8);
-	margin-bottom: var(--space-12);
+	gap: var(--space-5);
+	margin-bottom: var(--space-8);
 }
 
 .feature {
 	display: flex;
-	gap: var(--space-4);
-	padding: var(--space-6);
+	gap: var(--space-2);
+	padding: var(--space-4);
 	background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
 	border-radius: var(--radius-xl);
 	border: 2px solid rgba(8, 145, 178, 0.1);
@@ -130,7 +130,7 @@
 	font-size: 1.125rem;
 	font-weight: 700;
 	color: var(--text-dark);
-	margin-bottom: var(--space-2);
+	margin-bottom: var(--space-1);
 }
 
 .featureText {
@@ -142,12 +142,12 @@
 
 .upgradeNotice {
 	display: flex;
-	gap: var(--space-6);
-	padding: var(--space-8);
+	gap: var(--space-4);
+	padding: var(--space-5);
 	background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
 	border-radius: var(--radius-xl);
 	border: 2px solid #fbbf24;
-	margin-bottom: var(--space-10);
+	margin-bottom: var(--space-7);
 	animation: notice-glow 3s ease-in-out infinite;
 }
 
@@ -182,20 +182,20 @@
 	font-size: 1.25rem;
 	font-weight: 800;
 	color: #78350f;
-	margin-bottom: var(--space-3);
+	margin-bottom: var(--space-2);
 }
 
 .upgradeText {
 	font-size: 1rem;
 	line-height: 1.7;
 	color: #78350f;
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .upgradeWarning {
 	display: flex;
-	gap: var(--space-3);
-	padding: var(--space-4);
+	gap: var(--space-2);
+	padding: var(--space-2);
 	background: white;
 	border-radius: var(--radius-lg);
 	border-left: 4px solid #f59e0b;
@@ -211,7 +211,7 @@
 
 .cta {
 	display: flex;
-	gap: var(--space-4);
+	gap: var(--space-2);
 	justify-content: center;
 	flex-wrap: wrap;
 }
@@ -220,8 +220,8 @@
 .secondaryButton {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--space-2);
-	padding: var(--space-4) var(--space-8);
+	gap: var(--space-1);
+	padding: var(--space-2) var(--space-5);
 	font-size: 1.125rem;
 	font-weight: 700;
 	border-radius: var(--radius-xl);
@@ -314,11 +314,11 @@
 /* Responsive */
 @media (max-width: 768px) {
 	.section {
-		padding: var(--space-12) var(--space-4);
+		padding: var(--space-8) var(--space-2);
 	}
 
 	.content {
-		padding: var(--space-8);
+		padding: var(--space-5);
 	}
 
 	.title {
@@ -331,7 +331,7 @@
 
 	.features {
 		grid-template-columns: 1fr;
-		gap: var(--space-6);
+		gap: var(--space-4);
 	}
 
 	.upgradeNotice {

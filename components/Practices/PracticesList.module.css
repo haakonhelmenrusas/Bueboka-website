@@ -1,14 +1,14 @@
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .header {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .title {
@@ -19,7 +19,7 @@
 
 .list {
 	display: grid;
-	gap: var(--space-4);
+	gap: var(--space-2);
 	min-height: 200px;
 }
 

@@ -112,7 +112,7 @@
 }
 
 .ctaTextWrap {
-	padding: var(--space-8);
+	padding: var(--space-5);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -121,7 +121,7 @@
 
 @media (min-width: 900px) {
 	.ctaTextWrap {
-		padding: var(--space-12);
+		padding: var(--space-8);
 	}
 }
 
@@ -129,19 +129,19 @@
 	font-size: 2rem;
 	font-weight: 700;
 	color: var(--primary);
-	margin-bottom: var(--space-4);
+	margin-bottom: var(--space-2);
 }
 
 .ctaSubtitle {
 	font-size: 1.125rem;
 	color: var(--text-gray-600);
-	margin-bottom: var(--space-6);
+	margin-bottom: var(--space-4);
 	line-height: 1.6;
 }
 
 .ctaFormWrap {
 	background: var(--white);
-	padding: var(--space-8);
+	padding: var(--space-5);
 	border-left: 1px solid var(--border-gray);
 	display: flex;
 	align-items: center;
@@ -149,6 +149,6 @@
 
 @media (min-width: 900px) {
 	.ctaFormWrap {
-		padding: var(--space-12);
+		padding: var(--space-8);
 	}
 }

@@ -1,15 +1,15 @@
 /* ─── Quick-action tools grid ──────────────────────────────────────────────── */
 .section {
     max-width: 1200px;
-    margin: 0 auto var(--space-2);
+    margin: 0 auto var(--space-1);
     width: 100%;
-    margin-top: var(--space-10);
+    margin-top: var(--space-7);
 }
 
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 120px));
-    gap: var(--space-4);
+    gap: var(--space-2);
 }
 
 .button {
@@ -18,8 +18,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-3);
-    padding: var(--space-4);
+    gap: var(--space-2);
+    padding: var(--space-2);
     background: var(--white-15);
     border: 1px solid var(--white-25);
     border-radius: var(--radius-xl);
@@ -58,17 +58,17 @@
 
 @media (max-width: 640px) {
     .section {
-        margin-top: var(--space-6);
+        margin-top: var(--space-4);
         margin-bottom: 0;
     }
 
     .grid {
         grid-template-columns: repeat(4, 1fr);
-        gap: var(--space-2);
+        gap: var(--space-1);
     }
 
     .button {
-        padding: var(--space-2);
+        padding: var(--space-1);
         gap: var(--space-1);
         aspect-ratio: unset;
     }
