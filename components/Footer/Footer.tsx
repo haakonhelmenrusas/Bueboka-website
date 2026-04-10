@@ -37,7 +37,12 @@ export function Footer() {
 								</div>
 								<h3 className={styles.sponsorName}>Arctic bueskyting</h3>
 								<p className={styles.sponsorDesc}>Premium utstyr for alle bueskyttere</p>
-								<a href="https://www.arcticbuesport.no" target="_blank" rel="noopener noreferrer" className={styles.sponsorLink}>
+								<a
+									href="https://www.arcticbuesport.no?utm_source=bueboka&utm_medium=bueboka&utm_campaign=bueboka2026"
+									target="_blank"
+									rel="noopener noreferrer"
+									className={styles.sponsorLink}
+								>
 									Besøk nettside
 									<LuExternalLink size={14} />
 								</a>
