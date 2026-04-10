@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { LuArrowLeft, LuBuilding2, LuHash, LuTarget, LuTrophy, LuUser } from 'react-icons/lu';
+import { LuArrowLeft, LuBuilding2, LuChartBar, LuHash, LuTarget, LuTrophy, LuUser } from 'react-icons/lu';
 import { prisma } from '@/lib/prisma';
 import { ANONYMOUS_ARCHER_LABEL } from '@/lib/labels';
 import type { PublicProfile } from '@/lib/types';
@@ -140,6 +140,7 @@ export default async function PublicProfilePage({ params }: Props) {
 									</div>
 									{profile.stats.avgScorePerArrow !== null && (
 										<div className={styles.statItem}>
+											<LuChartBar size={20} className={styles.statIcon} />
 											<span className={styles.statValue}>
 												{profile.stats.avgScorePerArrow.toLocaleString('nb-NO', { maximumFractionDigits: 2 })}
 											</span>
