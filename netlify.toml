@@ -70,4 +70,36 @@
   [headers.values]
     Cache-Control = "public, s-maxage=10, stale-while-revalidate=59"
 
+# Durable CDN cache for public landing pages - persists across all edge nodes
+# Serves stale immediately while revalidating in background (no cold start for repeat visitors)
+[[headers]]
+  for = "/"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400, durable"
+
+[[headers]]
+  for = "/logg-inn"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400, durable"
+
+[[headers]]
+  for = "/ny-bruker"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400, durable"
+
+[[headers]]
+  for = "/glemt-passord"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400, durable"
+
+[[headers]]
+  for = "/personvern"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400, durable"
+
+[[headers]]
+  for = "/sponsing"
+  [headers.values]
+    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400, durable"
+
 

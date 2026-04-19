@@ -1,3 +1,8 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from '@/lib/auth-client';
 import {
 	Bueboka2Announcement,
 	CallToAction,
@@ -11,6 +16,14 @@ import {
 } from '@/components';
 
 export function LandingPage() {
+	const { data: session } = useSession();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (session) {
+			router.replace('/min-side');
+		}
+	}, [session, router]);
 	return (
 		<>
 			<a href="#main-content" className="skip-link">

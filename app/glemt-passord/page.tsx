@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-static';
+
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button, Header, Input } from '@/components';
