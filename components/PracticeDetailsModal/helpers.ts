@@ -21,6 +21,15 @@ export const calculateTotalScore = (practice: PracticeDetails): number => {
 };
 
 /**
+ * Calculate total arrows without score across all ends
+ */
+export const calculateArrowsWithoutScore = (practice: PracticeDetails): number => {
+	const fromEnds = practice.ends?.reduce((sum, end) => sum + (end.arrowsWithoutScore ?? 0), 0) ?? 0;
+	// Fall back to top-level field if ends don't carry it
+	return fromEnds > 0 ? fromEnds : (practice.arrowsWithoutScore ?? 0);
+};
+
+/**
  * Calculate score for a single end/round
  */
 export const calculateEndScore = (end: PracticeEnd): number => {

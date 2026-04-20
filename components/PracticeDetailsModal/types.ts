@@ -6,6 +6,7 @@ type PracticeType = 'TRENING' | 'KONKURRANSE';
 export type PracticeEnd = {
 	id: string;
 	arrows: number;
+	arrowsWithoutScore?: number | null;
 	arrowsPerEnd?: number | null;
 	distanceMeters?: number | null;
 	targetSizeCm?: number | null;
