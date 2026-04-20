@@ -71,10 +71,9 @@ describe('Button', () => {
 		expect(button).toHaveClass('outline');
 	});
 
-    it('applies width style', () => {
-        render(<Button label="Wide" width={200} />);
-        const button = screen.getByRole('button');
-        expect(button).toHaveStyle({ width: '200px' });
-    });
+	it('applies width style', () => {
+		render(<Button label="Wide" width={200} />);
+		const button = screen.getByRole('button');
+		expect(button).toHaveStyle({ width: '200px' });
+	});
 });
-

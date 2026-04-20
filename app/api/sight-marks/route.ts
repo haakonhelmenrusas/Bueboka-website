@@ -4,9 +4,9 @@ import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { parseNumberArray } from '@/lib/utils';
 import { getCurrentUser } from '@/lib/session';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const sightMarks = await prisma.sightMark.findMany({
@@ -22,13 +22,12 @@ export async function GET() {
 		});
 
 		return NextResponse.json({ sightMarks });
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export async function POST(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const body = (await request.json()) as Partial<{
@@ -49,9 +48,7 @@ export async function POST(request: NextRequest) {
 		const givenMarks = parseNumberArray(body.givenMarks, 'givenMarks', fieldErrors);
 		const givenDistances = parseNumberArray(body.givenDistances, 'givenDistances', fieldErrors);
 		const rawBallistics =
-			typeof body.ballisticsParameters === 'object' && body.ballisticsParameters !== null
-				? body.ballisticsParameters
-				: {};
+			typeof body.ballisticsParameters === 'object' && body.ballisticsParameters !== null ? body.ballisticsParameters : {};
 		const ballisticsParameters: Prisma.InputJsonValue = rawBallistics as Prisma.InputJsonValue;
 
 		if (Object.keys(fieldErrors).length) {
@@ -75,6 +72,5 @@ export async function POST(request: NextRequest) {
 		});
 
 		return NextResponse.json({ sightMark }, { status: 201 });
-	} catch (error) {
-	}
+	} catch (error) {}
 }

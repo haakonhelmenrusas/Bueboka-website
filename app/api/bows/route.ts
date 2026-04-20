@@ -7,7 +7,7 @@ import { equipmentCache } from '@/lib/cache';
 
 export async function POST(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
 		if (!validation.success) {
 			return validation.error;
 		}
-
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = validation.data;
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, braceHeight, stup, tiller, isFavorite, notes } =
+			validation.data;
 
 		const makeFavorite = Boolean(isFavorite);
 
@@ -39,12 +39,19 @@ export async function POST(request: NextRequest) {
 					eyeToNock: eyeToNock ?? null,
 					aimMeasure: aimMeasure ?? null,
 					eyeToSight: eyeToSight ?? null,
+					limbs: limbs ?? null,
+					riser: riser ?? null,
+					handOrientation: handOrientation ?? null,
+					drawWeight: drawWeight ?? null,
+					bowLength: bowLength ?? null,
+					braceHeight: braceHeight ?? null,
+					stup: stup ?? null,
+					tiller: tiller ?? null,
 					isFavorite: makeFavorite,
 					notes: notes ?? null,
 				},
 			});
 		});
-
 		equipmentCache.delete(`equipment:${user.id}`);
 		return NextResponse.json({ bow }, { status: 201 });
 	} catch (error) {
@@ -53,9 +60,9 @@ export async function POST(request: NextRequest) {
 	}
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}

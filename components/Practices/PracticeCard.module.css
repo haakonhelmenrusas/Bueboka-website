@@ -1,21 +1,15 @@
 .card {
-    background: rgba(12, 130, 172, 0.06);
+    background: var(--white);
     border: 1px solid rgba(12, 130, 172, 0.14);
     border-radius: var(--radius-md);
-    padding: var(--space-5) var(--space-6);
+    padding: var(--space-3) var(--space-4);
     display: block;
     cursor: pointer;
-    transition: all 180ms ease;
     width: 100%;
 }
 
 .card:hover {
-    background: rgba(12, 130, 172, 0.085);
-    transform: translateY(-2px);
-}
-
-.card:active {
-    transform: translateY(0);
+    background: var(--white);
 }
 
 /* ── Desktop layout: single horizontal flex row ── */
@@ -23,7 +17,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: var(--space-5);
+    gap: var(--space-3);
 }
 
 /* date + badge sit side-by-side in their own wrapper */
@@ -31,7 +25,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: var(--space-4);
+    gap: var(--space-2);
     flex: 0 0 auto;
 }
 
@@ -57,14 +51,14 @@
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
-    gap: var(--space-2) var(--space-5);
+    gap: var(--space-1) var(--space-3);
     flex: 1;
 }
 
 .detailItem {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
     color: var(--text-gray-700);
     font-weight: 550;
     font-size: 0.9rem;
@@ -102,7 +96,8 @@
     flex: 0 0 auto;
     margin-left: auto;
     color: var(--text-gray-600);
-    transition: color 0.2s ease, transform 0.2s ease;
+    transition: color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .card:hover .openIcon {
@@ -113,25 +108,25 @@
 /* ── Mobile layout ── */
 @media (max-width: 700px) {
     .card {
-        padding: var(--space-4) var(--space-5);
+        padding: var(--space-2) var(--space-3);
     }
 
     /* Stack topRow + details vertically */
     .main {
         flex-direction: column;
         align-items: stretch;
-        gap: var(--space-3);
+        gap: var(--space-2);
     }
 
     /* Date (prominent) on left, badge on right */
     .topRow {
         width: 100%;
         justify-content: space-between;
-        gap: var(--space-3);
+        gap: var(--space-2);
     }
 
     .date {
-        font-size: 1.18rem;
+        font-size: 1.1rem;
         font-weight: 700;
         width: auto;
     }
@@ -143,7 +138,7 @@
 
     /* Detail chips wrap naturally into multiple rows */
     .details {
-        gap: var(--space-2) var(--space-5);
+        gap: var(--space-1) var(--space-3);
     }
 
     .detailItem {

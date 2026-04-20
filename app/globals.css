@@ -1,17 +1,17 @@
 :root {
 	/* Primary Brand Colors */
 	--primary: #053546;
-	--primary-dark: #00171F;
+	--primary-dark: #00171f;
 	--primary-light: #0c82ac;
-	--primary-lighter: #227B9A;
+	--primary-lighter: #227b9a;
 
 	/* Secondary Colors */
-	--secondary: #227B9A;
-	--tertiary: #D8F5FF;
+	--secondary: #227b9a;
+	--tertiary: #d8f5ff;
 
 	/* Neutral Colors */
-	--white: #FFFFFF;
-	--background: #F2F2F2;
+	--white: #ffffff;
+	--background: #f2f2f2;
 	--bg-light: #f0f9ff;
 	--bg-lighter: #f8fafc;
 	--bg-gray-50: #f9fafb;
@@ -23,13 +23,13 @@
 	--text-gray-800: #1f2937;
 
 	/* Semantic Colors */
-	--dimmed: #D3D4DF;
-	--inactive: #9697B6;
-	--error: #DD0000;
+	--dimmed: #d3d4df;
+	--inactive: #9697b6;
+	--error: #dd0000;
 	--error-light: #dc7f79;
 	--error-bg: rgba(239, 68, 68, 0.1);
 	--error-border: rgba(239, 68, 68, 0.2);
-	--warning: #FFA500;
+	--warning: #ffa500;
 	--success: #008000;
 
 	/* Accent Colors */
@@ -37,25 +37,14 @@
 	--accent-red: #c01c24;
 
 	/* Star/Favorite Colors */
-	--star-bg: rgba(255, 214, 0, 0.20);
-	--star-border: rgba(255, 214, 0, 0.35);
-	--star-color: rgba(110, 80, 0, 0.95);
+	--star-bg: color-mix(in srgb, var(--accent-yellow) 20%, transparent);
+	--star-border: color-mix(in srgb, var(--accent-yellow) 35%, transparent);
+	--star-color: color-mix(in srgb, var(--accent-yellow), black 57%);
 
 	/* Utility Colors */
 	--transparent: transparent;
 	--border-gray: #e5e7eb;
 
-	/* Card backgrounds */
-	--card-bg: rgba(255, 255, 255, 0.92);
-	--card-bg-solid: #ffffff;
-	--card-bg-light: rgba(255, 255, 255, 0.11);
-	--modal-bg: #ffffff;
-
-	/* Button colors */
-	--btn-text-light: #ffffff;
-
-	/* Section titles on colored backgrounds */
-	--section-title-light: #ffffff;
 
 	/* Page backgrounds */
 	--page-gradient-start: var(--primary);
@@ -91,59 +80,52 @@
 
 	/* Spacing Scale (8px base unit) */
 	--space-0: 0px;
-	--space-1: 2px;
-	--space-2: 4px;
-	--space-3: 6px;
-	--space-4: 8px;
-	--space-5: 12px;
-	--space-6: 16px;
-	--space-7: 20px;
-	--space-8: 24px;
-	--space-9: 28px;
-	--space-10: 32px;
-	--space-11: 36px;
-	--space-12: 40px;
-	--space-13: 44px;
-	--space-14: 48px;
-	--space-15: 52px;
-	--space-16: 56px;
-	--space-17: 60px;
-	--space-18: 64px;
-	--space-19: 68px;
-	--space-20: 72px;
-	--space-24: 96px;
-	--space-28: 112px;
-	--space-32: 128px;
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 28px;
+	--space-7: 32px;
+	--space-8: 40px;
+	--space-9: 44px;
+	--space-10: 48px;
+	--space-11: 56px;
+	--space-12: 64px;
+	--space-13: 72px;
+	--space-14: 96px;
+	--space-15: 112px;
+	--space-16: 128px;
 
 	/* Padding shortcuts */
-	--padding-xs: var(--space-2);
-	--padding-sm: var(--space-4);
-	--padding-base: var(--space-6);
-	--padding-md: var(--space-8);
-	--padding-lg: var(--space-10);
-	--padding-xl: var(--space-12);
-	--padding-2xl: var(--space-14);
-	--padding-3xl: var(--space-18);
+	--padding-xs: var(--space-1);
+	--padding-sm: var(--space-2);
+	--padding-base: var(--space-4);
+	--padding-md: var(--space-5);
+	--padding-lg: var(--space-7);
+	--padding-xl: var(--space-8);
+	--padding-2xl: var(--space-10);
+	--padding-3xl: var(--space-12);
 
 	/* Margin shortcuts */
-	--margin-xs: var(--space-2);
-	--margin-sm: var(--space-4);
-	--margin-base: var(--space-6);
-	--margin-md: var(--space-8);
-	--margin-lg: var(--space-10);
-	--margin-xl: var(--space-12);
-	--margin-2xl: var(--space-14);
-	--margin-3xl: var(--space-18);
+	--margin-xs: var(--space-1);
+	--margin-sm: var(--space-2);
+	--margin-base: var(--space-4);
+	--margin-md: var(--space-5);
+	--margin-lg: var(--space-7);
+	--margin-xl: var(--space-8);
+	--margin-2xl: var(--space-10);
+	--margin-3xl: var(--space-12);
 
 	/* Gap shortcuts */
-	--gap-xs: var(--space-2);
-	--gap-sm: var(--space-4);
-	--gap-base: var(--space-6);
-	--gap-md: var(--space-8);
-	--gap-lg: var(--space-10);
-	--gap-xl: var(--space-12);
-	--gap-2xl: var(--space-14);
-	--gap-3xl: var(--space-18);
+	--gap-xs: var(--space-1);
+	--gap-sm: var(--space-2);
+	--gap-base: var(--space-4);
+	--gap-md: var(--space-5);
+	--gap-lg: var(--space-7);
+	--gap-xl: var(--space-8);
+	--gap-2xl: var(--space-10);
+	--gap-3xl: var(--space-12);
 
 	/* Border Radius Scale (8px base unit) */
 	--radius-0: 0px;
@@ -208,8 +190,6 @@ body {
 	outline-offset: 2px;
 }
 
-
-
 /* Ensure interactive elements have visible focus */
 button:focus-visible,
 a:focus-visible,
@@ -219,7 +199,6 @@ select:focus-visible {
 	outline: 2px solid var(--primary);
 	outline-offset: 2px;
 }
-
 
 /* Screen reader only text - visually hidden but accessible */
 .sr-only {

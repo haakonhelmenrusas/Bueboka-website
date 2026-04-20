@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { statsCache, practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
@@ -14,7 +15,7 @@ interface RouteParams {
  */
 export async function GET(request: Request, { params }: RouteParams) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -63,10 +64,11 @@ export async function GET(request: Request, { params }: RouteParams) {
 			},
 		});
 	} catch (error) {
-
+		console.error('Error fetching competition:', error);
 		return NextResponse.json(
 			{
 				error: 'Failed to fetch competition',
+				details: error instanceof Error ? error.message : 'Unknown error',
 			},
 			{ status: 500 }
 		);
@@ -107,7 +109,7 @@ interface CompetitionUpdateInput {
  */
 export async function PATCH(request: Request, { params }: RouteParams) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -199,10 +201,11 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 
 		return NextResponse.json({ competition });
 	} catch (error) {
-
+		console.error('Error updating competition:', error);
 		return NextResponse.json(
 			{
 				error: 'Failed to update competition',
+				details: error instanceof Error ? error.message : 'Unknown error',
 			},
 			{ status: 500 }
 		);
@@ -215,7 +218,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
  */
 export async function DELETE(request: Request, { params }: RouteParams) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -248,10 +251,11 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-
+		console.error('Error deleting competition:', error);
 		return NextResponse.json(
 			{
 				error: 'Failed to delete competition',
+				details: error instanceof Error ? error.message : 'Unknown error',
 			},
 			{ status: 500 }
 		);

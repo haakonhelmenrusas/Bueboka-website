@@ -3,9 +3,9 @@ import { prisma } from '@/lib/prisma';
 import { roundTypesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 
-export async function GET() {
+export async function GET(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		// Check cache first

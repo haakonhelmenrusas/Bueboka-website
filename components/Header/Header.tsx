@@ -8,7 +8,7 @@ import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
-import { LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
+import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,6 +27,7 @@ export function Header() {
 		pathname === '/achievements' ||
 		pathname === '/skyttere' ||
 		pathname === '/siktemerker' ||
+		pathname === '/aktivitet' ||
 		pathname.startsWith('/profil/');
 
 	// Check if we're on an auth form page (login/signup)
@@ -143,6 +144,13 @@ export function Header() {
 									</Link>
 								)}
 								<Link
+									href="/aktivitet"
+									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/aktivitet' ? styles.navLinkActive : ''}`}
+								>
+									<LuActivity size={16} />
+									Aktivitet
+								</Link>
+								<Link
 									href="/skyttere"
 									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/skyttere' || pathname.startsWith('/skyttere/') ? styles.navLinkActive : ''}`}
 								>
@@ -213,6 +221,10 @@ export function Header() {
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
 									<div className={styles.profileMenuNavSection}>
+										<Link href="/aktivitet" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+											<LuActivity size={16} />
+											<span>Aktivitet</span>
+										</Link>
 										<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
 											<LuUsers size={16} />
 											<span>Skyttere</span>
@@ -264,6 +276,10 @@ export function Header() {
 										Min side
 									</Link>
 								)}
+								<Link href="/aktivitet" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
+									<LuActivity size={16} />
+									Aktivitet
+								</Link>
 								<Link href="/skyttere" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
 									<LuUsers size={16} />
 									Skyttere

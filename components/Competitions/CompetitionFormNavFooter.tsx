@@ -1,0 +1,58 @@
+'use client';
+
+import React from 'react';
+import styles from './CompetitionFormModal.module.css';
+import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
+import { Button } from '@/components';
+import { STEP_LABELS, TOTAL_STEPS } from './CompetitionFormModal.types';
+
+interface NavFooterProps {
+	step: number;
+	onPrev: () => void;
+	onNext: () => void;
+	isEditMode: boolean;
+	submitting: boolean;
+	canSave: boolean;
+	onClose: () => void;
+	onSubmit: () => void;
+}
+
+export const CompetitionFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, onNext, isEditMode, submitting, canSave, onSubmit }) => {
+	const isFirstStep = step === 0;
+	const isLastStep = step === TOTAL_STEPS - 1;
+
+	return (
+		<div className={styles.navFooter}>
+			<div className={styles.navRow}>
+				<button
+					type="button"
+					className={`${styles.navArrow}${isFirstStep ? ` ${styles.navArrowDisabled}` : ''}`}
+					onClick={onPrev}
+					disabled={isFirstStep}
+					aria-label="Forrige steg"
+				>
+					<LuChevronLeft size={26} />
+				</button>
+
+				<span className={styles.navStepName}>{STEP_LABELS[step]}</span>
+
+				<div className={styles.navRowRight}>
+					{isLastStep ? (
+						<Button
+							type="button"
+							label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre konkurranse'}
+							onClick={onSubmit}
+							variant="standard"
+							disabled={submitting || !canSave}
+							loading={submitting}
+						/>
+					) : (
+						<button type="button" className={styles.navArrow} onClick={onNext} aria-label="Neste steg">
+							<LuChevronRight size={26} />
+						</button>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+};

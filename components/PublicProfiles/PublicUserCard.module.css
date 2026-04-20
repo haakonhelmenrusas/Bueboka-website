@@ -1,14 +1,16 @@
 .card {
 	display: flex;
 	align-items: center;
-	gap: var(--space-4);
-	background: var(--card-bg);
+	gap: var(--space-2);
+	background: var(--white);
 	border: 1px solid rgba(0, 0, 0, 0.06);
 	border-radius: var(--radius-xl);
-	padding: var(--space-4) var(--space-6);
+	padding: var(--space-2) var(--space-4);
 	text-decoration: none;
 	color: var(--text-dark);
-	transition: box-shadow 150ms ease, transform 150ms ease;
+	transition:
+		box-shadow 150ms ease,
+		transform 150ms ease;
 }
 
 .card:hover {
@@ -76,4 +78,3 @@
 	flex: 0 0 auto;
 	line-height: 1;
 }
-

@@ -8,7 +8,7 @@ async function getOwnedSpec(userId: string, specId: string) {
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		const { id } = await params;
 
@@ -16,13 +16,12 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		if (!spec) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
 		return NextResponse.json({ bowSpecification: spec });
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		const { id } = await params;
 
@@ -47,13 +46,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 		});
 
 		return NextResponse.json({ bowSpecification: updated });
-	} catch (error) {
-	}
+	} catch (error) {}
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		const { id } = await params;
 
@@ -62,6 +60,5 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 
 		await prisma.bowSpecification.delete({ where: { id } });
 		return NextResponse.json({ success: true });
-	} catch (error) {
-	}
+	} catch (error) {}
 }

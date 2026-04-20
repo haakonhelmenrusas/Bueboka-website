@@ -82,9 +82,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 			// Prefer the service's echoed distances; fall back to the locally-built list.
 			const fullDistances: number[] =
-				Array.isArray(rawResult.distances) && rawResult.distances.length > 1
-					? rawResult.distances
-					: allDistances;
+				Array.isArray(rawResult.distances) && rawResult.distances.length > 1 ? rawResult.distances : allDistances;
 
 			const result: FullMarksResult = {
 				distances: fullDistances,
@@ -167,12 +165,23 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 				<section className={styles.fieldGroup}>
 					<h3 className={styles.groupLabel}>Hellvinkel (valgfritt)</h3>
-					<p className={styles.groupHint}>Legg inn opptil 3 vinkler for å se siktemerker ved ulik terrengvinkel.</p>
+					<p className={styles.groupHint}>Legg inn opptil 2 vinkler for å se siktemerker ved ulik terrengvinkel.</p>
 					<div className={styles.row}>
-						{[0, 1, 2].map((i) => (
+						<NumberInput
+							key={0}
+							label="Flatmark"
+							value={0}
+							onChange={() => {}}
+							min={0}
+							max={0}
+							step={0.5}
+							unit="°"
+							disabled
+						/>
+						{[1, 2].map((i) => (
 							<NumberInput
 								key={i}
-								label={`Vinkel ${i + 1}`}
+								label={`Vinkel ${i}`}
 								value={angles[i] ?? 0}
 								onChange={(v) => setAngle(i, v)}
 								min={-90}
@@ -195,14 +204,9 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 				<div className={styles.actions}>
 					<Button label="Lukk" buttonType="outline" onClick={onClose} disabled={status === 'pending'} />
-					<Button
-						label={status === 'pending' ? 'Beregner...' : 'Beregn'}
-						onClick={handleSubmit}
-						disabled={status === 'pending'}
-					/>
+					<Button label={status === 'pending' ? 'Beregner...' : 'Beregn'} onClick={handleSubmit} disabled={status === 'pending'} />
 				</div>
 			</div>
 		</Modal>
 	);
 }
-

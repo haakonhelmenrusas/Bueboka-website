@@ -6,6 +6,7 @@ export type PracticeCardItem = {
 	id: string;
 	date: string;
 	arrowsShot: number;
+	arrowsWithScore?: number | null;
 	location?: string | null;
 	environment?: string | null;
 	rating?: string | null;
@@ -33,7 +34,7 @@ export function usePracticeCards({ pageSize = 10 }: { pageSize?: number } = {}) 
 	const [cards, setCards] = useState<PracticeCardItem[]>([]);
 	const [page, setPage] = useState(1);
 	const [total, setTotal] = useState(0);
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [filter, setFilter] = useState<PracticeFilterType>('all');
 	const inFlightRef = useRef(false);
 	const pageRef = useRef(1);

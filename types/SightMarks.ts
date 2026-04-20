@@ -138,4 +138,3 @@ export interface FullMarksResult {
 	sight_marks_by_hill_angle: Record<string, number[]>;
 	arrow_speed_by_angle: Record<string, number[]>;
 }
-

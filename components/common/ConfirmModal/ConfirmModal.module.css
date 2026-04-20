@@ -1,6 +1,5 @@
-
 .content {
-	padding: var(--space-2) 0;
+	padding: var(--space-1) 0;
 }
 
 .message {
@@ -13,18 +12,20 @@
 .actions {
 	display: flex;
 	justify-content: flex-end;
-	gap: var(--space-4);
-	margin-top: var(--space-2);
+	gap: var(--space-2);
+	margin-top: var(--space-1);
 }
 
 .button {
 	border: none;
 	border-radius: var(--radius-md);
-	padding: calc(var(--space-4) + 2px) calc(var(--space-6) + 2px);
+	padding: calc(var(--space-2) + 2px) calc(var(--space-4) + 2px);
 	font-weight: 800;
 	cursor: pointer;
 	font-size: 1.05rem;
-	transition: transform 120ms ease, box-shadow 200ms ease;
+	transition:
+		transform 120ms ease,
+		box-shadow 200ms ease;
 	min-width: 120px;
 }
 
@@ -69,7 +70,6 @@
 }
 
 @media (max-width: 700px) {
-
 	.actions {
 		flex-direction: column-reverse;
 	}
@@ -78,4 +78,3 @@
 		width: 100%;
 	}
 }
-

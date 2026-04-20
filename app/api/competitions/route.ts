@@ -1,16 +1,17 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { statsCache, practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { createCompetitionSchema } from '@/lib/validations/competition';
+import { formatZodErrors } from '@/lib/validations/helpers';
 
 /**
  * GET /api/competitions
  * Fetch all competitions for the current user
  */
-export async function GET() {
+export async function GET(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -50,7 +51,6 @@ export async function GET() {
 
 		return NextResponse.json({ competitions: competitionsWithStats });
 	} catch (error) {
-
 		return NextResponse.json(
 			{
 				error: 'Failed to fetch competitions',
@@ -60,79 +60,72 @@ export async function GET() {
 	}
 }
 
-interface CompetitionRoundInput {
-	roundNumber: number;
-	distanceMeters?: number;
-	targetType?: string; // Changed to accept targetType string (e.g., "40cm")
-	targetSizeCm?: number; // Keep for backward compatibility
-	numberArrows?: number;
-	arrowsWithoutScore?: number;
-	roundScore: number;
-	scores?: number[];
-}
-
-interface CompetitionInput {
-	date: string;
-	name: string;
-	location?: string;
-	organizerName?: string;
-	environment: Environment;
-	weather: WeatherCondition[];
-	practiceCategory: PracticeCategory;
-	notes?: string;
-	placement?: number;
-	numberOfParticipants?: number;
-	personalBest?: boolean;
-	rounds: CompetitionRoundInput[];
-	bowId?: string;
-	arrowsId?: string;
-}
-
 /**
  * POST /api/competitions
  * Create a new competition
  */
 export async function POST(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const body: CompetitionInput = await request.json();
+		const body = await request.json();
 
-		// Validation
-		if (!body.name || body.name.trim() === '') {
-			return NextResponse.json({ error: 'Competition name is required', fieldErrors: { name: 'Required' } }, { status: 400 });
+		// Validate input using Zod schema
+		const validation = createCompetitionSchema.safeParse(body);
+		if (!validation.success) {
+			console.error('Validation failed:', validation.error);
+			return NextResponse.json(
+				{
+					error: 'Validation error',
+					fieldErrors: formatZodErrors(validation.error),
+				},
+				{ status: 400 }
+			);
 		}
 
-		if (!body.rounds || body.rounds.length === 0) {
-			return NextResponse.json({ error: 'At least one round is required', fieldErrors: { rounds: 'Required' } }, { status: 400 });
-		}
+		const {
+			date,
+			name,
+			location,
+			organizerName,
+			environment,
+			weather,
+			practiceCategory,
+			notes,
+			placement,
+			numberOfParticipants,
+			personalBest,
+			rounds,
+			bowId,
+			arrowsId,
+		} = validation.data;
 
 		// Calculate total score
-		const totalScore = body.rounds.reduce((sum, round) => sum + (round.roundScore || 0), 0);
+		const totalScore = rounds.reduce((sum, round) => sum + (round.roundScore || 0), 0);
 
 		// Create competition with rounds
 		const competition = await prisma.competition.create({
 			data: {
 				userId: user.id,
-				date: new Date(body.date),
-				name: body.name.trim(),
-				location: body.location?.trim(),
-				organizerName: body.organizerName?.trim(),
-				environment: body.environment,
-				weather: body.weather || [],
-				practiceCategory: body.practiceCategory,
-				notes: body.notes?.trim(),
-				placement: body.placement,
-				numberOfParticipants: body.numberOfParticipants,
-				personalBest: body.personalBest || false,
-				totalScore,
-				bowId: body.bowId || null,
-				arrowsId: body.arrowsId || null,
+				date: new Date(date),
+				name: name.trim(),
+				location: location?.trim() || null,
+				organizerName: organizerName?.trim() || null,
+				environment: environment,
+				weather: weather || [],
+				practiceCategory: practiceCategory || 'SKIVE_OUTDOOR',
+				notes: notes?.trim() || null,
+				placement: placement || null,
+				numberOfParticipants: numberOfParticipants || null,
+				personalBest: personalBest || false,
+				totalScore: totalScore,
+				bowId: bowId || null,
+				arrowsId: arrowsId || null,
 				rounds: {
-					create: body.rounds.map((round) => {
+					create: rounds.map((round) => {
 						// Parse targetSizeCm from targetType (e.g., "40cm" -> 40) or use existing targetSizeCm
 						let targetSizeCm = round.targetSizeCm || null;
 						if (!targetSizeCm && round.targetType) {
@@ -169,10 +162,11 @@ export async function POST(request: Request) {
 
 		return NextResponse.json({ competition }, { status: 201 });
 	} catch (error) {
-
+		console.error('Error creating competition:', error);
 		return NextResponse.json(
 			{
 				error: 'Failed to create competition',
+				details: error instanceof Error ? error.message : 'Unknown error',
 			},
 			{ status: 500 }
 		);

@@ -14,13 +14,7 @@ interface SightMarkChooserModalProps {
 	onChoose: (sightMark: SightMark) => void;
 }
 
-export function SightMarkChooserModal({
-	open,
-	onClose,
-	sightMarks,
-	currentId,
-	onChoose,
-}: SightMarkChooserModalProps) {
+export function SightMarkChooserModal({ open, onClose, sightMarks, currentId, onChoose }: SightMarkChooserModalProps) {
 	const [selected, setSelected] = useState<string | null>(null);
 
 	useEffect(() => {
@@ -39,9 +33,7 @@ export function SightMarkChooserModal({
 
 	return (
 		<Modal open={open} onClose={onClose} title="Velg siktemerke" maxWidth={460}>
-			<p className={styles.hint}>
-				Velg hvilket sett med innskytingsmerker som skal brukes som grunnlag for beregningen.
-			</p>
+			<p className={styles.hint}>Velg hvilket sett med innskytingsmerker som skal brukes som grunnlag for beregningen.</p>
 
 			<div className={styles.list}>
 				{sightMarks.map((sm) => {
@@ -89,4 +81,3 @@ export function SightMarkChooserModal({
 		</Modal>
 	);
 }
-

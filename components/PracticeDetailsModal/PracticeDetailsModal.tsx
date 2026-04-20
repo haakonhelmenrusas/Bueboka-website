@@ -4,7 +4,7 @@ import type { SessionShareData } from '@/components/SessionShareCard/SessionShar
 import { formatWeatherConditions } from '@/lib/weatherUtils';
 import { getArrowMaterialLabel, getBowTypeLabel, getPracticeCategoryLabel } from '@/lib/labels';
 import type { PracticeDetailsModalProps } from './types';
-import { calculateTotalArrows, calculateTotalScore } from './helpers';
+import { calculateTotalArrows, calculateTotalScore, calculateArrowsWithoutScore } from './helpers';
 import { PRACTICE_CATEGORY_ICONS } from './constants';
 import { EnvironmentBadge, PracticeTypeBadge } from './Badges';
 import { StatCard } from './StatCard';
@@ -29,6 +29,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 
 	const totalArrows = calculateTotalArrows(practice);
 	const totalScore = calculateTotalScore(practice);
+	const arrowsWithoutScore = calculateArrowsWithoutScore(practice);
 
 	// Derive distance from first end
 	const distanceMeters = practice.ends?.[0]?.distanceMeters ?? null;
@@ -78,7 +79,7 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 					<div className={styles.scoreCard}>
 						<div className={styles.scoreLabel}>Total Score</div>
 						<div className={styles.scoreValue}>{totalScore}</div>
-						<div className={styles.scoreSubtext}>{totalArrows} piler skutt</div>
+						<div className={styles.scoreSubtext}>{totalArrows - arrowsWithoutScore} piler skutt</div>
 					</div>
 				)}
 				<div className={styles.statsGrid}>
@@ -108,11 +109,11 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						/>
 					)}
 				</div>
-				{practice.arrowsWithoutScore && practice.arrowsWithoutScore > 0 && (
+				{arrowsWithoutScore > 0 && (
 					<div className={styles.statCardFull}>
 						<GiBrokenArrow className="w-5 h-5" />
 						<div className={styles.statLabel}>Piler uten scoring</div>
-						<div className={styles.statValue}>{practice.arrowsWithoutScore} piler</div>
+						<div className={styles.statValue}>{arrowsWithoutScore} piler</div>
 					</div>
 				)}
 				{practice.ends && practice.ends.length > 0 && (

@@ -18,18 +18,9 @@ export interface BadgeProps {
 	uppercase?: boolean;
 }
 
-export const Badge: React.FC<BadgeProps> = ({
-	variant = 'default',
-	size = 'md',
-	icon,
-	children,
-	className,
-	uppercase = false,
-}) => (
+export const Badge: React.FC<BadgeProps> = ({ variant = 'default', size = 'md', icon, children, className, uppercase = false }) => (
 	<span
-		className={[styles.badge, styles[variant], styles[size], uppercase ? styles.uppercase : '', className ?? '']
-			.filter(Boolean)
-			.join(' ')}
+		className={[styles.badge, styles[variant], styles[size], uppercase ? styles.uppercase : '', className ?? ''].filter(Boolean).join(' ')}
 	>
 		{icon && (
 			<span className={styles.icon} aria-hidden="true">
@@ -39,4 +30,3 @@ export const Badge: React.FC<BadgeProps> = ({
 		{children}
 	</span>
 );
-

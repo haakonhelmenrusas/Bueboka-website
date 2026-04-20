@@ -40,6 +40,14 @@ export interface Bow {
 	eyeToNock: number | null;
 	aimMeasure: number | null;
 	eyeToSight: number | null;
+	limbs: string | null;
+	riser: string | null;
+	handOrientation: string | null;
+	drawWeight: number | null;
+	bowLength: number | null;
+	braceHeight: number | null;
+	stup: number | null;
+	tiller: number | null;
 	isFavorite: boolean;
 	notes: string | null;
 }
@@ -52,6 +60,12 @@ export interface Arrow {
 	diameter?: number | null;
 	length?: number | null;
 	weight?: number | null;
+	spine?: string | null;
+	pointType?: string | null;
+	pointWeight?: number | null;
+	vanes?: string | null;
+	nock?: string | null;
+	notes?: string | null;
 	isFavorite: boolean;
 }
 

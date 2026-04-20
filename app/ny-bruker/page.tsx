@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-static';
+
 import { signIn, signUp } from '@/lib/auth-client';
 import Link from 'next/link';
 import Image from 'next/image';

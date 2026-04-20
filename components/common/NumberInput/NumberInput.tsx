@@ -53,8 +53,7 @@ const roundToStep = (n: number, step: number): number => {
 
 const toDisplay = (value: number) => (Number.isFinite(value) ? String(value) : '');
 
-const initialDisplay = (value: number, startEmpty: boolean) =>
-	startEmpty && value === 0 ? '' : toDisplay(value);
+const initialDisplay = (value: number, startEmpty: boolean) => (startEmpty && value === 0 ? '' : toDisplay(value));
 
 // ----------------------------------------------------------------------------
 
@@ -109,7 +108,6 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		setDisplayValue(toDisplay(value));
 	}, [value]);
 
-
 	// --- Input handlers -----------------------------------------------------
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,9 +119,8 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		if (raw === '') {
 			if (onEmpty) {
 				onEmpty();
-			} else if (emptyBehavior === 'clamp') {
-				onChange(clamp(typeof min === 'number' ? min : 0, min, max));
 			}
+			// Keep the field empty — do not fill in 0
 			return;
 		}
 
@@ -146,12 +143,8 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 		} else if (emptyBehavior === 'ignore') {
 			// Restore last committed value.
 			setDisplayValue(toDisplay(value));
-		} else {
-			// clamp: fill in the minimum (or 0).
-			const next = roundToStep(clamp(typeof min === 'number' ? min : 0, min, max), step);
-			onChange(next);
-			setDisplayValue(String(next));
 		}
+		// emptyBehavior === 'clamp': keep displayValue as '' — do not fill in 0 or min
 	};
 
 	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -224,7 +217,11 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 						aria-invalid={errorMessage ? 'true' : 'false'}
 						aria-describedby={describedById}
 					/>
-					{unit && <span className={styles.unit} style={{ transform: `translateX(${unitOffset}px)` }}>{unit}</span>}
+					{unit && (
+						<span className={styles.unit} style={{ transform: `translateX(${unitOffset}px)` }}>
+							{unit}
+						</span>
+					)}
 					{rightAddon && <span className={styles.rightAddon}>{rightAddon}</span>}
 				</div>
 			</div>

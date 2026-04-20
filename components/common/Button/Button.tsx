@@ -82,7 +82,11 @@ export const Button: React.FC<ButtonProps> = ({
 				</span>
 			);
 			content.push(
-				<span key="loader" className={styles.spinner} style={{ position: 'absolute', width: sizeStyles.iconSize, height: sizeStyles.iconSize }} />
+				<span
+					key="loader"
+					className={styles.spinner}
+					style={{ position: 'absolute', width: sizeStyles.iconSize, height: sizeStyles.iconSize }}
+				/>
 			);
 		} else {
 			if (icon && iconPosition === 'left') {

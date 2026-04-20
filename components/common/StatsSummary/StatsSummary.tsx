@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './StatsSummary.module.css';
-import { LuCalendarDays, LuChartBar, LuCircleCheck, LuCircleX, LuStar, LuTarget, LuTrendingUp } from 'react-icons/lu';
+import { LuCalendarDays, LuChartBar, LuCircleCheck, LuCircleX, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import type { PeriodStats } from '@/lib/types';
 
 export type StatsSummaryProps = {
@@ -47,11 +47,74 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 }
 
 export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Days, overall }) => {
+	const [activeIndex, setActiveIndex] = useState(0);
+	const trackRef = useRef<HTMLDivElement>(null);
+
+	const cards = [
+		{ title: 'Totalt', icon: <LuChartBar size={18} />, data: overall },
+		{ title: 'Siste 30 dager', icon: <LuTrendingUp size={18} />, data: last30Days },
+		{ title: 'Siste 7 dager', icon: <LuCalendarDays size={18} />, data: last7Days },
+	];
+
+	// Keep active dot in sync with the snapped card as the user swipes.
+	useEffect(() => {
+		const track = trackRef.current;
+		if (!track) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						const index = Array.from(track.children).indexOf(entry.target as HTMLElement);
+						if (index !== -1) setActiveIndex(index);
+					}
+				});
+			},
+			{ root: track, threshold: 0.6 }
+		);
+
+		Array.from(track.children).forEach((child) => observer.observe(child));
+		return () => observer.disconnect();
+	}, []);
+
+	const scrollToIndex = (index: number) => {
+		const track = trackRef.current;
+		if (!track) return;
+		const slide = track.children[index] as HTMLElement;
+		slide?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+		setActiveIndex(index);
+	};
+
 	return (
-		<div className={styles.grid}>
-			<PeriodCard title="Siste 7 dager" icon={<LuCalendarDays size={18} />} data={last7Days} />
-			<PeriodCard title="Siste 30 dager" icon={<LuTrendingUp size={18} />} data={last30Days} />
-			<PeriodCard title="Totalt" icon={<LuChartBar size={18} />} data={overall} />
-		</div>
+		<>
+			{/* Grid view for larger screens */}
+			<div className={styles.grid}>
+				{cards.map((card) => (
+					<PeriodCard key={card.title} title={card.title} icon={card.icon} data={card.data} />
+				))}
+			</div>
+
+			{/* Swipeable carousel for smaller screens */}
+			<div className={styles.carouselWrapper}>
+				<div className={styles.track} ref={trackRef}>
+					{cards.map((card) => (
+						<div key={card.title} className={styles.slide}>
+							<PeriodCard title={card.title} icon={card.icon} data={card.data} />
+						</div>
+					))}
+				</div>
+				<div className={styles.dots}>
+					{cards.map((_, index) => (
+						<button
+							key={index}
+							type="button"
+							className={`${styles.dot} ${index === activeIndex ? styles.dotActive : ''}`}
+							onClick={() => scrollToIndex(index)}
+							aria-label={`Gå til ${cards[index].title}`}
+						/>
+					))}
+				</div>
+			</div>
+		</>
 	);
 };

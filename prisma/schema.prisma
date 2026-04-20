@@ -98,6 +98,14 @@ model Bow {
   eyeToNock         Float?
   aimMeasure        Float?
   eyeToSight        Float?
+  limbs             String?
+  riser             String?
+  handOrientation   String?
+  drawWeight        Float?
+  bowLength         Float?
+  braceHeight       Float?
+  stup              Float?
+  tiller            Float?
   notes             String?
   isFavorite        Boolean            @default(false)
   createdAt         DateTime           @default(now())
@@ -187,6 +195,7 @@ model End {
   arrows             Int?
   arrowsWithoutScore Int?
   scores             Int[]
+  arrowCoordinates   Json?
   roundScore         Int?
   distanceMeters     Int?
   distanceFrom       Int?

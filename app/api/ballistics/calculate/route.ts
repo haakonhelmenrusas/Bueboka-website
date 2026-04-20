@@ -9,7 +9,7 @@ import { getCurrentUser } from '@/lib/session';
  */
 export async function POST(request: NextRequest) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const body = (await request.json()) as unknown;
@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
 		const result: CalculatedMarks = await response.json();
 		return NextResponse.json(result);
 	} catch (error) {
-
 		if (error instanceof Error && error.name === 'AbortError') {
 			return NextResponse.json({ error: 'Ballistics service timeout' }, { status: 504 });
 		}

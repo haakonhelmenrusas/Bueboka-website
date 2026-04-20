@@ -71,9 +71,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 
 	return (
 		<div className={styles.wrapper} ref={containerRef}>
-			{open && (
-				<div className={styles.backdrop} onClick={close} aria-hidden="true" />
-			)}
+			{open && <div className={styles.backdrop} onClick={close} aria-hidden="true" />}
 			<div className={styles.menu} aria-hidden={!open}>
 				{actions.map((action, index) => (
 					<button
@@ -82,6 +80,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 						style={{ '--item-index': index } as React.CSSProperties}
 						onClick={action.onClick}
 						tabIndex={open ? 0 : -1}
+						aria-hidden={!open}
 						type="button"
 					>
 						<span className={styles.actionLabel}>{action.label}</span>

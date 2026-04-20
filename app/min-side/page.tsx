@@ -17,6 +17,7 @@ import {
 	PracticeFormModal,
 	PracticesSection,
 	ProfileCard,
+	QuickActions,
 	StatsSummary,
 	usePracticeDetails,
 	useWhatsNew,
@@ -51,7 +52,7 @@ export default function MyPage() {
 	const [achievementModalOpen, setAchievementModalOpen] = useState(false);
 	const [unlockedAchievements, setUnlockedAchievements] = useState<Achievement[]>([]);
 	const { fetchPracticeDetails } = usePracticeDetails();
-	const { bows, arrows } = useEquipmentData();
+	const { bows, arrows, loading: equipmentLoading } = useEquipmentData();
 	const { hasSeenWhatsNew, isLoading: whatsNewLoading, markAsSeen } = useWhatsNew();
 	const [whatsNewOpen, setWhatsNewOpen] = useState(false);
 	const router = useRouter();
@@ -272,6 +273,20 @@ export default function MyPage() {
 		await fetchStats();
 	};
 
+	const handlePracticeDeletedFromForm = async (id: string) => {
+		setDeletedPracticeId(id);
+		setSelectedPractice(null);
+		setPracticeFormOpen(false);
+		await fetchStats();
+	};
+
+	const handleCompetitionDeleted = async (id: string) => {
+		setDeletedPracticeId(id);
+		setSelectedCompetition(null);
+		setCompetitionFormOpen(false);
+		await fetchStats();
+	};
+
 	const handleSelectPractice = async (id: string, practiceType?: string) => {
 		const full = await fetchPracticeDetails(id, practiceType);
 		if (full) {
@@ -302,37 +317,56 @@ export default function MyPage() {
 		);
 	}
 
-	const summarySubtitle = `Piler skutt siste 7 dager, siste 30 dager og totalt`;
-
 	return (
 		<div className={styles.page}>
 			<Header />
 			<main id="main-content" className={styles.main}>
 				<div className={styles.profileContainer}>
 					<div className={styles.profileSummaryGrid}>
-						<div>
-							<ProfileCard
-								name={profile.name}
-								email={profile.email}
-								club={profile.club}
-								image={profile.image}
-								skytternr={profile.skytternr}
-								onImageUpdate={handleProfileImageUpdate}
-							/>
-						</div>
+						<ProfileCard
+							name={profile.name}
+							email={profile.email}
+							club={profile.club}
+							image={profile.image}
+							onImageUpdate={handleProfileImageUpdate}
+						/>
 						<div className={styles.summaryCard}>
-							<h3 className={styles.summaryTitle}>Oppsummering</h3>
-							<p className={styles.summarySubtitle}>{summarySubtitle}</p>
-							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
-							<div className={styles.statsButtonContainer}>
-								<Button label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} width={240} />
+							<div className={styles.summaryHeader}>
+								<div>
+									<h3 className={styles.summaryTitle}>Oppsummering</h3>
+								</div>
+								<Button size="small" label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} />
 							</div>
+							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
+							<div className={styles.statsButtonContainer}></div>
 						</div>
 					</div>
 				</div>
+				<QuickActions
+					onCreatePractice={() => {
+						setPracticeFormMode('create');
+						setPracticeFormOpen(true);
+					}}
+					onCreateCompetition={() => {
+						setCompetitionFormMode('create');
+						setCompetitionFormOpen(true);
+					}}
+					onCreateBow={() => {
+						setSelectedBow(null);
+						setBowModalOpen(true);
+					}}
+					onCreateArrows={() => setArrowsModalOpen(true)}
+				/>
+				<PracticesSection
+					compact
+					onSelectPractice={handleSelectPractice}
+					reloadKey={practiceReloadKey}
+					deletedPracticeId={deletedPracticeId}
+				/>
 				<EquipmentSection
 					bows={bows}
 					arrows={arrows}
+					isLoading={equipmentLoading}
 					onCreateBow={() => {
 						setSelectedBow(null);
 						setBowModalOpen(true);
@@ -346,19 +380,6 @@ export default function MyPage() {
 						setSelectedArrows(a);
 						setArrowsModalOpen(true);
 					}}
-				/>
-				<PracticesSection
-					onCreate={() => {
-						setPracticeFormMode('create');
-						setPracticeFormOpen(true);
-					}}
-					onCreateCompetition={() => {
-						setCompetitionFormMode('create');
-						setCompetitionFormOpen(true);
-					}}
-					onSelectPractice={handleSelectPractice}
-					reloadKey={practiceReloadKey}
-					deletedPracticeId={deletedPracticeId}
 				/>
 			</main>
 			<Footer />
@@ -378,6 +399,14 @@ export default function MyPage() {
 								eyeToNock: selectedBow.eyeToNock,
 								aimMeasure: selectedBow.aimMeasure,
 								eyeToSight: selectedBow.eyeToSight,
+								limbs: (selectedBow as any).limbs,
+								riser: (selectedBow as any).riser,
+								handOrientation: (selectedBow as any).handOrientation,
+								drawWeight: (selectedBow as any).drawWeight,
+								bowLength: (selectedBow as any).bowLength,
+								braceHeight: (selectedBow as any).braceHeight,
+								stup: (selectedBow as any).stup,
+								tiller: (selectedBow as any).tiller,
 								isFavorite: selectedBow.isFavorite,
 								notes: selectedBow.notes,
 							}
@@ -396,12 +425,17 @@ export default function MyPage() {
 								id: selectedArrows.id,
 								name: selectedArrows.name,
 								material: selectedArrows.material as any,
-								isFavorite: (selectedArrows as any).isFavorite,
-								arrowsCount: (selectedArrows as any).arrowsCount ?? null,
-								diameter: (selectedArrows as any).diameter ?? null,
+								isFavorite: selectedArrows.isFavorite,
+								arrowsCount: selectedArrows.arrowsCount ?? null,
+								diameter: selectedArrows.diameter ?? null,
 								length: selectedArrows.length ?? null,
-								weight: (selectedArrows as any).weight ?? null,
-								spine: (selectedArrows as any).spine ?? '',
+								weight: selectedArrows.weight ?? null,
+								spine: selectedArrows.spine ?? '',
+								pointType: selectedArrows.pointType ?? '',
+								pointWeight: selectedArrows.pointWeight ?? null,
+								vanes: selectedArrows.vanes ?? '',
+								nock: selectedArrows.nock ?? '',
+								notes: selectedArrows.notes ?? '',
 							}
 						: undefined
 				}
@@ -436,6 +470,7 @@ export default function MyPage() {
 					}
 				}}
 				onSave={handleSavePractice}
+				onDeleted={handlePracticeDeletedFromForm}
 				practice={
 					practiceFormMode === 'edit' && selectedPractice
 						? {
@@ -467,6 +502,7 @@ export default function MyPage() {
 					}
 				}}
 				onSave={handleSaveCompetition}
+				onDeleted={handleCompetitionDeleted}
 				competition={
 					competitionFormMode === 'edit' && selectedCompetition
 						? {

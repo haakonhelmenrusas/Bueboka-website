@@ -4,7 +4,7 @@ import { getCurrentUser } from '@/lib/session';
 
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ bowId: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const { bowId } = await params;
@@ -36,6 +36,5 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		}
 
 		return NextResponse.json({ bowSpecification: spec });
-	} catch (error) {
-	}
+	} catch (error) {}
 }

@@ -1,6 +1,6 @@
 .section {
-	padding-top: var(--space-20); /* py-20 */
-	padding-bottom: var(--space-20);
+	padding-top: var(--space-13); /* py-20 */
+	padding-bottom: var(--space-13);
 	background: linear-gradient(135deg, var(--bg-light), var(--white));
 }
 
@@ -11,8 +11,8 @@
 .container {
 	max-width: 1200px; /* container mx-auto */
 	margin: 0 auto;
-	padding-left: var(--space-6); /* px-6 */
-	padding-right: var(--space-6);
+	padding-left: var(--space-4); /* px-6 */
+	padding-right: var(--space-4);
 }
 
 .textCenter {
@@ -20,7 +20,7 @@
 }
 
 .mb16 {
-	margin-bottom: var(--space-18); /* mb-16 */
+	margin-bottom: var(--space-12); /* mb-16 */
 }
 
 /* Replace motion initial/whileInView with a reveal animation */
@@ -46,7 +46,7 @@
 	line-height: 1.2;
 	font-weight: 700; /* font-bold */
 	color: var(--primary);
-	margin-bottom: var(--space-4); /* mb-4 */
+	margin-bottom: var(--space-2); /* mb-4 */
 }
 
 [data-theme='dark'] .title {
@@ -68,7 +68,7 @@
 /* Grid: md:grid-cols-2 gap-8 max-w-2xl mx-auto */
 .grid {
 	display: grid;
-	gap: var(--space-8); /* gap-8 */
+	gap: var(--space-5); /* gap-8 */
 	max-width: 42rem; /* max-w-2xl */
 	margin-left: auto;
 	margin-right: auto;
@@ -84,7 +84,7 @@
 /* Card: bg-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition-shadow text-center border */
 .card {
 	background: var(--white);
-	padding: var(--space-8); /* p-8 */
+	padding: var(--space-5); /* p-8 */
 	border-radius: var(--radius-2xl); /* rounded-3xl */
 	box-shadow: 0 10px 20px var(--dark-20); /* shadow-lg */
 	transition:

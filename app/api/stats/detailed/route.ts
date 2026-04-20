@@ -16,11 +16,7 @@ function formatTargetLabel(targetType: string | null, targetSizeCm: number | nul
 }
 
 /** Format a distance label, preferring a from–to range over a single distance. */
-function formatDistanceLabel(
-	distanceMeters: number | null,
-	distanceFrom: number | null,
-	distanceTo: number | null
-): string {
+function formatDistanceLabel(distanceMeters: number | null, distanceFrom: number | null, distanceTo: number | null): string {
 	if ((typeof distanceFrom === 'number' && distanceFrom > 0) || (typeof distanceTo === 'number' && distanceTo > 0)) {
 		return `${distanceFrom ?? 0}m–${distanceTo ?? 0}m`;
 	}
@@ -28,9 +24,9 @@ function formatDistanceLabel(
 	return '0m';
 }
 
-export async function GET() {
+export async function GET(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -224,7 +220,6 @@ export async function GET() {
 			},
 		});
 	} catch (error) {
-
 		return NextResponse.json(
 			{
 				error: 'Failed to fetch detailed stats',

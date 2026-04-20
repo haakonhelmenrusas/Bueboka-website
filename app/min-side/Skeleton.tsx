@@ -4,7 +4,6 @@ import React from 'react';
 import styles from './page.module.css';
 import headerStyles from '@/components/Header/Header.module.css';
 import equipmentStyles from '@/components/EquipmentSection/EquipmentSection.module.css';
-import sightMarksStyles from '@/components/SightMarks/SightMarksSection.module.css';
 
 function SkeletonBlock({ className }: { className: string }) {
 	return <div className={className} aria-hidden="true" />;
@@ -42,7 +41,7 @@ export function MyPageSkeleton() {
 						<div className={styles.summaryCard}>
 							<SkeletonBlock className={styles.sectionTitleSkeleton} />
 							<SkeletonBlock className={styles.lineSkeleton} />
-							<div style={{ marginTop: 'var(--space-4)' }}>
+							<div style={{ marginTop: 'var(--space-2)' }}>
 								<SkeletonBlock className={styles.statsSkeleton} />
 							</div>
 							<div className={styles.statsButtonContainer}>
@@ -52,58 +51,37 @@ export function MyPageSkeleton() {
 					</div>
 				</div>
 			</main>
-			<section className={equipmentStyles.section}>
-				<div className={equipmentStyles.header}>
-					<SkeletonBlock className={styles.sectionTitleSkeletonLight} />
-				</div>
-				<div className={equipmentStyles.panel}>
-					<div className={equipmentStyles.grid}>
-						<div>
-							<div className={equipmentStyles.subHeaderRow}>
-								<SkeletonBlock className={styles.equipmentTitleSkeleton} />
-								<SkeletonBlock className={styles.smallButtonSkeleton} />
-							</div>
-							<div className={equipmentStyles.list}>
-								{Array.from({ length: 2 }).map((_, i) => (
-									<SkeletonBlock key={i} className={styles.itemSkeleton} />
-								))}
-							</div>
-						</div>
-						<div>
-							<div className={equipmentStyles.subHeaderRow}>
-								<SkeletonBlock className={styles.equipmentTitleSkeleton} />
-								<SkeletonBlock className={styles.smallButtonSkeleton} />
-							</div>
-							<div className={equipmentStyles.list}>
-								{Array.from({ length: 2 }).map((_, i) => (
-									<SkeletonBlock key={i} className={styles.itemSkeleton} />
-								))}
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+			<div className={styles.quickActionsSkeleton}>
+				{Array.from({ length: 4 }).map((_, i) => (
+					<SkeletonBlock key={i} className={styles.toolButtonSkeleton} />
+				))}
+			</div>
 			<section className={styles.practicesSection}>
 				<div className={styles.practicesHeader}>
 					<SkeletonBlock className={styles.practicesTitleSkeleton} />
 					<div style={{ marginLeft: 'auto' }}>
-						<SkeletonBlock className={styles.actionButtonSkeleton} />
+						<SkeletonBlock className={styles.seeAllLinkSkeleton} />
 					</div>
 				</div>
 				<div className={styles.practicesList}>
 					<div className={styles.list} style={{ minHeight: 200 }}>
-						{Array.from({ length: 3 }).map((_, i) => (
+						{Array.from({ length: 5 }).map((_, i) => (
 							<SkeletonBlock key={i} className={styles.itemSkeleton} />
 						))}
 					</div>
 				</div>
 			</section>
-			<section className={sightMarksStyles.section}>
-				<div className={sightMarksStyles.header}>
+			<section className={equipmentStyles.section}>
+				<div className={equipmentStyles.header}>
 					<SkeletonBlock className={styles.sectionTitleSkeletonLight} />
 				</div>
-				<div className={sightMarksStyles.container}>
-					<div className={styles.list}>
+				<div className={equipmentStyles.grid}>
+					<div className={equipmentStyles.list}>
+						{Array.from({ length: 2 }).map((_, i) => (
+							<SkeletonBlock key={i} className={styles.itemSkeleton} />
+						))}
+					</div>
+					<div className={equipmentStyles.list}>
 						{Array.from({ length: 2 }).map((_, i) => (
 							<SkeletonBlock key={i} className={styles.itemSkeleton} />
 						))}

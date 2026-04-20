@@ -77,6 +77,17 @@ const nextConfig = {
 				],
 			},
 			{
+				// Durable CDN cache for public pages - persists across all Netlify edge nodes
+				// stale-while-revalidate means users always get a fast cached response
+				source: '/(|logg-inn|ny-bruker|glemt-passord|personvern|sponsing)',
+				headers: [
+					{
+						key: 'Netlify-CDN-Cache-Control',
+						value: 'public, max-age=0, stale-while-revalidate=86400, durable',
+					},
+				],
+			},
+			{
 				// Cache static assets
 				source: '/assets/:path*',
 				headers: [

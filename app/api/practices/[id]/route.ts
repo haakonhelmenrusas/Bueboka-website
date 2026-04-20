@@ -9,7 +9,7 @@ import { getCurrentUser } from '@/lib/session';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const { id: practiceId } = await params;
@@ -42,7 +42,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 		const parsedDate = new Date(date);
 
-		// Calculate total arrows and score from rounds
+		// Calculate total arrows and score from ends
 		const totalArrows = rounds.reduce((sum, round) => sum + (round.numberArrows || 0), 0);
 		const totalScore = rounds.reduce((sum, round) => sum + (round.roundScore || 0), 0);
 
@@ -101,13 +101,15 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 				practiceId: practiceId,
 				arrows: round.numberArrows || 0,
 				arrowsWithoutScore: round.arrowsWithoutScore || null,
-				scores: [],
+				scores: round.scores || [],
+				arrowCoordinates: round.arrowCoordinates || Prisma.JsonNull,
 				roundScore: round.roundScore || null,
 				distanceMeters: round.distanceMeters || null,
 				distanceFrom: roundAny.distanceFrom || null,
 				distanceTo: roundAny.distanceTo || null,
 				targetSizeCm,
 				targetType: round.targetType || null,
+				arrowsPerEnd: roundAny.arrowsPerEnd || null,
 			};
 		});
 
@@ -152,7 +154,6 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 		return NextResponse.json(mappedPractice);
 	} catch (error) {
-
 		if (error instanceof Error && error.message.includes('Unique constraint failed')) {
 			return NextResponse.json({ error: 'A practice with this data already exists' }, { status: 409 });
 		}
@@ -169,7 +170,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const { id: practiceId } = await params;
@@ -200,7 +201,6 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
 		return NextResponse.json({ success: true });
 	} catch (error) {
-
 		if (error instanceof Error && error.message.includes('Foreign key constraint')) {
 			return NextResponse.json({ error: 'Kunne ikke slette trening. Prøv igjen senere.' }, { status: 409 });
 		}

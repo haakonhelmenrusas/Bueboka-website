@@ -4,7 +4,7 @@ import { getCurrentUser } from '@/lib/session';
 
 export async function POST(request: Request) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 		// Create email content
 		const emailHtml = `
 			<!DOCTYPE html>
-			<html>
+			<html lang="no">
 				<head>
 					<meta charset="utf-8">
 					<style>

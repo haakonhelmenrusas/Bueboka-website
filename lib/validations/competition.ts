@@ -5,11 +5,12 @@ import { EnvironmentEnum, PracticeCategoryEnum, WeatherConditionEnum } from './p
 export const CompetitionRoundInputSchema = z.object({
 	roundNumber: z.number().int().min(1),
 	distanceMeters: z.number().int().min(0).max(1000, 'Avstand må være mindre enn 1000 meter').optional(),
-	targetSizeCm: z.number().int().min(0).max(500, 'Skive må være mindre enn 500 cm').optional(),
-	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional(),
-	arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional(),
-	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional(),
-	scores: z.array(z.number().int().min(0).max(10)).optional(),
+	targetType: z.string().optional().nullable(),
+	targetSizeCm: z.number().int().min(0).max(500, 'Skive må være mindre enn 500 cm').optional().nullable(),
+	numberArrows: z.number().int().min(0).max(10000, 'Maksimalt 10000 piler per runde').optional().nullable(),
+	arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
+	roundScore: z.number().int().min(0).max(1000000, 'Score må være mindre enn 1000000').optional().nullable(),
+	scores: z.array(z.number().int().min(0).max(11)).optional().nullable(),
 });
 
 // Schema for creating a competition

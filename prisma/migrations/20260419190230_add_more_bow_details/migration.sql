@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "bows" ADD COLUMN     "braceHeight" DOUBLE PRECISION,
+ADD COLUMN     "stup" DOUBLE PRECISION,
+ADD COLUMN     "tiller" DOUBLE PRECISION;

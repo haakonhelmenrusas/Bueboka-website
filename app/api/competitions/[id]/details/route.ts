@@ -4,7 +4,7 @@ import { getCurrentUser } from '@/lib/session';
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const { id } = await params;

@@ -7,7 +7,7 @@ import { equipmentCache } from '@/lib/cache';
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
@@ -21,7 +21,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return validation.error;
 		}
 
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, isFavorite, notes } = validation.data;
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, braceHeight, stup, tiller, isFavorite, notes } =
+			validation.data;
 
 		// Verify the bow belongs to the user
 		const existingBow = await prisma.bow.findUnique({
@@ -50,6 +51,14 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 					eyeToNock: eyeToNock ?? null,
 					aimMeasure: aimMeasure ?? null,
 					eyeToSight: eyeToSight ?? null,
+					limbs: limbs ?? null,
+					riser: riser ?? null,
+					handOrientation: handOrientation ?? null,
+					drawWeight: drawWeight ?? null,
+					bowLength: bowLength ?? null,
+					braceHeight: braceHeight ?? null,
+					stup: stup ?? null,
+					tiller: tiller ?? null,
 					isFavorite: makeFavorite,
 					notes: notes ?? null,
 				},
@@ -66,7 +75,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
 	try {
-		const user = await getCurrentUser();
+		const user = await getCurrentUser(_request);
 		if (!user) {
 			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}

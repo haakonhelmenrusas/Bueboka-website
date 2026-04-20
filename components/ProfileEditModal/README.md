@@ -29,75 +29,84 @@ components/
 The component communicates with the following endpoints:
 
 ### POST /api/users (PATCH)
+
 Update user profile information (club, name)
 
 **Request Body:**
+
 ```json
 {
-  "club": "My Club Name",
-  "name": "User Name"
+	"club": "My Club Name",
+	"name": "User Name"
 }
 ```
 
 **Response:**
+
 ```json
 {
-  "user": {
-    "id": "...",
-    "email": "...",
-    "name": "...",
-    "club": "..."
-  }
+	"user": {
+		"id": "...",
+		"email": "...",
+		"name": "...",
+		"club": "..."
+	}
 }
 ```
 
 ### POST /api/bows
+
 Create a new bow
 
 **Request Body:**
+
 ```json
 {
-  "name": "My Recurve Bow",
-  "type": "RECURVE"
+	"name": "My Recurve Bow",
+	"type": "RECURVE"
 }
 ```
 
 **Supported Types:** RECURVE, COMPOUND, LONGBOW, BAREBOW, HORSEBOW, TRADITIONAL, OTHER
 
 **Response:**
+
 ```json
 {
-  "bow": {
-    "id": "...",
-    "userId": "...",
-    "name": "...",
-    "type": "..."
-  }
+	"bow": {
+		"id": "...",
+		"userId": "...",
+		"name": "...",
+		"type": "..."
+	}
 }
 ```
 
 ### POST /api/arrows
+
 Create new arrows
 
 **Request Body:**
+
 ```json
 {
-  "name": "My Carbon Arrows",
-  "material": "KARBON"
+	"name": "My Carbon Arrows",
+	"material": "KARBON"
 }
 ```
 
 **Supported Materials:** KARBON, ALUMINIUM, TREVERK
 
 **Response:**
+
 ```json
 {
-  "arrows": {
-    "id": "...",
-    "userId": "...",
-    "name": "...",
-    "material": "..."
-  }
+	"arrows": {
+		"id": "...",
+		"userId": "...",
+		"name": "...",
+		"material": "..."
+	}
 }
 ```
 
@@ -105,15 +114,15 @@ Create new arrows
 
 ```typescript
 interface ProfileEditModalProps {
-  isOpen: boolean;                    // Controls modal visibility
-  onClose: () => void;                // Called when user closes modal
-  user: {
-    id: string;
-    name: string | null;
-    email: string;
-    club: string | null;
-  };
-  onProfileUpdate?: () => void;       // Called after successful updates
+	isOpen: boolean; // Controls modal visibility
+	onClose: () => void; // Called when user closes modal
+	user: {
+		id: string;
+		name: string | null;
+		email: string;
+		club: string | null;
+	};
+	onProfileUpdate?: () => void; // Called after successful updates
 }
 ```
 
@@ -124,28 +133,28 @@ import { ProfileEditModal } from '@/components';
 import { useState } from 'react';
 
 export function MyProfile() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-  return (
-    <>
-      <button onClick={() => setIsModalOpen(true)}>Edit Profile</button>
-      
-      <ProfileEditModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        user={{
-          id: '123',
-          name: 'John Doe',
-          email: 'john@example.com',
-          club: 'My Archery Club'
-        }}
-        onProfileUpdate={() => {
-          // Refresh user data
-          fetchUser();
-        }}
-      />
-    </>
-  );
+	return (
+		<>
+			<button onClick={() => setIsModalOpen(true)}>Edit Profile</button>
+
+			<ProfileEditModal
+				isOpen={isModalOpen}
+				onClose={() => setIsModalOpen(false)}
+				user={{
+					id: '123',
+					name: 'John Doe',
+					email: 'john@example.com',
+					club: 'My Archery Club',
+				}}
+				onProfileUpdate={() => {
+					// Refresh user data
+					fetchUser();
+				}}
+			/>
+		</>
+	);
 }
 ```
 
@@ -167,12 +176,12 @@ To customize colors and styling, modify `ProfileEditModal.module.css`:
 
 ```css
 .modal {
-  background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(250,250,250,0.98) 100%);
-  /* Adjust gradient colors here */
+	background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 250, 250, 0.98) 100%);
+	/* Adjust gradient colors here */
 }
 
 .submitBtn {
-  background: #053546; /* Change button color */
+	background: #053546; /* Change button color */
 }
 ```
 
@@ -251,16 +260,9 @@ The component is integrated into the user dashboard (`/min-side`):
 import { ProfileEditModal } from '@/components';
 
 export default function MyPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
-  return (
-    <ProfileEditModal
-      isOpen={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
-      user={userData}
-      onProfileUpdate={fetchUser}
-    />
-  );
+	return <ProfileEditModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} user={userData} onProfileUpdate={fetchUser} />;
 }
 ```
 
@@ -287,4 +289,3 @@ export default function MyPage() {
 - [ ] Form validation enhancements
 - [ ] Keyboard shortcuts
 - [ ] Dark mode support
-

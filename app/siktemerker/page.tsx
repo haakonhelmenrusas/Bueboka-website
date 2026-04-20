@@ -115,7 +115,10 @@ export default function SiktemerkerPage() {
 	}
 
 	async function handleRemoveResult() {
-		if (!activeResultId) { setModalOpen(true); return; }
+		if (!activeResultId) {
+			setModalOpen(true);
+			return;
+		}
 		const ok = await deleteResult();
 		if (ok) setModalOpen(true);
 	}
@@ -239,12 +242,7 @@ export default function SiktemerkerPage() {
 										onClick={() => setShowSpeed((v) => !v)}
 										icon={<LuWind size={16} />}
 									/>
-									<Button
-										label="Del / Skriv ut"
-										buttonType="outline"
-										onClick={() => setPrintOpen(true)}
-										icon={<LuPrinter size={16} />}
-									/>
+									<Button label="Del / Skriv ut" buttonType="outline" onClick={() => setPrintOpen(true)} icon={<LuPrinter size={16} />} />
 									<Button
 										label={deletingResult ? 'Sletter…' : 'Beregn på nytt'}
 										buttonType="outline"
@@ -287,14 +285,16 @@ export default function SiktemerkerPage() {
 				<SightMarksPrintModal
 					open={printOpen}
 					onClose={() => setPrintOpen(false)}
-					data={{
-						marksData: calculatedMarks,
-						setName: activeSightMark.name || activeSightMark.bowSpec?.bow?.name || 'Siktemerker',
-						bowName: activeSightMark.bowSpec?.bow?.name || 'Ukjent bue',
-						arrowName: ballistics?.arrow_name,
-						givenDistances: ballistics?.given_distances,
-						showSpeed,
-					} satisfies SightMarksPrintData}
+					data={
+						{
+							marksData: calculatedMarks,
+							setName: activeSightMark.name || activeSightMark.bowSpec?.bow?.name || 'Siktemerker',
+							bowName: activeSightMark.bowSpec?.bow?.name || 'Ukjent bue',
+							arrowName: ballistics?.arrow_name,
+							givenDistances: ballistics?.given_distances,
+							showSpeed,
+						} satisfies SightMarksPrintData
+					}
 				/>
 			)}
 		</div>

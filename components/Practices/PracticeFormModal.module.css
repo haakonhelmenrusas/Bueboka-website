@@ -1,81 +1,224 @@
-
-.form {
+/* ─── Wizard shell ──────────────────────────────────────────────────────────── */
+.wizard {
     display: flex;
     flex-direction: column;
-    gap: var(--space-6);
+    height: 78dvh;
+    max-height: 78dvh;
+    overflow: hidden;
+}
+
+/* ─── Custom header ─────────────────────────────────────────────────────────── */
+.wizardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+    border-bottom: 1px solid var(--border-gray);
+    flex-shrink: 0;
+}
+
+.wizardTitle {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0;
+}
+
+.closeBtn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray-600);
+    padding: var(--space-1);
+    border-radius: var(--radius-base);
+    transition: background 150ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeBtn:hover {
+    background: var(--dark-05);
+}
+
+/* ─── Step indicator ────────────────────────────────────────────────────────── */
+.stepIndicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--border-gray);
+    background: var(--bg-gray-50);
+    flex-shrink: 0;
+    gap: 0;
+}
+
+.stepItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 var(--space-2);
+}
+
+.stepDot {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-circle);
+    border: 2px solid var(--border-gray);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 200ms ease;
+}
+
+.stepDotActive {
+    border-color: var(--primary);
+    background: var(--primary);
+}
+
+.stepDotCompleted {
+    border-color: var(--secondary);
+    background: var(--secondary);
+}
+
+.stepDotText {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-gray-600);
+    line-height: 1;
+}
+
+.stepDotTextActive {
+    color: var(--white);
+}
+
+.stepLabel {
+    font-size: 0.875rem;
+    color: var(--text-gray-600);
+    white-space: nowrap;
+}
+
+.stepLabelActive {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.stepLabelCompleted {
+    color: var(--secondary);
+}
+
+.stepConnector {
+    flex: 1;
+    height: 2px;
+    background: var(--border-gray);
+    margin-bottom: 18px;
+    min-width: 20px;
+    max-width: 60px;
+}
+
+.stepConnectorCompleted {
+    background: var(--secondary);
+}
+
+/* ─── Scrollable content area ───────────────────────────────────────────────── */
+.scrollArea {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+}
+
+/* ─── Step content wrapper ──────────────────────────────────────────────────── */
+.stepContent {
+    padding: var(--space-5) var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+/* ─── Layout helpers ────────────────────────────────────────────────────────── */
+.row {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    align-items: end;
 }
 
 .field {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
+    gap: var(--space-1);
 }
 
-.row {
-    display: grid;
-    gap: var(--space-5);
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    align-items: end;
-    justify-content: flex-end;
-}
-
-.rowFlex {
-    display: flex;
-    gap: var(--space-4);
-    align-items: flex-start;
-}
-
-@media (max-width: 640px) {
-    .rowFlex {
-        flex-wrap: wrap;
-    }
-
-    .rowFlex > * {
-        flex: 1 1 140px;
-        min-width: 0;
-    }
-}
-
-.actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-4);
-    margin-top: var(--space-2);
-}
-
-.error {
-    color: var(--error-light);
-    background: var(--error-bg);
-    border: 1px solid var(--error-border);
-    padding: var(--space-3);
-    border-radius: var(--radius-base);
-    font-size: 0.95rem;
-}
-
-/* Rounds section */
-.roundsSection {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
-}
-
+/* ─── Section title ─────────────────────────────────────────────────────────── */
 .sectionTitle {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--text-dark);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--primary);
     margin: 0;
 }
 
-.roundCard {
-    background: var(--tertiary);
-    border: 1px solid var(--border-gray);
-    border-radius: var(--radius-lg);
-    padding: var(--space-5);
+/* ─── Weather chips ─────────────────────────────────────────────────────────── */
+.weatherSection {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-2);
+}
+
+.weatherLabel {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.weatherChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.weatherChip {
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-gray);
+    background: var(--bg-gray-100);
+    color: var(--text-gray-600);
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: all 150ms ease;
+    white-space: nowrap;
+}
+
+.weatherChip:hover {
+    border-color: var(--primary);
+}
+
+.weatherChipActive {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--white);
+}
+
+/* ─── Rounds section ────────────────────────────────────────────────────────── */
+.roundsSection {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.roundCard {
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
 }
 
 .roundHeader {
@@ -97,10 +240,10 @@
     color: var(--text-gray-600);
     padding: var(--space-1);
     border-radius: var(--radius-base);
-    transition: all 150ms ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 150ms ease;
 }
 
 .removeRoundBtn:hover {
@@ -110,52 +253,459 @@
 
 .roundInputs {
     display: flex;
-    gap: var(--space-4);
+    gap: var(--space-2);
     align-items: flex-end;
+    flex-wrap: wrap;
 }
 
-
-.skiveField {
-    flex: 1;
-}
-
-@media (max-width: 640px) {
-    .roundInputs {
-        flex-wrap: wrap;
-    }
-
-    .skiveField {
-        flex: 1 1 100%;
-    }
+.roundInputsNarrow {
+    display: flex;
 }
 
 .roundField {
+    flex: 1;
+    min-width: 120px;
+}
+
+.skiveField {
+    flex: 2;
+    min-width: 160px;
+}
+
+.addRoundBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    border: 1.5px dashed var(--primary);
+    background: transparent;
+    border-radius: var(--radius-base);
+    padding: var(--space-2) var(--space-4);
+    color: var(--primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 150ms ease;
+}
+
+.addRoundBtn:hover:not(:disabled) {
+    background: var(--primary-06);
+}
+
+.addRoundBtn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.limitMessage {
+    font-size: 0.8125rem;
+    color: var(--text-gray-600);
+    text-align: center;
+    margin: 0;
+}
+
+.emptyScoring {
+    padding: var(--space-5);
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+
+.emptyScoringText {
+    font-size: 0.875rem;
+    color: var(--text-gray-600);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ─── Manual total-score notice ─────────────────────────────────────────────── */
+.manualScoreNotice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-gray-100);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-base);
+    color: var(--text-gray-600);
+}
+
+.manualScoreNoticeIcon {
+    flex-shrink: 0;
+    color: var(--primary);
+    margin-top: 2px;
+}
+
+.manualScoreNoticeBody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.manualScoreNoticeMain {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.manualScoreNoticeHint {
+    font-size: 0.8125rem;
+    color: var(--text-gray-600);
+    line-height: 1.4;
+}
+
+.scoringCard {
+    background: var(--bg-gray-50);
+    border: 1px solid var(--border-gray);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
 }
 
-.limitMessage {
+.scoringCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scoringRoundTitle {
     font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.scoringRoundMeta {
+    font-size: 0.75rem;
     color: var(--text-gray-600);
+}
+
+.arrowChipsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    justify-content: center;
+}
+
+.arrowChip {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-circle);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1.5px solid;
+}
+
+.arrowChipFilled {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--white);
+    cursor: pointer;
+    transition: box-shadow 150ms ease, transform 150ms ease;
+}
+
+.arrowChipFilled:hover {
+    box-shadow: 0 0 0 3px var(--primary-20, rgba(0, 0, 0, 0.15));
+    transform: scale(1.08);
+}
+
+.arrowChipEditing {
+    background: var(--white);
+    border-color: var(--primary);
+    border-style: solid;
+    border-width: 2.5px;
+    color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-20, rgba(0, 0, 0, 0.12));
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.arrowChipEmpty {
+    background: var(--bg-gray-100);
+    border-color: var(--border-gray);
+    border-style: dashed;
+    color: var(--dimmed);
+}
+
+/* ─── Arrow chip zone colours (mirror WA target face) ───────────────────────── */
+.arrowChipGold {
+    background: #ffd700;
+    border-color: #e6ac00;
+    color: #5c4200;
+}
+
+.arrowChipRed {
+    background: #d93025;
+    border-color: #aa2318;
+    color: #fff;
+}
+
+.arrowChipBlue {
+    background: #1e90d0;
+    border-color: #1565a8;
+    color: #fff;
+}
+
+.arrowChipBlack {
+    background: #2c2c2c;
+    border-color: #111;
+    color: #fff;
+}
+
+.arrowChipWhite {
+    background: #f0f0f0;
+    border-color: #aaa;
+    color: #333;
+}
+
+.arrowChipMiss {
+    background: var(--error-bg);
+    border-color: var(--error-border);
+    color: var(--error);
+}
+
+.scoringProgress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scoringProgressText {
+    font-size: 0.75rem;
+    color: var(--text-gray-600);
+}
+
+.scoringTotal {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.scoreButtonsGrid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-1);
+}
+
+.scoreButton {
+    width: 100%;
+    height: 56px;
+    border-radius: var(--radius-base);
+    border: 1.5px solid var(--border-gray);
+    background: var(--white);
+    color: var(--text-dark);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 150ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ─── Arrow chip – large variant (scoring step) ─────────────────────────────── */
+.arrowChipLarge {
+    width: 48px;
+    height: 48px;
+    font-size: 0.9375rem;
+}
+
+/* ─── End navigation ─────────────────────────────────────────────────────────── */
+.endNav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+}
+
+.endNavBtn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-circle);
+    border: 1px solid var(--border-gray);
+    background: var(--bg-gray-50);
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 150ms ease;
+    flex-shrink: 0;
+}
+
+.endNavBtn:hover:not(:disabled) {
+    background: var(--primary-06);
+    border-color: var(--primary);
+}
+
+.endNavBtnDisabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.endNavLabel {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary);
+    min-width: 100px;
     text-align: center;
+}
+
+/* ─── End complete banner ────────────────────────────────────────────────────── */
+.endComplete {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    background: rgba(0, 128, 0, 0.08);
+    border: 1px solid rgba(0, 128, 0, 0.2);
+    border-radius: var(--radius-base);
+}
+
+.endCompleteText {
+    font-size: 0.9375rem;
+    color: var(--success);
+    font-weight: 600;
+    text-align: center;
+}
+
+.editingHint {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--primary);
     margin: 0;
-    padding: var(--space-2);
+    text-align: center;
 }
 
-.arrowsWithoutScoreSection {
-    margin-top: var(--space-2);
+.scoreButton:hover {
+    border-color: var(--primary);
+    background: var(--primary-06);
 }
 
-.narrowInput > div:nth-child(3) {
-    max-width: 140px;
+.scoreButtonX {
+    border-color: var(--star-border);
+    background: var(--star-bg);
+    color: var(--star-color);
 }
 
+.scoreButtonX:hover {
+    background: var(--star-bg);
+    border-color: var(--accent-yellow);
+}
+
+.scoreButtonMiss {
+    border-color: var(--error-border);
+    background: var(--error-bg);
+    color: var(--error);
+}
+
+.scoreButtonMiss:hover {
+    background: var(--error-bg);
+    border-color: var(--error);
+}
+
+/* ─── WA target zone colours ─────────────────────────────────────────────────
+   X  → scoreButtonX (existing gold)
+   10, 9  → gold
+   8,  7  → red
+   6,  5  → blue
+   4,  3  → black
+   2,  1  → white
+   ─────────────────────────────────────────────────────────────────────────── */
+.scoreButtonGold {
+    border-color: #e6ac00;
+    background: #ffd700;
+    color: #5c4200;
+}
+
+.scoreButtonGold:hover {
+    background: #ffe033;
+    border-color: #c49500;
+}
+
+.scoreButtonRed {
+    border-color: #aa2318;
+    background: #d93025;
+    color: #fff;
+}
+
+.scoreButtonRed:hover {
+    background: #c0392b;
+    border-color: #8b1d13;
+}
+
+.scoreButtonBlue {
+    border-color: #1565a8;
+    background: #1e90d0;
+    color: #fff;
+}
+
+.scoreButtonBlue:hover {
+    background: #1a7abf;
+    border-color: #10508a;
+}
+
+.scoreButtonBlack {
+    border-color: #111;
+    background: #2c2c2c;
+    color: #fff;
+}
+
+.scoreButtonBlack:hover {
+    background: #111;
+    border-color: #000;
+}
+
+.scoreButtonWhite {
+    border-color: #aaa;
+    background: #f0f0f0;
+    color: #333;
+}
+
+.scoreButtonWhite:hover {
+    background: #e0e0e0;
+    border-color: #888;
+}
+
+.scoringComplete {
+    padding: var(--space-2) var(--space-3);
+    background: rgba(0, 128, 0, 0.08);
+    border: 1px solid rgba(0, 128, 0, 0.2);
+    border-radius: var(--radius-base);
+    font-size: 0.8125rem;
+    color: var(--success);
+    font-weight: 600;
+    text-align: center;
+}
+
+.backspaceBtn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray-600);
+    font-size: 0.8125rem;
+    padding: var(--space-1);
+    transition: color 150ms ease;
+}
+
+.backspaceBtn:hover {
+    color: var(--primary);
+}
+
+/* ─── Rating section ────────────────────────────────────────────────────────── */
 .ratingSection {
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
-    margin-top: var(--space-4);
+    gap: var(--space-2);
 }
 
 .ratingLabel {
@@ -164,7 +714,7 @@
     color: var(--text-dark);
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-1);
 }
 
 .ratingOptional {
@@ -181,7 +731,7 @@
 
 .ratingButtons {
     display: flex;
-    gap: var(--space-3);
+    gap: var(--space-1);
     flex-wrap: wrap;
 }
 
@@ -195,7 +745,7 @@
     font-size: 0.9375rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 200ms ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -205,18 +755,12 @@
     border-color: var(--primary);
     background: var(--primary-06);
     transform: translateY(-2px);
-    box-shadow: 0 2px 8px rgba(5, 53, 70, 0.15);
-}
-
-.ratingButton:active {
-    transform: translateY(0);
 }
 
 .ratingButtonActive {
     border-color: var(--primary);
     background: var(--primary);
-    color: white;
-    box-shadow: 0 2px 8px rgba(5, 53, 70, 0.2);
+    color: var(--white);
 }
 
 .ratingButtonActive:hover {
@@ -225,15 +769,144 @@
     transform: translateY(-2px);
 }
 
+/* ─── Delete section ────────────────────────────────────────────────────────── */
+.deleteSection {
+    margin-top: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--error-border);
+    display: flex;
+    justify-content: center;
+}
 
+.deleteLink {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--error);
+    font-size: 0.875rem;
+    font-weight: 500;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-base);
+    transition: background 150ms ease;
+}
+
+.deleteLink:hover {
+    background: var(--error-bg);
+}
+
+/* ─── Navigation footer ─────────────────────────────────────────────────────── */
+.navFooter {
+    border-top: 1px solid var(--border-gray);
+    padding: var(--space-3) var(--space-5);
+    background: var(--white);
+    flex-shrink: 0;
+}
+
+.navRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.navStepName {
+    flex: 1;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.navRowRight {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.navArrow {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-circle);
+    border: 1.5px solid var(--border-gray);
+    background: var(--bg-gray-50);
+    cursor: pointer;
+    color: var(--primary);
+    transition: all 150ms ease;
+    flex-shrink: 0;
+}
+
+.navArrow:hover:not(:disabled) {
+    background: var(--primary-06);
+    border-color: var(--primary);
+}
+
+.navArrowDisabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+
+/* ─── Error ─────────────────────────────────────────────────────────────────── */
+.error {
+    color: var(--error-light);
+    background: var(--error-bg);
+    border: 1px solid var(--error-border);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-base);
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* ─── Responsive ────────────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
+    .wizard {
+        height: 100dvh;
+        max-height: 100dvh;
+    }
+
+    .wizardHeader {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .stepContent {
+        padding: var(--space-4) var(--space-4);
+    }
+
+    .navFooter {
+        padding: var(--space-2) var(--space-4);
+    }
+
+    .stepConnector {
+        min-width: 10px;
+    }
+
     .ratingButtons {
-        gap: var(--space-2);
+        gap: var(--space-1);
     }
 
     .ratingButton {
-        width: 40px;
-        height: 40px;
+        width: 38px;
+        height: 38px;
         font-size: 0.875rem;
+    }
+
+    .scoreButtonsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .scoreButton {
+        height: 60px;
+        font-size: 1.125rem;
+    }
+
+    .arrowChipLarge {
+        width: 54px;
+        height: 54px;
+        font-size: 1rem;
     }
 }

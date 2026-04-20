@@ -47,8 +47,10 @@ import { FeedbackModal } from './FeedbackModal/FeedbackModal';
 import { Bueboka2Announcement } from './Bueboka2Announcement/Bueboka2Announcement';
 import { SessionShareModal } from './SessionShareCard';
 import { SessionShareCard } from './SessionShareCard';
+import { QuickActions } from './QuickActions/QuickActions';
 import { PublicUserCard } from './PublicProfiles/PublicUserCard';
 import { PublicProfileList } from './PublicProfiles/PublicProfileList';
+import { AktivitetBanner } from './AktivitetBanner/AktivitetBanner';
 
 export {
 	Header,
@@ -102,6 +104,8 @@ export {
 	SessionShareCard,
 	PublicUserCard,
 	PublicProfileList,
+	QuickActions,
+	AktivitetBanner,
 };
 
 export * from './common/StatsSummary/StatsSummary';

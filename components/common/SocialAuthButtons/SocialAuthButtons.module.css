@@ -11,4 +11,3 @@
 .socialButton:hover:not(:disabled) {
 	filter: brightness(0.96);
 }
-

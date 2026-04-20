@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { LuArrowLeft, LuBuilding2, LuHash, LuTarget, LuTrophy, LuUser } from 'react-icons/lu';
+import { LuArrowLeft, LuBuilding2, LuChartBar, LuHash, LuTarget, LuTrophy, LuUser } from 'react-icons/lu';
 import { prisma } from '@/lib/prisma';
 import { ANONYMOUS_ARCHER_LABEL } from '@/lib/labels';
 import type { PublicProfile } from '@/lib/types';
@@ -57,9 +57,7 @@ async function getPublicProfile(id: string): Promise<PublicProfile | null> {
 				const endUnscoredArrows = end.arrowsWithoutScore ?? 0;
 				// Use the explicit arrows field when available (covers sessions recorded
 				// without individual scores), falling back to scores.length.
-				const endTotalArrows = end.arrows != null
-					? end.arrows + endUnscoredArrows
-					: endScoredArrows + endUnscoredArrows;
+				const endTotalArrows = end.arrows != null ? end.arrows + endUnscoredArrows : endScoredArrows + endUnscoredArrows;
 				totalArrows += endTotalArrows;
 				scoredArrows += endScoredArrows;
 				totalScore += end.scores.reduce((sum, s) => sum + s, 0);
@@ -142,6 +140,7 @@ export default async function PublicProfilePage({ params }: Props) {
 									</div>
 									{profile.stats.avgScorePerArrow !== null && (
 										<div className={styles.statItem}>
+											<LuChartBar size={20} className={styles.statIcon} />
 											<span className={styles.statValue}>
 												{profile.stats.avgScorePerArrow.toLocaleString('nb-NO', { maximumFractionDigits: 2 })}
 											</span>

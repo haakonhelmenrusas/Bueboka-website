@@ -9,7 +9,7 @@ interface CalculatedMarksTableProps {
 
 function formatAngle(a: string) {
 	const n = parseFloat(a);
-	if (Number.isNaN(n) || n === 0) return '0°';
+	if (Number.isNaN(n) || n === 0) return 'Flatmark';
 	return n > 0 ? `+ ${n}°` : `- ${Math.abs(n)}°`;
 }
 

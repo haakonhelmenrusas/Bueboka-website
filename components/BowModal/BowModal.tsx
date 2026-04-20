@@ -17,6 +17,14 @@ interface BowModalProps {
 		eyeToNock: number | null;
 		aimMeasure: number | null;
 		eyeToSight: number | null;
+		limbs: string | null;
+		riser: string | null;
+		handOrientation: string | null;
+		drawWeight: number | null;
+		bowLength: number | null;
+		braceHeight: number | null;
+		stup: number | null;
+		tiller: number | null;
 		isFavorite: boolean;
 		notes: string | null;
 	};
@@ -35,6 +43,14 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 			eyeToNock: editingBow?.eyeToNock ?? 0,
 			aimMeasure: editingBow?.aimMeasure ?? 5,
 			eyeToSight: editingBow?.eyeToSight ?? 0,
+			limbs: editingBow?.limbs || '',
+			riser: editingBow?.riser || '',
+			handOrientation: (editingBow?.handOrientation as 'RH' | 'LH') || '',
+			drawWeight: editingBow?.drawWeight ?? 0,
+			bowLength: editingBow?.bowLength ?? 0,
+			braceHeight: editingBow?.braceHeight ?? 0,
+			stup: editingBow?.stup ?? 0,
+			tiller: editingBow?.tiller ?? 0,
 			isFavorite: editingBow?.isFavorite ?? false,
 			notes: editingBow?.notes || '',
 		}),
@@ -69,6 +85,14 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 					eyeToNock: values.eyeToNock || null,
 					aimMeasure: values.aimMeasure || null,
 					eyeToSight: values.eyeToSight || null,
+					limbs: values.limbs || null,
+					riser: values.riser || null,
+					handOrientation: values.handOrientation || null,
+					drawWeight: values.drawWeight || null,
+					bowLength: values.bowLength || null,
+					braceHeight: values.braceHeight || null,
+					stup: values.stup || null,
+					tiller: values.tiller || null,
 					isFavorite: values.isFavorite,
 					notes: values.notes || undefined,
 				}),

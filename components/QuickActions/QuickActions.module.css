@@ -1,0 +1,85 @@
+/* ─── Quick-action tools grid ──────────────────────────────────────────────── */
+.section {
+    max-width: 1200px;
+    margin: 0 auto var(--space-1);
+    width: 100%;
+    margin-top: var(--space-7);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 120px));
+    gap: var(--space-2);
+}
+
+.button {
+    aspect-ratio: 1 / 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    background: var(--white-15);
+    border: 1px solid var(--white-25);
+    border-radius: var(--radius-xl);
+    color: var(--white);
+    cursor: pointer;
+    transition: all 200ms ease;
+    font-family: inherit;
+}
+
+.button:hover {
+    background: var(--white-25);
+    border-color: var(--white-50);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.button:active {
+    transform: translateY(-1px);
+    box-shadow: none;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.95;
+}
+
+.label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 640px) {
+    .section {
+        margin-top: var(--space-4);
+        margin-bottom: 0;
+    }
+
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-1);
+    }
+
+    .button {
+        padding: var(--space-1);
+        gap: var(--space-1);
+        aspect-ratio: unset;
+    }
+
+    .icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .label {
+        font-size: 0.7rem;
+    }
+}
+

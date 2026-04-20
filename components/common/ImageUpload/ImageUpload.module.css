@@ -1,7 +1,7 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-3);
+	gap: var(--space-2);
 }
 
 .label {
@@ -18,7 +18,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: var(--space-4);
+	gap: var(--space-2);
 }
 
 .image {
@@ -32,15 +32,15 @@
 
 .actions {
 	display: flex;
-	gap: var(--space-3);
+	gap: var(--space-2);
 }
 
 .changeButton,
 .removeButton {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--space-2);
-	padding: var(--space-2) var(--space-4);
+	gap: var(--space-1);
+	padding: var(--space-1) var(--space-2);
 	border-radius: var(--radius-base);
 	font-size: 0.9rem;
 	font-weight: 600;
@@ -149,7 +149,7 @@
 }
 
 .error {
-	padding: var(--space-3);
+	padding: var(--space-2);
 	background: var(--error-bg);
 	border: 1px solid var(--error-border);
 	border-radius: var(--radius-base);
@@ -163,7 +163,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: var(--space-4);
+	gap: var(--space-2);
 	min-height: 120px;
 	color: var(--primary);
 	font-weight: 500;

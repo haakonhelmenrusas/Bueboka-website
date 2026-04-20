@@ -79,16 +79,8 @@ export function SightMarksPrintModal({ open, onClose, data }: SightMarksPrintMod
 	};
 
 	return (
-		<Modal
-			open={open}
-			onClose={onClose}
-			title="Del siktemerker"
-			maxWidth={640}
-			panelStyle={{ padding: '24px', gap: '20px' }}
-		>
-			<p className={styles.hint}>
-				Last ned eller kopier dine beregnede siktemerker som bilde.
-			</p>
+		<Modal open={open} onClose={onClose} title="Del siktemerker" maxWidth={640} panelStyle={{ padding: '24px', gap: '20px' }}>
+			<p className={styles.hint}>Last ned eller kopier dine beregnede siktemerker som bilde.</p>
 
 			<div className={styles.cardWrapper}>
 				<SightMarksPrintCard ref={captureRef} data={data} />
