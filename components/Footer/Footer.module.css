@@ -140,6 +140,7 @@
 .sponsorLogo {
 	object-fit: contain;
 	max-height: 100%;
+	width: auto;
 }
 
 .sponsorName {
