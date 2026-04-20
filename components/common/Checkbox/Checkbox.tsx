@@ -28,7 +28,8 @@ export function Checkbox({
 	name,
 	inlineLabel = true,
 }: CheckboxProps) {
-	const inputId = id ?? React.useId();
+	const generatedId = React.useId();
+	const inputId = id ?? generatedId;
 
 	return (
 		<label className={`${styles.container} ${inlineLabel ? styles.inline : ''} ${containerClassName ?? ''}`.trim()} htmlFor={inputId}>

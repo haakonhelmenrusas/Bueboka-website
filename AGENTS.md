@@ -91,6 +91,79 @@ npm run lint
 npm run format          # Prettier
 ```
 
+## Git Hooks (Husky)
+
+Git hooks are managed by [Husky](https://typicode.github.io/husky/) and run automatically:
+
+| Hook | Command | When |
+| ------------ | ----------------------- | ---------------------------------------------------- |
+| `pre-commit` | `npm run lint` | Before every commit – fast ESLint check |
+| `pre-push` | `npm test -- --passWithNoTests --ci` | Before pushing – full Jest suite in CI mode |
+
+This prevents broken code from entering the remote and triggering the Netlify pipeline unnecessarily.
+
+## Commit Message Standard (Conventional Commits)
+
+All commits **must** follow the [Conventional Commits](https://www.conventionalcommits.org/) specification. This enables automatic changelog generation, semantic versioning, and readable `git log`.
+
+### Format
+
+```
+<type>(<scope>): <short summary>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+
+| Type | When to use |
+| ---------- | ------------------------------------------------------------------ |
+| `feat` | A new feature visible to users |
+| `fix` | A bug fix |
+| `chore` | Maintenance tasks (deps, config, tooling) – no production code |
+| `refactor` | Code restructuring with no behaviour change |
+| `style` | Formatting, CSS, whitespace – no logic change |
+| `test` | Adding or updating tests |
+| `docs` | Documentation only |
+| `perf` | Performance improvements |
+| `ci` | CI/CD pipeline changes (Netlify, GitHub Actions) |
+| `revert` | Reverts a previous commit |
+
+### Scope (optional but encouraged)
+
+Use the affected area: `bow`, `practice`, `auth`, `api`, `db`, `ui`, `hooks`, `achievements`, `sight-marks`, `competitions`, `profile`, `deps`.
+
+### Examples
+
+```
+feat(bow): add braceHeight, stup and tiller fields to bow form
+fix(auth): redirect unauthenticated users from /min-side to /logg-inn
+chore(deps): upgrade next to 16.3.0
+refactor(practice): extract usePracticeDetails into shared hook
+test(bow): add tests for BowForm with recurve and compound types
+perf(landing): make root page static to eliminate cold start
+```
+
+### Breaking Changes
+
+Add `!` after the type/scope and a `BREAKING CHANGE:` footer:
+
+```
+feat(api)!: rename /api/bows endpoint to /api/equipment/bows
+
+BREAKING CHANGE: All clients must update the bow API path.
+```
+
+### AI-authored commits
+
+When commits are authored or co-authored by an AI agent, add the following trailer to the footer:
+
+```
+Co-authored-by: GitHub Copilot <copilot@github.com>
+```
+
 ## Testing Conventions
 
 - Tests co-located with components: `components/Practices/PracticeCard.test.tsx`
@@ -189,3 +262,9 @@ Achievements are **statically defined** in `lib/achievements/definitions.ts` (no
 | `components/index.ts`          | Component barrel export                                               |
 | `components/common/`           | Reusable UI primitives (Button, Input, Select, …)                     |
 | `types/SightMarks.ts`          | TypeScript types for sight mark / ballistics domain                   |
+
+---
+
+> This guide is maintained collaboratively by the project team and AI coding agents.
+> Authored with assistance from **GitHub Copilot**.
+
