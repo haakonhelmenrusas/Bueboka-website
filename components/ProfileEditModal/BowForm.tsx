@@ -19,6 +19,9 @@ export interface BowFormValues {
 	handOrientation: 'RH' | 'LH' | '';
 	drawWeight: number;
 	bowLength: number;
+	braceHeight: number;
+	stup: number;
+	tiller: number;
 	isFavorite: boolean;
 	notes: string;
 }
@@ -39,10 +42,15 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 	const [handOrientation, setHandOrientation] = React.useState<'RH' | 'LH' | ''>(initialValues.handOrientation);
 	const [drawWeight, setDrawWeight] = React.useState<number>(initialValues.drawWeight);
 	const [bowLength, setBowLength] = React.useState<number>(initialValues.bowLength);
+	const [braceHeight, setBraceHeight] = React.useState<number>(initialValues.braceHeight);
+	const [stup, setStup] = React.useState<number>(initialValues.stup);
+	const [tiller, setTiller] = React.useState<number>(initialValues.tiller);
 	const [isFavorite, setIsFavorite] = React.useState<boolean>(initialValues.isFavorite);
 	const [notes, setNotes] = React.useState<string>(initialValues.notes);
 	const [sightMarksOpen, setSightMarksOpen] = React.useState<boolean>(false);
 	const [advancedOpen, setAdvancedOpen] = React.useState<boolean>(false);
+
+	const isRecurveOrCompound = type === 'RECURVE' || type === 'COMPOUND';
 
 	return (
 		<form
@@ -61,6 +69,9 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 					handOrientation,
 					drawWeight,
 					bowLength,
+					braceHeight,
+					stup,
+					tiller,
 					isFavorite,
 					notes,
 				});
@@ -71,8 +82,10 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 				<Select label="Type" value={type} onChange={(v) => setType(v as BowType)} options={BOW_TYPE_OPTIONS.map((o) => ({ ...o }))} />
 			</div>
 
-			<Checkbox label="Favorittbue" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittbue" />
+		<Checkbox label="Favorittbue" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittbue" />
 
+		{isRecurveOrCompound && (
+			<>
 			<button type="button" className={styles.advancedToggle} onClick={() => setSightMarksOpen((prev) => !prev)}>
 				<div className={styles.advancedLine} />
 				<div className={styles.advancedLabelWrap}>
@@ -105,6 +118,8 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 					</div>
 				</div>
 			)}
+			</>
+		)}
 
 			<button type="button" className={styles.advancedToggle} onClick={() => setAdvancedOpen((prev) => !prev)}>
 				<div className={styles.advancedLine} />
@@ -119,10 +134,12 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 
 			{advancedOpen && (
 				<div className={styles.advancedContent}>
-					<div className={styles.row}>
-						<Input optional label="Lemmer" value={limbs} onChange={(e) => setLimbs(e.target.value)} />
-						<Input optional label="Midtstykke" value={riser} onChange={(e) => setRiser(e.target.value)} />
-					</div>
+					{isRecurveOrCompound && (
+						<div className={styles.row}>
+							<Input optional label="Lemmer" value={limbs} onChange={(e) => setLimbs(e.target.value)} />
+							<Input optional label="Midtstykke" value={riser} onChange={(e) => setRiser(e.target.value)} />
+						</div>
+					)}
 					<div className={styles.numberRow}>
 						<Select
 							optional
@@ -138,6 +155,13 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 						<NumberInput optional label="Styrke (pund)" value={drawWeight} onChange={setDrawWeight} min={0} step={0.5} />
 						<NumberInput optional label="Lengde (tommer)" value={bowLength} onChange={setBowLength} min={0} step={0.5} />
 					</div>
+					{isRecurveOrCompound && (
+						<div className={styles.numberRow}>
+							<NumberInput optional label="Strenghøyde (cm)" value={braceHeight} onChange={setBraceHeight} min={0} step={0.1} />
+							<NumberInput optional label="Stup (mm)" value={stup} onChange={setStup} step={0.5} />
+							<NumberInput optional label="Tiller (mm)" value={tiller} onChange={setTiller} step={0.5} />
+						</div>
+					)}
 				</div>
 			)}
 

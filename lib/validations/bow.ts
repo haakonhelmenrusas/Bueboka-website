@@ -15,6 +15,9 @@ export const createBowSchema = z.object({
 	handOrientation: z.enum(['RH', 'LH']).optional().nullable(),
 	drawWeight: z.number().nonnegative().optional().nullable(),
 	bowLength: z.number().nonnegative().optional().nullable(),
+	braceHeight: z.number().nonnegative().optional().nullable(),
+	stup: z.number().optional().nullable(),
+	tiller: z.number().optional().nullable(),
 	isFavorite: z.boolean().optional().default(false),
 	notes: z.string().max(1000, 'Notes must be less than 1000 characters').optional().nullable(),
 });

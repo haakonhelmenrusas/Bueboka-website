@@ -21,7 +21,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return validation.error;
 		}
 
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes } =
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, braceHeight, stup, tiller, isFavorite, notes } =
 			validation.data;
 
 		// Verify the bow belongs to the user
@@ -56,6 +56,9 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 					handOrientation: handOrientation ?? null,
 					drawWeight: drawWeight ?? null,
 					bowLength: bowLength ?? null,
+					braceHeight: braceHeight ?? null,
+					stup: stup ?? null,
+					tiller: tiller ?? null,
 					isFavorite: makeFavorite,
 					notes: notes ?? null,
 				},

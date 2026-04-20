@@ -404,6 +404,9 @@ export default function MyPage() {
 								handOrientation: (selectedBow as any).handOrientation,
 								drawWeight: (selectedBow as any).drawWeight,
 								bowLength: (selectedBow as any).bowLength,
+								braceHeight: (selectedBow as any).braceHeight,
+								stup: (selectedBow as any).stup,
+								tiller: (selectedBow as any).tiller,
 								isFavorite: selectedBow.isFavorite,
 								notes: selectedBow.notes,
 							}

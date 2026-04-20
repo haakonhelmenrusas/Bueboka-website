@@ -87,7 +87,10 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 												</span>
 											) : null}
 										</div>
-										<div className={styles.itemMeta}>{getBowTypeLabel(bow.type)}</div>
+										<div className={styles.itemMeta}>
+										{getBowTypeLabel(bow.type)}
+										{typeof bow.braceHeight === 'number' ? ` • ${formatOneDecimal(bow.braceHeight)}cm strenghøyde` : ''}
+									</div>
 									</div>
 								</button>
 							))

@@ -45,6 +45,9 @@ export interface Bow {
 	handOrientation: string | null;
 	drawWeight: number | null;
 	bowLength: number | null;
+	braceHeight: number | null;
+	stup: number | null;
+	tiller: number | null;
 	isFavorite: boolean;
 	notes: string | null;
 }

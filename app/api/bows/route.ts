@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
 		if (!validation.success) {
 			return validation.error;
 		}
-		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, isFavorite, notes } =
+		const { name, type, eyeToNock, aimMeasure, eyeToSight, limbs, riser, handOrientation, drawWeight, bowLength, braceHeight, stup, tiller, isFavorite, notes } =
 			validation.data;
 
 		const makeFavorite = Boolean(isFavorite);
@@ -44,6 +44,9 @@ export async function POST(request: NextRequest) {
 					handOrientation: handOrientation ?? null,
 					drawWeight: drawWeight ?? null,
 					bowLength: bowLength ?? null,
+					braceHeight: braceHeight ?? null,
+					stup: stup ?? null,
+					tiller: tiller ?? null,
 					isFavorite: makeFavorite,
 					notes: notes ?? null,
 				},
