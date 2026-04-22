@@ -529,6 +529,23 @@ async function main() {
 		`✅ Local seed done. Users=${counts[0]} Bows=${counts[1]} Arrows=${counts[2]} RoundTypes=${counts[3]} Practices=${counts[4]} Ends=${counts[5]} Competitions=${counts[6]} CompetitionRounds=${counts[7]}`
 	);
 
+	// ==================== APP VERSION ====================
+	const existingVersion = await prisma.appVersion.findFirst();
+	if (!existingVersion) {
+		await prisma.appVersion.create({
+			data: {
+				minVersion: '1.6.4',
+				currentVersion: '1.7.0',
+				updateMessage: 'En ny versjon er tilgjengelig',
+				iosMinVersion: '1.6.4',
+				iosStoreUrl: 'https://apps.apple.com/no/app/bueboka/id6448108838',
+				androidMinVersion: '1.6.4',
+				androidStoreUrl: 'https://play.google.com/store/apps/details?id=com.aaronshade.bueboka',
+			},
+		});
+		console.log('📱 App version record created.');
+	}
+
 	await prisma.$disconnect();
 }
 

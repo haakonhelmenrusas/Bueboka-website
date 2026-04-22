@@ -41,8 +41,7 @@ function getSkillLevel(daysAgo: number): number {
 }
 
 async function main() {
-	async function main() {
-		if (!process.env.DATABASE_URL) {
+	if (!process.env.DATABASE_URL) {
 			throw new Error('DATABASE_URL is not set. Create a .env file with DATABASE_URL before running the seed script.');
 		}
 
@@ -476,6 +475,23 @@ async function main() {
 
 		console.log(`✅ Created 20 competitions\n`);
 
+		// ==================== APP VERSION ====================
+		const existingVersion = await prisma.appVersion.findFirst();
+		if (!existingVersion) {
+			await prisma.appVersion.create({
+				data: {
+					minVersion: '1.6.4',
+					currentVersion: '1.7.0',
+					updateMessage: 'En ny versjon er tilgjengelig',
+					iosMinVersion: '1.6.4',
+					iosStoreUrl: 'https://apps.apple.com/no/app/bueboka/id6448108838',
+					androidMinVersion: '1.6.4',
+					androidStoreUrl: 'https://play.google.com/store/apps/details?id=com.aaronshade.bueboka',
+				},
+			});
+			console.log('📱 App version record created.');
+		}
+
 		// ==================== SUMMARY ====================
 		const totalPracticesCount = await prisma.practice.count({ where: { userId: user.id } });
 		const totalCompetitionsCount = await prisma.competition.count({ where: { userId: user.id } });
@@ -498,10 +514,9 @@ async function main() {
 		console.log('   (Set up authentication separately)\n');
 
 		await prisma.$disconnect();
-	}
-
-	main().catch((err) => {
-		console.error('❌ Seed failed:', err);
-		process.exitCode = 1;
-	});
 }
+
+main().catch((err) => {
+	console.error('❌ Seed failed:', err);
+	process.exitCode = 1;
+});

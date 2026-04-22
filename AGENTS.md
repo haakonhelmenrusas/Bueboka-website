@@ -50,6 +50,8 @@ Every API route follows this structure:
 4. Sentry capture in catch blocks
 5. Invalidate `statsCache` on mutations
 
+> **Exception – public routes**: Routes that serve unauthenticated clients (e.g. `GET /api/app/version`) skip the `getCurrentUser()` guard entirely.
+
 ```ts
 import { getCurrentUser } from '@/lib/session';
 import { createPracticeSchema } from '@/lib/validations/practice';
@@ -259,6 +261,7 @@ Achievements are **statically defined** in `lib/achievements/definitions.ts` (no
 | `lib/hooks/`                   | `useModalBehavior`, `useClickOutside`, `useEscapeKey`, `useFocusTrap` |
 | `context/FeedbackProvider.tsx` | Feedback modal context + `useFeedback()` hook                         |
 | `prisma/schema.prisma`         | Full data model                                                       |
+| `app/api/app/version/route.ts` | Public `GET` – returns min/current version + iOS & Android store URLs |
 | `components/index.ts`          | Component barrel export                                               |
 | `components/common/`           | Reusable UI primitives (Button, Input, Select, …)                     |
 | `types/SightMarks.ts`          | TypeScript types for sight mark / ballistics domain                   |
