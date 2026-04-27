@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { LuKey, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './Privacy.module.css';
 
@@ -44,6 +45,9 @@ export function Privacy() {
 							<p className={styles.cardText}>
 								Du har full kontroll over dine data. Slett kontoen din når som helst, og all tilhørende informasjon fjernes permanent.
 							</p>
+							<Link href="/slett-konto" className={styles.cardLink}>
+								Se veiledning for sletting av konto →
+							</Link>
 						</div>
 					</div>
 					<div className={`${styles.footer} ${styles.reveal}`} style={{ animationDelay: '480ms' }}>

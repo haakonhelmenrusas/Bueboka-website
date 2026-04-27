@@ -86,7 +86,19 @@
 	font-size: 1rem;
 	color: var(--text-gray-600);
 	line-height: 1.6;
-	margin: 0;
+	margin: 0 0 0.75rem;
+}
+.cardLink {
+	display: inline-block;
+	font-size: 0.9rem;
+	color: var(--primary-light, #0c82ac);
+	text-decoration: none;
+	font-weight: 500;
+	transition: color 0.2s;
+}
+.cardLink:hover {
+	color: var(--primary);
+	text-decoration: underline;
 }
 .footer {
 	text-align: center;
