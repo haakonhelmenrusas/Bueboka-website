@@ -7,6 +7,7 @@ import type { PracticeCategory } from '@/lib/prismaEnums';
 import { NumberInput, Select } from '@/components';
 import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
 import { type CompetitionRoundInput, isRangeCategory } from './CompetitionFormModal.types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface RoundsStepProps {
 	rounds: CompetitionRoundInput[];
@@ -17,6 +18,7 @@ interface RoundsStepProps {
 }
 
 export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, practiceCategory, addRound, removeRound, updateRound }) => {
+	const { t } = useTranslation();
 	const rangeCategory = isRangeCategory(practiceCategory);
 
 	return (
@@ -25,9 +27,9 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 				{rounds.map((round, index) => (
 					<div key={index} className={styles.roundCard}>
 						<div className={styles.roundHeader}>
-							<span className={styles.roundNumber}>Runde {index + 1}</span>
+							<span className={styles.roundNumber}>{t['form.round']} {index + 1}</span>
 							{rounds.length > 1 && (
-								<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
+								<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label={t['competition.rounds.removeRound']}>
 									<LuX size={16} />
 								</button>
 							)}
@@ -37,7 +39,7 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 							{rangeCategory ? (
 								<>
 									<NumberInput
-										label="Fra"
+										label={t['competition.rounds.from']}
 										value={round.distanceFrom ?? 0}
 										onChange={(v) => updateRound(index, 'distanceFrom', v || undefined)}
 										min={0}
@@ -47,7 +49,7 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 										containerClassName={styles.roundField}
 									/>
 									<NumberInput
-										label="Til"
+										label={t['competition.rounds.to']}
 										value={round.distanceTo ?? 0}
 										onChange={(v) => updateRound(index, 'distanceTo', v || undefined)}
 										min={0}
@@ -60,7 +62,7 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 							) : (
 								<>
 									<NumberInput
-										label="Avstand"
+										label={t['competition.rounds.distance']}
 										value={round.distanceMeters ?? 0}
 										onChange={(v) => updateRound(index, 'distanceMeters', v || undefined)}
 										min={0}
@@ -70,10 +72,10 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 										containerClassName={styles.roundField}
 									/>
 									<Select
-										label="Skive"
+										label={t['competition.rounds.target']}
 										value={round.targetType}
 										onChange={(v) => updateRound(index, 'targetType', v as string)}
-										placeholderLabel="Velg"
+										placeholderLabel={t['competition.rounds.select']}
 										searchable
 										options={TARGET_TYPE_OPTIONS}
 										containerClassName={styles.skiveField}
@@ -84,7 +86,7 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 
 						<div className={styles.roundInputs}>
 							<NumberInput
-								label="Piler m/score"
+								label={t['competition.rounds.arrowsWithScore']}
 								value={round.numberArrows ?? 0}
 								onChange={(v) => updateRound(index, 'numberArrows', v || undefined)}
 								min={0}
@@ -94,7 +96,7 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 								containerClassName={styles.roundField}
 							/>
 							<NumberInput
-								label="Score"
+								label={t['form.score']}
 								value={round.roundScore}
 								onChange={(v) => updateRound(index, 'roundScore', v)}
 								min={0}
@@ -107,7 +109,7 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 
 						<div className={styles.roundInputsNarrow}>
 							<NumberInput
-								label="Piler u/score"
+								label={t['competition.rounds.arrowsWithoutScore']}
 								value={round.arrowsWithoutScore ?? 0}
 								onChange={(v) => updateRound(index, 'arrowsWithoutScore', v || undefined)}
 								min={0}
@@ -122,11 +124,10 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 
 				<button type="button" className={styles.addRoundBtn} onClick={addRound} disabled={rounds.length >= 20}>
 					<LuPlus size={14} />
-					Legg til runde
+					{t['competition.rounds.addRound']}
 				</button>
-				{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
+				{rounds.length >= 20 && <p className={styles.limitMessage}>{t['competition.rounds.maxRounds']}</p>}
 			</div>
 		</div>
 	);
 };
-

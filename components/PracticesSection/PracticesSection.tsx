@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Button, PracticesList, usePracticeCards } from '@/components';
 import styles from './PracticesSection.module.css';
 import { LuArrowRight, LuPlus, LuTrophy } from 'react-icons/lu';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface PracticesSectionProps {
 	onCreate?: () => void;
@@ -46,6 +47,7 @@ export function PracticesSection({
 	deletedPracticeId,
 	compact = false,
 }: PracticesSectionProps) {
+	const { t } = useTranslation();
 	const { cards, page, totalPages, showPagination, loading, filter, setFilter, goToPrev, goToNext, fetchPage, removeLocal } =
 		usePracticeCards({
 			pageSize: compact ? 5 : 10,
@@ -71,9 +73,9 @@ export function PracticesSection({
 		return (
 			<section className={styles.practicesSection}>
 				<div className={styles.practicesHeader}>
-					<h2 className={styles.sectionTitle}>Siste aktivitet</h2>
+					<h2 className={styles.sectionTitle}>{t['practice.recentActivity']}</h2>
 					<Link href="/aktivitet" className={styles.seeAllLink}>
-						Se alle
+						{t['common.seeAll']}
 						<LuArrowRight size={16} />
 					</Link>
 				</div>
@@ -83,7 +85,7 @@ export function PracticesSection({
 					) : hasPractices ? (
 						<PracticesList practices={cards} onSelectPractice={onSelectPractice} />
 					) : (
-						<div className={styles.placeholderCard}>Ingen treninger registrert ennå.</div>
+						<div className={styles.placeholderCard}>{t['practice.noRecords']}</div>
 					)}
 				</div>
 			</section>
@@ -93,36 +95,39 @@ export function PracticesSection({
 	return (
 		<section className={styles.practicesSection}>
 			<div className={styles.practicesHeader}>
-				<h2 className={styles.sectionTitle}>Treninger og konkurranser</h2>
+				<h2 className={styles.sectionTitle}>{t['practice.allActivity']}</h2>
 			</div>
 			<div className={styles.filterContainer}>
-				<div className={styles.filterButtons}>
+				<div className={styles.filterButtons} role="group" aria-label={t['practice.allActivity']}>
 					<button
 						className={`${styles.filterButton} ${filter === 'all' ? styles.filterButtonActive : ''}`}
 						onClick={() => setFilter('all')}
 						type="button"
+						aria-pressed={filter === 'all'}
 					>
-						Alle
+						{t['practice.filterAll']}
 					</button>
 					<button
 						className={`${styles.filterButton} ${filter === 'TRENING' ? styles.filterButtonActive : ''}`}
 						onClick={() => setFilter('TRENING')}
 						type="button"
+						aria-pressed={filter === 'TRENING'}
 					>
-						Treninger
+						{t['practice.filterPractices']}
 					</button>
 					<button
 						className={`${styles.filterButton} ${filter === 'KONKURRANSE' ? styles.filterButtonActive : ''}`}
 						onClick={() => setFilter('KONKURRANSE')}
 						type="button"
+						aria-pressed={filter === 'KONKURRANSE'}
 					>
-						Konkurranser
+						{t['practice.filterCompetitions']}
 					</button>
 				</div>
 				{(onCreate || onCreateCompetition) && (
 					<div className={styles.actionButtons}>
-						{onCreate && <Button label="Ny trening" onClick={onCreate} icon={<LuPlus size={18} />} />}
-						{onCreateCompetition && <Button label="Ny konkurranse" onClick={onCreateCompetition} icon={<LuTrophy size={18} />} />}
+						{onCreate && <Button label={t['quickAction.newPractice']} onClick={onCreate} icon={<LuPlus size={18} />} />}
+						{onCreateCompetition && <Button label={t['quickAction.newCompetition']} onClick={onCreateCompetition} icon={<LuTrophy size={18} />} />}
 					</div>
 				)}
 			</div>
@@ -132,13 +137,13 @@ export function PracticesSection({
 				) : hasPractices ? (
 					<PracticesList practices={cards} onSelectPractice={onSelectPractice} />
 				) : (
-					<div className={styles.placeholderCard}>Ingen treninger registrert ennå.</div>
+					<div className={styles.placeholderCard}>{t['practice.noRecords']}</div>
 				)}
 			</div>
 			{showPagination ? (
 				<div className={styles.pagination}>
 					<Button
-						label={loading ? 'Laster…' : 'Forrige'}
+						label={loading ? t['common.loading'] : t['common.previous']}
 						size="small"
 						width={120}
 						loading={loading}
@@ -146,10 +151,10 @@ export function PracticesSection({
 						onClick={goToPrev}
 					/>
 					<div className={styles.paginationText}>
-						Side {page} av {totalPages}
+						{t['common.page']} {page} {t['common.of']} {totalPages}
 					</div>
 					<Button
-						label={loading ? 'Laster…' : 'Neste'}
+						label={loading ? t['common.loading'] : t['common.next']}
 						size="small"
 						width={120}
 						loading={loading}

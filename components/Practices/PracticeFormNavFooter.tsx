@@ -5,6 +5,7 @@ import styles from './PracticeFormModal.module.css';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Button } from '@/components';
 import { STEP_LABELS, TOTAL_STEPS } from './PracticeFormModal.types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface NavFooterProps {
 	step: number;
@@ -26,6 +27,7 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 	canSave,
 	onSubmit,
 }) => {
+	const { t } = useTranslation();
 	const isFirstStep = step === 0;
 	const isLastStep = step === TOTAL_STEPS - 1;
 
@@ -37,7 +39,7 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 					className={`${styles.navArrow}${isFirstStep ? ` ${styles.navArrowDisabled}` : ''}`}
 					onClick={onPrev}
 					disabled={isFirstStep}
-					aria-label="Forrige steg"
+					aria-label={t['form.prevStep']}
 				>
 					<LuChevronLeft size={26} />
 				</button>
@@ -48,14 +50,14 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 					{isLastStep ? (
 						<Button
 							type="button"
-							label={submitting ? 'Lagrer...' : isEditMode ? 'Lagre endringer' : 'Lagre trening'}
+							label={submitting ? t['common.saving'] : isEditMode ? t['practice.saveChanges'] : t['practice.savePractice']}
 							onClick={onSubmit}
 							variant="standard"
 							disabled={submitting || !canSave}
 							loading={submitting}
 						/>
 					) : (
-						<button type="button" className={styles.navArrow} onClick={onNext} aria-label="Neste steg">
+						<button type="button" className={styles.navArrow} onClick={onNext} aria-label={t['form.nextStep']}>
 							<LuChevronRight size={26} />
 						</button>
 					)}

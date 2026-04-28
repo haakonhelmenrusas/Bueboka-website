@@ -3,6 +3,7 @@ import styles from './ArrowsChart.module.css';
 import { PracticeCategory } from './types';
 import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
 import { Select } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ArrowsChartProps {
 	data: any[];
@@ -28,9 +29,11 @@ const CHART_COLORS = [
 ] as const;
 
 export function ArrowsChart({ data, series, formatDate, selectedCategory, onCategoryChange }: ArrowsChartProps) {
+	const { t } = useTranslation();
+
 	// Category options for Select component
 	const categoryOptions = [
-		{ value: 'all', label: 'Alle' },
+		{ value: 'all', label: t['common.all'] },
 		{ value: 'SKIVE_INDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR },
 		{ value: 'SKIVE_OUTDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR },
 		{ value: 'JAKT_3D', label: PRACTICE_CATEGORY_LABELS.JAKT_3D },
@@ -81,12 +84,12 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 		<div className={styles.chartCard}>
 			<div className={styles.chartHeader}>
 				<div>
-					<h3 className={styles.chartTitle}>Piler skutt over tid</h3>
-					<p className={styles.chartSubtitle}>Gruppert etter avstand og blinktype</p>
+					<h3 className={styles.chartTitle}>{t['statistics.arrowsOverTime']}</h3>
+					<p className={styles.chartSubtitle}>{t['statistics.groupedByDistance']}</p>
 				</div>
 				<div className={styles.filterGroup}>
 					<Select
-						label="Kategori"
+						label={t['form.category']}
 						options={categoryOptions}
 						value={selectedCategory}
 						onChange={(value) => onCategoryChange(value as PracticeCategory)}
@@ -102,7 +105,7 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 					<YAxis
 						stroke="#6b7280"
 						style={{ fontSize: '0.875rem' }}
-						label={{ value: 'Antall piler', angle: -90, position: 'insideLeft', fill: '#6b7280' }}
+						label={{ value: t['statistics.arrowCount'], angle: -90, position: 'insideLeft', fill: '#6b7280' }}
 					/>
 					<Tooltip
 						contentStyle={{
@@ -114,7 +117,7 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 						}}
 						labelStyle={{ color: '#111827' }}
 						itemStyle={{ color: '#111827' }}
-						labelFormatter={(label) => `Dato: ${formatDate(label as string)}`}
+						labelFormatter={(label) => `${t['statistics.date']} ${formatDate(label as string)}`}
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
 					{seriesArray.map((seriesName, index) => (

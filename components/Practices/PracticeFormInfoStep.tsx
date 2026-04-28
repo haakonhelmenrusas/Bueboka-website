@@ -8,6 +8,7 @@ import { Environment } from '@/lib/prismaEnums';
 import { DateInput, Input, Select } from '@/components';
 import { getArrowsOptions, getBowOptions, getEnvironmentOptions, getPracticeCategoryOptions } from '@/lib/formUtils';
 import { WEATHER_OPTIONS } from './PracticeFormModal.types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface InfoStepProps {
 	date: string;
@@ -50,6 +51,7 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 	isEditMode,
 	onDeleteRequest,
 }) => {
+	const { t } = useTranslation();
 	const environmentOptions = getEnvironmentOptions();
 	const practiceCategoryOptions = getPracticeCategoryOptions();
 	const bowOptions = getBowOptions(bows);
@@ -58,9 +60,9 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 	return (
 		<div className={styles.stepContent}>
 			<div className={styles.row}>
-				<DateInput label="Dato" value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
+				<DateInput label={t['form.date']} value={date} onChange={(e) => setDate(e.target.value)} required containerClassName={styles.field} />
 				<Select
-					label="Kategori"
+					label={t['form.category']}
 					value={practiceCategory}
 					onChange={(v) => onCategoryChange(v as PracticeCategory)}
 					options={practiceCategoryOptions}
@@ -70,17 +72,17 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 
 			<div className={styles.row}>
 				<Select
-					label="Miljø"
+					label={t['form.environment']}
 					value={environment}
 					onChange={(v) => setEnvironment(v as Environment)}
 					options={environmentOptions}
 					containerClassName={styles.field}
 				/>
 				<Input
-					label="Sted"
+					label={t['form.location']}
 					value={location}
 					onChange={(e) => setLocation(e.target.value)}
-					helpText={`F.eks. Oslo (${location.length}/64 tegn)`}
+					helpText={`${t['form.locationPlaceholder']} (${location.length}/64 ${t['common.characters']})`}
 					maxLength={64}
 					containerClassName={styles.field}
 				/>
@@ -88,7 +90,7 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 
 			{environment === Environment.OUTDOOR && (
 				<div className={styles.weatherSection}>
-					<div className={styles.weatherLabel}>Vær (valgfritt)</div>
+					<div className={styles.weatherLabel}>{t['form.weather']}</div>
 					<div className={styles.weatherChips}>
 						{WEATHER_OPTIONS.map((opt) => {
 							const active = weather.includes(opt.value);
@@ -108,18 +110,18 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 			)}
 			<div className={styles.row}>
 				<Select
-					label="Bue"
+					label={t['form.bow']}
 					value={bowId}
 					onChange={(v) => setBowId(v as string)}
-					placeholderLabel="Velg bue (valgfritt)"
+					placeholderLabel={t['form.selectBow']}
 					options={bowOptions}
 					containerClassName={styles.field}
 				/>
 				<Select
-					label="Piler"
+					label={t['form.arrows']}
 					value={arrowsId}
 					onChange={(v) => setArrowsId(v as string)}
-					placeholderLabel="Velg piler (valgfritt)"
+					placeholderLabel={t['form.selectArrows']}
 					options={arrowsOptions}
 					containerClassName={styles.field}
 				/>
@@ -129,7 +131,7 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 				<div className={styles.deleteSection}>
 					<button type="button" className={styles.deleteLink} onClick={onDeleteRequest}>
 						<LuTrash2 size={16} />
-						Slett trening
+						{t['practice.deleteButton']}
 					</button>
 				</div>
 			)}

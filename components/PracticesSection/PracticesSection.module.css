@@ -30,6 +30,12 @@
     text-decoration-color: var(--warning);
 }
 
+.seeAllLink:focus-visible {
+    outline: 2px solid var(--warning);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+}
+
 .sectionTitle {
     margin: 0;
     font-size: 1.4rem;

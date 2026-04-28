@@ -3,9 +3,11 @@
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { LuCircle, LuCircleCheck, LuLoader, LuLoaderPinwheel } from 'react-icons/lu';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './page.module.css';
 
 function VerifyEmailContent() {
+	const { t } = useTranslation();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const token = searchParams.get('token');
@@ -17,7 +19,7 @@ function VerifyEmailContent() {
 		const verifyEmail = async () => {
 			if (!token) {
 				setStatus('error');
-				setMessage('Ugyldig verifikasjonslenke. Sjekk e-posten din og prøv igjen.');
+				setMessage(t['verifyEmail.invalidLink']);
 				return;
 			}
 
@@ -34,7 +36,7 @@ function VerifyEmailContent() {
 				// Better Auth might return a redirect (303/302) on success
 				if (response.status === 303 || response.status === 302 || response.status === 200) {
 					setStatus('success');
-					setMessage('E-postadressen din er bekreftet! Du blir videresendt om et øyeblikk...');
+					setMessage(t['verifyEmail.confirmed']);
 
 					// Redirect to dashboard after 2 seconds
 					setTimeout(() => {
@@ -44,16 +46,16 @@ function VerifyEmailContent() {
 				}
 
 				setStatus('error');
-				setMessage(`Kunne ikke bekrefte e-postadressen. Lenken kan ha utløpt. (${response.status})`);
+				setMessage(`${t['verifyEmail.expired']} (${response.status})`);
 			} catch (error) {
 				setStatus('error');
-				setMessage('En feil oppstod. Prøv igjen senere.');
+				setMessage(t['verifyEmail.genericError']);
 				console.error('Email verification error:', error);
 			}
 		};
 
 		verifyEmail();
-	}, [token, router]);
+	}, [token, router, t]);
 
 	return (
 		<div className={styles.container}>
@@ -61,15 +63,15 @@ function VerifyEmailContent() {
 				{status === 'loading' && (
 					<>
 						<LuLoader className={styles.iconLoading} size={64} />
-						<h1 className={styles.title}>Bekrefter e-postadresse...</h1>
-						<p className={styles.message}>Vennligst vent.</p>
+						<h1 className={styles.title}>{t['verifyEmail.verifying']}</h1>
+						<p className={styles.message}>{t['verifyEmail.pleaseWait']}</p>
 					</>
 				)}
 
 				{status === 'success' && (
 					<>
 						<LuCircleCheck className={styles.iconSuccess} size={64} />
-						<h1 className={styles.title}>E-post bekreftet!</h1>
+						<h1 className={styles.title}>{t['verifyEmail.success']}</h1>
 						<p className={styles.message}>{message}</p>
 					</>
 				)}
@@ -77,10 +79,10 @@ function VerifyEmailContent() {
 				{status === 'error' && (
 					<>
 						<LuCircle className={styles.iconError} size={64} />
-						<h1 className={styles.title}>Bekreftelse feilet</h1>
+						<h1 className={styles.title}>{t['verifyEmail.error']}</h1>
 						<p className={styles.message}>{message}</p>
 						<button className={styles.button} onClick={() => router.push('/logg-inn')}>
-							Gå til innlogging
+							{t['verifyEmail.goToLogin']}
 						</button>
 					</>
 				)}
@@ -89,18 +91,21 @@ function VerifyEmailContent() {
 	);
 }
 
+function LoadingFallback() {
+	const { t } = useTranslation();
+	return (
+		<div className={styles.container}>
+			<div className={styles.card}>
+				<LuLoaderPinwheel className={styles.iconLoading} size={64} />
+				<h1 className={styles.title}>{t['common.loading']}</h1>
+			</div>
+		</div>
+	);
+}
+
 export default function VerifyEmailPage() {
 	return (
-		<Suspense
-			fallback={
-				<div className={styles.container}>
-					<div className={styles.card}>
-						<LuLoaderPinwheel className={styles.iconLoading} size={64} />
-						<h1 className={styles.title}>Laster...</h1>
-					</div>
-				</div>
-			}
-		>
+		<Suspense fallback={<LoadingFallback />}>
 			<VerifyEmailContent />
 		</Suspense>
 	);

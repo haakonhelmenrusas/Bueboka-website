@@ -3,9 +3,11 @@
 import React, { Suspense, useMemo, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button, Header, Input } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from '@/app/ny-bruker/page.module.css';
 
 function ResetPasswordContent() {
+	const { t } = useTranslation();
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const token = useMemo(() => searchParams.get('token') || '', [searchParams]);
@@ -25,12 +27,12 @@ function ResetPasswordContent() {
 			const newPassword = (formData.get('password') as string | null) || '';
 
 			if (!token) {
-				setError('Mangler token. Åpne lenken på nytt fra e-posten.');
+				setError(t['tilbakestillPassord.noToken']);
 				return;
 			}
 
 			if (!newPassword) {
-				setError('Passord mangler.');
+				setError(t['tilbakestillPassord.passwordMissing']);
 				return;
 			}
 
@@ -45,11 +47,11 @@ function ResetPasswordContent() {
 			const data = (await res.json().catch(() => null)) as { message?: string } | null;
 
 			if (!res.ok) {
-				setError(data?.message || 'Kunne ikke tilbakestille passord.');
+				setError(data?.message || t['tilbakestillPassord.error']);
 				return;
 			}
 
-			setSuccess('Passordet er oppdatert. Du kan logge inn.');
+			setSuccess(t['tilbakestillPassord.success']);
 			setTimeout(() => router.push('/logg-inn'), 1200);
 		} finally {
 			setIsSubmitting(false);
@@ -62,18 +64,18 @@ function ResetPasswordContent() {
 			<div className={styles.card}>
 				<div className={styles.formWrapper}>
 					<div className={styles.header}>
-						<h1 className={styles.title}>Tilbakestill passord</h1>
+						<h1 className={styles.title}>{t['tilbakestillPassord.title']}</h1>
 					</div>
 
-					{!token && <p className="text-red-500">Mangler token. Bruk lenken du fikk på e-post.</p>}
+					{!token && <p className="text-red-500">{t['tilbakestillPassord.noToken']}</p>}
 					{error && <p className="text-red-500">{error}</p>}
 					{success && <p className="text-green-600">{success}</p>}
 
 					<form onSubmit={handleSubmit} className={styles.form}>
 						<div className={styles.inputGroup}>
-							<Input label="Nytt passord" id="password" name="password" type="password" autoComplete="new-password" />
+							<Input label={t['tilbakestillPassord.passwordLabel']} id="password" name="password" type="password" autoComplete="new-password" />
 						</div>
-						<Button type="submit" label={isSubmitting ? 'Lagrer…' : 'Lagre nytt passord'} disabled={isSubmitting || !token} />
+						<Button type="submit" label={isSubmitting ? t['tilbakestillPassord.saving'] : t['tilbakestillPassord.saveButton']} disabled={isSubmitting || !token} />
 					</form>
 				</div>
 			</div>

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Select } from '@/components';
 import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
 import { PracticeCategory } from './types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ScoreChartProps {
 	data: any[];
@@ -27,6 +28,7 @@ const getChartColors = (): { training: string; competition: string } => {
 
 export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChange }: ScoreChartProps) {
 	const [colors, setColors] = useState<{ training: string; competition: string }>({ training: '#053546', competition: '#e63946' });
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		setColors(getChartColors());
@@ -46,12 +48,12 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 		<div className={styles.chartCard}>
 			<div className={styles.chartHeader}>
 				<div>
-					<h3 className={styles.chartTitle}>Gjennomsnittlig score per pil</h3>
-					<p className={styles.chartSubtitle}>Trening vs. Konkurranse</p>
+					<h3 className={styles.chartTitle}>{t['statistics.avgScorePerArrow']}</h3>
+					<p className={styles.chartSubtitle}>{t['statistics.trainingVsCompetition']}</p>
 				</div>
 				<div className={styles.filterGroup}>
 					<Select
-						label="Kategori"
+						label={t['form.category']}
 						options={categoryOptions}
 						value={selectedCategory}
 						onChange={(value) => onCategoryChange(value as PracticeCategory)}
@@ -67,7 +69,7 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 					<YAxis
 						stroke="#6b7280"
 						style={{ fontSize: '0.875rem' }}
-						label={{ value: 'Snitt score per pil', angle: -90, position: 'insideLeft', fill: '#6b7280' }}
+						label={{ value: t['statistics.avgScoreYAxis'], angle: -90, position: 'insideLeft', fill: '#6b7280' }}
 						ticks={yTicks}
 						domain={[0, 11]}
 					/>
@@ -81,7 +83,7 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 						}}
 						labelStyle={{ color: '#111827' }}
 						itemStyle={{ color: '#111827' }}
-						labelFormatter={(label) => `Dato: ${formatDate(label as string)}`}
+						labelFormatter={(label) => `${t['statistics.date']} ${formatDate(label as string)}`}
 						formatter={(value: any) => [typeof value === 'number' ? value.toFixed(2).replace('.', ',') : value, '']}
 					/>
 					<Legend wrapperStyle={{ paddingTop: '20px' }} />
@@ -92,7 +94,7 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 						strokeWidth={2}
 						dot={{ r: 4 }}
 						activeDot={{ r: 6 }}
-						name="Trening"
+						name={t['statistics.training']}
 						connectNulls
 					/>
 					<Line
@@ -102,7 +104,7 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 						strokeWidth={2}
 						dot={{ r: 4 }}
 						activeDot={{ r: 6 }}
-						name="Konkurranse"
+						name={t['statistics.competition']}
 						connectNulls
 					/>
 				</LineChart>

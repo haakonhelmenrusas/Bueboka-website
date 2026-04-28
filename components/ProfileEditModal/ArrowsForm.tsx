@@ -5,6 +5,7 @@ import { LuChevronDown } from 'react-icons/lu';
 import { Checkbox, Input, NumberInput, Select, TextArea } from '@/components';
 import { ARROW_MATERIAL_OPTIONS } from '@/lib/labels';
 import styles from './ArrowsForm.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export type ArrowMaterial = 'KARBON' | 'ALUMINIUM' | 'TREVERK';
 
@@ -30,6 +31,7 @@ interface ArrowsFormProps {
 }
 
 export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
+	const { t } = useTranslation();
 	const [name, setName] = useState(initialValues?.name ?? '');
 	const [material, setMaterial] = useState<ArrowMaterial>((initialValues?.material as ArrowMaterial) ?? 'KARBON');
 	const [arrowsCount, setArrowsCount] = useState<number | null>(
@@ -91,7 +93,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 				e.preventDefault();
 				const trimmedName = name.trim();
 				if (!trimmedName) {
-					setNameError('Du må legge inn et navn.');
+					setNameError(t['arrowsForm.nameRequired']);
 					return;
 				}
 				setNameError('');
@@ -114,7 +116,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 		>
 			<div className={styles.row}>
 				<Input
-					label="Navn på piler"
+					label={t['arrowsForm.nameLabel']}
 					value={name}
 					onChange={(e) => {
 						setName(e.target.value);
@@ -125,7 +127,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					errorMessage={nameError}
 				/>
 				<Select
-					label="Materiale"
+					label={t['arrowsForm.materialLabel']}
 					value={material}
 					onChange={(v) => setMaterial(v as ArrowMaterial)}
 					options={ARROW_MATERIAL_OPTIONS.map((o) => ({ ...o }))}
@@ -133,7 +135,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 			</div>
 
 			<NumberInput
-				label="Antall piler"
+				label={t['arrowsForm.arrowsCount']}
 				value={arrowsCount ?? 0}
 				onChange={(v) => setArrowsCount(v)}
 				onEmpty={() => setArrowsCount(null)}
@@ -144,12 +146,12 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 				optional
 			/>
 
-			<Checkbox label="Favorittpiler" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittpilsett" />
+			<Checkbox label={t['arrowsForm.favoriteLabel']} checked={isFavorite} onChange={setIsFavorite} helpText={t['arrowsForm.favoriteHelp']} />
 
 			<button type="button" className={styles.advancedToggle} onClick={() => setAdvancedOpen((prev) => !prev)}>
 				<div className={styles.advancedLine} />
 				<div className={styles.advancedLabelWrap}>
-					<span className={styles.advancedLabel}>Avansert</span>
+					<span className={styles.advancedLabel}>{t['arrowsForm.advancedSection']}</span>
 					<div className={styles.advancedChevron} style={{ transform: advancedOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
 						<LuChevronDown size={14} />
 					</div>
@@ -161,7 +163,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 				<div className={styles.advancedContent}>
 					<div className={styles.grid}>
 						<NumberInput
-							label="Diameter (mm)"
+							label={t['arrowsForm.diameter']}
 							value={diameter ?? 0}
 							onChange={(v) => setDiameter(v)}
 							onEmpty={() => setDiameter(null)}
@@ -172,7 +174,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 							optional
 						/>
 						<NumberInput
-							label="Lengde (cm)"
+							label={t['arrowsForm.length']}
 							value={length ?? 0}
 							onChange={(v) => setLength(v)}
 							onEmpty={() => setLength(null)}
@@ -185,7 +187,7 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 					</div>
 					<div className={styles.grid}>
 						<NumberInput
-							label="Vekt (gram)"
+							label={t['arrowsForm.weight']}
 							value={weight ?? 0}
 							onChange={(v) => setWeight(v)}
 							onEmpty={() => setWeight(null)}
@@ -195,12 +197,12 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 							emptyBehavior="ignore"
 							optional
 						/>
-						<Input label="Spine" value={spine} onChange={(e) => setSpine(e.target.value)} optional />
+						<Input label={t['arrowsForm.spine']} value={spine} onChange={(e) => setSpine(e.target.value)} optional />
 					</div>
 					<div className={styles.grid}>
-						<Input label="Pilspiss type" value={pointType} onChange={(e) => setPointType(e.target.value)} optional />
+						<Input label={t['arrowsForm.pointType']} value={pointType} onChange={(e) => setPointType(e.target.value)} optional />
 						<NumberInput
-							label="Pilspiss vekt (grain)"
+							label={t['arrowsForm.pointWeight']}
 							value={pointWeight ?? 0}
 							onChange={(v) => setPointWeight(v)}
 							onEmpty={() => setPointWeight(null)}
@@ -212,10 +214,10 @@ export function ArrowsForm({ initialValues, onSubmit }: ArrowsFormProps) {
 						/>
 					</div>
 					<div className={styles.grid}>
-						<Input label="Fjær (vanes)" value={vanes} onChange={(e) => setVanes(e.target.value)} optional />
-						<Input label="Nock" value={nock} onChange={(e) => setNock(e.target.value)} optional />
+						<Input label={t['arrowsForm.vanes']} value={vanes} onChange={(e) => setVanes(e.target.value)} optional />
+						<Input label={t['arrowsForm.nock']} value={nock} onChange={(e) => setNock(e.target.value)} optional />
 					</div>
-					<TextArea label="Notater" value={notes} onChange={(e) => setNotes(e.target.value)} helpText="Tilleggsnotater om pilene" optional />
+					<TextArea label={t['arrowsForm.notes']} value={notes} onChange={(e) => setNotes(e.target.value)} helpText={t['arrowsForm.notesHelp']} optional />
 				</div>
 			)}
 		</form>

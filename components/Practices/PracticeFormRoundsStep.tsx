@@ -7,6 +7,7 @@ import type { PracticeCategory } from '@/lib/prismaEnums';
 import { NumberInput, Select } from '@/components';
 import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
 import { type RoundInput, isRangeCategory } from './PracticeFormModal.types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface RoundsStepProps {
 	rounds: RoundInput[];
@@ -17,6 +18,7 @@ interface RoundsStepProps {
 }
 
 export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, practiceCategory, addRound, removeRound, updateRound }) => {
+	const { t } = useTranslation();
 	const rangeCategory = isRangeCategory(practiceCategory);
 
 	return (
@@ -25,9 +27,9 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 				{rounds.map((round, index) => (
 					<div key={index} className={styles.roundCard}>
 						<div className={styles.roundHeader}>
-							<span className={styles.roundNumber}>Runde {index + 1}</span>
+							<span className={styles.roundNumber}>{t['form.round']} {index + 1}</span>
 							{rounds.length > 1 && (
-								<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label="Fjern runde">
+								<button type="button" className={styles.removeRoundBtn} onClick={() => removeRound(index)} aria-label={t['practice.removeRound']}>
 									<LuX size={16} />
 								</button>
 							)}
@@ -37,7 +39,7 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 							{rangeCategory ? (
 								<>
 									<NumberInput
-										label="Fra"
+										label={t['form.from']}
 										value={round.distanceFrom ?? 0}
 										onChange={(v) => updateRound(index, 'distanceFrom', v || undefined)}
 										min={0}
@@ -47,7 +49,7 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 										containerClassName={styles.roundField}
 									/>
 									<NumberInput
-										label="Til"
+										label={t['form.to']}
 										value={round.distanceTo ?? 0}
 										onChange={(v) => updateRound(index, 'distanceTo', v || undefined)}
 										min={0}
@@ -60,7 +62,7 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 							) : (
 								<>
 									<NumberInput
-										label="Avstand"
+										label={t['form.distance']}
 										value={round.distanceMeters ?? 0}
 										onChange={(v) => updateRound(index, 'distanceMeters', v || undefined)}
 										min={0}
@@ -70,10 +72,10 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 										containerClassName={styles.roundField}
 									/>
 									<Select
-										label="Skive"
+										label={t['form.target']}
 										value={round.targetType}
 										onChange={(v) => updateRound(index, 'targetType', v as string)}
-										placeholderLabel="Velg"
+										placeholderLabel={t['form.choose']}
 										searchable
 										options={TARGET_TYPE_OPTIONS}
 										containerClassName={styles.skiveField}
@@ -84,7 +86,7 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 
 						<div className={styles.roundInputs}>
 							<NumberInput
-								label="Piler m/score"
+								label={t['form.arrowsWithScore']}
 								value={round.numberArrows ?? 0}
 								onChange={(v) => updateRound(index, 'numberArrows', v || undefined)}
 								min={0}
@@ -94,7 +96,7 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 								containerClassName={styles.roundField}
 							/>
 							<NumberInput
-								label="Piler / serie"
+								label={t['form.arrowsPerEnd']}
 								value={round.arrowsPerEnd ?? 0}
 								onChange={(v) => updateRound(index, 'arrowsPerEnd', v || undefined)}
 								min={1}
@@ -108,7 +110,7 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 
 						<div className={styles.roundInputs}>
 							<NumberInput
-								label="Score"
+								label={t['form.score']}
 								value={round.roundScore}
 								onChange={(v) => updateRound(index, 'roundScore', v)}
 								min={0}
@@ -118,7 +120,7 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 								containerClassName={styles.roundField}
 							/>
 							<NumberInput
-								label="Piler u/score"
+								label={t['form.arrowsWithoutScore']}
 								value={round.arrowsWithoutScore ?? 0}
 								onChange={(v) => updateRound(index, 'arrowsWithoutScore', v || undefined)}
 								min={0}
@@ -133,9 +135,9 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 
 				<button type="button" className={styles.addRoundBtn} onClick={addRound} disabled={rounds.length >= 20}>
 					<LuPlus size={14} />
-					Legg til runde
+					{t['practice.addRound']}
 				</button>
-				{rounds.length >= 20 && <p className={styles.limitMessage}>Maksimalt 20 runder er tillatt</p>}
+				{rounds.length >= 20 && <p className={styles.limitMessage}>{t['practice.maxRounds']}</p>}
 			</div>
 		</div>
 	);

@@ -5,6 +5,7 @@ import { Checkbox, Input, NumberInput, Select, TextArea, Tooltip } from '@/compo
 import styles from './BowForm.module.css';
 import { BOW_TYPE_OPTIONS } from '@/lib/labels';
 import { LuChevronDown } from 'react-icons/lu';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export type BowType = 'RECURVE' | 'COMPOUND' | 'LONGBOW' | 'BAREBOW' | 'HORSEBOW' | 'TRADITIONAL' | 'OTHER';
 
@@ -32,6 +33,7 @@ interface BowFormProps {
 }
 
 export function BowForm({ initialValues, onSubmit }: BowFormProps) {
+	const { t } = useTranslation();
 	const [name, setName] = React.useState(initialValues.name);
 	const [type, setType] = React.useState<BowType>(initialValues.type);
 	const [eyeToNock, setEyeToNock] = React.useState<number>(initialValues.eyeToNock);
@@ -78,18 +80,18 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 			}}
 		>
 			<div className={styles.row}>
-				<Input label="Navn på bue" value={name} onChange={(e) => setName(e.target.value)} required />
-				<Select label="Type" value={type} onChange={(v) => setType(v as BowType)} options={BOW_TYPE_OPTIONS.map((o) => ({ ...o }))} />
+				<Input label={t['bowForm.nameLabel']} value={name} onChange={(e) => setName(e.target.value)} required />
+				<Select label={t['bowForm.typeLabel']} value={type} onChange={(v) => setType(v as BowType)} options={BOW_TYPE_OPTIONS.map((o) => ({ ...o }))} />
 			</div>
 
-		<Checkbox label="Favorittbue" checked={isFavorite} onChange={setIsFavorite} helpText="Marker som favorittbue" />
+		<Checkbox label={t['bowForm.favoriteLabel']} checked={isFavorite} onChange={setIsFavorite} helpText={t['bowForm.favoriteHelp']} />
 
 		{isRecurveOrCompound && (
 			<>
 			<button type="button" className={styles.advancedToggle} onClick={() => setSightMarksOpen((prev) => !prev)}>
 				<div className={styles.advancedLine} />
 				<div className={styles.advancedLabelWrap}>
-					<span className={styles.advancedLabel}>Siktemerke</span>
+					<span className={styles.advancedLabel}>{t['bowForm.sightMarkSection']}</span>
 					<div className={styles.advancedChevron} style={{ transform: sightMarksOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
 						<LuChevronDown size={14} />
 					</div>
@@ -100,13 +102,13 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 			{sightMarksOpen && (
 				<div className={styles.advancedContent}>
 					<div className={styles.numberRow}>
-						<NumberInput optional label="Øye til nock (cm)" value={eyeToNock} onChange={setEyeToNock} min={0} step={0.01} />
-						<NumberInput optional label="Øye til sikte (cm)" value={eyeToSight} onChange={setEyeToSight} min={0} step={0.01} />
+						<NumberInput optional label={t['bowForm.eyeToNock']} value={eyeToNock} onChange={setEyeToNock} min={0} step={0.01} />
+						<NumberInput optional label={t['bowForm.eyeToSight']} value={eyeToSight} onChange={setEyeToSight} min={0} step={0.01} />
 						<NumberInput
 							label={
 								<span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-									Målt sikte
-									<Tooltip text="Mål hvor langt 5cm er på siktet ditt" label="Hjelp for Målt sikte" />
+									{t['bowForm.aimMeasure']}
+									<Tooltip text={t['bowForm.aimMeasureTooltip']} label={`Hjelp for ${t['bowForm.aimMeasure']}`} />
 								</span>
 							}
 							optional
@@ -124,7 +126,7 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 			<button type="button" className={styles.advancedToggle} onClick={() => setAdvancedOpen((prev) => !prev)}>
 				<div className={styles.advancedLine} />
 				<div className={styles.advancedLabelWrap}>
-					<span className={styles.advancedLabel}>Avansert</span>
+					<span className={styles.advancedLabel}>{t['bowForm.advancedSection']}</span>
 					<div className={styles.advancedChevron} style={{ transform: advancedOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}>
 						<LuChevronDown size={14} />
 					</div>
@@ -136,36 +138,36 @@ export function BowForm({ initialValues, onSubmit }: BowFormProps) {
 				<div className={styles.advancedContent}>
 					{isRecurveOrCompound && (
 						<div className={styles.row}>
-							<Input optional label="Lemmer" value={limbs} onChange={(e) => setLimbs(e.target.value)} />
-							<Input optional label="Midtstykke" value={riser} onChange={(e) => setRiser(e.target.value)} />
+							<Input optional label={t['bowForm.limbs']} value={limbs} onChange={(e) => setLimbs(e.target.value)} />
+							<Input optional label={t['bowForm.riser']} value={riser} onChange={(e) => setRiser(e.target.value)} />
 						</div>
 					)}
 					<div className={styles.numberRow}>
 						<Select
 							optional
-							label="Hånd"
+							label={t['bowForm.hand']}
 							value={handOrientation}
 							onChange={(v) => setHandOrientation(v as 'RH' | 'LH' | '')}
 							options={[
-								{ label: 'Velg hånd', value: '' },
-								{ label: 'Høyre (RH)', value: 'RH' },
-								{ label: 'Venstre (LH)', value: 'LH' },
+								{ label: t['bowForm.handSelect'], value: '' },
+								{ label: t['bowForm.handRight'], value: 'RH' },
+								{ label: t['bowForm.handLeft'], value: 'LH' },
 							]}
 						/>
-						<NumberInput optional label="Styrke (pund)" value={drawWeight} onChange={setDrawWeight} min={0} step={0.5} />
-						<NumberInput optional label="Lengde (tommer)" value={bowLength} onChange={setBowLength} min={0} step={0.5} />
+						<NumberInput optional label={t['bowForm.drawWeight']} value={drawWeight} onChange={setDrawWeight} min={0} step={0.5} />
+						<NumberInput optional label={t['bowForm.bowLength']} value={bowLength} onChange={setBowLength} min={0} step={0.5} />
 					</div>
 					{isRecurveOrCompound && (
 						<div className={styles.numberRow}>
-							<NumberInput optional label="Strenghøyde (cm)" value={braceHeight} onChange={setBraceHeight} min={0} step={0.1} />
-							<NumberInput optional label="Stup (mm)" value={stup} onChange={setStup} step={0.5} />
-							<NumberInput optional label="Tiller (mm)" value={tiller} onChange={setTiller} step={0.5} />
+							<NumberInput optional label={t['bowForm.braceHeight']} value={braceHeight} onChange={setBraceHeight} min={0} step={0.1} />
+							<NumberInput optional label={t['bowForm.stup']} value={stup} onChange={setStup} step={0.5} />
+							<NumberInput optional label={t['bowForm.tiller']} value={tiller} onChange={setTiller} step={0.5} />
 						</div>
 					)}
 				</div>
 			)}
 
-			<TextArea label="Notater" value={notes} onChange={(e) => setNotes(e.target.value)} helpText="Tilleggsnotater om buen" optional />
+			<TextArea label={t['bowForm.notes']} value={notes} onChange={(e) => setNotes(e.target.value)} helpText={t['bowForm.notesHelp']} optional />
 		</form>
 	);
 }

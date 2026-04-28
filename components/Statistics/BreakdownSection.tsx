@@ -1,6 +1,7 @@
 import { LuActivity, LuCalendar, LuCircleCheck, LuStar, LuTarget, LuCircleX, LuTrophy } from 'react-icons/lu';
 import styles from './BreakdownSection.module.css';
 import type { SeriesData } from './types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface BreakdownItem {
 	name: string;
@@ -13,9 +14,11 @@ interface BreakdownSectionProps {
 }
 
 export function BreakdownSection({ items }: BreakdownSectionProps) {
+	const { t } = useTranslation();
+
 	return (
 		<div className={styles.breakdownSection}>
-			<h2 className={styles.sectionTitle}>Oversikt per kombinasjon</h2>
+			<h2 className={styles.sectionTitle}>{t['statistics.breakdownTitle']}</h2>
 			<div className={styles.breakdownGrid}>
 				{items.map((item) => {
 					const totalArrows = item.data.reduce((sum, d) => sum + d.arrows, 0);
@@ -39,45 +42,45 @@ export function BreakdownSection({ items }: BreakdownSectionProps) {
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuCalendar className={styles.statIcon} />
-										<span className={styles.breakdownLabel}>Antall økter</span>
+										<span className={styles.breakdownLabel}>{t['statistics.sessions']}</span>
 									</div>
 									<span className={styles.breakdownValue}>{item.data.length}</span>
 								</div>
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuTarget className={styles.statIcon} />
-										<span className={styles.breakdownLabel}>Antall piler</span>
+										<span className={styles.breakdownLabel}>{t['statistics.arrows']}</span>
 									</div>
 									<span className={styles.breakdownValue}>{totalArrows}</span>
 								</div>
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuCircleCheck className={styles.statIcon} />
-										<span className={styles.breakdownLabel}>Piler med score</span>
+										<span className={styles.breakdownLabel}>{t['statistics.arrowsWithScore']}</span>
 									</div>
 									<span className={styles.breakdownValue}>{percentScored} %</span>
 								</div>
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuCircleX className={styles.statIcon} />
-										<span className={styles.breakdownLabel}>Piler uten score</span>
+										<span className={styles.breakdownLabel}>{t['statistics.arrowsWithoutScore']}</span>
 									</div>
 									<span className={styles.breakdownValue}>{percentUnscored} %</span>
 								</div>
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuActivity className={styles.statIcon} />
-										<span className={styles.breakdownLabel}>Piler per økt</span>
+										<span className={styles.breakdownLabel}>{t['statistics.arrowsPerSession']}</span>
 									</div>
 									<span className={styles.breakdownValue}>{avgArrows}</span>
 								</div>
 								<div className={styles.breakdownStat}>
 									<div className={styles.statLabelWrapper}>
 										<LuStar className={styles.statIcon} />
-										<span className={styles.breakdownLabel}>Gj score</span>
+										<span className={styles.breakdownLabel}>{t['statistics.avgScore']}</span>
 									</div>
 									<span className={styles.breakdownValue}>
-										{avgScore} <span className={styles.unit}>pr pil</span>
+										{avgScore} <span className={styles.unit}>{t['statistics.perArrow']}</span>
 									</span>
 								</div>
 							</div>

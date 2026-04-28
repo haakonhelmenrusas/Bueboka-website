@@ -10,6 +10,7 @@ import { getArrowMaterialLabel, getBowTypeLabel } from '@/lib/labels';
 import { PiStar } from 'react-icons/pi';
 import { EquipmentListSkeleton } from './EquipmentSkeleton';
 import { onEquipmentChanged } from '@/lib/events';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export interface EquipmentSectionProps {
 	bows?: Bow[];
@@ -30,6 +31,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 	onSelectArrows,
 	onDataReady,
 }) => {
+	const { t } = useTranslation();
 	const managed = bowsProp === undefined || arrowsProp === undefined;
 	const equipment = useEquipmentData();
 
@@ -55,9 +57,9 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 	}, [managed, onDataReady, equipment.refresh]);
 
 	return (
-		<section className={styles.section} aria-label="Utstyr">
+		<section className={styles.section} aria-label={t['equipment.title']}>
 			<div className={styles.header}>
-				<h2 className={styles.title}>Utstyr</h2>
+				<h2 className={styles.title}>{t['equipment.title']}</h2>
 			</div>
 
 			<div className={styles.grid}>
@@ -72,7 +74,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 									type="button"
 									className={styles.item}
 									onClick={() => onSelectBow(bow)}
-									aria-label={`Rediger bue: ${bow.name}, ${getBowTypeLabel(bow.type)}${bow.isFavorite ? ', favoritt' : ''}`}
+									aria-label={`${t['equipment.editBow']} ${bow.name}, ${getBowTypeLabel(bow.type)}${bow.isFavorite ? t['equipment.favorite'] : ''}`}
 									role="listitem"
 								>
 									<div className={styles.itemIcon} aria-hidden="true">
@@ -89,20 +91,20 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 										</div>
 										<div className={styles.itemMeta}>
 										{getBowTypeLabel(bow.type)}
-										{typeof bow.braceHeight === 'number' ? ` • ${formatOneDecimal(bow.braceHeight)}cm strenghøyde` : ''}
+										{typeof bow.braceHeight === 'number' ? ` • ${formatOneDecimal(bow.braceHeight)}cm ${t['equipment.stringHeight']}` : ''}
 									</div>
 									</div>
 								</button>
 							))
 						) : (
 							<div className={styles.placeholder} role="status">
-								Ingen buer funnet
+								{t['equipment.noBows']}
 							</div>
 						)}
 					</div>
 				</div>
 				<div>
-					{arrows.length >= 5 && <div className={styles.limitMessage}>Maksimalt 5 pilsett tillatt</div>}
+					{arrows.length >= 5 && <div className={styles.limitMessage}>{t['equipment.maxArrowSets']}</div>}
 					<div className={styles.list} role="list">
 						{isLoading ? (
 							<EquipmentListSkeleton count={2} />
@@ -113,7 +115,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 									type="button"
 									className={styles.item}
 									onClick={() => onSelectArrows(a)}
-									aria-label={`Rediger pilsett: ${a.name}, ${getArrowMaterialLabel(a.material)}${a.isFavorite ? ', favoritt' : ''}`}
+									aria-label={`${t['equipment.editArrows']} ${a.name}, ${getArrowMaterialLabel(a.material)}${a.isFavorite ? t['equipment.favorite'] : ''}`}
 									role="listitem"
 								>
 									<div className={styles.itemIcon} aria-hidden="true">
@@ -138,7 +140,7 @@ export const EquipmentSection: React.FC<EquipmentSectionProps> = ({
 							))
 						) : (
 							<div className={styles.placeholder} role="status">
-								Legg til dine første piler
+								{t['equipment.addFirstArrows']}
 							</div>
 						)}
 					</div>

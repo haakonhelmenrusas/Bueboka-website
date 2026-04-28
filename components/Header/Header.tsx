@@ -12,6 +12,19 @@ import { useTranslation } from '@/context/LanguageProvider';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher/LanguageSwitcher';
 import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
 
+function MenuIcon({ open }: { open: boolean }) {
+	return (
+		<span className={styles.menuIcon} aria-hidden="true">
+			<span className={`${styles.iconSlot} ${open ? styles.iconSlotHidden : ''}`}>
+				<LuMenu size={18} />
+			</span>
+			<span className={`${styles.iconSlot} ${!open ? styles.iconSlotHidden : ''}`}>
+				<LuX size={18} />
+			</span>
+		</span>
+	);
+}
+
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -51,7 +64,6 @@ export function Header() {
 			await signOut();
 			closeProfileMenu();
 			closeMobileMenu();
-			// navigate to front page after logout
 			router.push('/');
 		} catch (err) {
 			console.error('Logout failed', err);
@@ -71,17 +83,13 @@ export function Header() {
 	};
 
 	const handleLogoClick = (e: React.MouseEvent) => {
-		// Only prevent default navigation if we're on the homepage and trying to go to homepage
-		// This allows smooth scrolling on homepage, but normal navigation from auth pages
 		if (pathname === '/' && logoHref === '/') {
 			e.preventDefault();
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		// For all other cases (like /logg-inn -> /), let the normal Link navigation happen
 	};
 
 	const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
-		// Only prevent default if we're already on the homepage
 		if (pathname === '/') {
 			e.preventDefault();
 			const element = document.querySelector(hash);
@@ -92,7 +100,6 @@ export function Header() {
 		closeMobileMenu();
 	};
 
-	// Use custom hooks for better separation of concerns
 	const handleClickOutside = useCallback(() => {
 		closeProfileMenu();
 	}, []);
@@ -115,6 +122,7 @@ export function Header() {
 						</div>
 						<span className={styles.brand}>Bueboka</span>
 					</Link>
+
 					<nav className={styles.desktopNav} aria-label="Primary">
 						{!isAuthPage && (
 							<>
@@ -131,57 +139,16 @@ export function Header() {
 						)}
 						{session?.user ? (
 							<div className={styles.profileMenuWrapper}>
-								{!isAuthPage && (
-									<Link href="/min-side" className={styles.navLink} aria-label={t['nav.goDashboard']}>
-										{session.user.image ? (
-											<Image
-												src={session.user.image}
-												alt={session.user.name || 'User avatar'}
-												width={32}
-												height={32}
-												className={styles.userAvatar}
-											/>
-										) : (
-											<LuUser size={32} />
-										)}
-									</Link>
-								)}
-								<Link
-									href="/aktivitet"
-									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/aktivitet' ? styles.navLinkActive : ''}`}
-								>
-									<LuActivity size={16} />
-									{t['nav.activity']}
-								</Link>
-								<Link
-									href="/skyttere"
-									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/skyttere' || pathname.startsWith('/skyttere/') ? styles.navLinkActive : ''}`}
-								>
-									<LuUsers size={16} />
-									{t['nav.archers']}
-								</Link>
-								<Link
-									href="/siktemerker"
-									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/siktemerker' ? styles.navLinkActive : ''}`}
-								>
-									<LuCalculator size={16} />
-									{t['nav.sightMarks']}
-								</Link>
-								<button className={`${styles.navButton} ${styles.navLinkIcon}`} onClick={handleFeedbackClick}>
-									<LuMessageSquare size={16} />
-									{t['nav.feedback']}
-								</button>
 								<button
 									aria-label={t['nav.openProfileMenu']}
-									className={`${styles.profileMenuButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
+									className={styles.menuButton}
 									onClick={toggleProfileMenu}
 									aria-haspopup="true"
 									aria-expanded={profileMenuOpen}
 									aria-controls="profile-menu"
 								>
-									<span className={styles.hamburgerBox}>
-										<span className={styles.hamburgerInner} />
-									</span>
+									<MenuIcon open={profileMenuOpen} />
+									<span className={styles.menuButtonLabel}>Meny</span>
 								</button>
 							</div>
 						) : (
@@ -198,6 +165,7 @@ export function Header() {
 							)
 						)}
 					</nav>
+
 					{!session?.user && (
 						<button
 							onClick={toggleMobileMenu}
@@ -209,40 +177,47 @@ export function Header() {
 							{mobileMenuOpen ? <LuX size={24} /> : <LuMenu size={24} />}
 						</button>
 					)}
+
 					{session?.user && (
 						<div className={styles.profileMenuContainer}>
 							<button
-								className={`${styles.profileMenuButton} ${styles.mobileProfileButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
+								className={`${styles.menuButton} ${styles.mobileProfileButton}`}
 								onClick={toggleProfileMenu}
 								aria-label={t['nav.openProfileMenu']}
 								aria-haspopup="true"
 								aria-expanded={profileMenuOpen}
 							>
-								<span className={styles.hamburgerBox}>
-									<span className={styles.hamburgerInner} />
-								</span>
+								<MenuIcon open={profileMenuOpen} />
+								<span className={styles.menuButtonLabel}>Meny</span>
 							</button>
+
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
-									<div className={styles.profileMenuNavSection}>
-										<Link href="/aktivitet" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
-											<LuActivity size={16} />
-											<span>{t['nav.activity']}</span>
+									{!isAuthPage && (
+										<Link href="/min-side" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+											<LuUser size={16} />
+											<span>{t['nav.myPage']}</span>
 										</Link>
-										<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
-											<LuUsers size={16} />
-											<span>{t['nav.archers']}</span>
-										</Link>
-										<Link href="/siktemerker" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
-											<LuCalculator size={16} />
-											<span>{t['nav.sightMarks']}</span>
-										</Link>
-										<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
-											<LuMessageSquare size={16} />
-											<span>{t['nav.feedback']}</span>
-										</button>
-										<div className={styles.profileMenuDivider} role="separator" />
-									</div>
+									)}
+									<Link href="/aktivitet" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuActivity size={16} />
+										<span>{t['nav.activity']}</span>
+									</Link>
+									<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuUsers size={16} />
+										<span>{t['nav.archers']}</span>
+									</Link>
+									<Link href="/siktemerker" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuCalculator size={16} />
+										<span>{t['nav.sightMarks']}</span>
+									</Link>
+									<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
+										<LuMessageSquare size={16} />
+										<span>{t['nav.feedback']}</span>
+									</button>
+									<div className={styles.profileMenuDivider} role="separator" />
+									<LanguageSwitcher variant="light" />
+									<div className={styles.profileMenuDivider} role="separator" />
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<LuSettings size={16} />
 										<span>{t['nav.settings']}</span>
@@ -257,7 +232,7 @@ export function Header() {
 					)}
 				</div>
 
-				{/* Mobile Navigation */}
+				{/* Mobile Navigation (unauthenticated only) */}
 				<nav id="mobile-menu" className={`${styles.mobileNav} ${mobileMenuOpen ? styles.mobileNavOpen : ''}`}>
 					<div className={styles.mobileLinks}>
 						{!isAuthPage && (
@@ -273,42 +248,16 @@ export function Header() {
 								</Link>
 							</>
 						)}
-						{session?.user ? (
+						{!isAuthPage && (
 							<>
-								{!isAuthPage && (
-									<Link href="/min-side" onClick={closeMobileMenu} className={styles.mobileLink}>
-										{t['nav.myPage']}
-									</Link>
-								)}
-								<Link href="/aktivitet" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
-									<LuActivity size={16} />
-									{t['nav.activity']}
+								<LanguageSwitcher />
+								<Link href="/logg-inn" onClick={closeMobileMenu} className={styles.mobileLink}>
+									{t['nav.login']}
 								</Link>
-								<Link href="/skyttere" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
-									<LuUsers size={16} />
-									{t['nav.archers']}
+								<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
+									{t['nav.register']}
 								</Link>
-								<Link href="/siktemerker" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
-									<LuCalculator size={16} />
-									{t['nav.sightMarks']}
-								</Link>
-								<button className={`${styles.mobileLinkButton} ${styles.mobileLinkIcon}`} onClick={handleFeedbackClick}>
-									<LuMessageSquare size={16} />
-									{t['nav.feedback']}
-								</button>
 							</>
-						) : (
-							!isAuthPage && (
-								<>
-									<LanguageSwitcher />
-									<Link href="/logg-inn" onClick={closeMobileMenu} className={styles.mobileLink}>
-										{t['nav.login']}
-									</Link>
-									<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
-										{t['nav.register']}
-									</Link>
-								</>
-							)
 						)}
 					</div>
 				</nav>

@@ -7,6 +7,7 @@ import { SessionShareCard } from './SessionShareCard';
 import type { SessionShareData } from './SessionShareCard';
 import styles from './SessionShareModal.module.css';
 import { LuDownload, LuCopy, LuCheck } from 'react-icons/lu';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface SessionShareModalProps {
 	open: boolean;
@@ -15,6 +16,7 @@ interface SessionShareModalProps {
 }
 
 export const SessionShareModal: React.FC<SessionShareModalProps> = ({ open, onClose, data }) => {
+	const { t } = useTranslation();
 	useModalBehavior({ open, onClose });
 
 	const captureRef = useRef<HTMLDivElement>(null);
@@ -26,8 +28,6 @@ export const SessionShareModal: React.FC<SessionShareModalProps> = ({ open, onCl
 		if (!captureRef.current) return null;
 		const { toPng } = await import('html-to-image');
 		const el = captureRef.current;
-		// Use scrollWidth/scrollHeight so the full card is captured on mobile,
-		// even when the element is inside a scrollable modal that may constrain clientHeight.
 		const dataUrl = await toPng(el, {
 			pixelRatio: 2,
 			cacheBust: true,
@@ -51,8 +51,8 @@ export const SessionShareModal: React.FC<SessionShareModalProps> = ({ open, onCl
 			a.click();
 			URL.revokeObjectURL(url);
 		} catch (err) {
-			console.error('Nedlasting feilet:', err);
-			alert('Kunne ikke laste ned bildet. Prøv igjen.');
+			console.error('Download failed:', err);
+			alert(t['shareModal.downloadError']);
 		} finally {
 			setDownloading(false);
 		}
@@ -64,13 +64,11 @@ export const SessionShareModal: React.FC<SessionShareModalProps> = ({ open, onCl
 			const blob = await captureImage();
 			if (!blob) return;
 
-			// Try native clipboard API first (Chrome/Edge)
 			if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
 				await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
 				setCopied(true);
 				setTimeout(() => setCopied(false), 2500);
 			} else {
-				// Fallback: trigger download instead
 				const url = URL.createObjectURL(blob);
 				const a = document.createElement('a');
 				a.href = url;
@@ -78,29 +76,27 @@ export const SessionShareModal: React.FC<SessionShareModalProps> = ({ open, onCl
 				a.download = `bueboka-okting-${dateStr}.png`;
 				a.click();
 				URL.revokeObjectURL(url);
-				alert('Bildet ble lastet ned (utklippstavle ikke tilgjengelig i denne nettleseren).');
+				alert(t['shareModal.copyFallback']);
 			}
 		} catch (err) {
-			console.error('Kopiering feilet:', err);
-			alert('Kunne ikke kopiere bildet. Prøv «Last ned» i stedet.');
+			console.error('Copy failed:', err);
+			alert(t['shareModal.copyError']);
 		} finally {
 			setCopying(false);
 		}
 	};
 
 	return (
-		<Modal open={open} onClose={onClose} title="Del økt" maxWidth={540} panelStyle={{ padding: '24px', gap: '20px' }}>
-			<p className={styles.hint}>Last ned eller kopier ditt personlige sammendrag.</p>
+		<Modal open={open} onClose={onClose} title={t['shareModal.title']} maxWidth={540} panelStyle={{ padding: '24px', gap: '20px' }}>
+			<p className={styles.hint}>{t['shareModal.hint']}</p>
 
-			{/* Card preview */}
 			<div className={styles.cardWrapper}>
 				<SessionShareCard ref={captureRef} data={data} />
 			</div>
 
-			{/* Actions */}
 			<div className={styles.actions}>
 				<Button
-					label={copying ? 'Kopierer…' : copied ? 'Kopiert!' : 'Kopier til utklippstavle'}
+					label={copying ? t['shareModal.copying'] : copied ? t['shareModal.copied'] : t['shareModal.copy']}
 					onClick={handleCopy}
 					disabled={copying || downloading}
 					buttonType="outline"
@@ -108,7 +104,7 @@ export const SessionShareModal: React.FC<SessionShareModalProps> = ({ open, onCl
 					width="100%"
 				/>
 				<Button
-					label={downloading ? 'Laster ned…' : 'Last ned som bilde'}
+					label={downloading ? t['shareModal.downloading'] : t['shareModal.download']}
 					onClick={handleDownload}
 					disabled={downloading || copying}
 					icon={<LuDownload size={18} />}

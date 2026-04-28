@@ -6,6 +6,7 @@ import { LuX } from 'react-icons/lu';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { ConfirmModal, Modal } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 import { type PracticeFormInput, type RoundInput, emptyRound } from './PracticeFormModal.types';
 import { PracticeFormStepIndicator } from './PracticeFormStepIndicator';
 import { PracticeFormInfoStep } from './PracticeFormInfoStep';
@@ -85,6 +86,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
 
+	const { t } = useTranslation();
 	const isEditMode = mode === 'edit';
 
 	// ─── Init form on open ───────────────────────────────────────────────────
@@ -223,11 +225,11 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 		setDeleting(true);
 		try {
 			const res = await fetch(`/api/practices/${practice.id}`, { method: 'DELETE' });
-			if (!res.ok) throw new Error('Kunne ikke slette trening');
+			if (!res.ok) throw new Error(t['practice.deleteError']);
 			onDeleted?.(practice.id);
 			onClose();
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Kunne ikke slette trening');
+			setError(err instanceof Error ? err.message : t['practice.deleteError']);
 		} finally {
 			setDeleting(false);
 			setConfirmDeleteOpen(false);
@@ -276,7 +278,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 			});
 			onClose();
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Kunne ikke lagre trening.');
+			setError(err instanceof Error ? err.message : t['practice.saveError']);
 		} finally {
 			setSubmitting(false);
 		}
@@ -285,7 +287,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 	if (!open) return null;
 
 	const isFormValid = !!date;
-	const title = isEditMode ? 'Rediger trening' : 'Ny trening';
+	const title = isEditMode ? t['practice.editTitle'] : t['practice.newTitle'];
 
 	return (
 		<>
@@ -303,7 +305,7 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 					{/* Header */}
 					<div className={styles.wizardHeader}>
 						<h2 className={styles.wizardTitle}>{title}</h2>
-						<button type="button" className={styles.closeBtn} onClick={handleCloseRequest} aria-label="Lukk">
+						<button type="button" className={styles.closeBtn} onClick={handleCloseRequest} aria-label={t['common.close']}>
 							<LuX size={20} />
 						</button>
 					</div>
@@ -367,10 +369,10 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 				open={confirmDeleteOpen}
 				onClose={() => setConfirmDeleteOpen(false)}
 				onConfirm={handleDelete}
-				title="Slett trening"
-				message="Er du sikker på at du vil slette denne treningen? Handlingen kan ikke angres."
-				confirmLabel="Slett"
-				cancelLabel="Avbryt"
+				title={t['practice.deleteConfirmTitle']}
+				message={t['practice.deleteConfirmMessage']}
+				confirmLabel={t['common.delete']}
+				cancelLabel={t['common.cancel']}
 				variant="danger"
 				isLoading={deleting}
 			/>
@@ -382,10 +384,10 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 					setConfirmDiscardOpen(false);
 					onClose();
 				}}
-				title="Forkast endringer"
-				message="Er du sikker på at du vil avbryte? Endringene du har gjort vil ikke bli lagret."
-				confirmLabel="Forkast"
-				cancelLabel="Fortsett"
+				title={t['practice.discardTitle']}
+				message={t['practice.discardMessage']}
+				confirmLabel={t['practice.discardConfirm']}
+				cancelLabel={t['common.continue']}
 				variant="danger"
 			/>
 		</>

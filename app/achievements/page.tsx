@@ -6,6 +6,7 @@ import { LuArrowLeft, LuTrophy } from 'react-icons/lu';
 import { Button, Footer, Header } from '@/components';
 import { AchievementBadge } from '@/components/Achievements/AchievementBadge';
 import { AchievementProgress } from '@/lib/achievements/types';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './page.module.css';
 
 interface AchievementData {
@@ -23,6 +24,7 @@ type FilterCategory = 'all' | 'MILESTONE' | 'STREAK' | 'PERFORMANCE' | 'COMPETIT
 type FilterRarity = 'all' | 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY';
 
 export default function AchievementsPage() {
+	const { t } = useTranslation();
 	const [data, setData] = useState<AchievementData | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -46,13 +48,13 @@ export default function AchievementsPage() {
 			}
 
 			if (!response.ok) {
-				throw new Error('Kunne ikke hente merker');
+				throw new Error(t['common.error']);
 			}
 
 			const result = await response.json();
 			setData(result);
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'En feil oppstod');
+			setError(err instanceof Error ? err.message : t['common.error']);
 		} finally {
 			setLoading(false);
 		}
@@ -60,16 +62,10 @@ export default function AchievementsPage() {
 
 	const filteredAchievements =
 		data?.achievements.filter((achievement) => {
-			// Filter by status
 			if (filterStatus === 'unlocked' && !achievement.isUnlocked) return false;
 			if (filterStatus === 'locked' && achievement.isUnlocked) return false;
-
-			// Filter by category
 			if (filterCategory !== 'all' && achievement.achievement.category !== filterCategory) return false;
-
-			// Filter by rarity
 			if (filterRarity !== 'all' && achievement.achievement.rarity !== filterRarity) return false;
-
 			return true;
 		}) || [];
 
@@ -81,7 +77,7 @@ export default function AchievementsPage() {
 					<div className={styles.container}>
 						<div className={styles.loading}>
 							<div className={styles.spinner} />
-							<p>Laster prestasjoner...</p>
+							<p>{t['achievements.loading']}</p>
 						</div>
 					</div>
 				</main>
@@ -112,130 +108,127 @@ export default function AchievementsPage() {
 			<main className={styles.page}>
 				<div className={styles.container}>
 					<div className={styles.backButtonContainer}>
-						<Button label="Tilbake" onClick={() => router.back()} icon={<LuArrowLeft size={18} />} size="small" buttonType="outline" />
+						<Button label={t['achievements.back']} onClick={() => router.back()} icon={<LuArrowLeft size={18} />} size="small" buttonType="outline" />
 					</div>
 					<div className={styles.header}>
 						<h1 className={styles.title}>
 							<LuTrophy size={40} />
-							Mine prestasjoner
+							{t['achievements.title']}
 						</h1>
-						<p className={styles.subtitle}>Lås opp prestasjoner ved å trene og delta i konkurranser</p>
+						<p className={styles.subtitle}>{t['achievements.subtitle']}</p>
 					</div>
 					<div className={styles.summaryGrid}>
 						<div className={styles.summaryCard}>
-							<h3>Låst Opp</h3>
+							<h3>{t['achievements.unlocked']}</h3>
 							<p className={styles.value}>{data.summary.totalUnlocked}</p>
 						</div>
 						<div className={styles.summaryCard}>
-							<h3>Totalt</h3>
+							<h3>{t['achievements.total']}</h3>
 							<p className={styles.value}>{data.summary.totalAchievements}</p>
 						</div>
 						<div className={styles.summaryCard}>
-							<h3>Fullført</h3>
+							<h3>{t['achievements.completed']}</h3>
 							<p className={styles.value}>{data.summary.completionPercentage}%</p>
 						</div>
 						<div className={styles.summaryCard}>
-							<h3>Poeng</h3>
+							<h3>{t['achievements.points']}</h3>
 							<p className={styles.value}>{data.summary.totalPoints}</p>
 						</div>
 					</div>
 					<div className={styles.filters}>
 						<div className={styles.filterGroup}>
-							<span className={styles.filterLabel}>Status:</span>
+							<span className={styles.filterLabel}>{t['achievements.statusFilter']}</span>
 							<div className={styles.filterButtons}>
-								<button
-									className={`${styles.filterButton} ${filterStatus === 'all' ? styles.active : ''}`}
-									onClick={() => setFilterStatus('all')}
-								>
-									Alle
+								<button className={`${styles.filterButton} ${filterStatus === 'all' ? styles.active : ''}`} onClick={() => setFilterStatus('all')}>
+									{t['achievements.filterAll']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterStatus === 'unlocked' ? styles.active : ''}`}
 									onClick={() => setFilterStatus('unlocked')}
 								>
-									Låst Opp
+									{t['achievements.filterUnlocked']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterStatus === 'locked' ? styles.active : ''}`}
 									onClick={() => setFilterStatus('locked')}
 								>
-									Låst
+									{t['achievements.filterLocked']}
 								</button>
 							</div>
 						</div>
 						<div className={styles.filterGroup}>
-							<span className={styles.filterLabel}>Kategori:</span>
+							<span className={styles.filterLabel}>{t['achievements.categoryFilter']}</span>
 							<div className={styles.filterButtons}>
 								<button
 									className={`${styles.filterButton} ${filterCategory === 'all' ? styles.active : ''}`}
 									onClick={() => setFilterCategory('all')}
 								>
-									Alle
+									{t['achievements.filterAll']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterCategory === 'MILESTONE' ? styles.active : ''}`}
 									onClick={() => setFilterCategory('MILESTONE')}
 								>
-									Milepæler
+									{t['achievements.categoryMilestone']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterCategory === 'STREAK' ? styles.active : ''}`}
 									onClick={() => setFilterCategory('STREAK')}
 								>
-									Rekker
+									{t['achievements.categoryStreak']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterCategory === 'PERFORMANCE' ? styles.active : ''}`}
 									onClick={() => setFilterCategory('PERFORMANCE')}
 								>
-									Prestasjon
+									{t['achievements.categoryPerformance']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterCategory === 'COMPETITION' ? styles.active : ''}`}
 									onClick={() => setFilterCategory('COMPETITION')}
 								>
-									Konkurranse
+									{t['achievements.categoryCompetition']}
 								</button>
 							</div>
 						</div>
 						<div className={styles.filterGroup}>
-							<span className={styles.filterLabel}>Sjeldenhet:</span>
+							<span className={styles.filterLabel}>{t['achievements.rarityFilter']}</span>
 							<div className={styles.filterButtons}>
 								<button
 									className={`${styles.filterButton} ${filterRarity === 'all' ? styles.active : ''}`}
 									onClick={() => setFilterRarity('all')}
 								>
-									Alle
+									{t['achievements.filterAll']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterRarity === 'COMMON' ? styles.active : ''}`}
 									onClick={() => setFilterRarity('COMMON')}
 								>
-									Vanlig
+									{t['achievements.rarityCommon']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterRarity === 'UNCOMMON' ? styles.active : ''}`}
 									onClick={() => setFilterRarity('UNCOMMON')}
 								>
-									Uvanlig
+									{t['achievements.rarityUncommon']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterRarity === 'RARE' ? styles.active : ''}`}
 									onClick={() => setFilterRarity('RARE')}
 								>
-									Sjelden
+									{t['achievements.rarityRare']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterRarity === 'EPIC' ? styles.active : ''}`}
 									onClick={() => setFilterRarity('EPIC')}
 								>
-									Episk
+									{t['achievements.rarityEpic']}
 								</button>
 								<button
 									className={`${styles.filterButton} ${filterRarity === 'LEGENDARY' ? styles.active : ''}`}
 									onClick={() => setFilterRarity('LEGENDARY')}
 								>
-									Legendarisk
+									{t['achievements.rarityLegendary']}
 								</button>
 							</div>
 						</div>
@@ -248,8 +241,8 @@ export default function AchievementsPage() {
 						</div>
 					) : (
 						<div className={styles.empty}>
-							<h3>Ingen merker funnet</h3>
-							<p>Prøv å endre filtrene dine</p>
+							<h3>{t['achievements.noResults']}</h3>
+							<p>{t['achievements.noResultsHint']}</p>
 						</div>
 					)}
 				</div>

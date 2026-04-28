@@ -4,6 +4,7 @@ import React from 'react';
 import styles from './CompetitionFormModal.module.css';
 import { LuTrophy } from 'react-icons/lu';
 import { Checkbox, NumberInput } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ResultStepProps {
 	placement: number | null;
@@ -21,40 +22,43 @@ export const CompetitionFormResultStep: React.FC<ResultStepProps> = ({
 	setNumberOfParticipants,
 	personalBest,
 	setPersonalBest,
-}) => (
-	<div className={styles.stepContent}>
-		<div className={styles.resultSection}>
-			<div className={styles.resultLabel}>
-				<LuTrophy size={18} />
-				Plassering
+}) => {
+	const { t } = useTranslation();
+	return (
+		<div className={styles.stepContent}>
+			<div className={styles.resultSection}>
+				<div className={styles.resultLabel}>
+					<LuTrophy size={18} />
+					{t['competition.placementLabel']}
+				</div>
+				<p className={styles.resultHelpText}>{t['competition.placementHeading']}</p>
+				<div className={styles.row}>
+					<NumberInput
+						label={t['competition.placementLabel']}
+						value={placement ?? 0}
+						onChange={(v) => setPlacement(v || null)}
+						onEmpty={() => setPlacement(null)}
+						min={1}
+						helpText={t['competition.placementHelp']}
+						startEmpty
+						optional
+						containerClassName={styles.field}
+					/>
+					<NumberInput
+						label={t['competition.participantsLabel']}
+						value={numberOfParticipants ?? 0}
+						onChange={(v) => setNumberOfParticipants(v || null)}
+						onEmpty={() => setNumberOfParticipants(null)}
+						min={1}
+						helpText={t['competition.participantsHelp']}
+						startEmpty
+						optional
+						containerClassName={styles.field}
+					/>
+				</div>
 			</div>
-			<p className={styles.resultHelpText}>Fyll inn din plassering og antall deltakere i din klasse.</p>
-			<div className={styles.row}>
-				<NumberInput
-					label="Plassering"
-					value={placement ?? 0}
-					onChange={(v) => setPlacement(v || null)}
-					onEmpty={() => setPlacement(null)}
-					min={1}
-					helpText="Din plassering"
-					startEmpty
-					optional
-					containerClassName={styles.field}
-				/>
-				<NumberInput
-					label="Antall deltakere"
-					value={numberOfParticipants ?? 0}
-					onChange={(v) => setNumberOfParticipants(v || null)}
-					onEmpty={() => setNumberOfParticipants(null)}
-					min={1}
-					helpText="Totalt antall"
-					startEmpty
-					optional
-					containerClassName={styles.field}
-				/>
-			</div>
-		</div>
 
-		<Checkbox label="Personlig rekord" checked={personalBest} onChange={setPersonalBest} />
-	</div>
-);
+			<Checkbox label={t['competition.personalBest']} checked={personalBest} onChange={setPersonalBest} />
+		</div>
+	);
+};
