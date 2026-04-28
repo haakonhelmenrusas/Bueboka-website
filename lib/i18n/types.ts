@@ -114,6 +114,7 @@ export interface TranslationKeys {
   'settings.editProfile': string;
   'settings.makePublic': string;
   'settings.makePublicHelp': string;
+  'settings.choosePublicFields': string;
   'settings.back': string;
   'settings.deleting': string;
 

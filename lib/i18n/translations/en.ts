@@ -114,6 +114,7 @@ export const en: TranslationKeys = {
   'settings.editProfile': 'Edit profile',
   'settings.makePublic': 'Public profile',
   'settings.makePublicHelp': 'Make your profile visible to other users',
+  'settings.choosePublicFields': 'Choose what is shown publicly:',
   'settings.back': 'Back',
   'settings.deleting': 'Deleting...',
 
