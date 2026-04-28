@@ -8,12 +8,15 @@ import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
+import { useTranslation } from '@/context/LanguageProvider';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher/LanguageSwitcher';
 import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 	const { openFeedback } = useFeedback();
+	const { t } = useTranslation();
 	const { data: session } = useSession();
 	const router = useRouter();
 	const pathname = usePathname();
@@ -116,20 +119,20 @@ export function Header() {
 						{!isAuthPage && (
 							<>
 								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.navLink}>
-									Felleskap
+									{t['nav.community']}
 								</Link>
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.navLink}>
-									Team
+									{t['nav.team']}
 								</Link>
 								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.navLink}>
-									Støtt oss
+									{t['nav.support']}
 								</Link>
 							</>
 						)}
 						{session?.user ? (
 							<div className={styles.profileMenuWrapper}>
 								{!isAuthPage && (
-									<Link href="/min-side" className={styles.navLink} aria-label="Go to dashboard">
+									<Link href="/min-side" className={styles.navLink} aria-label={t['nav.goDashboard']}>
 										{session.user.image ? (
 											<Image
 												src={session.user.image}
@@ -148,28 +151,28 @@ export function Header() {
 									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/aktivitet' ? styles.navLinkActive : ''}`}
 								>
 									<LuActivity size={16} />
-									Aktivitet
+									{t['nav.activity']}
 								</Link>
 								<Link
 									href="/skyttere"
 									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/skyttere' || pathname.startsWith('/skyttere/') ? styles.navLinkActive : ''}`}
 								>
 									<LuUsers size={16} />
-									Skyttere
+									{t['nav.archers']}
 								</Link>
 								<Link
 									href="/siktemerker"
 									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/siktemerker' ? styles.navLinkActive : ''}`}
 								>
 									<LuCalculator size={16} />
-									Siktemerker
+									{t['nav.sightMarks']}
 								</Link>
 								<button className={`${styles.navButton} ${styles.navLinkIcon}`} onClick={handleFeedbackClick}>
 									<LuMessageSquare size={16} />
-									Tilbakemelding
+									{t['nav.feedback']}
 								</button>
 								<button
-									aria-label="Åpne profil menu"
+									aria-label={t['nav.openProfileMenu']}
 									className={`${styles.profileMenuButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 									onClick={toggleProfileMenu}
 									aria-haspopup="true"
@@ -184,11 +187,12 @@ export function Header() {
 						) : (
 							!isAuthPage && (
 								<div className={styles.authButtons}>
+									<LanguageSwitcher />
 									<Link href="/logg-inn" className={styles.authButton}>
-										Logg inn
+										{t['nav.login']}
 									</Link>
 									<Link href="/ny-bruker" className={styles.authButtonPrimary}>
-										Opprett bruker
+										{t['nav.register']}
 									</Link>
 								</div>
 							)
@@ -198,7 +202,7 @@ export function Header() {
 						<button
 							onClick={toggleMobileMenu}
 							className={styles.mobileButton}
-							aria-label="Toggle mobile menu"
+							aria-label={t['nav.toggleMobileMenu']}
 							aria-expanded={mobileMenuOpen}
 							aria-controls="mobile-menu"
 						>
@@ -210,7 +214,7 @@ export function Header() {
 							<button
 								className={`${styles.profileMenuButton} ${styles.mobileProfileButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
 								onClick={toggleProfileMenu}
-								aria-labelledby="Åpne profil menu"
+								aria-label={t['nav.openProfileMenu']}
 								aria-haspopup="true"
 								aria-expanded={profileMenuOpen}
 							>
@@ -223,29 +227,29 @@ export function Header() {
 									<div className={styles.profileMenuNavSection}>
 										<Link href="/aktivitet" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
 											<LuActivity size={16} />
-											<span>Aktivitet</span>
+											<span>{t['nav.activity']}</span>
 										</Link>
 										<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
 											<LuUsers size={16} />
-											<span>Skyttere</span>
+											<span>{t['nav.archers']}</span>
 										</Link>
 										<Link href="/siktemerker" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
 											<LuCalculator size={16} />
-											<span>Siktemerker</span>
+											<span>{t['nav.sightMarks']}</span>
 										</Link>
 										<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
 											<LuMessageSquare size={16} />
-											<span>Tilbakemelding</span>
+											<span>{t['nav.feedback']}</span>
 										</button>
 										<div className={styles.profileMenuDivider} role="separator" />
 									</div>
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<LuSettings size={16} />
-										<span>Innstillinger</span>
+										<span>{t['nav.settings']}</span>
 									</button>
 									<button className={styles.profileMenuItem} onClick={handleLogout} role="menuitem">
 										<LuLogOut size={16} />
-										<span>Logg ut</span>
+										<span>{t['nav.logout']}</span>
 									</button>
 								</div>
 							)}
@@ -259,13 +263,13 @@ export function Header() {
 						{!isAuthPage && (
 							<>
 								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.mobileLink}>
-									Felleskap
+									{t['nav.community']}
 								</Link>
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.mobileLink}>
-									Team
+									{t['nav.team']}
 								</Link>
 								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.mobileLink}>
-									Støtt oss
+									{t['nav.support']}
 								</Link>
 							</>
 						)}
@@ -273,34 +277,35 @@ export function Header() {
 							<>
 								{!isAuthPage && (
 									<Link href="/min-side" onClick={closeMobileMenu} className={styles.mobileLink}>
-										Min side
+										{t['nav.myPage']}
 									</Link>
 								)}
 								<Link href="/aktivitet" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
 									<LuActivity size={16} />
-									Aktivitet
+									{t['nav.activity']}
 								</Link>
 								<Link href="/skyttere" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
 									<LuUsers size={16} />
-									Skyttere
+									{t['nav.archers']}
 								</Link>
 								<Link href="/siktemerker" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
 									<LuCalculator size={16} />
-									Siktemerker
+									{t['nav.sightMarks']}
 								</Link>
 								<button className={`${styles.mobileLinkButton} ${styles.mobileLinkIcon}`} onClick={handleFeedbackClick}>
 									<LuMessageSquare size={16} />
-									Tilbakemelding
+									{t['nav.feedback']}
 								</button>
 							</>
 						) : (
 							!isAuthPage && (
 								<>
+									<LanguageSwitcher />
 									<Link href="/logg-inn" onClick={closeMobileMenu} className={styles.mobileLink}>
-										Logg inn
+										{t['nav.login']}
 									</Link>
 									<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
-										Opprett bruker
+										{t['nav.register']}
 									</Link>
 								</>
 							)

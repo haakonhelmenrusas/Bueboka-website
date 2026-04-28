@@ -10,8 +10,10 @@ import { Button, Input, SocialAuthButtons } from '@/components';
 import { validateLoginForm } from '@/lib/validations/authValidation';
 import { LuChartBar, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import styles from './page.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export default function SignInPage() {
+	const { t } = useTranslation();
 	const [error, setError] = useState<string | null>(null);
 	const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,7 +55,7 @@ export default function SignInPage() {
 			});
 
 			if (res.error) {
-				setError(res.error.message || 'Feil brukernavn eller passord');
+				setError(res.error.message || t['validation.wrongCredentials']);
 			}
 		} finally {
 			setIsSubmitting(false);
@@ -62,7 +64,7 @@ export default function SignInPage() {
 
 	return (
 		<div className={`${styles.container} ${styles.themeBackground}`}>
-			<Link href="/" className={styles.navLogo} aria-label="Gå til forsiden">
+			<Link href="/" className={styles.navLogo} aria-label={t['auth.goToFrontPage']}>
 				<div className={styles.navLogoBox} aria-hidden="true">
 					<Image width={24} height={24} src="/assets/logo.png" alt="" className={styles.navLogoImg} />
 				</div>
@@ -77,21 +79,19 @@ export default function SignInPage() {
 						<h1 id="brand-heading" className={styles.brandTitle}>
 							Bueboka
 						</h1>
-						<p className={styles.brandDescription}>
-							Din komplette treningspartner for bueskyting. Logg økter, følg fremgang og optimaliser siktemerkene dine.
-						</p>
+						<p className={styles.brandDescription}>{t['auth.loginBrandDesc']}</p>
 						<ul className={styles.brandFeatures} aria-label="Hovedfunksjoner">
 							<li className={styles.feature}>
 								<LuChartBar size={32} className={styles.featureIcon} aria-hidden="true" />
-								<span>Detaljert statistikk</span>
+								<span>{t['auth.loginFeature1']}</span>
 							</li>
 							<li className={styles.feature}>
 								<LuTarget size={32} className={styles.featureIcon} aria-hidden="true" />
-								<span>Siktemerke-beregning</span>
+								<span>{t['auth.loginFeature2']}</span>
 							</li>
 							<li className={styles.feature}>
 								<LuTrendingUp size={32} className={styles.featureIcon} aria-hidden="true" />
-								<span>Følg din utvikling</span>
+								<span>{t['auth.loginFeature3']}</span>
 							</li>
 						</ul>
 					</div>
@@ -102,7 +102,7 @@ export default function SignInPage() {
 						<div className={styles.formWrapper}>
 							<div className={styles.header}>
 								<h2 id="login-heading" className={styles.title}>
-									Logg inn
+									{t['auth.loginTitle']}
 								</h2>
 							</div>
 							{error && (
@@ -112,10 +112,10 @@ export default function SignInPage() {
 							)}
 							<form onSubmit={handleSubmit} className={styles.form} noValidate>
 								<fieldset className={styles.inputGroup}>
-									<legend className="sr-only">Innloggingsinformasjon</legend>
+									<legend className="sr-only">{t['auth.loginFormLegend']}</legend>
 									<div>
 										<Input
-											label="E-postadresse"
+											label={t['auth.emailLabel']}
 											id="email"
 											name="email"
 											type="email"
@@ -133,7 +133,7 @@ export default function SignInPage() {
 									</div>
 									<div className={styles.passwordInput}>
 										<Input
-											label="Passord"
+											label={t['auth.passwordLabel']}
 											id="password"
 											name="password"
 											type="password"
@@ -152,22 +152,22 @@ export default function SignInPage() {
 								</fieldset>
 								<div className={styles.forgotLinkRow}>
 									<Link tabIndex={0} href="/glemt-passord">
-										Glemt passord?
+										{t['auth.forgotPassword']}
 									</Link>
 								</div>
-								<Button type="submit" label="Logg inn" loading={isSubmitting} disabled={isSubmitting} />
+								<Button type="submit" label={t['auth.loginButton']} loading={isSubmitting} disabled={isSubmitting} />
 							</form>
 							<div className={styles.authActions}>
 								<SocialAuthButtons
-									label="Logg på med Google"
+									label={t['auth.loginWithGoogle']}
 									onClick={() => signIn.social({ provider: 'google', callbackURL: '/min-side' })}
 									disabled={isSubmitting}
 								/>
 							</div>
 							<div className={styles.signupPrompt}>
-								Har du ikke en konto?{' '}
+								{t['auth.noAccount']}{' '}
 								<Link tabIndex={0} href="/ny-bruker">
-									Opprett bruker
+									{t['auth.createUser']}
 								</Link>
 							</div>
 						</div>

@@ -1,11 +1,16 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { LuChevronRight } from 'react-icons/lu';
 import styles from './HeroSection.module.css';
 import { AppStoreBadge, HeroBackground } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export function HeroSection() {
+	const { t } = useTranslation();
+
 	return (
 		<section className={styles.section} aria-label="Hovedbanner">
 			<HeroBackground />
@@ -15,21 +20,21 @@ export function HeroSection() {
 						<h1 className={styles.title}>
 							<span className={styles.titleGradient}>Bueboka</span>
 						</h1>
-						<p className={styles.subtitle}>Hold oversikt over trening, resultater og utstyr. Laget for bueskyttere – av bueskyttere.</p>
+						<p className={styles.subtitle}>{t['hero.subtitle']}</p>
 						<div className={styles.badges}>
 							<AppStoreBadge store="android" href="https://play.google.com/store/apps/details?id=com.aaronshade.bueboka&hl=no_nb" />
 							<AppStoreBadge store="ios" href="https://apps.apple.com/no/app/bueboka/id6448108838?l=nb" />
 						</div>
 						<div className={styles.heroCta}>
 							<div className={styles.heroCtaDivider}>
-								<span className={styles.heroCtaDividerText}>eller bruk webversjonen</span>
+								<span className={styles.heroCtaDividerText}>{t['hero.orUseWeb']}</span>
 							</div>
 							<Link tabIndex={1} href="/ny-bruker" className={styles.heroCtaButton}>
-								Opprett bruker
+								{t['hero.registerUser']}
 								<LuChevronRight size={18} aria-hidden="true" />
 							</Link>
 							<p className={styles.heroCtaLogin}>
-								Har du allerede konto? <Link href="/logg-inn">Logg inn</Link>
+								{t['hero.alreadyHaveAccount']} <Link href="/logg-inn">{t['hero.login']}</Link>
 							</p>
 						</div>
 					</div>

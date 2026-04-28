@@ -1,0 +1,22 @@
+.switcher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--white-20);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--white, #fff);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.switcher:hover {
+  background: var(--white-10, rgba(255, 255, 255, 0.1));
+  border-color: var(--white-40, rgba(255, 255, 255, 0.4));
+}
