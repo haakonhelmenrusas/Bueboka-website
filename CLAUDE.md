@@ -25,6 +25,16 @@ Before writing code, ask clarifying questions to understand domain and context. 
 
 Only start implementing after you have enough context. If the task is trivial (e.g., a one-line fix with clear intent), skip the questions.
 
+## Updating Dependencies
+
+**Never run `npm update`.** It bypasses intentional version control over `package.json`.
+
+To update a package:
+1. Manually bump the version number in `package.json`
+2. Run `npm install` to update `package-lock.json` accordingly
+
+This keeps `package.json` as the source of truth and the relationship between `package.json` and `package-lock.json` explicit and controlled.
+
 ## Conventional Commits
 
 All commits must follow the [Conventional Commits](https://www.conventionalcommits.org/) specification.
