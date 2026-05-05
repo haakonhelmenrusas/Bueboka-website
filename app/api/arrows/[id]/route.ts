@@ -85,7 +85,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 
 		await prisma.arrows.delete({ where: { id } });
 		equipmentCache.delete(`equipment:${user.id}`);
-		return NextResponse.json({ ok: true });
+		return new NextResponse(null, { status: 204 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Failed to delete arrows' }, { status: 500 });
 	}

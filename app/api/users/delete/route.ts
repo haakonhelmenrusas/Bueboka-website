@@ -43,7 +43,7 @@ export async function DELETE(request: Request) {
 			await tx.user.delete({ where: { id: user.id } });
 		});
 
-		return NextResponse.json({ success: true });
+		return new NextResponse(null, { status: 204 });
 	} catch (error) {
 		return NextResponse.json({ error: 'Failed to delete account' }, { status: 500 });
 	}

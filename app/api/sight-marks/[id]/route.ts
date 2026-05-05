@@ -84,6 +84,6 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 			prisma.sightMark.delete({ where: { id } }),
 		]);
 
-		return NextResponse.json({ success: true });
+		return new NextResponse(null, { status: 204 });
 	} catch (error) {}
 }

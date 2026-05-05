@@ -199,7 +199,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
 		statsCache.delete(`stats:summary:${user.id}`);
 		practicesCache.deleteByPrefix(`practices:cards:${user.id}`);
 
-		return NextResponse.json({ success: true });
+		return new NextResponse(null, { status: 204 });
 	} catch (error) {
 		if (error instanceof Error && error.message.includes('Foreign key constraint')) {
 			return NextResponse.json({ error: 'Kunne ikke slette trening. Prøv igjen senere.' }, { status: 409 });
