@@ -608,6 +608,13 @@ export interface TranslationKeys {
   'badge.indoor': string;
   'badge.outdoor': string;
 
+  // Sponsing page
+  'sponsingPage.title': string;
+  'sponsingPage.subtitle': string;
+  'sponsingPage.ctaTitle': string;
+  'sponsingPage.ctaSubtitle1': string;
+  'sponsingPage.ctaSubtitle2': string;
+
   // Sight marks print/share modal
   'sightMarksPrintModal.title': string;
   'sightMarksPrintModal.hint': string;

@@ -608,6 +608,13 @@ export const no: TranslationKeys = {
   'badge.indoor': 'Inne',
   'badge.outdoor': 'Ute',
 
+  // Sponsing page
+  'sponsingPage.title': 'Våre samarbeidspartnere',
+  'sponsingPage.subtitle': 'Vi er stolte av å samarbeide med ledende aktører i bueskyting-miljøet som støtter vår visjon.',
+  'sponsingPage.ctaTitle': 'Vil du bli sponsor?',
+  'sponsingPage.ctaSubtitle1': 'Vi søker partnere som deler vår lidenskap for bueskyting og ønsker å støtte utviklingen av appen. Som sponsor får du synlighet i appen og på nettsiden vår.',
+  'sponsingPage.ctaSubtitle2': 'Ta kontakt med oss via skjemaet for å lære mer om samarbeidsmuligheter.',
+
   // Sight marks print/share modal
   'sightMarksPrintModal.title': 'Del siktemerker',
   'sightMarksPrintModal.hint': 'Last ned eller kopier dine beregnede siktemerker som bilde.',

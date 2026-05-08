@@ -608,6 +608,13 @@ export const en: TranslationKeys = {
   'badge.indoor': 'Indoor',
   'badge.outdoor': 'Outdoor',
 
+  // Sponsing page
+  'sponsingPage.title': 'Our partners',
+  'sponsingPage.subtitle': 'We are proud to work with leading players in the archery community who support our vision.',
+  'sponsingPage.ctaTitle': 'Want to become a sponsor?',
+  'sponsingPage.ctaSubtitle1': 'We are looking for partners who share our passion for archery and want to support the development of the app. As a sponsor you get visibility in the app and on our website.',
+  'sponsingPage.ctaSubtitle2': 'Contact us via the form below to learn more about partnership opportunities.',
+
   // Sight marks print/share modal
   'sightMarksPrintModal.title': 'Share sight marks',
   'sightMarksPrintModal.hint': 'Download or copy your calculated sight marks as an image.',
