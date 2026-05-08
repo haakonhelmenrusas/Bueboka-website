@@ -690,4 +690,54 @@ export interface TranslationKeys {
   'statsSummary.last7days': string;
   'statsSummary.ariaLabel': string;
   'statsSummary.periods': string;
+
+  // Bueboka 2.0 announcement section
+  'bueboka2.badge': string;
+  'bueboka2.titlePrefix': string;
+  'bueboka2.subtitle': string;
+  'bueboka2.feature1Title': string;
+  'bueboka2.feature1Text': string;
+  'bueboka2.feature2Title': string;
+  'bueboka2.feature2Text': string;
+  'bueboka2.feature3Title': string;
+  'bueboka2.feature3Text': string;
+  'bueboka2.upgradeTitle': string;
+  'bueboka2.upgradeTextPart1': string;
+  'bueboka2.upgradeDate': string;
+  'bueboka2.upgradeTextPart2': string;
+  'bueboka2.warningTitle': string;
+  'bueboka2.warningText': string;
+  'bueboka2.ctaPrimary': string;
+
+  // Social media section
+  'social.title': string;
+  'social.subtitle': string;
+  'social.facebookAriaLabel': string;
+  'social.facebookText': string;
+  'social.facebookCta': string;
+  'social.huddAriaLabel': string;
+  'social.huddText': string;
+  'social.huddCta': string;
+
+  // Contributors section
+  'contributors.title': string;
+  'contributors.subtitle': string;
+  'contributors.visitWebsite': string;
+  'contributors.openNewTab': string;
+  'contributors.profileImageAlt': string;
+  'contributors.initialsLabel': string;
+  'contributors.roleProjectLeadDeveloper': string;
+  'contributors.roleDeveloperArcher': string;
+  'contributors.roleUxDesigner': string;
+
+  // Sponsor / support section
+  'sponsor.title': string;
+  'sponsor.subtitle': string;
+  'sponsor.vippsTitle': string;
+  'sponsor.vippsDesc': string;
+  'sponsor.vippsLabel': string;
+  'sponsor.vippsQrAlt': string;
+  'sponsor.businessTitle': string;
+  'sponsor.businessDesc': string;
+  'sponsor.sponsorButton': string;
 }

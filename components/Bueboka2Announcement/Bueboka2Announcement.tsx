@@ -1,23 +1,25 @@
+'use client';
+
 import { LuArrowBigRightDash, LuBolt, LuChevronRight, LuCloud, LuSmartphone, LuSparkles } from 'react-icons/lu';
 import styles from './Bueboka2Announcement.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export function Bueboka2Announcement() {
+	const { t } = useTranslation();
+
 	return (
 		<section className={styles.section} aria-label="Bueboka 2.0 Announcement">
 			<div className={styles.container}>
 				<div className={styles.badge}>
 					<LuSparkles className="w-4 h-4" />
-					<span>Nyheter</span>
+					<span>{t['bueboka2.badge']}</span>
 				</div>
 
 				<div className={styles.content}>
 					<h2 className={styles.title}>
-						Velkommen til <span className={styles.highlight}>Bueboka 2.0</span>
+						{t['bueboka2.titlePrefix']} <span className={styles.highlight}>Bueboka 2.0</span>
 					</h2>
-					<p className={styles.subtitle}>
-						Den neste generasjonen av Norges mest populære app for bueskyttere er her! Helt ny plattform med kraftigere funksjoner, bedre
-						ytelse og sømløs synkronisering på tvers av alle enheter.
-					</p>
+					<p className={styles.subtitle}>{t['bueboka2.subtitle']}</p>
 
 					<div className={styles.features}>
 						<div className={styles.feature}>
@@ -25,10 +27,8 @@ export function Bueboka2Announcement() {
 								<LuBolt className="w-6 h-6" />
 							</div>
 							<div className={styles.featureContent}>
-								<h3 className={styles.featureTitle}>Lynrask opplevelse</h3>
-								<p className={styles.featureText}>
-									Helt ny teknologi gir deg raskere lasting, jevnere animasjoner og bedre ytelse på alle enheter.
-								</p>
+								<h3 className={styles.featureTitle}>{t['bueboka2.feature1Title']}</h3>
+								<p className={styles.featureText}>{t['bueboka2.feature1Text']}</p>
 							</div>
 						</div>
 
@@ -37,10 +37,8 @@ export function Bueboka2Announcement() {
 								<LuCloud className="w-6 h-6" />
 							</div>
 							<div className={styles.featureContent}>
-								<h3 className={styles.featureTitle}>Skybasert og synkronisert</h3>
-								<p className={styles.featureText}>
-									All data synkroniseres automatisk. Start på mobilen, fortsett på nettbrett, fullfør på PC - dataen er alltid oppdatert.
-								</p>
+								<h3 className={styles.featureTitle}>{t['bueboka2.feature2Title']}</h3>
+								<p className={styles.featureText}>{t['bueboka2.feature2Text']}</p>
 							</div>
 						</div>
 
@@ -49,10 +47,8 @@ export function Bueboka2Announcement() {
 								<LuArrowBigRightDash className="w-6 h-6" />
 							</div>
 							<div className={styles.featureContent}>
-								<h3 className={styles.featureTitle}>Moderne grensesnitt</h3>
-								<p className={styles.featureText}>
-									Redesignet fra bunnen av med fokus på brukervennlighet, tilgjengelighet og moderne design.
-								</p>
+								<h3 className={styles.featureTitle}>{t['bueboka2.feature3Title']}</h3>
+								<p className={styles.featureText}>{t['bueboka2.feature3Text']}</p>
 							</div>
 						</div>
 					</div>
@@ -62,16 +58,16 @@ export function Bueboka2Announcement() {
 							<LuSmartphone className="w-8 h-8" />
 						</div>
 						<div className={styles.upgradeContent}>
-							<h3 className={styles.upgradeTitle}>Viktig for mobilapp-brukere</h3>
+							<h3 className={styles.upgradeTitle}>{t['bueboka2.upgradeTitle']}</h3>
 							<p className={styles.upgradeText}>
-								Den nye mobilappen lanseres <strong>før sommeren 2026</strong> og erstatter den nåværende versjonen. Den nye appen er bygget
-								på samme teknologi som nettsiden og gir deg en mye bedre opplevelse!
+								{t['bueboka2.upgradeTextPart1']}
+								<strong>{t['bueboka2.upgradeDate']}</strong>
+								{t['bueboka2.upgradeTextPart2']}
 							</p>
 							<div className={styles.upgradeWarning}>
 								<div className={styles.warningIcon}>⚠️</div>
 								<div>
-									<strong>Husk å overføre dataene dine:</strong> Hvis du har treningsdata i den gamle appen, sørg for å overføre dem før du
-									oppdaterer til den nye versjonen. Vi sender mer informasjon om dette når den nye appen er klar.
+									<strong>{t['bueboka2.warningTitle']}</strong> {t['bueboka2.warningText']}
 								</div>
 							</div>
 						</div>
@@ -79,11 +75,11 @@ export function Bueboka2Announcement() {
 
 					<div className={styles.cta}>
 						<a href="/ny-bruker" className={styles.primaryButton}>
-							Kom i gang med Bueboka 2.0
+							{t['bueboka2.ctaPrimary']}
 							<LuChevronRight className="w-5 h-5" />
 						</a>
 						<a href="/logg-inn" className={styles.secondaryButton}>
-							Logg inn
+							{t['nav.login']}
 						</a>
 					</div>
 				</div>
