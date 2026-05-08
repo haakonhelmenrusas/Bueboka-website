@@ -608,6 +608,41 @@ export const en: TranslationKeys = {
   'badge.indoor': 'Indoor',
   'badge.outdoor': 'Outdoor',
 
+  // Sight marks print/share modal
+  'sightMarksPrintModal.title': 'Share sight marks',
+  'sightMarksPrintModal.hint': 'Download or copy your calculated sight marks as an image.',
+  'sightMarksPrintModal.copy': 'Copy to clipboard',
+  'sightMarksPrintModal.copying': 'Copying…',
+  'sightMarksPrintModal.copied': 'Copied!',
+  'sightMarksPrintModal.download': 'Download as image',
+  'sightMarksPrintModal.downloading': 'Downloading…',
+  'sightMarksPrintModal.downloadError': 'Could not download the image. Please try again.',
+  'sightMarksPrintModal.copyFallback': 'Image downloaded (clipboard not available in this browser).',
+  'sightMarksPrintModal.copyError': 'Could not copy image. Try «Download» instead.',
+
+  // Sight marks print card
+  'sightMarksPrintCard.headerBadge': 'Sight marks',
+  'sightMarksPrintCard.calibration': 'Cal.:',
+  'sightMarksPrintCard.distance': 'Distance',
+
+  // Calculate marks modal
+  'calculateMarksModal.title': 'Calculate sight marks',
+  'calculateMarksModal.distanceRange': 'Distance range',
+  'calculateMarksModal.fromDistance': 'From distance',
+  'calculateMarksModal.toDistance': 'To distance',
+  'calculateMarksModal.interval': 'Interval',
+  'calculateMarksModal.hillAngle': 'Hill angle (optional)',
+  'calculateMarksModal.hillAngleHint': 'Enter up to 2 angles to see sight marks at different terrain angles.',
+  'calculateMarksModal.flatGround': 'Flat ground',
+  'calculateMarksModal.angle': 'Angle',
+  'calculateMarksModal.calculate': 'Calculate',
+  'calculateMarksModal.calculating': 'Calculating...',
+  'calculateMarksModal.errorValueMissing': 'Value required',
+  'calculateMarksModal.errorToGreaterThanFrom': 'To-distance must be greater than from-distance',
+  'calculateMarksModal.errorNoBallisticsData': 'Ballistics data missing. Add a sight mark first.',
+  'calculateMarksModal.errorCalculate': 'Could not calculate sight marks',
+  'calculateMarksModal.errorSave': 'Could not save result',
+
   // Achievement badge
   'achievementBadge.unlocked': 'Unlocked!',
   'achievementBadge.unlockedLabel': 'Unlocked',

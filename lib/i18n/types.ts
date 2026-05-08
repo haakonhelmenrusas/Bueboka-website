@@ -608,6 +608,41 @@ export interface TranslationKeys {
   'badge.indoor': string;
   'badge.outdoor': string;
 
+  // Sight marks print/share modal
+  'sightMarksPrintModal.title': string;
+  'sightMarksPrintModal.hint': string;
+  'sightMarksPrintModal.copy': string;
+  'sightMarksPrintModal.copying': string;
+  'sightMarksPrintModal.copied': string;
+  'sightMarksPrintModal.download': string;
+  'sightMarksPrintModal.downloading': string;
+  'sightMarksPrintModal.downloadError': string;
+  'sightMarksPrintModal.copyFallback': string;
+  'sightMarksPrintModal.copyError': string;
+
+  // Sight marks print card
+  'sightMarksPrintCard.headerBadge': string;
+  'sightMarksPrintCard.calibration': string;
+  'sightMarksPrintCard.distance': string;
+
+  // Calculate marks modal
+  'calculateMarksModal.title': string;
+  'calculateMarksModal.distanceRange': string;
+  'calculateMarksModal.fromDistance': string;
+  'calculateMarksModal.toDistance': string;
+  'calculateMarksModal.interval': string;
+  'calculateMarksModal.hillAngle': string;
+  'calculateMarksModal.hillAngleHint': string;
+  'calculateMarksModal.flatGround': string;
+  'calculateMarksModal.angle': string;
+  'calculateMarksModal.calculate': string;
+  'calculateMarksModal.calculating': string;
+  'calculateMarksModal.errorValueMissing': string;
+  'calculateMarksModal.errorToGreaterThanFrom': string;
+  'calculateMarksModal.errorNoBallisticsData': string;
+  'calculateMarksModal.errorCalculate': string;
+  'calculateMarksModal.errorSave': string;
+
   // Achievement badge
   'achievementBadge.unlocked': string;
   'achievementBadge.unlockedLabel': string;

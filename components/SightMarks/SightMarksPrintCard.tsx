@@ -3,6 +3,7 @@
 import React from 'react';
 import styles from './SightMarksPrintCard.module.css';
 import type { FullMarksResult } from '@/types/SightMarks';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export interface SightMarksPrintData {
 	marksData: FullMarksResult;
@@ -22,11 +23,13 @@ function formatAngle(a: string) {
 }
 
 export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: SightMarksPrintData }>(({ data }, ref) => {
+	const { t, locale } = useTranslation();
 	const { marksData, setName, bowName, arrowName, givenDistances, showSpeed } = data;
 	const { distances, sight_marks_by_hill_angle, arrow_speed_by_angle } = marksData;
 	const angles = Object.keys(sight_marks_by_hill_angle);
 
-	const today = new Date().toLocaleDateString('nb-NO', {
+	const dateLocale = locale === 'en' ? 'en-GB' : 'nb-NO';
+	const today = new Date().toLocaleDateString(dateLocale, {
 		year: 'numeric',
 		month: 'long',
 		day: 'numeric',
@@ -41,7 +44,7 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 					</div>
 					<span className={styles.brandName}>Bueboka</span>
 				</div>
-				<span className={styles.headerBadge}>Siktemerker</span>
+				<span className={styles.headerBadge}>{t['sightMarksPrintCard.headerBadge']}</span>
 			</div>
 
 			<div className={styles.infoSection}>
@@ -49,7 +52,7 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 				<div className={styles.infoMeta}>
 					<span>🎯 {bowName}</span>
 					{arrowName && <span>↗ {arrowName}</span>}
-					{givenDistances && givenDistances.length > 0 && <span>Innsk.: {givenDistances.map((d) => `${d} m`).join(' · ')}</span>}
+					{givenDistances && givenDistances.length > 0 && <span>{t['sightMarksPrintCard.calibration']} {givenDistances.map((d) => `${d} m`).join(' · ')}</span>}
 				</div>
 				<div className={styles.infoDate}>{today}</div>
 			</div>
@@ -58,7 +61,7 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 				<table className={styles.table}>
 					<thead>
 						<tr className={styles.tableHead}>
-							<th className={styles.thDistance}>Avstand</th>
+							<th className={styles.thDistance}>{t['sightMarksPrintCard.distance']}</th>
 							{angles.map((angle) => (
 								<th key={angle} className={styles.thAngle}>
 									{formatAngle(angle)}
@@ -75,7 +78,7 @@ export const SightMarksPrintCard = React.forwardRef<HTMLDivElement, { data: Sigh
 									const mark = sight_marks_by_hill_angle[angle]?.[i];
 									const speed = arrow_speed_by_angle[angle]?.[i];
 									return (
-										<td className={styles.tdMark}>
+										<td key={angle} className={styles.tdMark}>
 											<span className={styles.markValue}>{mark != null ? mark.toFixed(2).replace('.', ',') : '—'}</span>
 											{showSpeed && speed != null && <span className={styles.speedValue}>{speed.toFixed(1).replace('.', ',')}</span>}
 										</td>

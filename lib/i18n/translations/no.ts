@@ -608,6 +608,41 @@ export const no: TranslationKeys = {
   'badge.indoor': 'Inne',
   'badge.outdoor': 'Ute',
 
+  // Sight marks print/share modal
+  'sightMarksPrintModal.title': 'Del siktemerker',
+  'sightMarksPrintModal.hint': 'Last ned eller kopier dine beregnede siktemerker som bilde.',
+  'sightMarksPrintModal.copy': 'Kopier til utklippstavle',
+  'sightMarksPrintModal.copying': 'Kopierer…',
+  'sightMarksPrintModal.copied': 'Kopiert!',
+  'sightMarksPrintModal.download': 'Last ned som bilde',
+  'sightMarksPrintModal.downloading': 'Laster ned…',
+  'sightMarksPrintModal.downloadError': 'Kunne ikke laste ned bildet. Prøv igjen.',
+  'sightMarksPrintModal.copyFallback': 'Bildet ble lastet ned (utklippstavle ikke tilgjengelig i denne nettleseren).',
+  'sightMarksPrintModal.copyError': 'Kunne ikke kopiere bildet. Prøv «Last ned» i stedet.',
+
+  // Sight marks print card
+  'sightMarksPrintCard.headerBadge': 'Siktemerker',
+  'sightMarksPrintCard.calibration': 'Innsk.:',
+  'sightMarksPrintCard.distance': 'Avstand',
+
+  // Calculate marks modal
+  'calculateMarksModal.title': 'Beregn siktemerker',
+  'calculateMarksModal.distanceRange': 'Avstandsrekke',
+  'calculateMarksModal.fromDistance': 'Fra avstand',
+  'calculateMarksModal.toDistance': 'Til avstand',
+  'calculateMarksModal.interval': 'Intervall',
+  'calculateMarksModal.hillAngle': 'Hellvinkel (valgfritt)',
+  'calculateMarksModal.hillAngleHint': 'Legg inn opptil 2 vinkler for å se siktemerker ved ulik terrengvinkel.',
+  'calculateMarksModal.flatGround': 'Flatmark',
+  'calculateMarksModal.angle': 'Vinkel',
+  'calculateMarksModal.calculate': 'Beregn',
+  'calculateMarksModal.calculating': 'Beregner...',
+  'calculateMarksModal.errorValueMissing': 'Verdi mangler',
+  'calculateMarksModal.errorToGreaterThanFrom': 'Til-avstand må være større enn fra-avstand',
+  'calculateMarksModal.errorNoBallisticsData': 'Ballistikkdata mangler. Legg inn et siktemerke først.',
+  'calculateMarksModal.errorCalculate': 'Kunne ikke beregne siktemerker',
+  'calculateMarksModal.errorSave': 'Kunne ikke lagre resultat',
+
   // Achievement badge
   'achievementBadge.unlocked': 'Låst opp!',
   'achievementBadge.unlockedLabel': 'Låst opp',
