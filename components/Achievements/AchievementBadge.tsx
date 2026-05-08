@@ -56,6 +56,9 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 	const { t } = useTranslation();
 	const { achievement, percentage, isUnlocked, current, required } = progress;
 	const IconComponent = ICON_MAP[achievement.icon] || LuTrophy;
+	const tAny = t as unknown as Record<string, string>;
+	const name = tAny[`achievement.${achievement.id}.name`] ?? achievement.name;
+	const description = tAny[`achievement.${achievement.id}.description`] ?? achievement.description;
 
 	const sizeClass = {
 		small: styles.small,
@@ -84,7 +87,7 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 	return (
 		<div
 			className={`${styles.achievementBadge} ${sizeClass} ${isUnlocked ? styles.unlocked : styles.locked} ${rarityClass} ${tierClass}`}
-			aria-label={`${achievement.name}: ${achievement.description}. ${isUnlocked ? t['achievementBadge.unlockedLabel'] : `${percentage}% ferdig`}`}
+			aria-label={`${name}: ${description}. ${isUnlocked ? t['achievementBadge.unlockedLabel'] : `${percentage}% ${t['achievementBadge.complete']}`}`}
 		>
 			<div className={styles.iconContainer}>
 				<IconComponent className={styles.icon} />
@@ -92,8 +95,8 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 			</div>
 
 			<div className={styles.content}>
-				<h3 className={styles.name}>{achievement.name}</h3>
-				<p className={styles.description}>{achievement.description}</p>
+				<h3 className={styles.name}>{name}</h3>
+				<p className={styles.description}>{description}</p>
 
 				{showProgress && !isUnlocked && (
 					<div className={styles.progressContainer}>
