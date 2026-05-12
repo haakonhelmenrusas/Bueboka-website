@@ -5,7 +5,7 @@ import styles from './CompetitionFormModal.module.css';
 import { LuPlus, LuX } from 'react-icons/lu';
 import type { PracticeCategory } from '@/lib/prismaEnums';
 import { NumberInput, Select } from '@/components';
-import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
+import { getTargetTypeOptions } from '@/lib/Contants';
 import { type CompetitionRoundInput, isRangeCategory } from './CompetitionFormModal.types';
 import { useTranslation } from '@/context/LanguageProvider';
 
@@ -20,6 +20,7 @@ interface RoundsStepProps {
 export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, practiceCategory, addRound, removeRound, updateRound }) => {
 	const { t } = useTranslation();
 	const rangeCategory = isRangeCategory(practiceCategory);
+	const targetTypeOptions = getTargetTypeOptions(t);
 
 	return (
 		<div className={styles.stepContent}>
@@ -77,7 +78,7 @@ export const CompetitionFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, p
 										onChange={(v) => updateRound(index, 'targetType', v as string)}
 										placeholderLabel={t['competition.rounds.select']}
 										searchable
-										options={TARGET_TYPE_OPTIONS}
+										options={targetTypeOptions}
 										containerClassName={styles.skiveField}
 									/>
 								</>

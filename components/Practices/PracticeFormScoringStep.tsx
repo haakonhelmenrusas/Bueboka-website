@@ -6,6 +6,7 @@ import { LuChevronLeft, LuChevronRight, LuInfo } from 'react-icons/lu';
 import { ARROW_SCORE_OPTIONS, type RoundInput, getRoundSummary } from './PracticeFormModal.types';
 import { Environment } from '@/lib/prismaEnums';
 import { Button } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 const DEFAULT_ARROWS_PER_END = 3;
 
@@ -52,6 +53,7 @@ interface ScoringStepProps {
 }
 
 export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, environment, addArrowScore, updateArrowScore }) => {
+	const { t } = useTranslation();
 	const hasAnyActionable = rounds.some((r) => (r.numberArrows ?? 0) > 0 || r.roundScore > 0);
 
 	const scoreOptions = environment === Environment.OUTDOOR ? ARROW_SCORE_OPTIONS : ARROW_SCORE_OPTIONS.filter((opt) => opt.label !== 'X');
@@ -112,7 +114,7 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 						<div key={roundIndex} className={styles.scoringCard}>
 							<div className={styles.scoringCardHeader}>
 								<span className={styles.scoringRoundTitle}>Runde {roundIndex + 1}</span>
-								<span className={styles.scoringRoundMeta}>{getRoundSummary(round)}</span>
+								<span className={styles.scoringRoundMeta}>{getRoundSummary(round, t)}</span>
 							</div>
 							<div className={styles.manualScoreNotice}>
 								<LuInfo size={16} className={styles.manualScoreNoticeIcon} />
@@ -158,7 +160,7 @@ export const PracticeFormScoringStep: React.FC<ScoringStepProps> = ({ rounds, en
 					<div key={roundIndex} className={styles.scoringCard}>
 						<div className={styles.scoringCardHeader}>
 							<span className={styles.scoringRoundTitle}>Runde {roundIndex + 1}</span>
-							<span className={styles.scoringRoundMeta}>{getRoundSummary(round)}</span>
+							<span className={styles.scoringRoundMeta}>{getRoundSummary(round, t)}</span>
 						</div>
 
 						{totalEnds > 1 && (

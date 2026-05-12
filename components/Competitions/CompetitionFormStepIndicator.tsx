@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from './CompetitionFormModal.module.css';
-import { STEP_LABELS, TOTAL_STEPS } from './CompetitionFormModal.types';
+import { getStepLabels, TOTAL_STEPS } from './CompetitionFormModal.types';
 import { useTranslation } from '@/context/LanguageProvider';
 
 interface StepIndicatorProps {
@@ -12,9 +12,10 @@ interface StepIndicatorProps {
 
 export const CompetitionFormStepIndicator: React.FC<StepIndicatorProps> = ({ step, onStepChange }) => {
 	const { t } = useTranslation();
+	const stepLabels = getStepLabels(t);
 	return (
 		<div className={styles.stepIndicator}>
-			{STEP_LABELS.map((label, i) => {
+			{stepLabels.map((label, i) => {
 				const isActive = i === step;
 				const isCompleted = i < step;
 				return (

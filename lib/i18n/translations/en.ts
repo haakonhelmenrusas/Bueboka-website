@@ -78,6 +78,60 @@ export const en: TranslationKeys = {
   'label.envOutdoor': 'Outdoor',
   'label.anonymousArcher': 'Anonymous archer',
 
+  // Practice category options
+  'practiceCategory.skiveIndoor': 'Target indoor',
+  'practiceCategory.skiveOutdoor': 'Target outdoor',
+  'practiceCategory.jakt3D': 'Hunting/3D',
+  'practiceCategory.felt': 'Field',
+
+  // Environment options
+  'environment.indoor': 'Indoor',
+  'environment.outdoor': 'Outdoor',
+
+  // Weather
+  'weather.sun': '☀️ Sun',
+  'weather.clouded': '⛅ Cloudy',
+  'weather.clear': '🌤 Clear',
+  'weather.rain': '🌧 Rain',
+  'weather.wind': '💨 Wind',
+  'weather.snow': '❄️ Snow',
+  'weather.fog': '🌫 Fog',
+  'weather.thunder': '⛈ Thunder',
+  'weather.changing': '🔄 Changing',
+  'weather.other': '🌡 Other',
+
+  // Practice form steps
+  'practiceStep.info': 'Info',
+  'practiceStep.rounds': 'Rounds',
+  'practiceStep.scoring': 'Scoring',
+  'practiceStep.reflection': 'Reflection',
+  'practice.stepGoTo': 'Go to',
+
+  // Competition form steps
+  'competitionStep.info': 'Info',
+  'competitionStep.rounds': 'Rounds',
+  'competitionStep.result': 'Result',
+  'competitionStep.reflection': 'Reflection',
+
+  // Round summary fallback
+  'round.noDetails': 'No details',
+
+  // Target types
+  'target.size40cm': '40 cm',
+  'target.size40Triple': '40 cm Triple/Vegas',
+  'target.size60cm': '60 cm',
+  'target.size60Triple': '60 cm Triple',
+  'target.size80cm': '80 cm',
+  'target.size80Centre6': '80 cm Centre 6',
+  'target.size122cm': '122 cm',
+  'target.field20Triple': 'Field 20 cm Triple',
+  'target.field40': 'Field 40 cm',
+  'target.field60': 'Field 60 cm',
+  'target.field80': 'Field 80 cm',
+  'target.bareMat': 'Bare mat (no face)',
+  'target.historicNLIndoor': 'Historic NL Indoor',
+  'target.other': 'Other',
+
   // Dashboard
   'dashboard.errorLoading': 'Could not load user data',
   'dashboard.loginRequired': 'You must be logged in to view this page',
@@ -210,6 +264,7 @@ export const en: TranslationKeys = {
   'form.arrowsWithoutScore': 'Arrows w/o score',
   'form.from': 'From',
   'form.to': 'To',
+  'form.noneSelected': 'None selected',
 
   // Confirm modal defaults
   'confirm.defaultConfirm': 'Confirm',
@@ -556,6 +611,8 @@ export const en: TranslationKeys = {
   'profileEdit.nameHelp': 'Your full name',
   'profileEdit.clubLabel': 'Club',
   'profileEdit.clubHelp': 'Your club',
+  'profileEdit.clubSearchPlaceholder': 'Search or type your club name…',
+  'profileEdit.clubAddCustom': 'Add',
   'profileEdit.archerNumberLabel': 'Archer number',
   'profileEdit.archerNumberHelp': 'Your archer number',
 

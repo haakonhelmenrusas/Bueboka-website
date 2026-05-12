@@ -4,7 +4,7 @@ import React from 'react';
 import styles from './PracticeFormModal.module.css';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Button } from '@/components';
-import { STEP_LABELS, TOTAL_STEPS } from './PracticeFormModal.types';
+import { getStepLabels, TOTAL_STEPS } from './PracticeFormModal.types';
 import { useTranslation } from '@/context/LanguageProvider';
 
 interface NavFooterProps {
@@ -28,6 +28,7 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 	onSubmit,
 }) => {
 	const { t } = useTranslation();
+	const stepLabels = getStepLabels(t);
 	const isFirstStep = step === 0;
 	const isLastStep = step === TOTAL_STEPS - 1;
 
@@ -44,7 +45,7 @@ export const PracticeFormNavFooter: React.FC<NavFooterProps> = ({
 					<LuChevronLeft size={26} />
 				</button>
 
-				<span className={styles.navStepName}>{STEP_LABELS[step]}</span>
+				<span className={styles.navStepName}>{stepLabels[step]}</span>
 
 				<div className={styles.navRowRight}>
 					{isLastStep ? (

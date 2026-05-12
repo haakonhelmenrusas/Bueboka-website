@@ -185,6 +185,7 @@ Returns only the authenticated user. Prefer `GET /api/profile` for new code.
 
 - `image` accepts an external URL or a `data:image/...` base64 string up to 5 MB.
 - `locale` must be exactly `"no"`, `"en"`, or `null`. Any other value returns `400 Invalid locale. Must be "no" or "en".`.
+- `club` is free-text up to 100 characters after trimming. Empty strings are normalized to `null`. Non-string values return `400 Invalid club. Must be a string.`; over-length returns `400 Club name too long. Max 100 characters.`.
 
 **Response 200:**
 

@@ -38,6 +38,16 @@ export interface SelectProps {
 	searchable?: boolean;
 	/** Placeholder text for the search input. */
 	searchPlaceholder?: string;
+	/**
+	 * When true, the search query (trimmed) can be committed as a custom value
+	 * if it doesn't exactly match any existing option label. Only meaningful
+	 * with `searchable`, and only for non-multiple selects.
+	 */
+	creatable?: boolean;
+	/** Label prefix shown next to the typed query when offering to add it (e.g. "Add"). */
+	createLabel?: string;
+	/** Maximum number of characters allowed in the search input (also caps the value committed via `creatable`). */
+	searchMaxLength?: number;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -60,6 +70,9 @@ export const Select: React.FC<SelectProps> = ({
 	maxSelectedLabels = 2,
 	searchable = false,
 	searchPlaceholder = 'Søk...',
+	creatable = false,
+	createLabel = 'Legg til',
+	searchMaxLength,
 }) => {
 	const autoId = useId();
 	const selectId = id ?? `select-${autoId}`;
@@ -103,6 +116,16 @@ export const Select: React.FC<SelectProps> = ({
 		if (multiple) return undefined;
 		return options.find((o) => o.value === value);
 	}, [multiple, options, value]);
+
+	// In creatable mode, a typed query that doesn't already match an option
+	// (by value or label, case-insensitive) is offered as a commit candidate.
+	const trimmedQuery = searchQuery.trim();
+	const showCreateOption = useMemo(() => {
+		if (!creatable || !searchable || multiple) return false;
+		if (!trimmedQuery) return false;
+		const q = trimmedQuery.toLowerCase();
+		return !options.some((o) => o.value.toLowerCase() === q || o.label.toLowerCase() === q);
+	}, [creatable, searchable, multiple, trimmedQuery, options]);
 
 	const selectedOptions = useMemo(() => {
 		if (!multiple) return [];
@@ -224,11 +247,23 @@ export const Select: React.FC<SelectProps> = ({
 	};
 
 	const buttonText = useMemo(() => {
-		if (!multiple) return selectedOption ? selectedOption.label : placeholderLabel || '';
+		if (!multiple) {
+			if (selectedOption) return selectedOption.label;
+			// Creatable: a value that isn't in `options` is a previously-typed custom entry
+			if (creatable && typeof value === 'string' && value) return value;
+			return placeholderLabel || '';
+		}
 		if (selectedOptions.length === 0) return placeholderLabel || '';
 		if (selectedOptions.length > maxSelectedLabels) return `${selectedOptions.length} valgt`;
 		return selectedOptions.map((o) => o.label).join(', ');
-	}, [maxSelectedLabels, multiple, placeholderLabel, selectedOption, selectedOptions]);
+	}, [creatable, maxSelectedLabels, multiple, placeholderLabel, selectedOption, selectedOptions, value]);
+
+	const commitCreated = () => {
+		if (!trimmedQuery) return;
+		onChange(trimmedQuery);
+		closeMenu();
+		buttonRef.current?.focus();
+	};
 
 	return (
 		<div className={`${styles.container} ${containerClassName || ''}`} ref={rootRef}>
@@ -287,6 +322,7 @@ export const Select: React.FC<SelectProps> = ({
 											type="text"
 											className={styles.searchInput}
 											placeholder={searchPlaceholder}
+											maxLength={searchMaxLength}
 											value={searchQuery}
 											onChange={(e) => {
 												setSearchQuery(e.target.value);
@@ -297,9 +333,13 @@ export const Select: React.FC<SelectProps> = ({
 												if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
 													e.preventDefault();
 													moveActive(e.key === 'ArrowDown' ? 1 : -1);
-												} else if (e.key === 'Enter' && activeIndex >= 0) {
+												} else if (e.key === 'Enter') {
 													e.preventDefault();
-													commitIndex(activeIndex);
+													if (activeIndex >= 0 && hasEnabledOptions) {
+														commitIndex(activeIndex);
+													} else if (showCreateOption) {
+														commitCreated();
+													}
 												} else if (e.key === 'Escape') {
 													e.preventDefault();
 													closeMenu();
@@ -309,10 +349,25 @@ export const Select: React.FC<SelectProps> = ({
 										/>
 									</li>
 								) : null}
-								{filteredOptions.length === 0 || !hasEnabledOptions ? (
-									<li className={`${styles.option} ${styles.optionEmpty}`} role="option" aria-disabled="true">
-										<span className={styles.optionLabel}>{searchQuery ? 'Ingen treff' : emptyText}</span>
+								{showCreateOption ? (
+									<li
+										role="option"
+										aria-selected={false}
+										className={`${styles.option}`}
+										onMouseDown={(e) => e.preventDefault()}
+										onClick={commitCreated}
+									>
+										<span className={styles.optionText}>
+											<span className={styles.optionLabel}>{`${createLabel}: "${trimmedQuery}"`}</span>
+										</span>
 									</li>
+								) : null}
+								{filteredOptions.length === 0 || !hasEnabledOptions ? (
+									!showCreateOption ? (
+										<li className={`${styles.option} ${styles.optionEmpty}`} role="option" aria-disabled="true">
+											<span className={styles.optionLabel}>{searchQuery ? 'Ingen treff' : emptyText}</span>
+										</li>
+									) : null
 								) : (
 									filteredOptions.map((opt, idx) => {
 										const selected = multiple ? selectedSet.has(opt.value) : opt.value === value;

@@ -44,11 +44,16 @@ export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: Prof
 			<Input label={t['profileEdit.nameLabel']} value={name} onChange={(e) => setName(e.target.value)} helpText={t['profileEdit.nameHelp']} required />
 			<Select
 				searchable
+				creatable
 				label={t['profileEdit.clubLabel']}
 				value={club}
 				onChange={(val) => setClub(val as string)}
 				options={clubOptions}
 				helpText={t['profileEdit.clubHelp']}
+				searchPlaceholder={t['profileEdit.clubSearchPlaceholder']}
+				createLabel={t['profileEdit.clubAddCustom']}
+				emptyText={t['common.noResults']}
+				searchMaxLength={100}
 			/>
 			<Input
 				label={t['profileEdit.archerNumberLabel']}

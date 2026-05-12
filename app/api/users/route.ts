@@ -56,6 +56,21 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'Invalid locale. Must be "no" or "en".' }, { status: 400 });
 		}
 
+		// Normalize club: trim whitespace; treat empty string as null. Cap at
+		// 100 chars — the longest Norwegian club name is ~43 chars, so this
+		// gives international users plenty of room without enabling abuse.
+		let normalizedClub: string | null | undefined = club;
+		if (club !== undefined && club !== null) {
+			if (typeof club !== 'string') {
+				return NextResponse.json({ error: 'Invalid club. Must be a string.' }, { status: 400 });
+			}
+			const trimmed = club.trim();
+			if (trimmed.length > 100) {
+				return NextResponse.json({ error: 'Club name too long. Max 100 characters.' }, { status: 400 });
+			}
+			normalizedClub = trimmed === '' ? null : trimmed;
+		}
+
 		// Validate image if provided
 		if (image !== undefined && image !== null) {
 			// Check if it's a valid base64 image or external URL
@@ -76,7 +91,7 @@ export async function PATCH(request: NextRequest) {
 		const updatedUser = await prisma.user.update({
 			where: { id: user.id },
 			data: {
-				...(club !== undefined && { club }),
+				...(club !== undefined && { club: normalizedClub }),
 				...(name !== undefined && { name }),
 				...(image !== undefined && { image }),
 				...(skytternr !== undefined && { skytternr }),

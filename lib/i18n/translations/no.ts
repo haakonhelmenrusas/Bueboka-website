@@ -78,6 +78,60 @@ export const no: TranslationKeys = {
   'label.envOutdoor': 'Utendørs',
   'label.anonymousArcher': 'Anonym skytte',
 
+  // Practice category options
+  'practiceCategory.skiveIndoor': 'Skive innendørs',
+  'practiceCategory.skiveOutdoor': 'Skive utendørs',
+  'practiceCategory.jakt3D': 'Jakt/3D',
+  'practiceCategory.felt': 'Felt',
+
+  // Environment options
+  'environment.indoor': 'Inne',
+  'environment.outdoor': 'Ute',
+
+  // Weather
+  'weather.sun': '☀️ Sol',
+  'weather.clouded': '⛅ Skyet',
+  'weather.clear': '🌤 Klart',
+  'weather.rain': '🌧 Regn',
+  'weather.wind': '💨 Vind',
+  'weather.snow': '❄️ Snø',
+  'weather.fog': '🌫 Tåke',
+  'weather.thunder': '⛈ Torden',
+  'weather.changing': '🔄 Skiftende',
+  'weather.other': '🌡 Annet',
+
+  // Practice form steps
+  'practiceStep.info': 'Info',
+  'practiceStep.rounds': 'Runder',
+  'practiceStep.scoring': 'Poeng',
+  'practiceStep.reflection': 'Refleksjon',
+  'practice.stepGoTo': 'Gå til',
+
+  // Competition form steps
+  'competitionStep.info': 'Info',
+  'competitionStep.rounds': 'Runder',
+  'competitionStep.result': 'Resultat',
+  'competitionStep.reflection': 'Refleksjon',
+
+  // Round summary fallback
+  'round.noDetails': 'Ingen detaljer',
+
+  // Target types
+  'target.size40cm': '40 cm',
+  'target.size40Triple': '40cm Trippel/Vegas',
+  'target.size60cm': '60 cm',
+  'target.size60Triple': '60cm Trippel',
+  'target.size80cm': '80 cm',
+  'target.size80Centre6': '80 cm Centre 6',
+  'target.size122cm': '122 cm',
+  'target.field20Triple': 'Felt 20 cm Trippel',
+  'target.field40': 'Felt 40 cm',
+  'target.field60': 'Felt 60 cm',
+  'target.field80': 'Felt 80 cm',
+  'target.bareMat': 'Barmatte uten blink',
+  'target.historicNLIndoor': 'Historisk NL Inne',
+  'target.other': 'Annet',
+
   // Dashboard
   'dashboard.errorLoading': 'Kunne ikke hente brukerdata',
   'dashboard.loginRequired': 'Du må logge inn for å se denne siden',
@@ -210,6 +264,7 @@ export const no: TranslationKeys = {
   'form.arrowsWithoutScore': 'Piler u/score',
   'form.from': 'Fra',
   'form.to': 'Til',
+  'form.noneSelected': 'Ingen valgt',
 
   // Confirm modal defaults
   'confirm.defaultConfirm': 'Bekreft',
@@ -556,6 +611,8 @@ export const no: TranslationKeys = {
   'profileEdit.nameHelp': 'Ditt fulle navn',
   'profileEdit.clubLabel': 'Klubb',
   'profileEdit.clubHelp': 'Klubben din',
+  'profileEdit.clubSearchPlaceholder': 'Søk eller skriv klubbnavn…',
+  'profileEdit.clubAddCustom': 'Legg til',
   'profileEdit.archerNumberLabel': 'Skytternr',
   'profileEdit.archerNumberHelp': 'Ditt skytternummer',
 
