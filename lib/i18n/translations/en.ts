@@ -78,6 +78,44 @@ export const en: TranslationKeys = {
   'label.envOutdoor': 'Outdoor',
   'label.anonymousArcher': 'Anonymous archer',
 
+  // Practice category options
+  'practiceCategory.skiveIndoor': 'Target indoor',
+  'practiceCategory.skiveOutdoor': 'Target outdoor',
+  'practiceCategory.jakt3D': 'Hunting/3D',
+  'practiceCategory.felt': 'Field',
+
+  // Environment options
+  'environment.indoor': 'Indoor',
+  'environment.outdoor': 'Outdoor',
+
+  // Weather
+  'weather.sun': '☀️ Sun',
+  'weather.clouded': '⛅ Cloudy',
+  'weather.clear': '🌤 Clear',
+  'weather.rain': '🌧 Rain',
+  'weather.wind': '💨 Wind',
+  'weather.snow': '❄️ Snow',
+  'weather.fog': '🌫 Fog',
+  'weather.thunder': '⛈ Thunder',
+  'weather.changing': '🔄 Changing',
+  'weather.other': '🌡 Other',
+
+  // Practice form steps
+  'practiceStep.info': 'Info',
+  'practiceStep.rounds': 'Rounds',
+  'practiceStep.scoring': 'Scoring',
+  'practiceStep.reflection': 'Reflection',
+  'practice.stepGoTo': 'Go to',
+
+  // Competition form steps
+  'competitionStep.info': 'Info',
+  'competitionStep.rounds': 'Rounds',
+  'competitionStep.result': 'Result',
+  'competitionStep.reflection': 'Reflection',
+
+  // Round summary fallback
+  'round.noDetails': 'No details',
+
   // Dashboard
   'dashboard.errorLoading': 'Could not load user data',
   'dashboard.loginRequired': 'You must be logged in to view this page',
@@ -210,6 +248,7 @@ export const en: TranslationKeys = {
   'form.arrowsWithoutScore': 'Arrows w/o score',
   'form.from': 'From',
   'form.to': 'To',
+  'form.noneSelected': 'None selected',
 
   // Confirm modal defaults
   'confirm.defaultConfirm': 'Confirm',

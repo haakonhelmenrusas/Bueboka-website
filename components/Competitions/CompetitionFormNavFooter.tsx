@@ -4,7 +4,7 @@ import React from 'react';
 import styles from './CompetitionFormModal.module.css';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { Button } from '@/components';
-import { STEP_LABELS, TOTAL_STEPS } from './CompetitionFormModal.types';
+import { getStepLabels, TOTAL_STEPS } from './CompetitionFormModal.types';
 import { useTranslation } from '@/context/LanguageProvider';
 
 interface NavFooterProps {
@@ -20,6 +20,7 @@ interface NavFooterProps {
 
 export const CompetitionFormNavFooter: React.FC<NavFooterProps> = ({ step, onPrev, onNext, isEditMode, submitting, canSave, onSubmit }) => {
 	const { t } = useTranslation();
+	const stepLabels = getStepLabels(t);
 	const isFirstStep = step === 0;
 	const isLastStep = step === TOTAL_STEPS - 1;
 
@@ -36,7 +37,7 @@ export const CompetitionFormNavFooter: React.FC<NavFooterProps> = ({ step, onPre
 					<LuChevronLeft size={26} />
 				</button>
 
-				<span className={styles.navStepName}>{STEP_LABELS[step]}</span>
+				<span className={styles.navStepName}>{stepLabels[step]}</span>
 
 				<div className={styles.navRowRight}>
 					{isLastStep ? (

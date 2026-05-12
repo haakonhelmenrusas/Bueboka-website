@@ -7,7 +7,7 @@ import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { DateInput, Input, Select } from '@/components';
 import { getArrowsOptions, getBowOptions, getEnvironmentOptions, getPracticeCategoryOptions } from '@/lib/formUtils';
-import { WEATHER_OPTIONS } from './PracticeFormModal.types';
+import { getWeatherOptions } from './PracticeFormModal.types';
 import { useTranslation } from '@/context/LanguageProvider';
 
 interface InfoStepProps {
@@ -52,10 +52,11 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 	onDeleteRequest,
 }) => {
 	const { t } = useTranslation();
-	const environmentOptions = getEnvironmentOptions();
-	const practiceCategoryOptions = getPracticeCategoryOptions();
-	const bowOptions = getBowOptions(bows);
-	const arrowsOptions = getArrowsOptions(arrows);
+	const environmentOptions = getEnvironmentOptions(t);
+	const practiceCategoryOptions = getPracticeCategoryOptions(t);
+	const bowOptions = getBowOptions(bows, t);
+	const arrowsOptions = getArrowsOptions(arrows, t);
+	const weatherOptions = getWeatherOptions(t);
 
 	return (
 		<div className={styles.stepContent}>
@@ -92,7 +93,7 @@ export const PracticeFormInfoStep: React.FC<InfoStepProps> = ({
 				<div className={styles.weatherSection}>
 					<div className={styles.weatherLabel}>{t['form.weather']}</div>
 					<div className={styles.weatherChips}>
-						{WEATHER_OPTIONS.map((opt) => {
+						{weatherOptions.map((opt) => {
 							const active = weather.includes(opt.value);
 							return (
 								<button

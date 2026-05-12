@@ -1,21 +1,28 @@
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
+import type { TranslationKeys } from '@/lib/i18n/types';
 
 export const TOTAL_STEPS = 4;
-export const STEP_LABELS = ['Info', 'Runder', 'Resultat', 'Refleksjon'];
 
-export const WEATHER_OPTIONS: { value: WeatherCondition; label: string }[] = [
-	{ value: 'SUN', label: '☀️ Sol' },
-	{ value: 'CLOUDED', label: '⛅ Skyet' },
-	{ value: 'CLEAR', label: '🌤 Klart' },
-	{ value: 'RAIN', label: '🌧 Regn' },
-	{ value: 'WIND', label: '💨 Vind' },
-	{ value: 'SNOW', label: '❄️ Snø' },
-	{ value: 'FOG', label: '🌫 Tåke' },
-	{ value: 'THUNDER', label: '⛈ Torden' },
-	{ value: 'CHANGING_CONDITIONS', label: '🔄 Skiftende' },
-	{ value: 'OTHER', label: '🌡 Annet' },
+export const getStepLabels = (t: TranslationKeys): string[] => [
+	t['competitionStep.info'],
+	t['competitionStep.rounds'],
+	t['competitionStep.result'],
+	t['competitionStep.reflection'],
+];
+
+export const getWeatherOptions = (t: TranslationKeys): { value: WeatherCondition; label: string }[] => [
+	{ value: 'SUN', label: t['weather.sun'] },
+	{ value: 'CLOUDED', label: t['weather.clouded'] },
+	{ value: 'CLEAR', label: t['weather.clear'] },
+	{ value: 'RAIN', label: t['weather.rain'] },
+	{ value: 'WIND', label: t['weather.wind'] },
+	{ value: 'SNOW', label: t['weather.snow'] },
+	{ value: 'FOG', label: t['weather.fog'] },
+	{ value: 'THUNDER', label: t['weather.thunder'] },
+	{ value: 'CHANGING_CONDITIONS', label: t['weather.changing'] },
+	{ value: 'OTHER', label: t['weather.other'] },
 ];
 
 export interface CompetitionRoundInput {
@@ -56,7 +63,7 @@ export function emptyRound(cat: PracticeCategory): CompetitionRoundInput {
 		: { distanceMeters: undefined, targetType: '', numberArrows: undefined, arrowsWithoutScore: undefined, roundScore: 0 };
 }
 
-export function getRoundSummary(round: CompetitionRoundInput): string {
+export function getRoundSummary(round: CompetitionRoundInput, t: TranslationKeys): string {
 	const parts: string[] = [];
 	if (round.distanceMeters) parts.push(`${round.distanceMeters}m`);
 	if (round.distanceFrom || round.distanceTo) parts.push(`${round.distanceFrom ?? '?'}–${round.distanceTo ?? '?'}m`);
@@ -64,6 +71,6 @@ export function getRoundSummary(round: CompetitionRoundInput): string {
 		const opt = TARGET_TYPE_OPTIONS.find((o) => o.value === round.targetType);
 		parts.push(opt?.label ?? round.targetType);
 	}
-	return parts.length > 0 ? parts.join(' · ') : 'Ingen detaljer';
+	return parts.length > 0 ? parts.join(' · ') : t['round.noDetails'];
 }
 

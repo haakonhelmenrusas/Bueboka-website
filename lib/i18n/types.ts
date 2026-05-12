@@ -78,6 +78,44 @@ export interface TranslationKeys {
   'label.envOutdoor': string;
   'label.anonymousArcher': string;
 
+  // Practice category options (used in the practice/competition form Category select)
+  'practiceCategory.skiveIndoor': string;
+  'practiceCategory.skiveOutdoor': string;
+  'practiceCategory.jakt3D': string;
+  'practiceCategory.felt': string;
+
+  // Environment options (used in the practice/competition form Environment select)
+  'environment.indoor': string;
+  'environment.outdoor': string;
+
+  // Weather chip / select labels
+  'weather.sun': string;
+  'weather.clouded': string;
+  'weather.clear': string;
+  'weather.rain': string;
+  'weather.wind': string;
+  'weather.snow': string;
+  'weather.fog': string;
+  'weather.thunder': string;
+  'weather.changing': string;
+  'weather.other': string;
+
+  // Practice form step indicator + navigation
+  'practiceStep.info': string;
+  'practiceStep.rounds': string;
+  'practiceStep.scoring': string;
+  'practiceStep.reflection': string;
+  'practice.stepGoTo': string;
+
+  // Competition form step indicator
+  'competitionStep.info': string;
+  'competitionStep.rounds': string;
+  'competitionStep.result': string;
+  'competitionStep.reflection': string;
+
+  // Round summary fallback (when no distance/target chosen yet)
+  'round.noDetails': string;
+
   // Dashboard
   'dashboard.errorLoading': string;
   'dashboard.loginRequired': string;
@@ -210,6 +248,7 @@ export interface TranslationKeys {
   'form.arrowsWithoutScore': string;
   'form.from': string;
   'form.to': string;
+  'form.noneSelected': string;
 
   // Confirm modal defaults
   'confirm.defaultConfirm': string;
