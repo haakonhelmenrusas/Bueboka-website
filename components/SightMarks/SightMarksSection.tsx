@@ -10,6 +10,7 @@ import { useSightMarks } from './useSightMarks';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import { AimDistanceMark, SightMark } from '@/types/SightMarks';
 import { Ballistics } from '@/lib/Contants';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface SightMarksSectionProps {
 	onRefresh?: number;
@@ -18,6 +19,7 @@ interface SightMarksSectionProps {
 }
 
 export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionProps) {
+	const { t } = useTranslation();
 	const { sightMarks, loading, error, fetchSightMarks, deleteSightMark, clearError } = useSightMarks();
 	const { bows, arrows, refresh: refreshEquipment } = useEquipmentData();
 	const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
@@ -60,7 +62,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 						ballisticsParameters: updatedBallistics,
 					}),
 				});
-				if (!res.ok) throw new Error('Kunne ikke oppdatere siktemerke');
+				if (!res.ok) throw new Error(t['sightMarks.updateError']);
 				fetchSightMarks();
 				onChanged?.();
 			}
@@ -88,17 +90,17 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 			const activeArrow = arrows.find((a) => a.id === data.arrowId) ?? arrows.find((a) => a.isFavorite) ?? arrows[0];
 
 			if (!activeBow) {
-				const msg = 'Du må registrere en bue i profilen din før du kan beregne siktemerker.';
+				const msg = t['sightMarks.noBow'];
 				setCreateError(msg);
 				throw new Error(msg);
 			}
 
 			// Ensure we have a bow specification
 			const specRes = await fetch(`/api/bow-specifications/by-bow/${activeBow.id}`);
-			if (!specRes.ok) throw new Error('Kunne ikke hente buespesifikasjon');
+			if (!specRes.ok) throw new Error(t['sightMarks.fetchError']);
 			const { bowSpecification: spec } = await specRes.json();
 
-			if (!spec) throw new Error('Fant ingen buespesifikasjon. Sjekk at du har registrert en bue i profilen din.');
+			if (!spec) throw new Error(t['sightMarks.noBowSpec']);
 
 			// Only append to an existing set when the user explicitly clicked a card to edit it.
 			// In "Nytt merke" mode (editingSightMark === null) always create a fresh record.
@@ -133,7 +135,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 
 			if (!response.ok) {
 				const errorText = await response.text();
-				throw new Error(`Klarte ikke å beregne: ${errorText}`);
+				throw new Error(`${t['sightMarks.calculateError']} ${errorText}`);
 			}
 
 			const aimMarkResponse = await response.json();
@@ -173,14 +175,14 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 			}
 
 			if (!saveRes.ok) {
-				throw new Error('Kunne ikke lagre siktemerke');
+				throw new Error(t['sightMarks.saveError']);
 			}
 
 			// Refresh list after save
 			fetchSightMarks();
 			onChanged?.();
 		} catch (err) {
-			setCreateError(err instanceof Error ? err.message : 'En ukjent feil oppstod');
+			setCreateError(err instanceof Error ? err.message : t['sightMarks.unknownError']);
 			throw err; // Re-throw to be caught by modal if needed, or handle error display here
 		}
 	};
@@ -189,10 +191,10 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 		return (
 			<section className={styles.section}>
 				<div className={styles.header}>
-					<h2 className={styles.title}>Innskyting</h2>
+					<h2 className={styles.title}>{t['sightMarks.title']}</h2>
 				</div>
 				<div className={styles.container}>
-					<div className={styles.loading}>Laster...</div>
+					<div className={styles.loading}>{t['common.loading']}</div>
 				</div>
 			</section>
 		);
@@ -201,9 +203,9 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 	return (
 		<section className={styles.section}>
 			<div className={styles.header}>
-				<h2 className={styles.title}>Innskyting</h2>
+				<h2 className={styles.title}>{t['sightMarks.title']}</h2>
 				<Button
-					label="Ny innskyting"
+					label={t['sightMarks.new']}
 					onClick={() => {
 						setEditingSightMark(null);
 						setIsModalOpen(true);
@@ -215,7 +217,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 				{error && (
 					<div className={styles.error}>
 						<span>{error}</span>
-						<button onClick={clearError} className={styles.closeButton} aria-label="Lukk feilmelding">
+						<button onClick={clearError} className={styles.closeButton} aria-label={t['sightMarks.closeError']}>
 							<LuX size={18} />
 						</button>
 					</div>
@@ -223,7 +225,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 				{createError && (
 					<div className={styles.error}>
 						<span>{createError}</span>
-						<button onClick={() => setCreateError(null)} className={styles.closeButton} aria-label="Lukk feilmelding">
+						<button onClick={() => setCreateError(null)} className={styles.closeButton} aria-label={t['sightMarks.closeError']}>
 							<LuX size={18} />
 						</button>
 					</div>

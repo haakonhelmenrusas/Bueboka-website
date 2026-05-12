@@ -6,6 +6,7 @@ import { LuTarget, LuCalendar, LuArrowUp, LuMapPin } from 'react-icons/lu';
 import { GiBowArrow } from 'react-icons/gi';
 import { getBowTypeLabel, getPracticeCategoryLabel, getEnvironmentLabel } from '@/lib/labels';
 import { Badge } from '@/components/common/Badge/Badge';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export interface SessionShareData {
 	date: string;
@@ -26,6 +27,8 @@ interface SessionShareCardProps {
 }
 
 export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCardProps>(({ data }, ref) => {
+	const { t } = useTranslation();
+
 	const formattedDate = new Date(data.date).toLocaleDateString('nb-NO', {
 		year: 'numeric',
 		month: 'long',
@@ -35,7 +38,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 	const categoryLabel = data.category ? getPracticeCategoryLabel(data.category) : null;
 	const bowTypeLabel = data.bowType ? getBowTypeLabel(data.bowType) : null;
 	const envLabel = data.environment ? getEnvironmentLabel(data.environment) : null;
-	const typeLabel = data.practiceType === 'KONKURRANSE' ? 'Konkurranse' : 'Trening';
+	const typeLabel = data.practiceType === 'KONKURRANSE' ? t['badge.competition'] : t['badge.training'];
 
 	const unscoredArrows = data.arrowsWithoutScore ?? 0;
 	const scoredArrows = Math.max(0, data.arrowsShot - unscoredArrows);
@@ -55,25 +58,25 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 			</div>
 			{data.totalScore > 0 ? (
 				<div className={styles.scoreHero}>
-					<div className={styles.scoreLabel}>Totalscore</div>
+					<div className={styles.scoreLabel}>{t['share.totalScore']}</div>
 					<div className={styles.scoreValue}>{data.totalScore}</div>
 					<div className={styles.scoreArrowsRow}>
-						<span className={styles.scoreArrowsChip}>{scoredArrows} med scoring</span>
-						{unscoredArrows > 0 && <span className={styles.scoreArrowsChipDim}>{unscoredArrows} uten scoring</span>}
+						<span className={styles.scoreArrowsChip}>{scoredArrows} {t['share.withScoring']}</span>
+						{unscoredArrows > 0 && <span className={styles.scoreArrowsChipDim}>{unscoredArrows} {t['share.withoutScoring']}</span>}
 					</div>
 				</div>
 			) : (
 				<div className={styles.scoreHero}>
-					<div className={styles.scoreLabel}>Piler skutt</div>
+					<div className={styles.scoreLabel}>{t['share.arrowsShot']}</div>
 					<div className={styles.scoreValue}>{data.arrowsShot}</div>
 					<div className={styles.scoreArrowsRow}>
 						{unscoredArrows > 0 ? (
 							<>
-								<span className={styles.scoreArrowsChip}>{scoredArrows} med scoring</span>
-								<span className={styles.scoreArrowsChipDim}>{unscoredArrows} uten scoring</span>
+								<span className={styles.scoreArrowsChip}>{scoredArrows} {t['share.withScoring']}</span>
+								<span className={styles.scoreArrowsChipDim}>{unscoredArrows} {t['share.withoutScoring']}</span>
 							</>
 						) : (
-							<span className={styles.scoreArrowsChip}>Treningsøkt</span>
+							<span className={styles.scoreArrowsChip}>{t['share.trainingSession']}</span>
 						)}
 					</div>
 				</div>
@@ -82,7 +85,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 				<div className={styles.statItem}>
 					<LuCalendar size={18} className={styles.statIcon} />
 					<div className={styles.statContent}>
-						<span className={styles.statLabel}>Dato</span>
+						<span className={styles.statLabel}>{t['share.date']}</span>
 						<span className={styles.statValue}>{formattedDate}</span>
 					</div>
 				</div>
@@ -90,7 +93,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 					<div className={styles.statItem}>
 						<LuTarget size={18} className={styles.statIcon} />
 						<div className={styles.statContent}>
-							<span className={styles.statLabel}>Kategori</span>
+							<span className={styles.statLabel}>{t['share.category']}</span>
 							<span className={styles.statValue}>{categoryLabel}</span>
 						</div>
 					</div>
@@ -99,7 +102,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 					<div className={styles.statItem}>
 						<GiBowArrow size={18} className={styles.statIcon} />
 						<div className={styles.statContent}>
-							<span className={styles.statLabel}>Bue</span>
+							<span className={styles.statLabel}>{t['share.bow']}</span>
 							<span className={styles.statValue}>
 								{data.bowName}
 								{bowTypeLabel && <span className={styles.statSub}>{bowTypeLabel}</span>}
@@ -111,7 +114,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 					<div className={styles.statItem}>
 						<LuArrowUp size={18} className={styles.statIcon} />
 						<div className={styles.statContent}>
-							<span className={styles.statLabel}>Avstand</span>
+							<span className={styles.statLabel}>{t['share.distance']}</span>
 							<span className={styles.statValue}>{data.distanceMeters} m</span>
 						</div>
 					</div>
@@ -120,7 +123,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 					<div className={styles.statItem}>
 						<LuMapPin size={18} className={styles.statIcon} />
 						<div className={styles.statContent}>
-							<span className={styles.statLabel}>Miljø</span>
+							<span className={styles.statLabel}>{t['share.environment']}</span>
 							<span className={styles.statValue}>{envLabel}</span>
 						</div>
 					</div>
@@ -129,7 +132,7 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 					<div className={styles.statItem}>
 						<LuMapPin size={18} className={styles.statIcon} />
 						<div className={styles.statContent}>
-							<span className={styles.statLabel}>Sted</span>
+							<span className={styles.statLabel}>{t['share.location']}</span>
 							<span className={styles.statValue}>{data.location}</span>
 						</div>
 					</div>

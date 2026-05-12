@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react';
 import { LuActivity, LuX } from 'react-icons/lu';
 import styles from './AktivitetBanner.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 const STORAGE_KEY = 'aktivitet-banner-dismissed';
 
 export function AktivitetBanner() {
+	const { t } = useTranslation();
 	const [visible, setVisible] = useState(true);
 
 	useEffect(() => {
@@ -28,13 +30,10 @@ export function AktivitetBanner() {
 				<LuActivity size={24} />
 			</div>
 			<div className={styles.introBannerText}>
-				<h2 className={styles.introBannerTitle}>Din treningslogg</h2>
-				<p className={styles.introBannerDescription}>
-					Her finner du alle treningene og konkurransene du har registrert. Bla gjennom historikken, se detaljer om enkeltøkter, og hold
-					oversikt over fremgangen din over tid.
-				</p>
+				<h2 className={styles.introBannerTitle}>{t['aktBanner.title']}</h2>
+				<p className={styles.introBannerDescription}>{t['aktBanner.description']}</p>
 			</div>
-			<button className={styles.introBannerClose} onClick={handleDismiss} aria-label="Lukk informasjonsbanner">
+			<button className={styles.introBannerClose} onClick={handleDismiss} aria-label={t['aktBanner.close']}>
 				<LuX size={18} />
 			</button>
 		</div>

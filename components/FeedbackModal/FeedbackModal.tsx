@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { LuStar } from 'react-icons/lu';
 import styles from './FeedbackModal.module.css';
 import { Button, Modal } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface FeedbackModalProps {
 	open: boolean;
@@ -11,6 +12,7 @@ interface FeedbackModalProps {
 }
 
 export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
+	const { t } = useTranslation();
 	const [rating, setRating] = useState<number>(0);
 	const [hoveredRating, setHoveredRating] = useState<number>(0);
 	const [feedback, setFeedback] = useState<string>('');
@@ -21,12 +23,12 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 		e.preventDefault();
 
 		if (rating === 0) {
-			setMessage({ type: 'error', text: 'Vennligst velg en vurdering' });
+			setMessage({ type: 'error', text: t['feedback.errorNoRating'] });
 			return;
 		}
 
 		if (!feedback.trim()) {
-			setMessage({ type: 'error', text: 'Vennligst skriv en tilbakemelding' });
+			setMessage({ type: 'error', text: t['feedback.errorNoText'] });
 			return;
 		}
 
@@ -42,7 +44,7 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 
 			if (!response.ok) {
 				const error = await response.json();
-				setMessage({ type: 'error', text: error.error || 'Kunne ikke sende tilbakemelding' });
+				setMessage({ type: 'error', text: error.error || t['feedback.errorSend'] });
 				return;
 			}
 
@@ -51,7 +53,7 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 			setFeedback('');
 			onClose();
 		} catch (error) {
-			setMessage({ type: 'error', text: 'En feil oppstod. Prøv igjen senere.' });
+			setMessage({ type: 'error', text: t['validation.genericError'] });
 		} finally {
 			setLoading(false);
 		}
@@ -69,11 +71,11 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 	if (!open) return null;
 
 	return (
-		<Modal open={open} onClose={handleClose} title="Gi tilbakemelding" maxWidth={540} zIndex={10000}>
+		<Modal open={open} onClose={handleClose} title={t['feedback.title']} maxWidth={540} zIndex={10000}>
 			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 			<form className={styles.form} onSubmit={handleSubmit}>
 				<div className={styles.ratingSection}>
-					<label className={styles.label}>Hvordan vil du vurdere Bueboka?</label>
+					<label className={styles.label}>{t['feedback.ratingLabel']}</label>
 					<div className={styles.stars}>
 						{[1, 2, 3, 4, 5].map((star) => (
 							<button
@@ -83,7 +85,7 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 								onClick={() => setRating(star)}
 								onMouseEnter={() => setHoveredRating(star)}
 								onMouseLeave={() => setHoveredRating(0)}
-								aria-label={`Gi ${star} stjerner`}
+								aria-label={`${star} ${t['feedback.ratingLabel']}`}
 							>
 								<LuStar size={32} fill={star <= (hoveredRating || rating) ? 'currentColor' : 'none'} />
 							</button>
@@ -93,25 +95,25 @@ export function FeedbackModal({ open, onClose }: FeedbackModalProps) {
 
 				<div className={styles.feedbackSection}>
 					<label htmlFor="feedback-text" className={styles.label}>
-						Din tilbakemelding
+						{t['feedback.textLabel']}
 					</label>
 					<textarea
 						id="feedback-text"
 						className={styles.textarea}
 						value={feedback}
 						onChange={(e) => setFeedback(e.target.value)}
-						placeholder="Fortell oss hva du synes om Bueboka, eller hva vi kan gjøre bedre..."
+						placeholder={t['feedback.placeholder']}
 						rows={6}
 						disabled={loading}
 					/>
 				</div>
 
 				<div className={styles.actions}>
-					<Button type="button" onClick={handleClose} disabled={loading} buttonType="outline" label="Avbryt" />
+					<Button type="button" onClick={handleClose} disabled={loading} buttonType="outline" label={t['feedback.cancel']} />
 					<Button
 						type="submit"
 						disabled={loading || rating === 0 || !feedback.trim()}
-						label={loading ? 'Sender...' : 'Send tilbakemelding'}
+						label={loading ? t['feedback.submitting'] : t['feedback.submit']}
 					/>
 				</div>
 			</form>

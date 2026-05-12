@@ -1,22 +1,27 @@
+'use client';
+
 import { LuBriefcase, LuChartBar, LuTarget } from 'react-icons/lu';
 import styles from './Features.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export function Features() {
+	const { t } = useTranslation();
+
 	const features = [
 		{
 			icon: <LuTarget className={styles.icon} aria-hidden="true" />,
-			title: 'Registering av trening',
-			description: 'Hold detaljerte oversikter over skytesesjonene dine og følg forbedringen over tid.',
+			title: t['features.1title'],
+			description: t['features.1text'],
 		},
 		{
 			icon: <LuChartBar className={styles.icon} aria-hidden="true" />,
-			title: 'Beregning siktemerker',
-			description: 'Skyt, legg inn og få dine siktemerker beregnet.',
+			title: t['features.2title'],
+			description: t['features.2text'],
 		},
 		{
 			icon: <LuBriefcase className={styles.icon} aria-hidden="true" />,
-			title: 'Full kontroll på utstyr',
-			description: 'Lagre din profil med klubb, buer og pilsett.',
+			title: t['features.3title'],
+			description: t['features.3text'],
 		},
 	];
 
@@ -25,11 +30,9 @@ export function Features() {
 			<div className={styles.container}>
 				<div className={`${styles.reveal} ${styles.textCenter} ${styles.headerBlock}`}>
 					<h2 id="features-heading" className={styles.title}>
-						Alt du trenger for å lykkes
+						{t['features.title']}
 					</h2>
-					<p className={styles.subtitle}>
-						Bueboka tilbyr omfattende verktøy for å hjelpe deg bli en bedre bueskytter, enten du er nybegynner eller erfaren.
-					</p>
+					<p className={styles.subtitle}>{t['features.subtitle']}</p>
 				</div>
 				<div className={styles.grid}>
 					{features.map((feature, index) => (

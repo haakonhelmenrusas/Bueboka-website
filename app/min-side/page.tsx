@@ -29,8 +29,10 @@ import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import { CompetitionFormInput } from '@/components/Competitions/CompetitionFormModal';
 import type { Arrow, Bow, Practice, StatsResponse, User } from '@/lib/types';
 import type { Achievement } from '@/lib/achievements/types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export default function MyPage() {
+	const { t } = useTranslation();
 	const [profile, setProfile] = useState<User | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
@@ -76,13 +78,13 @@ export default function MyPage() {
 					router.replace('/logg-inn');
 					return;
 				}
-				setError('Kunne ikke hente brukerdata');
+				setError(t['dashboard.errorLoading']);
 				return;
 			}
 			const data = await response.json();
 			setProfile(data.profile);
 		} catch (err) {
-			setError('En feil oppstod');
+			setError(t['common.error']);
 			// error logged to console
 		}
 	};
@@ -113,7 +115,7 @@ export default function MyPage() {
 			await fetchProfile();
 		} catch (error) {
 			console.error('Error updating profile image:', error);
-			setError('Kunne ikke oppdatere profilbilde');
+			setError(t['dashboard.updateImageError']);
 			// Revert on error could be complex without storing previous state,
 			// but fetchProfile() would fix it eventually.
 			await fetchProfile(); // Revert to server state
@@ -153,13 +155,13 @@ export default function MyPage() {
 					// ignore
 				}
 
-				let errMsg: string = `Kunne ikke ${isEditMode ? 'oppdatere' : 'lagre'} trening`;
+				let errMsg: string = isEditMode ? t['aktivitet.updatePracticeError'] : t['dashboard.savePracticeError'];
 				const fieldErrors = details && typeof details === 'object' ? (details as any).fieldErrors : undefined;
 				if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
 					const msgs = Object.entries(fieldErrors)
 						.map(([field, msg]) => `${field}: ${msg}`)
 						.join('\n');
-					errMsg = `Manglende/ugyldige felt:\n${msgs}`;
+					errMsg = `${t['dashboard.fieldErrors']}\n${msgs}`;
 				} else if (details && typeof details === 'object' && (details as any).error) {
 					errMsg = (details as any).error;
 				}
@@ -220,13 +222,13 @@ export default function MyPage() {
 					// ignore
 				}
 
-				let errMsg: string = `Kunne ikke ${isEditMode ? 'oppdatere' : 'lagre'} konkurranse`;
+				let errMsg: string = isEditMode ? t['aktivitet.updateCompetitionError'] : t['dashboard.saveCompetitionError'];
 				const fieldErrors = details && typeof details === 'object' ? (details as any).fieldErrors : undefined;
 				if (res.status === 400 && fieldErrors && typeof fieldErrors === 'object') {
 					const msgs = Object.entries(fieldErrors)
 						.map(([field, msg]) => `${field}: ${msg}`)
 						.join('\n');
-					errMsg = `Manglende/ugyldige felt:\n${msgs}`;
+					errMsg = `${t['dashboard.fieldErrors']}\n${msgs}`;
 				} else if (details && typeof details === 'object' && (details as any).error) {
 					errMsg = (details as any).error;
 				}
@@ -310,7 +312,7 @@ export default function MyPage() {
 				<Header />
 				<main className={styles.main}>
 					<div className={styles.card}>
-						<div className={styles.empty}>{error || 'Du må være logget inn for å se denne siden.'}</div>
+						<div className={styles.empty}>{error || t['dashboard.loginRequired']}</div>
 					</div>
 				</main>
 			</div>
@@ -333,9 +335,9 @@ export default function MyPage() {
 						<div className={styles.summaryCard}>
 							<div className={styles.summaryHeader}>
 								<div>
-									<h3 className={styles.summaryTitle}>Oppsummering</h3>
+									<h3 className={styles.summaryTitle}>{t['dashboard.summary']}</h3>
 								</div>
-								<Button size="small" label="Se detaljert statistikk" onClick={() => router.push('/statistikk')} />
+								<Button size="small" label={t['dashboard.viewStats']} onClick={() => router.push('/statistikk')} />
 							</div>
 							<StatsSummary last7Days={stats.last7Days} last30Days={stats.last30Days} overall={stats.overall} />
 							<div className={styles.statsButtonContainer}></div>

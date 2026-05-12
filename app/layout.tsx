@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 import { FeedbackProvider } from '@/context/FeedbackProvider';
+import { LanguageProvider } from '@/context/LanguageProvider';
 import { ClarityInit } from '@/lib/ClarityInit';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -37,10 +38,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
 	return (
-		<html lang="no-nb">
+		<html lang="no-nb" suppressHydrationWarning>
 			<body className={inter.className}>
 				<ClarityInit />
-				<FeedbackProvider>{children}</FeedbackProvider>
+				<LanguageProvider>
+					<FeedbackProvider>{children}</FeedbackProvider>
+				</LanguageProvider>
 			</body>
 		</html>
 	);

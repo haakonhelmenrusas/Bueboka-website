@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './StatsSummary.module.css';
 import { LuCalendarDays, LuChartBar, LuCircleCheck, LuCircleX, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import type { PeriodStats } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export type StatsSummaryProps = {
 	last7Days: PeriodStats;
@@ -12,6 +13,7 @@ export type StatsSummaryProps = {
 };
 
 function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNode; data: PeriodStats }) {
+	const { t } = useTranslation();
 	return (
 		<div className={styles.card}>
 			<div className={styles.cardHeader}>
@@ -22,7 +24,7 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 				<div className={styles.statRow}>
 					<div className={styles.statLabel}>
 						<LuTarget className={styles.rowIcon} />
-						<span>Totalt antall piler</span>
+						<span>{t['statsSummary.totalArrows']}</span>
 					</div>
 					<span className={styles.statValue}>{data.totalArrows}</span>
 				</div>
@@ -30,14 +32,14 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 				<div className={styles.statRow}>
 					<div className={styles.statLabel}>
 						<LuCircleCheck className={styles.rowIcon} />
-						<span>Med score</span>
+						<span>{t['statsSummary.withScore']}</span>
 					</div>
 					<span className={styles.statValue}>{data.scoredArrows}</span>
 				</div>
 				<div className={styles.statRow}>
 					<div className={styles.statLabel}>
 						<LuCircleX className={styles.rowIcon} />
-						<span>Uten score</span>
+						<span>{t['statsSummary.withoutScore']}</span>
 					</div>
 					<span className={styles.statValue}>{data.unscoredArrows}</span>
 				</div>
@@ -47,13 +49,14 @@ function PeriodCard({ title, icon, data }: { title: string; icon: React.ReactNod
 }
 
 export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Days, overall }) => {
+	const { t } = useTranslation();
 	const [activeIndex, setActiveIndex] = useState(0);
 	const trackRef = useRef<HTMLDivElement>(null);
 
 	const cards = [
-		{ title: 'Totalt', icon: <LuChartBar size={18} />, data: overall },
-		{ title: 'Siste 30 dager', icon: <LuTrendingUp size={18} />, data: last30Days },
-		{ title: 'Siste 7 dager', icon: <LuCalendarDays size={18} />, data: last7Days },
+		{ title: t['statsSummary.overall'], icon: <LuChartBar size={18} />, data: overall },
+		{ title: t['statsSummary.last30days'], icon: <LuTrendingUp size={18} />, data: last30Days },
+		{ title: t['statsSummary.last7days'], icon: <LuCalendarDays size={18} />, data: last7Days },
 	];
 
 	// Keep active dot in sync with the snapped card as the user swipes.
@@ -96,21 +99,35 @@ export const StatsSummary: React.FC<StatsSummaryProps> = ({ last7Days, last30Day
 
 			{/* Swipeable carousel for smaller screens */}
 			<div className={styles.carouselWrapper}>
-				<div className={styles.track} ref={trackRef}>
-					{cards.map((card) => (
-						<div key={card.title} className={styles.slide}>
+				<div
+					className={styles.track}
+					ref={trackRef}
+					role="region"
+					aria-label={t['statsSummary.ariaLabel']}
+					aria-live="polite"
+				>
+					{cards.map((card, index) => (
+						<div
+							key={card.title}
+							className={styles.slide}
+							role="group"
+							aria-label={card.title}
+							aria-hidden={index !== activeIndex}
+						>
 							<PeriodCard title={card.title} icon={card.icon} data={card.data} />
 						</div>
 					))}
 				</div>
-				<div className={styles.dots}>
-					{cards.map((_, index) => (
+				<div className={styles.dots} role="tablist" aria-label={t['statsSummary.periods']}>
+					{cards.map((card, index) => (
 						<button
 							key={index}
 							type="button"
+							role="tab"
 							className={`${styles.dot} ${index === activeIndex ? styles.dotActive : ''}`}
 							onClick={() => scrollToIndex(index)}
-							aria-label={`Gå til ${cards[index].title}`}
+							aria-label={card.title}
+							aria-selected={index === activeIndex}
 						/>
 					))}
 				</div>

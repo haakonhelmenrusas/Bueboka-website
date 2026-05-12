@@ -14,10 +14,12 @@ import {
 	SocialMedia,
 	Sponsors,
 } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export function LandingPage() {
 	const { data: session } = useSession();
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	useEffect(() => {
 		if (session) {
@@ -27,7 +29,7 @@ export function LandingPage() {
 	return (
 		<>
 			<a href="#main-content" className="skip-link">
-				Gå til hovedinnhold
+				{t['nav.skipToContent']}
 			</a>
 			<main id="main-content">
 				<Header />

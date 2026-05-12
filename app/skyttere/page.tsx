@@ -6,16 +6,17 @@ import { LuSearch, LuUsers } from 'react-icons/lu';
 import { Footer, Header } from '@/components';
 import { PublicProfileList } from '@/components/PublicProfiles/PublicProfileList';
 import type { PublicProfile } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './page.module.css';
 
 export default function SkytterePage() {
+	const { t } = useTranslation();
 	const [query, setQuery] = useState('');
 	const [profiles, setProfiles] = useState<PublicProfile[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [searched, setSearched] = useState(false);
 	const router = useRouter();
 
-	// Auth check on mount — no profile fetch yet
 	useEffect(() => {
 		fetch('/api/public/profiles').then((res) => {
 			if (res.status === 401) router.replace('/logg-inn');
@@ -42,7 +43,6 @@ export default function SkytterePage() {
 		[router]
 	);
 
-	// Only search when the user has typed something
 	useEffect(() => {
 		if (!query.trim()) {
 			setSearched(false);
@@ -63,10 +63,8 @@ export default function SkytterePage() {
 					<div className={styles.heroIcon} aria-hidden="true">
 						<LuUsers size={36} strokeWidth={1.5} />
 					</div>
-					<h1 className={styles.title}>Finn bueskyttere</h1>
-					<p className={styles.subtitle}>
-						Søk blant bueskyttere som har valgt å dele profilen sin med andre Bueboka-skyttere. Det er kun registrerte brukere som kan søke.
-					</p>
+					<h1 className={styles.title}>{t['skyttere.title']}</h1>
+					<p className={styles.subtitle}>{t['skyttere.subtitle']}</p>
 					<div className={styles.searchWrap}>
 						<div className={styles.searchIcon} aria-hidden="true">
 							<LuSearch size={20} />
@@ -77,9 +75,9 @@ export default function SkytterePage() {
 							className={styles.searchInput}
 							value={query}
 							onChange={(e) => setQuery(e.target.value)}
-							placeholder="Søk etter navn eller klubb…"
+							placeholder={t['skyttere.searchPlaceholder']}
 							autoComplete="off"
-							aria-label="Søk etter bueskyttere"
+							aria-label={t['skyttere.searchAriaLabel']}
 						/>
 					</div>
 				</section>
@@ -95,7 +93,7 @@ export default function SkytterePage() {
 									<LuUsers size={28} strokeWidth={1.5} />
 								</div>
 							</div>
-							<p className={styles.idleHint}>Begynn å skrive for å søke</p>
+							<p className={styles.idleHint}>{t['skyttere.startTyping']}</p>
 						</div>
 					) : (
 						<PublicProfileList profiles={profiles} loading={loading} searched={searched} query={query} />

@@ -11,8 +11,10 @@ import { Button, Input, SocialAuthButtons } from '@/components';
 import { validateSignUpForm } from '@/lib/validations/authValidation';
 import { LuChartBar, LuEye, LuEyeOff, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import styles from './page.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export default function SignUpPage() {
+	const { t } = useTranslation();
 	const [error, setError] = useState<string | null>(null);
 	const [fieldErrors, setFieldErrors] = useState<{ name?: string; email?: string; password?: string; confirmPassword?: string }>({});
 	const [isSubmitting, setIsSubmitting] = useState(false);
@@ -51,7 +53,7 @@ export default function SignUpPage() {
 			);
 
 			if (password !== confirmPassword) {
-				errors.confirmPassword = 'Passordene er ikke like';
+				errors.confirmPassword = t['validation.passwordsMismatch'];
 			}
 
 			if (Object.keys(errors).length > 0) {
@@ -68,7 +70,7 @@ export default function SignUpPage() {
 			});
 
 			if (data.error) {
-				setError(data.error.message || 'En feil har skjedd ved opprettelse av brukeren din.');
+				setError(data.error.message || t['validation.genericError']);
 				return;
 			}
 
@@ -80,7 +82,7 @@ export default function SignUpPage() {
 
 	return (
 		<div className={`${styles.container} ${styles.themeBackground}`}>
-			<Link href="/" className={styles.navLogo} aria-label="Gå til forsiden">
+			<Link href="/" className={styles.navLogo} aria-label={t['auth.goToFrontPage']}>
 				<div className={styles.navLogoBox} aria-hidden="true">
 					<Image width={24} height={24} src="/assets/logo.png" alt="" className={styles.navLogoImg} />
 				</div>
@@ -95,21 +97,19 @@ export default function SignUpPage() {
 						<h1 id="brand-heading" className={styles.brandTitle}>
 							Bueboka
 						</h1>
-						<p className={styles.brandDescription}>
-							Bli med i fellesskapet av bueskyttere som tar treningen til neste nivå med smart treningsdagbok og siktemerke-beregning.
-						</p>
+						<p className={styles.brandDescription}>{t['auth.registerBrandDesc']}</p>
 						<ul className={styles.brandFeatures} aria-label="Hovedfunksjoner">
 							<li className={styles.feature}>
 								<LuChartBar size={32} className={styles.featureIcon} aria-hidden="true" />
-								<span>Detaljert statistikk</span>
+								<span>{t['auth.loginFeature1']}</span>
 							</li>
 							<li className={styles.feature}>
 								<LuTarget size={32} className={styles.featureIcon} aria-hidden="true" />
-								<span>Siktemerke-beregning</span>
+								<span>{t['auth.loginFeature2']}</span>
 							</li>
 							<li className={styles.feature}>
 								<LuTrendingUp size={32} className={styles.featureIcon} aria-hidden="true" />
-								<span>Følg din utvikling</span>
+								<span>{t['auth.loginFeature3']}</span>
 							</li>
 						</ul>
 					</div>
@@ -119,9 +119,8 @@ export default function SignUpPage() {
 						<div className={styles.formWrapper}>
 							<div className={styles.header}>
 								<h2 id="signup-heading" className={styles.title}>
-									Opprett konto
+									{t['auth.registerTitle']}
 								</h2>
-								<p className={styles.subtitle}>Start din treningsdagbok i dag – helt gratis!</p>
 							</div>
 							{error && (
 								<div className={styles.errorBox} role="alert" aria-live="polite" aria-atomic="true">
@@ -130,10 +129,10 @@ export default function SignUpPage() {
 							)}
 							<form onSubmit={handleSignUp} className={styles.form} noValidate>
 								<fieldset className={styles.inputGroup}>
-									<legend className="sr-only">Brukerinformasjon</legend>
+									<legend className="sr-only">{t['auth.registerTitle']}</legend>
 									<div>
 										<Input
-											label="Navn"
+											label={t['auth.nameLabel']}
 											id="name"
 											name="name"
 											type="text"
@@ -150,7 +149,7 @@ export default function SignUpPage() {
 									</div>
 									<div>
 										<Input
-											label="E-postadresse"
+											label={t['auth.emailLabel']}
 											id="email"
 											name="email"
 											type="email"
@@ -168,7 +167,7 @@ export default function SignUpPage() {
 									</div>
 									<div className={styles.passwordInput}>
 										<Input
-											label="Passord"
+											label={t['auth.passwordLabel']}
 											id="password"
 											name="password"
 											type={showPassword ? 'text' : 'password'}
@@ -184,14 +183,14 @@ export default function SignUpPage() {
 													type="button"
 													className={styles.passwordToggle}
 													onClick={() => setShowPassword(!showPassword)}
-													aria-label={showPassword ? 'Skjul passord' : 'Vis passord'}
+													aria-label={showPassword ? t['auth.passwordLabel'] : t['auth.passwordLabel']}
 												>
 													{showPassword ? <LuEyeOff size={20} /> : <LuEye size={20} />}
 												</button>
 											}
 										/>
 										<div id="password-requirements" className={styles.helpText}>
-											Må være minst 8 tegn
+											{t['validation.passwordMinLength']}
 										</div>
 										{fieldErrors.password && (
 											<div className={styles.fieldError} role="alert" aria-live="polite">
@@ -201,7 +200,7 @@ export default function SignUpPage() {
 									</div>
 									<div className={styles.passwordInput}>
 										<Input
-											label="Bekreft passord"
+											label={t['auth.confirmPasswordLabel']}
 											id="confirmPassword"
 											name="confirmPassword"
 											type={showConfirmPassword ? 'text' : 'password'}
@@ -216,7 +215,7 @@ export default function SignUpPage() {
 													type="button"
 													className={styles.passwordToggle}
 													onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-													aria-label={showConfirmPassword ? 'Skjul passord' : 'Vis passord'}
+													aria-label={showConfirmPassword ? t['auth.passwordLabel'] : t['auth.passwordLabel']}
 												>
 													{showConfirmPassword ? <LuEyeOff size={20} /> : <LuEye size={20} />}
 												</button>
@@ -229,19 +228,19 @@ export default function SignUpPage() {
 										)}
 									</div>
 								</fieldset>
-								<Button type="submit" label="Opprett bruker" loading={isSubmitting} disabled={isSubmitting} />
+								<Button type="submit" label={t['auth.registerButton']} loading={isSubmitting} disabled={isSubmitting} />
 							</form>
 							<div className={styles.authActions}>
 								<SocialAuthButtons
-									label="Logg på med Google"
+									label={t['auth.registerWithGoogle']}
 									onClick={() => signIn.social({ provider: 'google', callbackURL: '/min-side' })}
 									disabled={isSubmitting}
 								/>
 							</div>
 							<div className={styles.loginPrompt}>
-								Har du allerede en konto?
+								{t['auth.alreadyHaveAccountPrompt']}
 								<Link tabIndex={0} href="/logg-inn">
-									Logg inn her
+									{t['auth.loginHere']}
 								</Link>
 							</div>
 						</div>

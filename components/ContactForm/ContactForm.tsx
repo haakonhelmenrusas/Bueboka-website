@@ -4,8 +4,10 @@ import React, { useState } from 'react';
 import { LuSend } from 'react-icons/lu';
 import styles from './ContactForm.module.css';
 import { Button, Input, TextArea } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export function ContactForm() {
+	const { t } = useTranslation();
 	const [formData, setFormData] = useState({
 		name: '',
 		email: '',
@@ -20,11 +22,11 @@ export function ContactForm() {
 
 		try {
 			const body = new URLSearchParams({
-				'form-name': 'contact', // must match the form name below
+				'form-name': 'contact',
 				name: formData.name,
 				email: formData.email,
 				content: formData.content,
-				'bot-field': botField, // honeypot value
+				'bot-field': botField,
 			}).toString();
 
 			const res = await fetch('/', {
@@ -52,9 +54,8 @@ export function ContactForm() {
 
 	return (
 		<div className={styles.card}>
-			<h3 className={styles.heading}>Kontakt oss</h3>
+			<h3 className={styles.heading}>{t['contact.heading']}</h3>
 
-			{/* Netlify Forms: name, method, data-netlify, honeypot, hidden form-name input */}
 			<form
 				onSubmit={handleSubmit}
 				className={styles.form}
@@ -65,48 +66,47 @@ export function ContactForm() {
 			>
 				<input type="hidden" name="form-name" value="contact" />
 
-				{/* Honeypot field (should remain hidden) */}
 				<p className={styles.honeypot}>
 					<label>
-						Ikke fyll ut dette feltet hvis du er et menneske:
+						{t['contact.honeypotLabel']}
 						<input name="bot-field" value={botField} onChange={(e) => setBotField(e.target.value)} autoComplete="off" tabIndex={-1} />
 					</label>
 				</p>
 
-				<Input label="Navn" id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Ditt navn" />
+				<Input label={t['contact.nameLabel']} id="name" name="name" value={formData.name} onChange={handleChange} required placeholder={t['contact.namePlaceholder']} />
 
 				<Input
-					label="E-post"
+					label={t['contact.emailLabel']}
 					type="email"
 					id="email"
 					name="email"
 					value={formData.email}
 					onChange={handleChange}
 					required
-					placeholder="din@email.no"
+					placeholder={t['contact.emailPlaceholder']}
 				/>
 
 				<TextArea
-					label="Melding"
+					label={t['contact.messageLabel']}
 					id="content"
 					name="content"
 					value={formData.content}
 					onChange={handleChange}
 					required
 					rows={4}
-					placeholder="Skriv din melding her..."
+					placeholder={t['contact.messagePlaceholder']}
 				/>
 
 				<Button
 					type="submit"
-					label={status === 'submitting' ? 'Sender…' : 'Send melding'}
+					label={status === 'submitting' ? t['contact.sending'] : t['contact.sendButton']}
 					icon={<LuSend size={16} />}
 					loading={status === 'submitting'}
 				/>
 
 				<div className={styles.status} aria-live="polite" role="status">
-					{status === 'success' && 'Takk! Meldingen er sendt.'}
-					{status === 'error' && 'Noe gikk galt. Prøv igjen senere.'}
+					{status === 'success' && t['contact.success']}
+					{status === 'error' && t['contact.error']}
 				</div>
 			</form>
 		</div>

@@ -5,6 +5,7 @@ import { LuPlus, LuTarget, LuTrophy, LuX } from 'react-icons/lu';
 import { GiBowArrow, GiArrowhead } from 'react-icons/gi';
 import styles from './MobileActionButton.module.css';
 import { useClickOutside, useEscapeKey } from '@/lib/hooks';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export interface MobileActionButtonProps {
 	onCreatePractice: () => void;
@@ -25,6 +26,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 	onCreateBow,
 	onCreateArrows,
 }) => {
+	const { t } = useTranslation();
 	const [open, setOpen] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,7 +38,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 
 	const actions: ActionItem[] = [
 		{
-			label: 'Ny trening',
+			label: t['quickAction.newPractice'],
 			icon: <LuTarget size={18} />,
 			onClick: () => {
 				onCreatePractice();
@@ -44,7 +46,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 			},
 		},
 		{
-			label: 'Ny konkurranse',
+			label: t['quickAction.newCompetition'],
 			icon: <LuTrophy size={18} />,
 			onClick: () => {
 				onCreateCompetition();
@@ -52,7 +54,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 			},
 		},
 		{
-			label: 'Ny bue',
+			label: t['quickAction.newBow'],
 			icon: <GiBowArrow size={18} />,
 			onClick: () => {
 				onCreateBow();
@@ -60,7 +62,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 			},
 		},
 		{
-			label: 'Nye piler',
+			label: t['mobileAction.newArrows'],
 			icon: <GiArrowhead size={18} style={{ transform: 'rotate(225deg)' }} />,
 			onClick: () => {
 				onCreateArrows();
@@ -91,7 +93,7 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 			<button
 				className={`${styles.fab} ${open ? styles.fabOpen : ''}`}
 				onClick={toggle}
-				aria-label={open ? 'Lukk meny' : 'Opprett nytt'}
+				aria-label={open ? t['mobileAction.close'] : t['mobileAction.create']}
 				aria-expanded={open}
 				type="button"
 			>

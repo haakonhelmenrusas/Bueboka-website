@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import {
 	LuArrowUpRight,
@@ -17,6 +19,7 @@ import {
 import { AchievementProgress } from '@/lib/achievements/types';
 import { getAchievementTierLabel } from '@/lib/labels';
 import styles from './AchievementBadge.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface AchievementBadgeProps {
 	progress: AchievementProgress;
@@ -50,8 +53,12 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
 };
 
 export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, size = 'medium', showProgress = true }) => {
+	const { t } = useTranslation();
 	const { achievement, percentage, isUnlocked, current, required } = progress;
 	const IconComponent = ICON_MAP[achievement.icon] || LuTrophy;
+	const tAny = t as unknown as Record<string, string>;
+	const name = tAny[`achievement.${achievement.id}.name`] ?? achievement.name;
+	const description = tAny[`achievement.${achievement.id}.description`] ?? achievement.description;
 
 	const sizeClass = {
 		small: styles.small,
@@ -80,7 +87,7 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 	return (
 		<div
 			className={`${styles.achievementBadge} ${sizeClass} ${isUnlocked ? styles.unlocked : styles.locked} ${rarityClass} ${tierClass}`}
-			aria-label={`${achievement.name}: ${achievement.description}. ${isUnlocked ? 'Låst opp' : `${percentage}% ferdig`}`}
+			aria-label={`${name}: ${description}. ${isUnlocked ? t['achievementBadge.unlockedLabel'] : `${percentage}% ${t['achievementBadge.complete']}`}`}
 		>
 			<div className={styles.iconContainer}>
 				<IconComponent className={styles.icon} />
@@ -88,8 +95,8 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 			</div>
 
 			<div className={styles.content}>
-				<h3 className={styles.name}>{achievement.name}</h3>
-				<p className={styles.description}>{achievement.description}</p>
+				<h3 className={styles.name}>{name}</h3>
+				<p className={styles.description}>{description}</p>
 
 				{showProgress && !isUnlocked && (
 					<div className={styles.progressContainer}>
@@ -105,7 +112,7 @@ export const AchievementBadge: React.FC<AchievementBadgeProps> = ({ progress, si
 				{isUnlocked && (
 					<div className={styles.unlockedBadge}>
 						<LuStar size={14} />
-						<span>Låst opp!</span>
+						<span>{t['achievementBadge.unlocked']}</span>
 					</div>
 				)}
 			</div>

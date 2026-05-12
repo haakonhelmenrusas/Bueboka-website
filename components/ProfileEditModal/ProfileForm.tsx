@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Input, Select } from '@/components';
 import { NORWEGIAN_ARCHERY_CLUBS } from '@/lib/clubs';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './ProfileForm.module.css';
 
 export interface ProfileFormValues {
@@ -18,9 +19,8 @@ interface ProfileFormProps {
 	onCancel?: () => void;
 }
 
-const CLUB_OPTIONS = [{ value: '', label: 'Ingen / ikke tilknyttet' }, ...NORWEGIAN_ARCHERY_CLUBS];
-
 export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: ProfileFormProps) {
+	const { t } = useTranslation();
 	const [name, setName] = useState(initialValues.name);
 	const [club, setClub] = useState(initialValues.club);
 	const [skytternr, setSkytternr] = useState(initialValues.skytternr);
@@ -31,6 +31,8 @@ export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: Prof
 		setSkytternr(initialValues.skytternr);
 	}, [initialValues.name, initialValues.club, initialValues.skytternr]);
 
+	const clubOptions = [{ value: '', label: t['profileEdit.noClub'] }, ...NORWEGIAN_ARCHERY_CLUBS];
+
 	return (
 		<form
 			onSubmit={async (e) => {
@@ -39,20 +41,26 @@ export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: Prof
 			}}
 			className={styles.form}
 		>
-			<Input label="Navn" value={name} onChange={(e) => setName(e.target.value)} helpText="Ditt fulle navn" required />
+			<Input label={t['profileEdit.nameLabel']} value={name} onChange={(e) => setName(e.target.value)} helpText={t['profileEdit.nameHelp']} required />
 			<Select
 				searchable
-				label="Klubb"
+				label={t['profileEdit.clubLabel']}
 				value={club}
 				onChange={(val) => setClub(val as string)}
-				options={CLUB_OPTIONS}
-				helpText="Klubben din"
+				options={clubOptions}
+				helpText={t['profileEdit.clubHelp']}
 			/>
-			<Input label="Skytternr" value={skytternr} onChange={(e) => setSkytternr(e.target.value)} helpText="Ditt skytternummer" optional />
+			<Input
+				label={t['profileEdit.archerNumberLabel']}
+				value={skytternr}
+				onChange={(e) => setSkytternr(e.target.value)}
+				helpText={t['profileEdit.archerNumberHelp']}
+				optional
+			/>
 
 			<div className={styles.actions}>
-				{onCancel && <Button label="Avbryt" onClick={onCancel} disabled={loading} buttonType="outline" width={160} type="button" />}
-				<Button label={loading ? 'Lagrer...' : 'Lagre'} type="submit" disabled={loading} loading={loading} width={180} />
+				{onCancel && <Button label={t['common.cancel']} onClick={onCancel} disabled={loading} buttonType="outline" width={160} type="button" />}
+				<Button label={loading ? t['common.saving'] : t['common.save']} type="submit" disabled={loading} loading={loading} width={180} />
 			</div>
 		</form>
 	);

@@ -47,6 +47,7 @@ export default tseslint.config(
 	{
 		ignores: [
 			'.next/**',
+			'.claude/**',
 			'node_modules/**',
 			'prisma/prisma/generated/**',
 			'public/**',

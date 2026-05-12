@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import styles from './ProfileEditModal.module.css';
 import { ProfileForm } from './ProfileForm';
 import { Modal } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ProfileEditModalProps {
 	isOpen: boolean;
@@ -20,6 +21,7 @@ interface ProfileEditModalProps {
 }
 
 export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: ProfileEditModalProps) {
+	const { t } = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
@@ -46,17 +48,17 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 			});
 
 			if (!response.ok) {
-				setMessage({ type: 'error', text: 'Failed to update profile' });
+				setMessage({ type: 'error', text: t['profileEdit.error'] });
 				return;
 			}
 
-			setMessage({ type: 'success', text: 'Profil oppdatert' });
+			setMessage({ type: 'success', text: t['profileEdit.updated'] });
 			setTimeout(() => {
 				onProfileUpdate?.();
 				onClose();
 			}, 1000);
 		} catch (error) {
-			setMessage({ type: 'error', text: error instanceof Error ? error.message : 'En feil oppstod' });
+			setMessage({ type: 'error', text: error instanceof Error ? error.message : t['profileEdit.error'] });
 		} finally {
 			setLoading(false);
 		}
@@ -65,7 +67,7 @@ export function ProfileEditModal({ isOpen, onClose, user, onProfileUpdate }: Pro
 	if (!isOpen) return null;
 
 	return (
-		<Modal open={isOpen} onClose={onClose} title="Rediger profil" maxWidth={560}>
+		<Modal open={isOpen} onClose={onClose} title={t['profileEdit.title']} maxWidth={560}>
 			<div className={styles.content}>
 				{message && <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div>}
 				<div className={styles.form}>

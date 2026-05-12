@@ -6,6 +6,7 @@ import styles from './BowModal.module.css';
 import { BowForm, BowFormValues, BowType } from '@/components/ProfileEditModal/BowForm';
 import { Button, Modal } from '@/components';
 import { emitEquipmentChanged } from '@/lib/events';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface BowModalProps {
 	open: boolean;
@@ -32,6 +33,7 @@ interface BowModalProps {
 }
 
 export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) {
+	const { t } = useTranslation();
 	const [loading, setLoading] = React.useState(false);
 	const [message, setMessage] = React.useState<{ type: 'success' | 'error'; text: string } | null>(null);
 	const [deleting, setDeleting] = React.useState(false);
@@ -99,18 +101,18 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 			});
 
 			if (!response.ok) {
-				setMessage({ type: 'error', text: editingBow ? 'Kunne ikke oppdatere bue' : 'Kunne ikke lage bue' });
+				setMessage({ type: 'error', text: editingBow ? t['bow.updateError'] : t['bow.addError'] });
 				return;
 			}
 
-			setMessage({ type: 'success', text: editingBow ? 'Bue oppdatert' : 'Bue lagt til' });
+			setMessage({ type: 'success', text: editingBow ? t['bow.updated'] : t['bow.added'] });
 			setTimeout(() => {
 				emitEquipmentChanged();
 				onSaved?.();
 				onClose();
 			}, 800);
 		} catch (error) {
-			setMessage({ type: 'error', text: error instanceof Error ? error.message : 'En feil oppstod' });
+			setMessage({ type: 'error', text: error instanceof Error ? error.message : t['common.error'] });
 		} finally {
 			setLoading(false);
 		}
@@ -129,18 +131,18 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 				} catch {
 					// ignore
 				}
-				setMessage({ type: 'error', text: details?.error || 'Kunne ikke slette bue' });
+				setMessage({ type: 'error', text: details?.error || t['bow.deleteError'] });
 				return;
 			}
 
-			setMessage({ type: 'success', text: 'Bue slettet' });
+			setMessage({ type: 'success', text: t['bow.deleted'] });
 			setTimeout(() => {
 				emitEquipmentChanged();
 				onSaved?.();
 				onClose();
 			}, 500);
 		} catch (e) {
-			setMessage({ type: 'error', text: e instanceof Error ? e.message : 'Kunne ikke slette bue' });
+			setMessage({ type: 'error', text: e instanceof Error ? e.message : t['bow.deleteError'] });
 		} finally {
 			setDeleting(false);
 		}
@@ -149,14 +151,14 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 	if (!open) return null;
 
 	return (
-		<Modal open={open} onClose={onClose} title={editingBow ? 'Rediger bue' : 'Legg til bue'} maxWidth={680}>
+		<Modal open={open} onClose={onClose} title={editingBow ? t['bow.editTitle'] : t['bow.addTitle']} maxWidth={680}>
 			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 			<div className={styles.form}>
 				<BowForm key={editingBow?.id ?? 'new'} initialValues={initialValues} onSubmit={handleSubmit} />
 				<div className={styles.actions}>
 					{editingBow ? (
 						<Button
-							label={deleting ? 'Sletter...' : 'Slett bue'}
+							label={deleting ? t['common.deleting'] : t['bow.deleteButton']}
 							onClick={handleDelete}
 							disabled={loading || deleting}
 							buttonType="outline"
@@ -164,9 +166,9 @@ export function BowModal({ open, onClose, editingBow, onSaved }: BowModalProps) 
 							icon={<LuTrash2 size={18} />}
 						/>
 					) : null}
-					<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
+					<Button label={t['common.cancel']} onClick={onClose} disabled={loading || deleting} buttonType="outline" />
 					<Button
-						label={loading ? (editingBow ? 'Oppdaterer...' : 'Lagrer...') : editingBow ? 'Oppdater' : 'Lagre'}
+						label={loading ? (editingBow ? t['common.updating'] : t['common.saving']) : editingBow ? t['common.update'] : t['common.save']}
 						onClick={() => {
 							const form = document.getElementById('bow-form') as HTMLFormElement | null;
 							form?.requestSubmit();

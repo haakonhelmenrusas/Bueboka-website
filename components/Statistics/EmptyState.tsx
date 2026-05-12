@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import { LuCalendar, LuChartBar, LuChartBarDecreasing, LuTarget, LuTrendingUp } from 'react-icons/lu';
 import styles from './EmptyState.module.css';
 import { Button } from '@/components';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export function EmptyState() {
 	const router = useRouter();
+	const { t } = useTranslation();
 
 	return (
 		<div className={styles.container}>
@@ -29,8 +31,8 @@ export function EmptyState() {
 			</div>
 
 			<div className={styles.content}>
-				<h2 className={styles.title}>Ingen statistikk ennå</h2>
-				<p className={styles.description}>Begynn å registrere treninger for å se detaljert statistikk over din fremgang og utvikling.</p>
+				<h2 className={styles.title}>{t['statistics.noData']}</h2>
+				<p className={styles.description}>{t['statistics.noDataDesc']}</p>
 
 				<div className={styles.features}>
 					<div className={styles.feature}>
@@ -38,8 +40,8 @@ export function EmptyState() {
 							<LuChartBarDecreasing size={20} />
 						</div>
 						<div className={styles.featureText}>
-							<strong>Følg fremgangen</strong>
-							<span>Se hvordan du utvikler deg over tid</span>
+							<strong>{t['statistics.feature1Title']}</strong>
+							<span>{t['statistics.feature1Text']}</span>
 						</div>
 					</div>
 					<div className={styles.feature}>
@@ -47,8 +49,8 @@ export function EmptyState() {
 							<LuTarget size={20} />
 						</div>
 						<div className={styles.featureText}>
-							<strong>Sammenlign distanser</strong>
-							<span>Analyser ulike avstander og blinkstørrelser</span>
+							<strong>{t['statistics.feature2Title']}</strong>
+							<span>{t['statistics.feature2Text']}</span>
 						</div>
 					</div>
 					<div className={styles.feature}>
@@ -56,14 +58,14 @@ export function EmptyState() {
 							<LuTrendingUp size={20} />
 						</div>
 						<div className={styles.featureText}>
-							<strong>Se trender</strong>
-							<span>Identifiser styrker og forbedringsområder</span>
+							<strong>{t['statistics.feature3Title']}</strong>
+							<span>{t['statistics.feature3Text']}</span>
 						</div>
 					</div>
 				</div>
 
 				<div className={styles.actions}>
-					<Button label="Gå til Min Side" onClick={() => router.push('/min-side')} variant="standard" width={200} />
+					<Button label={t['statistics.goToMyPage']} onClick={() => router.push('/min-side')} variant="standard" width={200} />
 				</div>
 			</div>
 		</div>

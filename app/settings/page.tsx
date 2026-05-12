@@ -6,8 +6,10 @@ import { Accordion, Button, Checkbox, ConfirmModal, EmailVerificationBanner, Foo
 import { signOut, useSession } from '@/lib/auth-client';
 import { LuArrowLeft, LuGlobe, LuKey, LuLock, LuPencil, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './page.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export default function SettingsPage() {
+	const { t } = useTranslation();
 	const router = useRouter();
 	const { data: session, isPending } = useSession();
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -114,13 +116,13 @@ export default function SettingsPage() {
 			});
 
 			if (!res.ok) {
-				setPublicSettingsMessage({ type: 'error', text: 'Kunne ikke lagre innstillinger' });
+				setPublicSettingsMessage({ type: 'error', text: t['settings.savingError'] });
 			} else {
-				setPublicSettingsMessage({ type: 'success', text: 'Innstillinger lagret' });
+				setPublicSettingsMessage({ type: 'success', text: t['settings.saveSuccess'] });
 				setTimeout(() => setPublicSettingsMessage(null), 3000);
 			}
 		} catch {
-			setPublicSettingsMessage({ type: 'error', text: 'Kunne ikke lagre innstillinger' });
+			setPublicSettingsMessage({ type: 'error', text: t['settings.savingError'] });
 		} finally {
 			setPublicSettingsSaving(false);
 		}
@@ -141,7 +143,7 @@ export default function SettingsPage() {
 
 			if (!res.ok) {
 				const data = await res.json().catch(() => ({}));
-				throw new Error(data.error || 'Kunne ikke slette konto');
+				throw new Error(data.error || t['settings.deleteAccount']);
 			}
 
 			// Sign out to clear session state before redirecting
@@ -172,10 +174,10 @@ export default function SettingsPage() {
 			<main id="main-content" className={styles.main}>
 				<div className={styles.container}>
 					<div className={styles.header}>
-						<button className={styles.backButton} onClick={handleBackClick} aria-label="Tilbake">
+						<button className={styles.backButton} onClick={handleBackClick} aria-label={t['settings.back']}>
 							<LuArrowLeft size={20} />
 						</button>
-						<h1 className={styles.title}>Innstillinger</h1>
+						<h1 className={styles.title}>{t['settings.title']}</h1>
 					</div>
 
 					{session.user.email && (
@@ -183,30 +185,30 @@ export default function SettingsPage() {
 					)}
 
 					<div className={styles.section}>
-						<h2 className={styles.sectionTitle}>Konto</h2>
+						<h2 className={styles.sectionTitle}>{t['settings.labelName']}</h2>
 						<div className={styles.card}>
 							<div className={styles.cardContent}>
 								<div className={styles.accountGrid}>
 									<div className={styles.userInfo}>
-										<p className={styles.label}>Navn</p>
+										<p className={styles.label}>{t['settings.labelName']}</p>
 										<p className={styles.value}>{profileName ?? '—'}</p>
 									</div>
 									<div className={styles.userInfo}>
-										<p className={styles.label}>E-post</p>
+										<p className={styles.label}>{t['settings.labelEmail']}</p>
 										<p className={styles.value}>{session.user.email}</p>
 									</div>
 									<div className={styles.userInfo}>
-										<p className={styles.label}>Klubb</p>
+										<p className={styles.label}>{t['settings.labelClub']}</p>
 										<p className={styles.value}>{profileClub ?? '—'}</p>
 									</div>
 									<div className={styles.userInfo}>
-										<p className={styles.label}>Skytternummer</p>
+										<p className={styles.label}>{t['settings.labelArcherNumber']}</p>
 										<p className={styles.value}>{profileSkytternr ?? '—'}</p>
 									</div>
 								</div>
 								<div className={styles.cardActions}>
 									<Button
-										label="Rediger profil"
+										label={t['settings.editProfile']}
 										buttonType="outline"
 										icon={<LuPencil size={14} />}
 										onClick={() => setProfileModalOpen(true)}
@@ -218,38 +220,38 @@ export default function SettingsPage() {
 					<div className={styles.section}>
 						<h2 className={styles.sectionTitle}>
 							<span className={styles.sectionTitleWithIcon}>
-								<LuGlobe size={20} /> Offentlig profil
+								<LuGlobe size={20} /> {t['settings.makePublic']}
 							</span>
 						</h2>
 						<div className={styles.card}>
 							<div className={styles.cardContent}>
-								<p className={styles.privacyText}>Gjør profilen din søkbar for andre brukere. Du velger selv hva du ønsker å dele.</p>
+								<p className={styles.privacyText}>{t['settings.makePublicHelp']}</p>
 								{publicSettingsLoaded && (
 									<>
 										<Checkbox
-											label="Gjør profilen min offentlig"
+											label={t['settings.makePublic']}
 											checked={isPublic}
 											onChange={(checked) => handlePublicSettingChange({ isPublic: checked })}
 											disabled={publicSettingsSaving}
-											helpText="Andre brukere kan finne og se profilen din på /profiler"
+											helpText={t['settings.makePublicHelp']}
 										/>
 										{isPublic && (
 											<div className={styles.publicSubSettings}>
-												<p className={styles.label}>Velg hva som vises offentlig:</p>
+												<p className={styles.label}>{t['settings.choosePublicFields']}</p>
 												<Checkbox
-													label="Navn"
+													label={t['settings.labelName']}
 													checked={publicName}
 													onChange={(checked) => handlePublicSettingChange({ publicName: checked })}
 													disabled={publicSettingsSaving}
 												/>
 												<Checkbox
-													label="Klubb"
+													label={t['settings.labelClub']}
 													checked={publicClub}
 													onChange={(checked) => handlePublicSettingChange({ publicClub: checked })}
 													disabled={publicSettingsSaving}
 												/>
 												<Checkbox
-													label="Skytternummer"
+													label={t['settings.labelArcherNumber']}
 													checked={publicSkytternr}
 													onChange={(checked) => handlePublicSettingChange({ publicSkytternr: checked })}
 													disabled={publicSettingsSaving}
@@ -363,15 +365,12 @@ export default function SettingsPage() {
 						<div className={styles.dangerCard}>
 							<div className={styles.dangerContent}>
 								<div className={styles.dangerInfo}>
-									<h3 className={styles.dangerHeading}>Slett konto</h3>
-									<p className={styles.dangerDescription}>
-										Når du sletter kontoen din, vil alle dine data bli permanent fjernet. Dette inkluderer treningsøkter, utstyr og
-										profilinformasjon. Denne handlingen kan ikke angres.
-									</p>
+									<h3 className={styles.dangerHeading}>{t['settings.deleteAccount']}</h3>
+									<p className={styles.dangerDescription}>{t['settings.deleteAccountDesc']}</p>
 								</div>
 								{error && <div className={styles.error}>{error}</div>}
 								<button className={styles.deleteButton} onClick={handleDeleteClick} disabled={isDeleting}>
-									{isDeleting ? 'Sletter konto...' : 'Slett konto'}
+									{isDeleting ? t['settings.deleting'] : t['settings.deleteAccount']}
 								</button>
 							</div>
 						</div>
@@ -383,10 +382,10 @@ export default function SettingsPage() {
 				open={showConfirmModal}
 				onClose={() => setShowConfirmModal(false)}
 				onConfirm={handleConfirmDelete}
-				title="Bekreft sletting av konto"
-				message="Er du sikker på at du vil slette kontoen din? Alle dine data vil bli permanent fjernet, inkludert treningsøkter, utstyr og profilinformasjon. Denne handlingen kan ikke angres."
-				confirmLabel="Ja, slett konto"
-				cancelLabel="Avbryt"
+				title={t['settings.confirmDeleteTitle']}
+				message={t['settings.confirmDeleteMessage']}
+				confirmLabel={t['settings.confirmDeleteButton']}
+				cancelLabel={t['settings.cancelButton']}
 				variant="danger"
 				isLoading={isDeleting}
 			/>

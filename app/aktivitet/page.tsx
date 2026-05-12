@@ -16,8 +16,10 @@ import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData
 import { PracticeFormInput } from '@/components/Practices/PracticeFormModal';
 import { CompetitionFormInput } from '@/components/Competitions/CompetitionFormModal';
 import type { Practice } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export default function AktivitetPage() {
+	const { t } = useTranslation();
 	const [practiceModalOpen, setPracticeModalOpen] = useState(false);
 	const [selectedPractice, setSelectedPractice] = useState<Practice | null>(null);
 	const [practiceFormOpen, setPracticeFormOpen] = useState(false);
@@ -42,7 +44,7 @@ export default function AktivitetPage() {
 			} catch {
 				/* ignore */
 			}
-			let errMsg = 'Kunne ikke oppdatere trening';
+			let errMsg = t['aktivitet.updatePracticeError'];
 			if (details != null && typeof details === 'object' && 'error' in details) errMsg = (details as any).error;
 			return Promise.reject(new Error(errMsg));
 		}
@@ -64,7 +66,7 @@ export default function AktivitetPage() {
 			} catch {
 				/* ignore */
 			}
-			let errMsg = 'Kunne ikke oppdatere konkurranse';
+			let errMsg = t['aktivitet.updateCompetitionError'];
 			if (details != null && typeof details === 'object' && 'error' in details) errMsg = (details as any).error;
 			return Promise.reject(new Error(errMsg));
 		}
@@ -104,7 +106,7 @@ export default function AktivitetPage() {
 			<main id="main-content" className={styles.main}>
 				<div className={styles.pageHeader}>
 					<div className={styles.titleGroup}>
-						<h1 className={styles.pageTitle}>Aktivitet</h1>
+						<h1 className={styles.pageTitle}>{t['aktivitet.title']}</h1>
 					</div>
 				</div>
 				<AktivitetBanner />

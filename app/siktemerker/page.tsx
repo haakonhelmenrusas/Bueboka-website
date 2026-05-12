@@ -11,6 +11,7 @@ import { SightMarksPrintModal } from '@/components/SightMarks/SightMarksPrintMod
 import type { SightMarksPrintData } from '@/components/SightMarks/SightMarksPrintCard';
 import { LuArrowLeft, LuChartLine, LuPrinter, LuRefreshCw, LuTarget, LuTrash2, LuWind } from 'react-icons/lu';
 import type { SightMark, SightMarkResult, CalculatedMarks, FullMarksResult } from '@/types/SightMarks';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './page.module.css';
 
 function mapResult(result: SightMarkResult): FullMarksResult {
@@ -22,6 +23,7 @@ function mapResult(result: SightMarkResult): FullMarksResult {
 }
 
 export default function SiktemerkerPage() {
+	const { t } = useTranslation();
 	const router = useRouter();
 
 	const [sightMarks, setSightMarks] = useState<SightMark[]>([]);
@@ -47,7 +49,7 @@ export default function SiktemerkerPage() {
 						router.replace('/logg-inn');
 						return;
 					}
-					throw new Error('Kunne ikke hente siktemerker');
+					throw new Error(t['siktemerker.fetchError']);
 				}
 				const { sightMarks: marks } = (await smRes.json()) as { sightMarks: SightMark[] };
 				setSightMarks(marks);
@@ -76,13 +78,13 @@ export default function SiktemerkerPage() {
 				const latest = sightMarkResults[0];
 				setActiveResultId(latest.id);
 				setCalculatedMarks(mapResult(latest));
-			} catch (err) {
-				setError('En feil oppstod. Prøv igjen.');
+			} catch {
+				setError(t['siktemerker.genericError']);
 			} finally {
 				setLoading(false);
 			}
 		},
-		[router]
+		[router, t]
 	);
 
 	const silentRefresh = useCallback(async () => {
@@ -107,7 +109,7 @@ export default function SiktemerkerPage() {
 			setCalculatedMarks(null);
 			setActiveResultId(null);
 			return true;
-		} catch (err) {
+		} catch {
 			return false;
 		} finally {
 			setDeletingResult(false);
@@ -153,8 +155,8 @@ export default function SiktemerkerPage() {
 			return (
 				<div className={styles.emptyCard}>
 					<LuTarget size={40} className={styles.emptyIcon} />
-					<h2 className={styles.emptyTitle}>Ingen siktemerker</h2>
-					<p className={styles.emptyText}>Legg inn dine innskytingsavstander i seksjonen over for å beregne et fullsett.</p>
+					<h2 className={styles.emptyTitle}>{t['siktemerker.noMarks']}</h2>
+					<p className={styles.emptyText}>{t['siktemerker.noMarksText']}</p>
 				</div>
 			);
 		}
@@ -162,18 +164,16 @@ export default function SiktemerkerPage() {
 			return (
 				<div className={styles.emptyCard}>
 					<LuTarget size={40} className={styles.emptyIcon} />
-					<h2 className={styles.emptyTitle}>For få merker</h2>
-					<p className={styles.emptyText}>
-						Du trenger minst 2 innskytingsavstander for å beregne et fullsett. Legg inn flere merker i seksjonen over.
-					</p>
+					<h2 className={styles.emptyTitle}>{t['siktemerker.fewMarks']}</h2>
+					<p className={styles.emptyText}>{t['siktemerker.fewMarksText']}</p>
 				</div>
 			);
 		}
 		return (
 			<div className={styles.emptyCard}>
 				<LuChartLine size={40} className={styles.emptyIcon} />
-				<h2 className={styles.emptyTitle}>Ingen beregnede siktemerker</h2>
-				<p className={styles.emptyText}>Trykk på knappen over for å beregne et fullsett med siktemerker basert på dine innskytingsdata.</p>
+				<h2 className={styles.emptyTitle}>{t['siktemerker.noCalculated']}</h2>
+				<p className={styles.emptyText}>{t['siktemerker.noCalculatedText']}</p>
 			</div>
 		);
 	}
@@ -186,12 +186,12 @@ export default function SiktemerkerPage() {
 					<div className={styles.breadcrumb}>
 						<Link href="/min-side" className={styles.backLink}>
 							<LuArrowLeft size={16} />
-							Min side
+							{t['siktemerker.home']}
 						</Link>
 					</div>
 					<h1 className={styles.pageTitle}>
 						<LuTarget size={26} aria-hidden="true" />
-						Siktemerker
+						{t['siktemerker.title']}
 					</h1>
 				</div>
 				<SightMarksSection onChanged={silentRefresh} />
@@ -200,26 +200,26 @@ export default function SiktemerkerPage() {
 						<div className={styles.calculatedTitleRow}>
 							<h2 className={styles.calculatedTitle}>
 								<LuChartLine size={20} aria-hidden="true" />
-								Beregnede siktemerker
+								{t['siktemerker.calculated']}
 							</h2>
 							{sightMarks.length > 0 && (
-								<Button label="Velg og beregn" onClick={() => setChooserOpen(true)} icon={<LuTarget size={16} />} />
+								<Button label={t['siktemerker.selectCalculate']} onClick={() => setChooserOpen(true)} icon={<LuTarget size={16} />} />
 							)}
 						</div>
 
 						{activeSightMark && (
 							<div className={styles.infoStrip}>
 								<span className={styles.infoItem}>
-									<strong>Bue:</strong> {activeSightMark.name || activeSightMark.bowSpec?.bow?.name || 'Ukjent bue'}
+									<strong>{t['siktemerker.bow']}</strong> {activeSightMark.name || activeSightMark.bowSpec?.bow?.name || t['siktemerker.unknownBow']}
 								</span>
 								{ballistics?.given_distances && (
 									<span className={styles.infoItem}>
-										<strong>Innskytingsavstander:</strong> {ballistics.given_distances.map((d) => `${d} m`).join(' · ')}
+										<strong>{t['siktemerker.distances']}</strong> {ballistics.given_distances.map((d) => `${d} m`).join(' · ')}
 									</span>
 								)}
 								{ballistics?.arrow_name && (
 									<span className={styles.infoItem}>
-										<strong>Pil:</strong> {ballistics.arrow_name}
+										<strong>{t['siktemerker.arrows']}</strong> {ballistics.arrow_name}
 									</span>
 								)}
 							</div>
@@ -227,7 +227,7 @@ export default function SiktemerkerPage() {
 					</div>
 					<div className={styles.card}>
 						{loading ? (
-							<div className={styles.loadingState}>Laster siktemerker…</div>
+							<div className={styles.loadingState}>{t['common.loading']}</div>
 						) : error ? (
 							<div className={styles.errorBox} role="alert">
 								{error}
@@ -237,21 +237,21 @@ export default function SiktemerkerPage() {
 								<CalculatedMarksTable marksData={calculatedMarks} showSpeed={showSpeed} />
 								<div className={styles.toolbar}>
 									<Button
-										label={showSpeed ? 'Skjul hastigheter' : 'Vis hastigheter'}
+										label={showSpeed ? t['siktemerker.hideVelocities'] : t['siktemerker.showVelocities']}
 										buttonType="outline"
 										onClick={() => setShowSpeed((v) => !v)}
 										icon={<LuWind size={16} />}
 									/>
-									<Button label="Del / Skriv ut" buttonType="outline" onClick={() => setPrintOpen(true)} icon={<LuPrinter size={16} />} />
+									<Button label={t['siktemerker.shareOrPrint']} buttonType="outline" onClick={() => setPrintOpen(true)} icon={<LuPrinter size={16} />} />
 									<Button
-										label={deletingResult ? 'Sletter…' : 'Beregn på nytt'}
+										label={deletingResult ? t['common.deleting'] : t['siktemerker.recalculate']}
 										buttonType="outline"
 										onClick={handleRemoveResult}
 										disabled={deletingResult}
 										icon={<LuRefreshCw size={16} />}
 									/>
 									<Button
-										label={deletingResult ? 'Sletter…' : 'Fjern beregning'}
+										label={deletingResult ? t['common.deleting'] : t['siktemerker.removeCalculation']}
 										buttonType="outline"
 										onClick={handleDeleteResult}
 										disabled={deletingResult || !activeResultId}
@@ -288,8 +288,8 @@ export default function SiktemerkerPage() {
 					data={
 						{
 							marksData: calculatedMarks,
-							setName: activeSightMark.name || activeSightMark.bowSpec?.bow?.name || 'Siktemerker',
-							bowName: activeSightMark.bowSpec?.bow?.name || 'Ukjent bue',
+							setName: activeSightMark.name || activeSightMark.bowSpec?.bow?.name || t['siktemerker.title'],
+							bowName: activeSightMark.bowSpec?.bow?.name || t['siktemerker.unknownBow'],
 							arrowName: ballistics?.arrow_name,
 							givenDistances: ballistics?.given_distances,
 							showSpeed,

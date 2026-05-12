@@ -96,7 +96,7 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 		await prisma.bow.delete({ where: { id } });
 
 		equipmentCache.delete(`equipment:${user.id}`);
-		return NextResponse.json({ success: true }, { status: 200 });
+		return new NextResponse(null, { status: 204 });
 	} catch (error) {
 		console.error('Error deleting bow:', error);
 		return NextResponse.json({ error: 'Failed to delete bow' }, { status: 500 });

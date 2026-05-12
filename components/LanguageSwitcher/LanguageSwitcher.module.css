@@ -1,0 +1,156 @@
+.wrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.wrapperLight {
+  width: 100%;
+}
+
+/* ── Dark variant (header bar) ── */
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: transparent;
+  border: 1px solid var(--white-20);
+  border-radius: var(--radius-sm, 4px);
+  color: var(--white);
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  line-height: 1;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.trigger:hover {
+  background: var(--white-10, rgba(255, 255, 255, 0.1));
+  border-color: var(--white-40, rgba(255, 255, 255, 0.4));
+}
+
+/* ── Light variant (inside menu) ── */
+.triggerLight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  color: var(--text-dark);
+  font-weight: 650;
+  font-size: 1rem;
+  font-family: inherit;
+  text-align: left;
+  transition: background 150ms ease;
+  white-space: nowrap;
+}
+
+.triggerLight:hover {
+  background: var(--primary-06);
+}
+
+.currentLabel {
+  flex: 1;
+}
+
+/* ── Shared ── */
+.flag {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.code {
+  letter-spacing: 0.05em;
+}
+
+.chevron {
+  opacity: 0.7;
+  transition: transform 0.15s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* ── Dropdown panel ── */
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  background: var(--white);
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 12px var(--dark-20);
+  min-width: 130px;
+  overflow: hidden;
+  z-index: 70;
+  padding: var(--space-1);
+  list-style: none;
+  margin: 0;
+  animation: dropdown-in 160ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+/* Light variant: dropdown opens to the right so it escapes the menu panel */
+.dropdownLight {
+  top: 0;
+  right: auto;
+  left: calc(100% + 4px);
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  color: var(--text-dark);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: left;
+  transition: background 150ms ease;
+  white-space: nowrap;
+}
+
+.option:hover {
+  background: var(--primary-06);
+}
+
+.optionActive {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.optionLabel {
+  flex: 1;
+}
+
+.check {
+  font-size: 0.75rem;
+  color: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dropdown {
+    animation: none;
+  }
+}

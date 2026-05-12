@@ -6,6 +6,7 @@ import styles from './SightMarkFormModal.module.css';
 import { Button, Modal, NumberInput, Select } from '@/components';
 import type { SelectOption } from '@/components/common/Select/Select';
 import type { Arrow, Bow } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface InitialData {
 	bowId: string;
@@ -25,6 +26,7 @@ interface SightMarkFormModalProps {
 }
 
 export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arrows, initialData }: SightMarkFormModalProps) {
+	const { t } = useTranslation();
 	const isEditing = !!initialData;
 
 	const [name, setName] = useState('');
@@ -71,27 +73,27 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 	const bowOptions: SelectOption[] = bows.map((b) => ({
 		value: b.id,
 		label: b.name,
-		subtitle: b.isFavorite ? 'Favoritt' : undefined,
+		subtitle: b.isFavorite ? t['common.favorite'] : undefined,
 	}));
 
 	const arrowOptions: SelectOption[] = arrows.map((a) => ({
 		value: a.id,
 		label: a.name,
-		subtitle: a.isFavorite ? 'Favoritt' : undefined,
+		subtitle: a.isFavorite ? t['common.favorite'] : undefined,
 	}));
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!selectedBowId) {
-			setError('Du må velge en bue');
+			setError(t['sightMarkForm.selectBowFirst']);
 			return;
 		}
 		if (!selectedArrowId) {
-			setError('Du må velge et pilsett');
+			setError(t['sightMarkForm.selectArrowsFirst']);
 			return;
 		}
 		if (distance <= 0 || mark <= 0) {
-			setError('Vennligst fyll ut avstand og siktemerke med positive verdier');
+			setError(t['sightMarkForm.fillPositiveValues']);
 			return;
 		}
 
@@ -101,7 +103,7 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 			await onSave({ distance, mark, bowId: selectedBowId, arrowId: selectedArrowId, name });
 			onClose();
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Kunne ikke lagre siktemerke');
+			setError(err instanceof Error ? err.message : t['sightMarkForm.saveError']);
 		} finally {
 			setLoading(false);
 		}
@@ -115,7 +117,7 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 			await onDelete();
 			onClose();
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Kunne ikke slette siktemerke');
+			setError(err instanceof Error ? err.message : t['sightMarkForm.deleteError']);
 		} finally {
 			setDeleting(false);
 		}
@@ -128,22 +130,18 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 	const busy = loading || deleting;
 
 	return (
-		<Modal open={open} onClose={onClose} title={isEditing ? 'Rediger siktemerke' : 'Nytt siktemerke'} maxWidth={560}>
+		<Modal open={open} onClose={onClose} title={isEditing ? t['sightMarkForm.editTitle'] : t['sightMarkForm.newTitle']} maxWidth={560}>
 			{!isEditing && (
 				<div className={styles.infoBox}>
 					<LuInfo size={18} className={styles.infoIcon} />
-					<p className={styles.infoText}>
-						Siktemerker hjelper deg å treffe blinken på ulike avstander. Du legger inn en avstand og tilhørende merke på siktet, og systemet
-						beregner automatisk optimale merker for alle andre avstander basert på buens og pilens egenskaper. Jo flere merker du
-						registrerer, desto nøyaktigere blir beregningene.
-					</p>
+					<p className={styles.infoText}>{t['sightMarkForm.infoText']}</p>
 				</div>
 			)}
 
 			<form onSubmit={handleSubmit} className={styles.form}>
 				<div className={styles.field}>
 					<label className={styles.label} htmlFor="sm-name">
-						Navn (valgfritt)
+						{t['sightMarkForm.nameLabel']}
 					</label>
 					<input
 						id="sm-name"
@@ -151,44 +149,44 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 						className={styles.textInput}
 						value={name}
 						onChange={(e) => setName(e.target.value)}
-						placeholder="F.eks. Utendørs 2025"
+						placeholder={t['sightMarkForm.namePlaceholder']}
 					/>
 				</div>
 
 				<div className={styles.selectRow}>
 					<Select
-						label="Bue"
+						label={t['sightMarkForm.bowLabel']}
 						value={selectedBowId}
 						onChange={(v) => setSelectedBowId(v as string)}
 						options={bowOptions}
-						placeholderLabel="Velg bue"
-						emptyText="Ingen buer registrert"
+						placeholderLabel={t['sightMarkForm.selectBow']}
+						emptyText={t['sightMarkForm.noBows']}
 						disabled={noBows}
-						errorMessage={noBows ? 'Legg til en bue i profilen din først' : undefined}
+						errorMessage={noBows ? t['sightMarkForm.addBowFirst'] : undefined}
 						containerClassName={styles.selectField}
 					/>
 					<Select
-						label="Pilsett"
+						label={t['sightMarkForm.arrowsLabel']}
 						value={selectedArrowId}
 						onChange={(v) => setSelectedArrowId(v as string)}
 						options={arrowOptions}
-						placeholderLabel="Velg pilsett"
-						emptyText="Ingen piler registrert"
+						placeholderLabel={t['sightMarkForm.selectArrows']}
+						emptyText={t['sightMarkForm.noArrows']}
 						disabled={noArrows}
-						errorMessage={noArrows ? 'Legg til piler i profilen din først' : undefined}
+						errorMessage={noArrows ? t['sightMarkForm.addArrowsFirst'] : undefined}
 						containerClassName={styles.selectField}
 					/>
 				</div>
 
 				{isEditing && (
 					<div className={styles.divider}>
-						<span className={styles.dividerLabel}>Legg til nytt merke</span>
+						<span className={styles.dividerLabel}>{t['sightMarkForm.addMarkDivider']}</span>
 					</div>
 				)}
 
 				<div className={styles.inputsRow}>
-					<NumberInput label="Avstand (m)" value={distance} onChange={setDistance} min={0} max={150} startEmpty required width="100%" />
-					<NumberInput label="Siktemerke" value={mark} onChange={setMark} step={0.01} startEmpty required width="100%" />
+					<NumberInput label={t['sightMarkForm.distanceLabel']} value={distance} onChange={setDistance} min={0} max={150} startEmpty required width="100%" />
+					<NumberInput label={t['sightMarkForm.markLabel']} value={mark} onChange={setMark} step={0.01} startEmpty required width="100%" />
 				</div>
 
 				{error && <div className={styles.error}>{error}</div>}
@@ -196,7 +194,7 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 				<div className={styles.footer}>
 					{isEditing && onDelete && (
 						<Button
-							label="Slett sett"
+							label={t['sightMarkForm.deleteSet']}
 							type="button"
 							buttonType="outline"
 							variant="warning"
@@ -207,9 +205,9 @@ export function SightMarkFormModal({ open, onClose, onSave, onDelete, bows, arro
 						/>
 					)}
 					<div className={styles.footerActions}>
-						<Button label="Avbryt" type="button" buttonType="outline" onClick={onClose} disabled={busy} />
+						<Button label={t['common.cancel']} type="button" buttonType="outline" onClick={onClose} disabled={busy} />
 						<Button
-							label={isEditing ? 'Legg til nytt merke' : 'Lagre merke'}
+							label={isEditing ? t['sightMarkForm.addMarkDivider'] : t['sightMarkForm.saveMark']}
 							type="submit"
 							loading={loading}
 							disabled={busy || noBows || noArrows}

@@ -249,7 +249,7 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 		statsCache.delete(`stats:summary:${user.id}`);
 		practicesCache.deleteByPrefix(`practices:cards:${user.id}`);
 
-		return NextResponse.json({ success: true });
+		return new NextResponse(null, { status: 204 });
 	} catch (error) {
 		console.error('Error deleting competition:', error);
 		return NextResponse.json(

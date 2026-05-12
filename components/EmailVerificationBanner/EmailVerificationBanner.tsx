@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { LuCircleAlert, LuX } from 'react-icons/lu';
 import styles from './EmailVerificationBanner.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface EmailVerificationBannerProps {
 	userEmail: string;
@@ -10,6 +11,7 @@ interface EmailVerificationBannerProps {
 }
 
 export function EmailVerificationBanner({ userEmail, emailVerified }: EmailVerificationBannerProps) {
+	const { t } = useTranslation();
 	const [dismissed, setDismissed] = useState(false);
 	const [sending, setSending] = useState(false);
 	const [message, setMessage] = useState<string | null>(null);
@@ -34,16 +36,16 @@ export function EmailVerificationBanner({ userEmail, emailVerified }: EmailVerif
 
 			if (!response.ok) {
 				const data = await response.json().catch(() => ({}));
-				throw new Error(data.message || 'Kunne ikke sende bekreftelse');
+				throw new Error(data.message || t['emailVerification.sendError']);
 			}
 
-			setMessage('Bekreftelse sendt! Sjekk innboksen din.');
+			setMessage(t['emailVerification.sent']);
 
 			// Clear success message after 5 seconds
 			setTimeout(() => setMessage(null), 5000);
 		} catch (error: any) {
 			console.error('Resend verification email error:', error);
-			const errorMessage = error?.message || 'Kunne ikke sende bekreftelse. Prøv igjen.';
+			const errorMessage = error?.message || t['emailVerification.sendError'];
 			setMessage(errorMessage);
 		} finally {
 			setSending(false);
@@ -55,14 +57,14 @@ export function EmailVerificationBanner({ userEmail, emailVerified }: EmailVerif
 			<div className={styles.content}>
 				<LuCircleAlert size={18} />
 				<div className={styles.textContainer}>
-					<p className={styles.text}>E-posten din er ikke bekreftet.</p>
+					<p className={styles.text}>{t['emailVerification.notVerified']}</p>
 					<button className={styles.link} onClick={handleResend} disabled={sending}>
-						{sending ? 'Sender...' : 'Send bekreftelse på nytt'}
+						{sending ? t['emailVerification.sending'] : t['emailVerification.resend']}
 					</button>
 					{message && <p className={styles.message}>{message}</p>}
 				</div>
 			</div>
-			<button className={styles.closeButton} onClick={() => setDismissed(true)} aria-label="Lukk varsel">
+			<button className={styles.closeButton} onClick={() => setDismissed(true)} aria-label={t['emailVerification.closeAlert']}>
 				<LuX size={14} />
 			</button>
 		</div>

@@ -6,6 +6,7 @@ import styles from './ArrowsModal.module.css';
 import { ArrowsForm, ArrowsFormValues } from '@/components/ProfileEditModal/ArrowsForm';
 import { Button, Modal } from '@/components';
 import { emitEquipmentChanged } from '@/lib/events';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ArrowsModalProps {
 	open: boolean;
@@ -30,6 +31,7 @@ interface ArrowsModalProps {
 }
 
 export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsModalProps) {
+	const { t } = useTranslation();
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 	const [deleting, setDeleting] = useState(false);
@@ -74,18 +76,18 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 			});
 
 			if (!response.ok) {
-				setMessage({ type: 'error', text: editingArrows ? 'Kunne ikke oppdatere piler' : 'Kunne ikke legge til piler' });
+				setMessage({ type: 'error', text: editingArrows ? t['arrows.updateError'] : t['arrows.addError'] });
 				return;
 			}
 
-			setMessage({ type: 'success', text: editingArrows ? 'Piler oppdatert' : 'Piler lagt til' });
+			setMessage({ type: 'success', text: editingArrows ? t['arrows.updated'] : t['arrows.added'] });
 			setTimeout(() => {
 				emitEquipmentChanged();
 				if (hasChanges) onSaved?.();
 				onClose();
 			}, 800);
 		} catch (error) {
-			setMessage({ type: 'error', text: error instanceof Error ? error.message : 'En feil oppstod' });
+			setMessage({ type: 'error', text: error instanceof Error ? error.message : t['common.error'] });
 		} finally {
 			setLoading(false);
 		}
@@ -104,18 +106,18 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 				} catch {
 					// ignore
 				}
-				setMessage({ type: 'error', text: details?.error || 'Kunne ikke slette pilsett' });
+				setMessage({ type: 'error', text: details?.error || t['arrows.deleteError'] });
 				return;
 			}
 
-			setMessage({ type: 'success', text: 'Pilsett slettet' });
+			setMessage({ type: 'success', text: t['arrows.deleted'] });
 			setTimeout(() => {
 				emitEquipmentChanged();
 				onSaved?.();
 				onClose();
 			}, 500);
 		} catch (e) {
-			setMessage({ type: 'error', text: e instanceof Error ? e.message : 'Kunne ikke slette pilsett' });
+			setMessage({ type: 'error', text: e instanceof Error ? e.message : t['arrows.deleteError'] });
 		} finally {
 			setDeleting(false);
 		}
@@ -124,7 +126,7 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 	if (!open) return null;
 
 	return (
-		<Modal open={open} onClose={onClose} title={editingArrows ? 'Rediger piler' : 'Legg til piler'} maxWidth={640}>
+		<Modal open={open} onClose={onClose} title={editingArrows ? t['arrows.editTitle'] : t['arrows.addTitle']} maxWidth={640}>
 			{message ? <div className={`${styles.message} ${styles[message.type]}`}>{message.text}</div> : null}
 			<div className={styles.form}>
 				<ArrowsForm
@@ -153,7 +155,7 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 				<div className={styles.actions}>
 					{editingArrows ? (
 						<Button
-							label={deleting ? 'Sletter...' : 'Slett piler'}
+							label={deleting ? t['common.deleting'] : t['arrows.deleteButton']}
 							onClick={handleDelete}
 							disabled={loading || deleting}
 							buttonType="outline"
@@ -161,9 +163,9 @@ export function ArrowsModal({ open, onClose, onSaved, editingArrows }: ArrowsMod
 							icon={<LuTrash2 size={18} />}
 						/>
 					) : null}
-					<Button label="Avbryt" onClick={onClose} disabled={loading || deleting} buttonType="outline" />
+					<Button label={t['common.cancel']} onClick={onClose} disabled={loading || deleting} buttonType="outline" />
 					<Button
-						label={loading ? (editingArrows ? 'Oppdaterer...' : 'Lagrer...') : editingArrows ? 'Oppdater' : 'Lagre'}
+						label={loading ? (editingArrows ? t['common.updating'] : t['common.saving']) : editingArrows ? t['common.update'] : t['common.save']}
 						onClick={() => {
 							const form = document.getElementById('arrows-form') as HTMLFormElement | null;
 							form?.requestSubmit();

@@ -7,6 +7,7 @@ import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { ConfirmModal, Modal } from '@/components';
 import { type CompetitionFormInput, type CompetitionRoundInput, emptyRound } from './CompetitionFormModal.types';
+import { useTranslation } from '@/context/LanguageProvider';
 import { CompetitionFormStepIndicator } from './CompetitionFormStepIndicator';
 import { CompetitionFormInfoStep } from './CompetitionFormInfoStep';
 import { CompetitionFormRoundsStep } from './CompetitionFormRoundsStep';
@@ -87,6 +88,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
 
+	const { t } = useTranslation();
 	const isEditMode = mode === 'edit';
 
 	useEffect(() => {
@@ -178,11 +180,11 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 		setDeleting(true);
 		try {
 			const res = await fetch(`/api/competitions/${competition.id}`, { method: 'DELETE' });
-			if (!res.ok) throw new Error('Kunne ikke slette konkurranse');
+			if (!res.ok) throw new Error(t['competition.deleteError']);
 			onDeleted?.(competition.id);
 			onClose();
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Kunne ikke slette konkurranse');
+			setError(err instanceof Error ? err.message : t['competition.deleteError']);
 		} finally {
 			setDeleting(false);
 			setConfirmDeleteOpen(false);
@@ -196,7 +198,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 
 	const handleSubmit = async () => {
 		if (!name.trim()) {
-			setError('Navn på konkurransen er påkrevd');
+			setError(t['competition.nameRequired']);
 			return;
 		}
 
@@ -234,7 +236,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 			});
 			onClose();
 		} catch (err) {
-			setError(err instanceof Error ? err.message : 'Kunne ikke lagre konkurranse.');
+			setError(err instanceof Error ? err.message : t['competition.saveError']);
 		} finally {
 			setSubmitting(false);
 		}
@@ -243,7 +245,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 	if (!open) return null;
 
 	const isFormValid = !!date && !!name.trim();
-	const title = isEditMode ? 'Rediger konkurranse' : 'Ny konkurranse';
+	const title = isEditMode ? t['competition.editTitle'] : t['competition.newTitle'];
 
 	return (
 		<>
@@ -260,7 +262,7 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				<div className={styles.wizard}>
 					<div className={styles.wizardHeader}>
 						<h2 className={styles.wizardTitle}>{title}</h2>
-						<button type="button" className={styles.closeBtn} onClick={handleCloseRequest} aria-label="Lukk">
+						<button type="button" className={styles.closeBtn} onClick={handleCloseRequest} aria-label={t['common.close']}>
 							<LuX size={20} />
 						</button>
 					</div>
@@ -333,10 +335,10 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 				open={confirmDeleteOpen}
 				onClose={() => setConfirmDeleteOpen(false)}
 				onConfirm={handleDelete}
-				title="Slett konkurranse"
-				message="Er du sikker på at du vil slette denne konkurransen? Handlingen kan ikke angres."
-				confirmLabel="Slett"
-				cancelLabel="Avbryt"
+				title={t['competition.deleteConfirmTitle']}
+				message={t['competition.deleteConfirmMessage']}
+				confirmLabel={t['common.delete']}
+				cancelLabel={t['common.cancel']}
 				variant="danger"
 				isLoading={deleting}
 			/>
@@ -348,10 +350,10 @@ export const CompetitionFormModal: React.FC<CompetitionFormModalProps> = ({
 					setConfirmDiscardOpen(false);
 					onClose();
 				}}
-				title="Forkast endringer"
-				message="Er du sikker på at du vil avbryte? Endringene du har gjort vil ikke bli lagret."
-				confirmLabel="Forkast"
-				cancelLabel="Fortsett"
+				title={t['competition.discardTitle']}
+				message={t['competition.discardMessage']}
+				confirmLabel={t['competition.discardConfirm']}
+				cancelLabel={t['common.continue']}
 				variant="danger"
 			/>
 		</>

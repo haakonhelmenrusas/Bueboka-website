@@ -41,6 +41,11 @@
     box-shadow: none;
 }
 
+.button:focus-visible {
+    outline: 3px solid var(--white);
+    outline-offset: 4px;
+}
+
 .icon {
     display: flex;
     align-items: center;

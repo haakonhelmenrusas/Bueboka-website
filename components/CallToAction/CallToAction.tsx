@@ -1,20 +1,22 @@
+'use client';
+
 import Link from 'next/link';
 import { LuChartBar, LuChevronRight, LuFlame, LuZap } from 'react-icons/lu';
 import styles from './CallToAction.module.css';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export function CallToAction() {
+	const { t } = useTranslation();
+
 	return (
 		<section className={styles.section} aria-labelledby="cta-heading">
 			<div className={styles.container}>
 				<div className={styles.content}>
 					<div className={`${styles.reveal} ${styles.textCenter} ${styles.headerBlock}`}>
 						<h2 id="cta-heading" className={styles.title}>
-							Klar til å ta treningen din til neste nivå?
+							{t['cta.title']}
 						</h2>
-						<p className={styles.subtitle}>
-							Bli med i fellesskapet av bueskyttere som bruker Bueboka for å spore fremgang, analysere statistikk og optimalisere sin
-							skyting.
-						</p>
+						<p className={styles.subtitle}>{t['cta.subtitle']}</p>
 					</div>
 
 					<div className={styles.featuresGrid}>
@@ -22,34 +24,34 @@ export function CallToAction() {
 							<div className={styles.featureIcon} aria-hidden="true">
 								<LuZap className="w-6 h-6" />
 							</div>
-							<h3 className={styles.featureTitle}>Kom i gang på sekunder</h3>
-							<p className={styles.featureText}>Registrer deg med e-post eller Google og begynn å logge treningsøkter med en gang.</p>
+							<h3 className={styles.featureTitle}>{t['cta.feature1Title']}</h3>
+							<p className={styles.featureText}>{t['cta.feature1Text']}</p>
 						</div>
 						<div className={`${styles.featureCard} ${styles.reveal}`} style={{ animationDelay: '120ms' }}>
 							<div className={styles.featureIcon} aria-hidden="true">
 								<LuChartBar className="w-6 h-6" />
 							</div>
-							<h3 className={styles.featureTitle}>Følg din fremgang</h3>
-							<p className={styles.featureText}>Se detaljert statistikk over treningsøktene dine og følg utviklingen over tid.</p>
+							<h3 className={styles.featureTitle}>{t['cta.feature2Title']}</h3>
+							<p className={styles.featureText}>{t['cta.feature2Text']}</p>
 						</div>
 						<div className={`${styles.featureCard} ${styles.reveal}`} style={{ animationDelay: '240ms' }}>
 							<div className={styles.featureIcon} aria-hidden="true">
 								<LuFlame className="w-6 h-6" />
 							</div>
-							<h3 className={styles.featureTitle}>Optimaliser skytingen</h3>
-							<p className={styles.featureText}>Administrer utstyr, registrer siktemerker, og få innsikt som forbedrer nøyaktigheten.</p>
+							<h3 className={styles.featureTitle}>{t['cta.feature3Title']}</h3>
+							<p className={styles.featureText}>{t['cta.feature3Text']}</p>
 						</div>
 					</div>
 
 					<div className={`${styles.ctaBlock} ${styles.reveal}`} style={{ animationDelay: '360ms' }}>
 						<Link href="/ny-bruker" className={styles.ctaButton}>
-							Opprett bruker
+							{t['cta.registerButton']}
 							<LuChevronRight className={styles.ctaIcon} aria-hidden="true" />
 						</Link>
 						<p className={styles.existingUser}>
-							Har du allerede en konto?{' '}
+							{t['cta.alreadyHaveAccount']}{' '}
 							<Link href="/logg-inn" className={styles.loginLink}>
-								Logg inn her
+								{t['cta.loginHere']}
 							</Link>
 						</p>
 					</div>

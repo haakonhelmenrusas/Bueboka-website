@@ -21,6 +21,7 @@ model User {
   publicStats          Boolean  @default(false)
   publicSkytternr      Boolean  @default(false)
   publicAchievements   Boolean  @default(false)
+  locale            String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 

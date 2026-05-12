@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@/lib/test-utils';
 import { PracticeDetailsModal } from '@/components';
 import { Environment, WeatherCondition } from '@/lib/prismaEnums';
 

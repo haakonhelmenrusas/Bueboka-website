@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button, Modal, NumberInput } from '@/components';
 import { useModalBehavior } from '@/lib/hooks';
 import type { CalculatedMarks, FullMarksResult } from '@/types/SightMarks';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './CalculateMarksModal.module.css';
 
 interface CalculateMarksModalProps {
@@ -15,6 +16,7 @@ interface CalculateMarksModalProps {
 }
 
 export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, onResultCreated }: CalculateMarksModalProps) {
+	const { t } = useTranslation();
 	const [distanceFrom, setDistanceFrom] = useState(10);
 	const [distanceTo, setDistanceTo] = useState(90);
 	const [interval, setInterval] = useState(5);
@@ -35,10 +37,10 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 	function validate() {
 		const errs: Record<string, string> = {};
-		if (!distanceFrom) errs.distanceFrom = 'Verdi mangler';
-		if (!distanceTo) errs.distanceTo = 'Verdi mangler';
-		if (!interval) errs.interval = 'Verdi mangler';
-		if (distanceTo <= distanceFrom) errs.distanceTo = 'Til-avstand må være større enn fra-avstand';
+		if (!distanceFrom) errs.distanceFrom = t['calculateMarksModal.errorValueMissing'];
+		if (!distanceTo) errs.distanceTo = t['calculateMarksModal.errorValueMissing'];
+		if (!interval) errs.interval = t['calculateMarksModal.errorValueMissing'];
+		if (distanceTo <= distanceFrom) errs.distanceTo = t['calculateMarksModal.errorToGreaterThanFrom'];
 		setErrors(errs);
 		return Object.keys(errs).length === 0;
 	}
@@ -46,7 +48,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 	async function handleSubmit() {
 		if (!validate()) return;
 		if (!ballistics) {
-			setErrorMsg('Ballistikkdata mangler. Legg inn et siktemerke først.');
+			setErrorMsg(t['calculateMarksModal.errorNoBallisticsData']);
 			return;
 		}
 
@@ -75,7 +77,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 
 			if (!calcRes.ok) {
 				const body = await calcRes.json().catch(() => ({}));
-				throw new Error(body?.error || 'Kunne ikke beregne siktemerker');
+				throw new Error(body?.error || t['calculateMarksModal.errorCalculate']);
 			}
 
 			const rawResult = await calcRes.json();
@@ -107,14 +109,14 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 				});
 				if (!saveRes.ok) {
 					const body = await saveRes.json().catch(() => ({}));
-					throw new Error(body?.error || 'Kunne ikke lagre resultat');
+					throw new Error(body?.error || t['calculateMarksModal.errorSave']);
 				}
 			}
 
 			onResultCreated(result);
 			onClose();
 		} catch (err: unknown) {
-			setErrorMsg(err instanceof Error ? err.message : 'Kunne ikke beregne siktemerker');
+			setErrorMsg(err instanceof Error ? err.message : t['calculateMarksModal.errorCalculate']);
 			setStatus('error');
 		} finally {
 			setStatus('idle');
@@ -122,13 +124,13 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 	}
 
 	return (
-		<Modal open={open} onClose={onClose} title="Beregn siktemerker">
+		<Modal open={open} onClose={onClose} title={t['calculateMarksModal.title']}>
 			<div className={styles.body}>
 				<section className={styles.fieldGroup}>
-					<h3 className={styles.groupLabel}>Avstandsrekke</h3>
+					<h3 className={styles.groupLabel}>{t['calculateMarksModal.distanceRange']}</h3>
 					<div className={styles.row}>
 						<NumberInput
-							label="Fra avstand"
+							label={t['calculateMarksModal.fromDistance']}
 							value={distanceFrom}
 							onChange={setDistanceFrom}
 							min={1}
@@ -139,7 +141,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 							errorMessage={errors.distanceFrom}
 						/>
 						<NumberInput
-							label="Til avstand"
+							label={t['calculateMarksModal.toDistance']}
 							value={distanceTo}
 							onChange={setDistanceTo}
 							min={1}
@@ -150,7 +152,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 							errorMessage={errors.distanceTo}
 						/>
 						<NumberInput
-							label="Intervall"
+							label={t['calculateMarksModal.interval']}
 							value={interval}
 							onChange={setInterval}
 							min={1}
@@ -164,12 +166,12 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 				</section>
 
 				<section className={styles.fieldGroup}>
-					<h3 className={styles.groupLabel}>Hellvinkel (valgfritt)</h3>
-					<p className={styles.groupHint}>Legg inn opptil 2 vinkler for å se siktemerker ved ulik terrengvinkel.</p>
+					<h3 className={styles.groupLabel}>{t['calculateMarksModal.hillAngle']}</h3>
+					<p className={styles.groupHint}>{t['calculateMarksModal.hillAngleHint']}</p>
 					<div className={styles.row}>
 						<NumberInput
 							key={0}
-							label="Flatmark"
+							label={t['calculateMarksModal.flatGround']}
 							value={0}
 							onChange={() => {}}
 							min={0}
@@ -181,7 +183,7 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 						{[1, 2].map((i) => (
 							<NumberInput
 								key={i}
-								label={`Vinkel ${i}`}
+								label={`${t['calculateMarksModal.angle']} ${i}`}
 								value={angles[i] ?? 0}
 								onChange={(v) => setAngle(i, v)}
 								min={-90}
@@ -203,8 +205,8 @@ export function CalculateMarksModal({ open, onClose, ballistics, sightMarkId, on
 				)}
 
 				<div className={styles.actions}>
-					<Button label="Lukk" buttonType="outline" onClick={onClose} disabled={status === 'pending'} />
-					<Button label={status === 'pending' ? 'Beregner...' : 'Beregn'} onClick={handleSubmit} disabled={status === 'pending'} />
+					<Button label={t['common.close']} buttonType="outline" onClick={onClose} disabled={status === 'pending'} />
+					<Button label={status === 'pending' ? t['calculateMarksModal.calculating'] : t['calculateMarksModal.calculate']} onClick={handleSubmit} disabled={status === 'pending'} />
 				</div>
 			</div>
 		</Modal>

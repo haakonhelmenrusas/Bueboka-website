@@ -9,6 +9,7 @@ import { Button } from '@/components';
 import { Badge } from '@/components/common/Badge/Badge';
 import { compressImage } from '@/lib/imageUtils';
 import { useClickOutside } from '@/lib/hooks/useClickOutside';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export interface ProfileCardProps {
 	name?: string | null;
@@ -19,8 +20,9 @@ export interface ProfileCardProps {
 }
 
 export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, image, onImageUpdate }) => {
+	const { t } = useTranslation();
 	const displayName = name || email;
-	const displayClub = club || 'Ingen klubb oppgitt';
+	const displayClub = club || t['profile.noClub'];
 	const router = useRouter();
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -61,15 +63,13 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 		const file = e.target.files?.[0];
 		if (!file) return;
 
-		// Validate file type
 		if (!file.type.startsWith('image/')) {
-			alert('Vennligst velg en bildefil');
+			alert(t['profile.notAnImage']);
 			return;
 		}
 
-		// Validate file size (max 10MB)
 		if (file.size > 10 * 1024 * 1024) {
-			alert('Bildet må være mindre enn 10MB');
+			alert(t['profile.imageTooLarge']);
 			return;
 		}
 
@@ -80,7 +80,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 			await onImageUpdate(compressedImage);
 		} catch (error) {
 			console.error('Error uploading image:', error);
-			alert('Kunne ikke laste opp bildet');
+			alert(t['profile.uploadError']);
 		} finally {
 			setIsUploading(false);
 			if (fileInputRef.current) {
@@ -91,7 +91,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 
 	return (
 		<section className={styles.card} aria-label="Profil">
-			<button className={styles.trophyButton} onClick={handleAchievementsClick}>
+			<button className={styles.trophyButton} onClick={handleAchievementsClick} aria-label={t['profile.viewAchievements']}>
 				<LuTrophy size={20} color="var(--accent-yellow)" />
 			</button>
 			<div className={styles.avatarContainer} ref={menuRef}>
@@ -100,7 +100,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 					onClick={handleAvatarClick}
 					role="button"
 					tabIndex={0}
-					aria-label="Endre profilbilde"
+					aria-label={t['profile.editAvatar']}
 					aria-expanded={menuOpen}
 					aria-haspopup="menu"
 					onKeyDown={(e) => {
@@ -117,7 +117,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 					) : (
 						<div className={styles.hoverOverlay}>
 							<LuPencil size={32} />
-							<span className={styles.overlayText}>Rediger</span>
+							<span className={styles.overlayText}>{t['common.edit']}</span>
 						</div>
 					)}
 					{image ? (
@@ -139,12 +139,12 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ name, email, club, ima
 					<div className={styles.menu} role="menu">
 						<button className={styles.menuItem} onClick={handleUploadClick} role="menuitem">
 							<LuCamera size={18} />
-							<span>Last opp bilde</span>
+							<span>{t['profile.uploadImage']}</span>
 						</button>
 						{image && (
 							<button className={`${styles.menuItem} ${styles.menuItemDelete}`} onClick={handleRemoveClick} role="menuitem">
 								<LuTrash size={18} />
-								<span>Fjern bilde</span>
+								<span>{t['profile.removeImage']}</span>
 							</button>
 						)}
 					</div>

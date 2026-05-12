@@ -8,12 +8,28 @@ import { signOut, useSession } from '@/lib/auth-client';
 import { usePathname, useRouter } from 'next/navigation';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
+import { useTranslation } from '@/context/LanguageProvider';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher/LanguageSwitcher';
 import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
+
+function MenuIcon({ open }: { open: boolean }) {
+	return (
+		<span className={styles.menuIcon} aria-hidden="true">
+			<span className={`${styles.iconSlot} ${open ? styles.iconSlotHidden : ''}`}>
+				<LuMenu size={18} />
+			</span>
+			<span className={`${styles.iconSlot} ${!open ? styles.iconSlotHidden : ''}`}>
+				<LuX size={18} />
+			</span>
+		</span>
+	);
+}
 
 export function Header() {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 	const { openFeedback } = useFeedback();
+	const { t } = useTranslation();
 	const { data: session } = useSession();
 	const router = useRouter();
 	const pathname = usePathname();
@@ -48,7 +64,6 @@ export function Header() {
 			await signOut();
 			closeProfileMenu();
 			closeMobileMenu();
-			// navigate to front page after logout
 			router.push('/');
 		} catch (err) {
 			console.error('Logout failed', err);
@@ -68,17 +83,13 @@ export function Header() {
 	};
 
 	const handleLogoClick = (e: React.MouseEvent) => {
-		// Only prevent default navigation if we're on the homepage and trying to go to homepage
-		// This allows smooth scrolling on homepage, but normal navigation from auth pages
 		if (pathname === '/' && logoHref === '/') {
 			e.preventDefault();
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 		}
-		// For all other cases (like /logg-inn -> /), let the normal Link navigation happen
 	};
 
 	const handleHashLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, hash: string) => {
-		// Only prevent default if we're already on the homepage
 		if (pathname === '/') {
 			e.preventDefault();
 			const element = document.querySelector(hash);
@@ -89,7 +100,6 @@ export function Header() {
 		closeMobileMenu();
 	};
 
-	// Use custom hooks for better separation of concerns
 	const handleClickOutside = useCallback(() => {
 		closeProfileMenu();
 	}, []);
@@ -112,140 +122,109 @@ export function Header() {
 						</div>
 						<span className={styles.brand}>Bueboka</span>
 					</Link>
+
 					<nav className={styles.desktopNav} aria-label="Primary">
 						{!isAuthPage && (
 							<>
 								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.navLink}>
-									Felleskap
+									{t['nav.community']}
 								</Link>
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.navLink}>
-									Team
+									{t['nav.team']}
 								</Link>
 								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.navLink}>
-									Støtt oss
+									{t['nav.support']}
 								</Link>
 							</>
 						)}
 						{session?.user ? (
 							<div className={styles.profileMenuWrapper}>
-								{!isAuthPage && (
-									<Link href="/min-side" className={styles.navLink} aria-label="Go to dashboard">
-										{session.user.image ? (
-											<Image
-												src={session.user.image}
-												alt={session.user.name || 'User avatar'}
-												width={32}
-												height={32}
-												className={styles.userAvatar}
-											/>
-										) : (
-											<LuUser size={32} />
-										)}
-									</Link>
-								)}
-								<Link
-									href="/aktivitet"
-									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/aktivitet' ? styles.navLinkActive : ''}`}
-								>
-									<LuActivity size={16} />
-									Aktivitet
-								</Link>
-								<Link
-									href="/skyttere"
-									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/skyttere' || pathname.startsWith('/skyttere/') ? styles.navLinkActive : ''}`}
-								>
-									<LuUsers size={16} />
-									Skyttere
-								</Link>
-								<Link
-									href="/siktemerker"
-									className={`${styles.navLink} ${styles.navLinkIcon} ${pathname === '/siktemerker' ? styles.navLinkActive : ''}`}
-								>
-									<LuCalculator size={16} />
-									Siktemerker
-								</Link>
-								<button className={`${styles.navButton} ${styles.navLinkIcon}`} onClick={handleFeedbackClick}>
-									<LuMessageSquare size={16} />
-									Tilbakemelding
-								</button>
 								<button
-									aria-label="Åpne profil menu"
-									className={`${styles.profileMenuButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
+									aria-label={t['nav.openProfileMenu']}
+									className={styles.menuButton}
 									onClick={toggleProfileMenu}
 									aria-haspopup="true"
 									aria-expanded={profileMenuOpen}
 									aria-controls="profile-menu"
 								>
-									<span className={styles.hamburgerBox}>
-										<span className={styles.hamburgerInner} />
-									</span>
+									<MenuIcon open={profileMenuOpen} />
+									<span className={styles.menuButtonLabel}>Meny</span>
 								</button>
 							</div>
 						) : (
 							!isAuthPage && (
 								<div className={styles.authButtons}>
+									<LanguageSwitcher />
 									<Link href="/logg-inn" className={styles.authButton}>
-										Logg inn
+										{t['nav.login']}
 									</Link>
 									<Link href="/ny-bruker" className={styles.authButtonPrimary}>
-										Opprett bruker
+										{t['nav.register']}
 									</Link>
 								</div>
 							)
 						)}
 					</nav>
+
 					{!session?.user && (
 						<button
 							onClick={toggleMobileMenu}
 							className={styles.mobileButton}
-							aria-label="Toggle mobile menu"
+							aria-label={t['nav.toggleMobileMenu']}
 							aria-expanded={mobileMenuOpen}
 							aria-controls="mobile-menu"
 						>
 							{mobileMenuOpen ? <LuX size={24} /> : <LuMenu size={24} />}
 						</button>
 					)}
+
 					{session?.user && (
 						<div className={styles.profileMenuContainer}>
 							<button
-								className={`${styles.profileMenuButton} ${styles.mobileProfileButton} ${profileMenuOpen ? styles.hamburgerOpen : ''}`}
+								className={`${styles.menuButton} ${styles.mobileProfileButton}`}
 								onClick={toggleProfileMenu}
-								aria-labelledby="Åpne profil menu"
+								aria-label={t['nav.openProfileMenu']}
 								aria-haspopup="true"
 								aria-expanded={profileMenuOpen}
 							>
-								<span className={styles.hamburgerBox}>
-									<span className={styles.hamburgerInner} />
-								</span>
+								<MenuIcon open={profileMenuOpen} />
+								<span className={styles.menuButtonLabel}>Meny</span>
 							</button>
+
 							{profileMenuOpen && (
 								<div id="profile-menu" ref={menuRef} className={styles.profileMenu} role="menu">
-									<div className={styles.profileMenuNavSection}>
-										<Link href="/aktivitet" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
-											<LuActivity size={16} />
-											<span>Aktivitet</span>
+									{!isAuthPage && (
+										<Link href="/min-side" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+											<LuUser size={16} />
+											<span>{t['nav.myPage']}</span>
 										</Link>
-										<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
-											<LuUsers size={16} />
-											<span>Skyttere</span>
-										</Link>
-										<Link href="/siktemerker" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
-											<LuCalculator size={16} />
-											<span>Siktemerker</span>
-										</Link>
-										<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
-											<LuMessageSquare size={16} />
-											<span>Tilbakemelding</span>
-										</button>
-										<div className={styles.profileMenuDivider} role="separator" />
-									</div>
+									)}
+									<Link href="/aktivitet" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuActivity size={16} />
+										<span>{t['nav.activity']}</span>
+									</Link>
+									<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuUsers size={16} />
+										<span>{t['nav.archers']}</span>
+									</Link>
+									<Link href="/siktemerker" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuCalculator size={16} />
+										<span>{t['nav.sightMarks']}</span>
+									</Link>
+									<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
+										<LuMessageSquare size={16} />
+										<span>{t['nav.feedback']}</span>
+									</button>
+									<div className={styles.profileMenuDivider} role="separator" />
+									<LanguageSwitcher variant="light" />
+									<div className={styles.profileMenuDivider} role="separator" />
 									<button className={styles.profileMenuItem} onClick={handleSettingsClick} role="menuitem">
 										<LuSettings size={16} />
-										<span>Innstillinger</span>
+										<span>{t['nav.settings']}</span>
 									</button>
 									<button className={styles.profileMenuItem} onClick={handleLogout} role="menuitem">
 										<LuLogOut size={16} />
-										<span>Logg ut</span>
+										<span>{t['nav.logout']}</span>
 									</button>
 								</div>
 							)}
@@ -253,57 +232,32 @@ export function Header() {
 					)}
 				</div>
 
-				{/* Mobile Navigation */}
+				{/* Mobile Navigation (unauthenticated only) */}
 				<nav id="mobile-menu" className={`${styles.mobileNav} ${mobileMenuOpen ? styles.mobileNavOpen : ''}`}>
 					<div className={styles.mobileLinks}>
 						{!isAuthPage && (
 							<>
 								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.mobileLink}>
-									Felleskap
+									{t['nav.community']}
 								</Link>
 								<Link href="#team" onClick={(e) => handleHashLinkClick(e, '#team')} className={styles.mobileLink}>
-									Team
+									{t['nav.team']}
 								</Link>
 								<Link href="#contact" onClick={(e) => handleHashLinkClick(e, '#contact')} className={styles.mobileLink}>
-									Støtt oss
+									{t['nav.support']}
 								</Link>
 							</>
 						)}
-						{session?.user ? (
+						{!isAuthPage && (
 							<>
-								{!isAuthPage && (
-									<Link href="/min-side" onClick={closeMobileMenu} className={styles.mobileLink}>
-										Min side
-									</Link>
-								)}
-								<Link href="/aktivitet" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
-									<LuActivity size={16} />
-									Aktivitet
+								<LanguageSwitcher />
+								<Link href="/logg-inn" onClick={closeMobileMenu} className={styles.mobileLink}>
+									{t['nav.login']}
 								</Link>
-								<Link href="/skyttere" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
-									<LuUsers size={16} />
-									Skyttere
+								<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
+									{t['nav.register']}
 								</Link>
-								<Link href="/siktemerker" onClick={closeMobileMenu} className={`${styles.mobileLink} ${styles.mobileLinkIcon}`}>
-									<LuCalculator size={16} />
-									Siktemerker
-								</Link>
-								<button className={`${styles.mobileLinkButton} ${styles.mobileLinkIcon}`} onClick={handleFeedbackClick}>
-									<LuMessageSquare size={16} />
-									Tilbakemelding
-								</button>
 							</>
-						) : (
-							!isAuthPage && (
-								<>
-									<Link href="/logg-inn" onClick={closeMobileMenu} className={styles.mobileLink}>
-										Logg inn
-									</Link>
-									<Link href="/ny-bruker" onClick={closeMobileMenu} className={styles.mobileLink}>
-										Opprett bruker
-									</Link>
-								</>
-							)
 						)}
 					</div>
 				</nav>
