@@ -53,6 +53,7 @@ export function ProfileForm({ initialValues, loading, onSubmit, onCancel }: Prof
 				searchPlaceholder={t['profileEdit.clubSearchPlaceholder']}
 				createLabel={t['profileEdit.clubAddCustom']}
 				emptyText={t['common.noResults']}
+				searchMaxLength={100}
 			/>
 			<Input
 				label={t['profileEdit.archerNumberLabel']}

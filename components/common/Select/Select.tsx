@@ -46,6 +46,8 @@ export interface SelectProps {
 	creatable?: boolean;
 	/** Label prefix shown next to the typed query when offering to add it (e.g. "Add"). */
 	createLabel?: string;
+	/** Maximum number of characters allowed in the search input (also caps the value committed via `creatable`). */
+	searchMaxLength?: number;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -70,6 +72,7 @@ export const Select: React.FC<SelectProps> = ({
 	searchPlaceholder = 'Søk...',
 	creatable = false,
 	createLabel = 'Legg til',
+	searchMaxLength,
 }) => {
 	const autoId = useId();
 	const selectId = id ?? `select-${autoId}`;
@@ -319,6 +322,7 @@ export const Select: React.FC<SelectProps> = ({
 											type="text"
 											className={styles.searchInput}
 											placeholder={searchPlaceholder}
+											maxLength={searchMaxLength}
 											value={searchQuery}
 											onChange={(e) => {
 												setSearchQuery(e.target.value);
