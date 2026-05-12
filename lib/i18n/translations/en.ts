@@ -611,6 +611,8 @@ export const en: TranslationKeys = {
   'profileEdit.nameHelp': 'Your full name',
   'profileEdit.clubLabel': 'Club',
   'profileEdit.clubHelp': 'Your club',
+  'profileEdit.clubSearchPlaceholder': 'Search or type your club name…',
+  'profileEdit.clubAddCustom': 'Add',
   'profileEdit.archerNumberLabel': 'Archer number',
   'profileEdit.archerNumberHelp': 'Your archer number',
 

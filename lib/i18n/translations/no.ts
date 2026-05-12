@@ -611,6 +611,8 @@ export const no: TranslationKeys = {
   'profileEdit.nameHelp': 'Ditt fulle navn',
   'profileEdit.clubLabel': 'Klubb',
   'profileEdit.clubHelp': 'Klubben din',
+  'profileEdit.clubSearchPlaceholder': 'Søk eller skriv klubbnavn…',
+  'profileEdit.clubAddCustom': 'Legg til',
   'profileEdit.archerNumberLabel': 'Skytternr',
   'profileEdit.archerNumberHelp': 'Ditt skytternummer',
 

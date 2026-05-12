@@ -575,6 +575,8 @@ export interface TranslationKeys {
   'profileEdit.nameHelp': string;
   'profileEdit.clubLabel': string;
   'profileEdit.clubHelp': string;
+  'profileEdit.clubSearchPlaceholder': string;
+  'profileEdit.clubAddCustom': string;
   'profileEdit.archerNumberLabel': string;
   'profileEdit.archerNumberHelp': string;
 
