@@ -1,6 +1,6 @@
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
-import { TARGET_TYPE_OPTIONS } from '@/lib/Contants';
+import { getTargetLabel } from '@/lib/Contants';
 import type { TranslationKeys } from '@/lib/i18n/types';
 
 export const TOTAL_STEPS = 4;
@@ -68,8 +68,7 @@ export function getRoundSummary(round: CompetitionRoundInput, t: TranslationKeys
 	if (round.distanceMeters) parts.push(`${round.distanceMeters}m`);
 	if (round.distanceFrom || round.distanceTo) parts.push(`${round.distanceFrom ?? '?'}–${round.distanceTo ?? '?'}m`);
 	if (round.targetType) {
-		const opt = TARGET_TYPE_OPTIONS.find((o) => o.value === round.targetType);
-		parts.push(opt?.label ?? round.targetType);
+		parts.push(getTargetLabel(round.targetType, t));
 	}
 	return parts.length > 0 ? parts.join(' · ') : t['round.noDetails'];
 }

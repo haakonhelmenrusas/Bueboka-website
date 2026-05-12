@@ -116,6 +116,22 @@ export const en: TranslationKeys = {
   // Round summary fallback
   'round.noDetails': 'No details',
 
+  // Target types
+  'target.size40cm': '40 cm',
+  'target.size40Triple': '40 cm Triple/Vegas',
+  'target.size60cm': '60 cm',
+  'target.size60Triple': '60 cm Triple',
+  'target.size80cm': '80 cm',
+  'target.size80Centre6': '80 cm Centre 6',
+  'target.size122cm': '122 cm',
+  'target.field20Triple': 'Field 20 cm Triple',
+  'target.field40': 'Field 40 cm',
+  'target.field60': 'Field 60 cm',
+  'target.field80': 'Field 80 cm',
+  'target.bareMat': 'Bare mat (no face)',
+  'target.historicNLIndoor': 'Historic NL Indoor',
+  'target.other': 'Other',
+
   // Dashboard
   'dashboard.errorLoading': 'Could not load user data',
   'dashboard.loginRequired': 'You must be logged in to view this page',

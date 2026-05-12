@@ -116,6 +116,22 @@ export interface TranslationKeys {
   // Round summary fallback (when no distance/target chosen yet)
   'round.noDetails': string;
 
+  // Target type labels (used in the rounds step Target select and round summary)
+  'target.size40cm': string;
+  'target.size40Triple': string;
+  'target.size60cm': string;
+  'target.size60Triple': string;
+  'target.size80cm': string;
+  'target.size80Centre6': string;
+  'target.size122cm': string;
+  'target.field20Triple': string;
+  'target.field40': string;
+  'target.field60': string;
+  'target.field80': string;
+  'target.bareMat': string;
+  'target.historicNLIndoor': string;
+  'target.other': string;
+
   // Dashboard
   'dashboard.errorLoading': string;
   'dashboard.loginRequired': string;

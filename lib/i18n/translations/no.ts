@@ -116,6 +116,22 @@ export const no: TranslationKeys = {
   // Round summary fallback
   'round.noDetails': 'Ingen detaljer',
 
+  // Target types
+  'target.size40cm': '40 cm',
+  'target.size40Triple': '40cm Trippel/Vegas',
+  'target.size60cm': '60 cm',
+  'target.size60Triple': '60cm Trippel',
+  'target.size80cm': '80 cm',
+  'target.size80Centre6': '80 cm Centre 6',
+  'target.size122cm': '122 cm',
+  'target.field20Triple': 'Felt 20 cm Trippel',
+  'target.field40': 'Felt 40 cm',
+  'target.field60': 'Felt 60 cm',
+  'target.field80': 'Felt 80 cm',
+  'target.bareMat': 'Barmatte uten blink',
+  'target.historicNLIndoor': 'Historisk NL Inne',
+  'target.other': 'Annet',
+
   // Dashboard
   'dashboard.errorLoading': 'Kunne ikke hente brukerdata',
   'dashboard.loginRequired': 'Du må logge inn for å se denne siden',
