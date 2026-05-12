@@ -38,8 +38,23 @@ export async function PATCH(request: NextRequest) {
 			return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
 		}
 
-		const { club, name, image, skytternr, isPublic, publicName, publicClub, publicStats, publicSkytternr, publicAchievements } =
-			await request.json();
+		const {
+			club,
+			name,
+			image,
+			skytternr,
+			isPublic,
+			publicName,
+			publicClub,
+			publicStats,
+			publicSkytternr,
+			publicAchievements,
+			locale,
+		} = await request.json();
+
+		if (locale !== undefined && locale !== null && locale !== 'no' && locale !== 'en') {
+			return NextResponse.json({ error: 'Invalid locale. Must be "no" or "en".' }, { status: 400 });
+		}
 
 		// Validate image if provided
 		if (image !== undefined && image !== null) {
@@ -71,6 +86,7 @@ export async function PATCH(request: NextRequest) {
 				...(publicStats !== undefined && { publicStats }),
 				...(publicSkytternr !== undefined && { publicSkytternr }),
 				...(publicAchievements !== undefined && { publicAchievements }),
+				...(locale !== undefined && { locale }),
 			},
 		});
 
