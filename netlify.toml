@@ -2,9 +2,6 @@
   command = "npm test -- --passWithNoTests --ci && DATABASE_URL=$DIRECT_DATABASE_URL npx prisma migrate deploy && npm run prisma:generate && npm run build"
   publish = ".next"
 
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
 # Performance optimizations
 [build.environment]
   # Enable faster builds
