@@ -25,6 +25,18 @@ Before writing code, ask clarifying questions to understand domain and context. 
 
 Only start implementing after you have enough context. If the task is trivial (e.g., a one-line fix with clear intent), skip the questions.
 
+## Commit Discipline
+
+Keep commits **small and focused** — one logical change per commit. This makes the git history readable and each change independently reviewable or revertable.
+
+Rules:
+- One concern per commit (one component, one feature area, one bug fix)
+- Never bundle unrelated changes in the same commit
+- Each commit must leave the codebase in a working, buildable state
+- Prefer 5 small commits over 1 large one
+
+When working through a multi-file task (e.g. migrating several screens to i18n), commit **per screen or per natural grouping** — not all at once at the end.
+
 ## Updating Dependencies
 
 **Never run `npm update`.** It bypasses intentional version control over `package.json`.
