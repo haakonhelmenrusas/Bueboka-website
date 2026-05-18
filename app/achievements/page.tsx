@@ -33,10 +33,6 @@ export default function AchievementsPage() {
 	const [filterRarity, setFilterRarity] = useState<FilterRarity>('all');
 	const router = useRouter();
 
-	useEffect(() => {
-		fetchAchievements();
-	}, []);
-
 	const fetchAchievements = async () => {
 		try {
 			setLoading(true);
@@ -59,6 +55,10 @@ export default function AchievementsPage() {
 			setLoading(false);
 		}
 	};
+
+	useEffect(() => {
+		fetchAchievements();
+	}, []);
 
 	const filteredAchievements =
 		data?.achievements.filter((achievement) => {
