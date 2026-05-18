@@ -19,9 +19,7 @@
 		"db:down": "docker compose down",
 		"db:reset": "docker compose down -v && docker compose up -d db",
 		"prisma:push": "prisma db push",
-		"seed:local": "tsx prisma/seed.local.ts",
-		"i18n:audit": "tsx scripts/audit-translations.ts",
-		"i18n:audit:mobile": "tsx scripts/audit-mobile-translations.ts"
+		"seed:local": "tsx prisma/seed.local.ts"
 	},
 	"dependencies": {
 		"@better-auth/expo": "^1.5.5",
