@@ -1,7 +1,13 @@
 import 'dotenv/config';
 
-import { PrismaClient } from '@/prisma/prisma/generated/prisma-client/client';
+import {
+	Environment,
+	PracticeCategory,
+	PrismaClient,
+	WeatherCondition,
+} from '@/prisma/prisma/generated/prisma-client/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { hashPassword } from 'better-auth/crypto';
 
 /**
  * Comprehensive seed file for development/testing
@@ -43,6 +49,10 @@ function getSkillLevel(daysAgo: number): number {
 async function main() {
 	if (!process.env.DATABASE_URL) {
 			throw new Error('DATABASE_URL is not set. Create a .env file with DATABASE_URL before running the seed script.');
+		}
+
+		if (process.env.NODE_ENV === 'production') {
+			throw new Error('Refusing to seed a production database. Unset NODE_ENV=production to proceed.');
 		}
 
 		const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
@@ -177,6 +187,31 @@ async function main() {
 		} else {
 			console.log(`✅ Test user already exists: ${user.email}\n`);
 		}
+
+		// Create credential account for email/password login
+		const testPassword = 'Test1234!';
+		const hashedPassword = await hashPassword(testPassword);
+
+		const existingAccount = await prisma.account.findFirst({
+			where: { userId: user.id, providerId: 'credential' },
+		});
+
+		if (existingAccount) {
+			await prisma.account.update({
+				where: { id: existingAccount.id },
+				data: { password: hashedPassword },
+			});
+		} else {
+			await prisma.account.create({
+				data: {
+					userId: user.id,
+					accountId: user.id,
+					providerId: 'credential',
+					password: hashedPassword,
+				},
+			});
+		}
+		console.log(`🔐 Credentials: test@bueboka.no / ${testPassword}\n`);
 
 		// ==================== EQUIPMENT ====================
 		console.log('🏹 Creating equipment...');
@@ -354,7 +389,8 @@ async function main() {
 			}
 
 			// Weather for outdoor
-			const weather = config.env === 'OUTDOOR' ? [['SUN', 'CLOUDED', 'CLEAR', 'WIND'][Math.floor(Math.random() * 4)]] : [];
+			const weatherChoices: WeatherCondition[] = [WeatherCondition.SUN, WeatherCondition.CLOUDED, WeatherCondition.CLEAR, WeatherCondition.WIND];
+			const weather: WeatherCondition[] = config.env === 'OUTDOOR' ? [weatherChoices[Math.floor(Math.random() * 4)]] : [];
 
 			// Location
 			const locations = ['Oslo Bueskyttere', 'Frogner Buesport', 'Lokale hallen', 'Utendørs bane', 'Treningssenteret', null];
@@ -370,9 +406,9 @@ async function main() {
 					totalScore: totalScore,
 					rating: rating,
 					location: location,
-					environment: config.env as any,
-					weather: weather as any,
-					practiceCategory: config.category as any,
+					environment: config.env as Environment,
+					weather: weather,
+					practiceCategory: config.category as PracticeCategory,
 					bowId: bowId,
 					arrowsId: arrowsId,
 					notes: Math.random() < 0.2 ? 'Good session' : null,
@@ -402,8 +438,6 @@ async function main() {
 			'Feltskyting',
 			'3D Mesterskap',
 		];
-
-		const competitionsCreated = 0;
 
 		for (let i = 0; i < 20; i++) {
 			const daysAgo = 10 + Math.floor(Math.random() * 170); // Spread over ~6 months
@@ -447,7 +481,8 @@ async function main() {
 				});
 			}
 
-			const weather = env === 'OUTDOOR' ? [['SUN', 'CLOUDED', 'WIND'][Math.floor(Math.random() * 3)]] : [];
+			const compWeatherChoices: WeatherCondition[] = [WeatherCondition.SUN, WeatherCondition.CLOUDED, WeatherCondition.WIND];
+			const compWeather: WeatherCondition[] = env === 'OUTDOOR' ? [compWeatherChoices[Math.floor(Math.random() * 3)]] : [];
 
 			await prisma.competition.create({
 				data: {
@@ -460,9 +495,9 @@ async function main() {
 					placement: placement,
 					numberOfParticipants: numParticipants,
 					personalBest: personalBest,
-					environment: env as any,
-					weather: weather as any,
-					practiceCategory: category as any,
+					environment: env as Environment,
+					weather: compWeather,
+					practiceCategory: category as PracticeCategory,
 					bowId: recurveBow.id,
 					arrowsId: carbonArrows.id,
 					notes: personalBest ? 'Ny personlig rekord!' : null,
@@ -511,7 +546,7 @@ async function main() {
 		console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 		console.log('🔐 Login credentials:');
 		console.log('   Email: test@bueboka.no');
-		console.log('   (Set up authentication separately)\n');
+		console.log('   Password: Test1234!\n');
 
 		await prisma.$disconnect();
 }
