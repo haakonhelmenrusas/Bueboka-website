@@ -4,7 +4,7 @@ import React from 'react';
 import styles from './PracticeFormModal.module.css';
 import { LuPlus, LuX } from 'react-icons/lu';
 import type { PracticeCategory } from '@/lib/prismaEnums';
-import { NumberInput, Select } from '@/components';
+import { Button, NumberInput, Select } from '@/components';
 import { getTargetTypeOptions } from '@/lib/Contants';
 import { type RoundInput, isRangeCategory } from './PracticeFormModal.types';
 import { useTranslation } from '@/context/LanguageProvider';
@@ -15,9 +15,10 @@ interface RoundsStepProps {
 	addRound: () => void;
 	removeRound: (index: number) => void;
 	updateRound: (index: number, field: keyof RoundInput, value: RoundInput[keyof RoundInput]) => void;
+	onOpenScoring: (roundIndex: number) => void;
 }
 
-export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, practiceCategory, addRound, removeRound, updateRound }) => {
+export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, practiceCategory, addRound, removeRound, updateRound, onOpenScoring }) => {
 	const { t } = useTranslation();
 	const rangeCategory = isRangeCategory(practiceCategory);
 	const targetTypeOptions = getTargetTypeOptions(t);
@@ -131,6 +132,44 @@ export const PracticeFormRoundsStep: React.FC<RoundsStepProps> = ({ rounds, prac
 								containerClassName={styles.roundField}
 							/>
 						</div>
+
+						{(() => {
+							const maxArrows = round.numberArrows ?? 0;
+							const currentScores = round.scores ?? [];
+							const filledCount = currentScores.length;
+							const isFull = maxArrows > 0 && filledCount >= maxArrows;
+							const hasPartialScores = filledCount > 0 && !isFull;
+							const hasManualScore = round.roundScore > 0 && filledCount === 0;
+							const showScoreButton = maxArrows > 0 && !hasManualScore;
+							const total = currentScores.reduce((a, b) => a + b, 0);
+
+							if (!showScoreButton) return null;
+
+							const buttonLabel = isFull
+								? t['scoring.editScores']
+								: hasPartialScores
+									? t['scoring.continueScoring']
+									: t['scoring.scoreNow'];
+
+							return (
+								<div className={styles.roundScoringSection}>
+									{filledCount > 0 && (
+										<span className={styles.roundScoringProgress}>
+											{isFull
+												? `${t['scoring.allRegistered']} ${t['scoring.scoreSuffix']} ${total}`
+												: `${filledCount}/${maxArrows} ${t['scoring.arrowsRecorded']} · ${t['scoring.sum']} ${total}`}
+										</span>
+									)}
+									<Button
+										type="button"
+										label={buttonLabel}
+										onClick={() => onOpenScoring(index)}
+										variant="standard"
+										width="100%"
+									/>
+								</div>
+							);
+						})()}
 					</div>
 				))}
 
