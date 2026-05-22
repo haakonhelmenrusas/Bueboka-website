@@ -1,19 +1,20 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styles from './PracticeFormModal.module.css';
 import { LuX } from 'react-icons/lu';
 import type { PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { Environment } from '@/lib/prismaEnums';
 import { ConfirmModal, Modal } from '@/components';
 import { useTranslation } from '@/context/LanguageProvider';
-import { type PracticeFormInput, type RoundInput, emptyRound } from './PracticeFormModal.types';
+import type { PracticeFormInput, RoundInput } from './PracticeFormModal.types';
 import { PracticeFormStepIndicator } from './PracticeFormStepIndicator';
 import { PracticeFormInfoStep } from './PracticeFormInfoStep';
 import { PracticeFormRoundsStep } from './PracticeFormRoundsStep';
 import { PracticeFormScoringModal } from './PracticeFormScoringModal';
 import { PracticeFormReflectionStep } from './PracticeFormReflectionStep';
 import { PracticeFormNavFooter } from './PracticeFormNavFooter';
+import { usePracticeFormState } from './usePracticeFormState';
 
 export type { RoundInput, PracticeFormInput };
 
@@ -64,240 +65,27 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 	bows = [],
 	arrows = [],
 }) => {
-	// ─── Step ────────────────────────────────────────────────────────────────
-	const [step, setStep] = useState(0);
-
-	// ─── Form state ──────────────────────────────────────────────────────────
-	const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
-	const [location, setLocation] = useState('');
-	const [environment, setEnvironment] = useState<Environment>(Environment.INDOOR);
-	const [weather, setWeather] = useState<WeatherCondition[]>([]);
-	const [practiceCategory, setPracticeCategory] = useState<PracticeCategory>('SKIVE_INDOOR');
-	const [notes, setNotes] = useState('');
-	const [rating, setRating] = useState<number | null>(null);
-	const [rounds, setRounds] = useState<RoundInput[]>([emptyRound('SKIVE_INDOOR')]);
-	const [bowId, setBowId] = useState<string>('');
-	const [arrowsId, setArrowsId] = useState<string>('');
-
-	// ─── UI state ────────────────────────────────────────────────────────────
-	const [submitting, setSubmitting] = useState(false);
-	const [deleting, setDeleting] = useState(false);
-	const [error, setError] = useState<string | null>(null);
-	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
-	const [scoringRoundIndex, setScoringRoundIndex] = useState<number | null>(null);
-	const [endPages, setEndPages] = useState<Record<number, number>>({});
-	const [editingIndices, setEditingIndices] = useState<Record<number, number | null>>({});
-
 	const { t } = useTranslation();
-	const isEditMode = mode === 'edit';
 
-	// ─── Init form on open ───────────────────────────────────────────────────
-	useEffect(() => {
-		if (!open) return;
-
-		setStep(0);
-		setError(null);
-
-		if (mode === 'edit' && practice) {
-			setDate(practice.date.split('T')[0]);
-			setLocation(practice.location || '');
-			setEnvironment(practice.environment);
-			setWeather(practice.weather || []);
-			setPracticeCategory(practice.practiceCategory || 'SKIVE_INDOOR');
-			setNotes(practice.notes || '');
-			setRating(practice.rating ?? null);
-			setBowId(practice.bowId || '');
-			setArrowsId(practice.arrowsId || '');
-
-			if (practice.ends && practice.ends.length > 0) {
-				setRounds(
-					practice.ends.map((end) => {
-						const savedScores = end.scores ?? [];
-						const derivedArrows = end.arrows ?? (savedScores.length > 0 ? savedScores.length : undefined);
-						return {
-							distanceMeters: end.distanceMeters ?? undefined,
-							distanceFrom: end.distanceFrom ?? undefined,
-							distanceTo: end.distanceTo ?? undefined,
-							targetType: end.targetType || (end.targetSizeCm ? `${end.targetSizeCm}cm` : ''),
-							numberArrows: derivedArrows,
-							arrowsPerEnd: end.arrowsPerEnd ?? undefined,
-							arrowsWithoutScore: end.arrowsWithoutScore ?? undefined,
-							roundScore: end.roundScore ?? 0,
-							scores: savedScores,
-						};
-					})
-				);
-			} else {
-				setRounds([emptyRound(practice.practiceCategory || 'SKIVE_INDOOR')]);
-			}
-		} else {
-			setDate(new Date().toISOString().slice(0, 10));
-			setLocation('');
-			setEnvironment(Environment.INDOOR);
-			setWeather([]);
-			setPracticeCategory('SKIVE_INDOOR');
-			setNotes('');
-			setRating(null);
-			setBowId(bows.find((b) => b.isFavorite)?.id || '');
-			setArrowsId(arrows.find((a) => a.isFavorite)?.id || '');
-
-			const lastDistance = typeof window !== 'undefined' ? localStorage.getItem('bueboka_last_distance') : null;
-			const lastTarget = typeof window !== 'undefined' ? localStorage.getItem('bueboka_last_target') : null;
-			setRounds([
-				{
-					distanceMeters: lastDistance ? parseFloat(lastDistance) : undefined,
-					targetType: lastTarget || '',
-					numberArrows: undefined,
-					arrowsWithoutScore: undefined,
-					roundScore: 0,
-					scores: [],
-				},
-			]);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [open, mode, practice]);
-
-	useEffect(() => {
-		if (environment !== Environment.OUTDOOR) setWeather([]);
-	}, [environment]);
-
-	// ─── Category ────────────────────────────────────────────────────────────
-	const handleCategoryChange = (cat: PracticeCategory) => {
-		setPracticeCategory(cat);
-		setRounds([emptyRound(cat)]);
-	};
-
-	// ─── Rounds ──────────────────────────────────────────────────────────────
-	const addRound = () => {
-		if (rounds.length < 20) setRounds((prev) => [...prev, emptyRound(practiceCategory)]);
-	};
-
-	const removeRound = (index: number) => {
-		if (rounds.length > 1) setRounds((prev) => prev.filter((_, i) => i !== index));
-	};
-
-	const updateRound = (index: number, field: keyof RoundInput, value: RoundInput[keyof RoundInput]) => {
-		setRounds((prev) => {
-			const next = [...prev];
-			const updated: RoundInput = { ...next[index], [field]: value };
-			if (field === 'numberArrows' && typeof value === 'number') {
-				const max = value;
-				if (updated.scores && updated.scores.length > max) {
-					updated.scores = updated.scores.slice(0, max);
-					updated.roundScore = updated.scores.reduce((a, b) => a + b, 0);
-				}
-			}
-			next[index] = updated;
-			return next;
-		});
-	};
-
-	// ─── Arrow scoring ───────────────────────────────────────────────────────
-	const addArrowScore = (roundIndex: number, score: number) => {
-		const round = rounds[roundIndex];
-		const maxArrows = round.numberArrows ?? 0;
-		const current = round.scores ?? [];
-		if (maxArrows > 0 && current.length >= maxArrows) return;
-		const newScores = [...current, score];
-		setRounds((prev) => {
-			const next = [...prev];
-			next[roundIndex] = { ...next[roundIndex], scores: newScores, roundScore: newScores.reduce((a, b) => a + b, 0) };
-			return next;
-		});
-	};
-
-	const updateArrowScore = (roundIndex: number, arrowIndex: number, score: number) => {
-		setRounds((prev) => {
-			const next = [...prev];
-			const scores = [...(next[roundIndex].scores ?? [])];
-			scores[arrowIndex] = score;
-			next[roundIndex] = { ...next[roundIndex], scores, roundScore: scores.reduce((a, b) => a + b, 0) };
-			return next;
-		});
-	};
-
-	// ─── Weather ─────────────────────────────────────────────────────────────
-	const toggleWeather = (condition: WeatherCondition) => {
-		setWeather((prev) => (prev.includes(condition) ? prev.filter((w) => w !== condition) : [...prev, condition]));
-	};
-
-	// ─── Delete ──────────────────────────────────────────────────────────────
-	const handleDelete = async () => {
-		if (!practice?.id) return;
-		setDeleting(true);
-		try {
-			const res = await fetch(`/api/practices/${practice.id}`, { method: 'DELETE' });
-			if (!res.ok) throw new Error(t['practice.deleteError']);
-			onDeleted?.(practice.id);
-			onClose();
-		} catch (err) {
-			setError(err instanceof Error ? err.message : t['practice.deleteError']);
-		} finally {
-			setDeleting(false);
-			setConfirmDeleteOpen(false);
-		}
-	};
-
-	// ─── Close guard ─────────────────────────────────────────────────────────
-	const handleCloseRequest = () => {
-		if (submitting) return;
-		setConfirmDiscardOpen(true);
-	};
-
-	// ─── Submit ──────────────────────────────────────────────────────────────
-	const handleSubmit = async () => {
-		setSubmitting(true);
-		setError(null);
-		try {
-			const validRounds = rounds.filter(
-				(r) =>
-					(r.distanceMeters && r.distanceMeters > 0) ||
-					(r.distanceFrom && r.distanceFrom > 0) ||
-					(r.distanceTo && r.distanceTo > 0) ||
-					r.targetType ||
-					(r.numberArrows ?? 0) > 0 ||
-					r.roundScore > 0
-			);
-
-			if (validRounds.length > 0 && typeof window !== 'undefined') {
-				const first = validRounds[0];
-				if (first.distanceMeters && first.distanceMeters > 0)
-					localStorage.setItem('bueboka_last_distance', first.distanceMeters.toString());
-				if (first.targetType) localStorage.setItem('bueboka_last_target', first.targetType);
-			}
-
-			await onSave({
-				date: new Date(date).toISOString(),
-				location: location || undefined,
-				environment,
-				weather,
-				practiceCategory,
-				notes: notes || undefined,
-				rating: rating ?? undefined,
-				rounds: validRounds,
-				bowId: bowId || undefined,
-				arrowsId: arrowsId || undefined,
-			});
-			onClose();
-		} catch (err) {
-			setError(err instanceof Error ? err.message : t['practice.saveError']);
-		} finally {
-			setSubmitting(false);
-		}
-	};
+	const form = usePracticeFormState({
+		open,
+		mode,
+		practice,
+		bows,
+		arrows,
+		onSave,
+		onClose,
+		onDeleted,
+	});
 
 	if (!open) return null;
-
-	const isFormValid = !!date;
-	const title = isEditMode ? t['practice.editTitle'] : t['practice.newTitle'];
 
 	return (
 		<>
 			<Modal
 				open={open}
 				onClose={onClose}
-				title={title}
+				title={form.title}
 				maxWidth={760}
 				closeOnBackdrop={false}
 				hideHeader
@@ -305,105 +93,105 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 				panelStyle={{ padding: 0, gap: 0, overflow: 'hidden' }}
 			>
 				<div className={styles.wizard}>
-					{/* Header */}
 					<div className={styles.wizardHeader}>
-						<h2 className={styles.wizardTitle}>{title}</h2>
-						<button type="button" className={styles.closeBtn} onClick={handleCloseRequest} aria-label={t['common.close']}>
+						<h2 className={styles.wizardTitle}>{form.title}</h2>
+						<button type="button" className={styles.closeBtn} onClick={form.handleCloseRequest} aria-label={t['common.close']}>
 							<LuX size={20} />
 						</button>
 					</div>
 
-					<PracticeFormStepIndicator step={step} onStepChange={setStep} />
+					<PracticeFormStepIndicator step={form.step} onStepChange={form.setStep} />
 
 					<div className={styles.scrollArea}>
-						{step === 0 && (
+						{form.step === 0 && (
 							<PracticeFormInfoStep
-								date={date}
-								setDate={setDate}
-								practiceCategory={practiceCategory}
-								onCategoryChange={handleCategoryChange}
-								environment={environment}
-								setEnvironment={setEnvironment}
-								location={location}
-								setLocation={setLocation}
-								weather={weather}
-								toggleWeather={toggleWeather}
-								bowId={bowId}
-								setBowId={setBowId}
-								arrowsId={arrowsId}
-								setArrowsId={setArrowsId}
+								date={form.date}
+								setDate={form.setDate}
+								practiceCategory={form.practiceCategory}
+								onCategoryChange={form.handleCategoryChange}
+								environment={form.environment}
+								setEnvironment={form.setEnvironment}
+								location={form.location}
+								setLocation={form.setLocation}
+								weather={form.weather}
+								toggleWeather={form.toggleWeather}
+								bowId={form.bowId}
+								setBowId={form.setBowId}
+								arrowsId={form.arrowsId}
+								setArrowsId={form.setArrowsId}
 								bows={bows}
 								arrows={arrows}
-								isEditMode={isEditMode}
-								onDeleteRequest={() => setConfirmDeleteOpen(true)}
+								isEditMode={form.isEditMode}
+								onDeleteRequest={() => form.setConfirmDeleteOpen(true)}
 							/>
 						)}
-						{step === 1 && (
+						{form.step === 1 && (
 							<PracticeFormRoundsStep
-								rounds={rounds}
-								practiceCategory={practiceCategory}
-								addRound={addRound}
-								removeRound={removeRound}
-								updateRound={updateRound}
-								onOpenScoring={setScoringRoundIndex}
+								rounds={form.rounds}
+								practiceCategory={form.practiceCategory}
+								addRound={form.addRound}
+								removeRound={form.removeRound}
+								updateRound={form.updateRound}
+								onOpenScoring={form.setScoringRoundIndex}
 							/>
 						)}
-						{step === 2 && (
-							<PracticeFormReflectionStep rating={rating} setRating={setRating} notes={notes} setNotes={setNotes} error={error} />
+						{form.step === 2 && (
+							<PracticeFormReflectionStep
+								rating={form.rating}
+								setRating={form.setRating}
+								notes={form.notes}
+								setNotes={form.setNotes}
+								error={form.error}
+							/>
 						)}
 					</div>
 
 					<PracticeFormNavFooter
-						step={step}
-						onPrev={() => setStep((s) => Math.max(s - 1, 0))}
-						onNext={() => setStep((s) => Math.min(s + 1, 2))}
-						isEditMode={isEditMode}
-						submitting={submitting}
-						canSave={isFormValid}
-						onClose={handleCloseRequest}
-						onSubmit={handleSubmit}
+						step={form.step}
+						onPrev={() => form.setStep((s) => Math.max(s - 1, 0))}
+						onNext={() => form.setStep((s) => Math.min(s + 1, 2))}
+						isEditMode={form.isEditMode}
+						submitting={form.submitting}
+						canSave={form.isFormValid}
+						onClose={form.handleCloseRequest}
+						onSubmit={form.handleSubmit}
 					/>
 				</div>
 			</Modal>
 
-			{scoringRoundIndex !== null && (
+			{form.scoringRoundIndex !== null && (
 				<PracticeFormScoringModal
 					open
-					round={rounds[scoringRoundIndex]}
-					roundIndex={scoringRoundIndex}
-					environment={environment}
-					endPage={endPages[scoringRoundIndex] ?? 0}
-					editingIndex={editingIndices[scoringRoundIndex] ?? null}
-					onClose={() => setScoringRoundIndex(null)}
-					onSetEndPage={(page) => {
-						setEditingIndices((prev) => ({ ...prev, [scoringRoundIndex]: null }));
-						setEndPages((prev) => ({ ...prev, [scoringRoundIndex]: page }));
-					}}
-					onSetEditingIndex={(idx) => {
-						setEditingIndices((prev) => ({ ...prev, [scoringRoundIndex]: idx }));
-					}}
-					onAddArrowScore={(score) => addArrowScore(scoringRoundIndex, score)}
-					onUpdateArrowScore={(arrowIndex, score) => updateArrowScore(scoringRoundIndex, arrowIndex, score)}
+					round={form.rounds[form.scoringRoundIndex]}
+					roundIndex={form.scoringRoundIndex}
+					environment={form.environment}
+					endPage={form.endPages[form.scoringRoundIndex] ?? 0}
+					editingIndex={form.editingIndices[form.scoringRoundIndex] ?? null}
+					onClose={() => form.setScoringRoundIndex(null)}
+					onSetEndPage={form.handleSetEndPage}
+					onSetEditingIndex={form.handleSetEditingIndex}
+					onAddArrowScore={form.handleScoringAddArrow}
+					onUpdateArrowScore={form.handleScoringUpdateArrow}
 				/>
 			)}
 
 			<ConfirmModal
-				open={confirmDeleteOpen}
-				onClose={() => setConfirmDeleteOpen(false)}
-				onConfirm={handleDelete}
+				open={form.confirmDeleteOpen}
+				onClose={() => form.setConfirmDeleteOpen(false)}
+				onConfirm={form.handleDelete}
 				title={t['practice.deleteConfirmTitle']}
 				message={t['practice.deleteConfirmMessage']}
 				confirmLabel={t['common.delete']}
 				cancelLabel={t['common.cancel']}
 				variant="danger"
-				isLoading={deleting}
+				isLoading={form.deleting}
 			/>
 
 			<ConfirmModal
-				open={confirmDiscardOpen}
-				onClose={() => setConfirmDiscardOpen(false)}
+				open={form.confirmDiscardOpen}
+				onClose={() => form.setConfirmDiscardOpen(false)}
 				onConfirm={() => {
-					setConfirmDiscardOpen(false);
+					form.setConfirmDiscardOpen(false);
 					onClose();
 				}}
 				title={t['practice.discardTitle']}
