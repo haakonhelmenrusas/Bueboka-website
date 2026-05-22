@@ -17,6 +17,7 @@ export interface TranslationKeys {
   'nav.openProfileMenu': string;
   'nav.toggleMobileMenu': string;
   'nav.goDashboard': string;
+  'nav.menu': string;
 
   // Hero section
   'hero.subtitle': string;
@@ -318,6 +319,16 @@ export interface TranslationKeys {
   'practice.ratingHelp': string;
   'practice.ratingOf10': string;
   'practice.notesHelp': string;
+
+  // Practice card
+  'practiceCard.arrows': string;
+  'practiceCard.arrowsShot': string;
+  'practiceCard.noTarget': string;
+  'practiceCard.round': string;
+  'practiceCard.location': string;
+  'practiceCard.score': string;
+  'practiceCard.from': string;
+  'practiceCard.clickForDetails': string;
 
   // Practice details modal
   'practiceDetails.arrowsShot': string;

@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './PracticeCard.module.css';
 import { LuChevronRight, LuHouse, LuMapPin, LuStar, LuTarget, LuTrees, LuTrophy, LuWind } from 'react-icons/lu';
 import { Badge } from '@/components/common/Badge/Badge';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export interface PracticeCardProps {
 	id: string;
@@ -19,14 +20,6 @@ export interface PracticeCardProps {
 function formatRoundTypeName(name?: string | null) {
 	if (!name) return name;
 	return name.replace(/(\d)(c?m)\b/g, '$1 $2');
-}
-
-function formatEnvironment(env?: string | null) {
-	if (!env) return null;
-	const normalized = env.toLowerCase();
-	if (normalized === 'inne' || normalized === 'indoor') return 'Inne';
-	if (normalized === 'ute' || normalized === 'outdoor') return 'Ute';
-	return env;
 }
 
 function envIcon(env?: string | null) {
@@ -48,21 +41,26 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	roundTypeName,
 	onClick,
 }) => {
+	const { t } = useTranslation();
+
 	const formattedDate = new Date(date).toLocaleDateString('nb-NO', {
 		year: 'numeric',
 		month: 'short',
 		day: 'numeric',
 	});
 
-	const envText = formatEnvironment(environment);
+	const envText = environment === 'INDOOR' || environment?.toLowerCase() === 'inne'
+		? t['badge.indoor']
+		: environment === 'OUTDOOR' || environment?.toLowerCase() === 'ute'
+			? t['badge.outdoor']
+			: null;
 
-	// Build accessible label
 	const ariaLabel = [
-		`${practiceType === 'KONKURRANSE' ? 'Konkurranse' : 'Trening'} fra ${formattedDate}`,
-		`${arrowsShot} piler skutt`,
-		totalScore && `Score: ${totalScore}`,
-		`Runde: ${roundTypeName ? formatRoundTypeName(roundTypeName) : 'Ingen skive'}`,
-		location && `Sted: ${location}`,
+		`${practiceType === 'KONKURRANSE' ? t['badge.competition'] : t['badge.training']} ${t['practiceCard.from']} ${formattedDate}`,
+		`${arrowsShot} ${t['practiceCard.arrowsShot']}`,
+		totalScore && `${t['practiceCard.score']}: ${totalScore}`,
+		`${t['practiceCard.round']}: ${roundTypeName ? formatRoundTypeName(roundTypeName) : t['practiceCard.noTarget']}`,
+		location && `${t['practiceCard.location']}: ${location}`,
 	]
 		.filter(Boolean)
 		.join(', ');
@@ -70,18 +68,18 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 	const isCompetition = practiceType === 'KONKURRANSE';
 
 	return (
-		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={`${ariaLabel}. Klikk for å se detaljer`}>
+		<button className={styles.card} onClick={() => onClick?.(id)} type="button" aria-label={`${ariaLabel}. ${t['practiceCard.clickForDetails']}`}>
 			<div className={styles.main}>
 				<div className={styles.topRow}>
 					<div className={styles.date}>{formattedDate}</div>
 					<div className={styles.badgeGroup}>
 						{isCompetition ? (
 							<Badge variant="competition" icon={<LuTrophy size={12} />}>
-								Konkurranse
+								{t['badge.competition']}
 							</Badge>
 						) : (
 							<Badge variant="training" icon={<LuTarget size={12} />}>
-								Trening
+								{t['badge.training']}
 							</Badge>
 						)}
 					</div>
@@ -94,7 +92,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						<span className={styles.detailIcon} aria-hidden="true">
 							<LuTarget size={14} />
 						</span>
-						<span className={styles.detailText}>{arrowsShot} piler</span>
+						<span className={styles.detailText}>{arrowsShot} {t['practiceCard.arrows']}</span>
 					</div>
 					{totalScore !== null && totalScore !== undefined && totalScore > 0 && (
 						<div className={styles.detailItem}>
@@ -111,7 +109,7 @@ export const PracticeCard: React.FC<PracticeCardProps> = ({
 						<span className={styles.detailIcon} aria-hidden="true">
 							<LuTarget size={14} />
 						</span>
-						<span className={styles.detailText}>{roundTypeName ? formatRoundTypeName(roundTypeName) : 'Ingen skive'}</span>
+						<span className={styles.detailText}>{roundTypeName ? formatRoundTypeName(roundTypeName) : t['practiceCard.noTarget']}</span>
 					</div>
 					{location && (
 						<div className={styles.detailItem}>

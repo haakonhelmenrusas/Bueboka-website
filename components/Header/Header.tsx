@@ -148,7 +148,7 @@ export function Header() {
 									aria-controls="profile-menu"
 								>
 									<MenuIcon open={profileMenuOpen} />
-									<span className={styles.menuButtonLabel}>Meny</span>
+									<span className={styles.menuButtonLabel}>{t['nav.menu']}</span>
 								</button>
 							</div>
 						) : (
@@ -188,7 +188,7 @@ export function Header() {
 								aria-expanded={profileMenuOpen}
 							>
 								<MenuIcon open={profileMenuOpen} />
-								<span className={styles.menuButtonLabel}>Meny</span>
+								<span className={styles.menuButtonLabel}>{t['nav.menu']}</span>
 							</button>
 
 							{profileMenuOpen && (

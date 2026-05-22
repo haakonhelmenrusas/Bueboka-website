@@ -17,6 +17,7 @@ export const en: TranslationKeys = {
   'nav.openProfileMenu': 'Open profile menu',
   'nav.toggleMobileMenu': 'Toggle mobile menu',
   'nav.goDashboard': 'Go to dashboard',
+  'nav.menu': 'Menu',
 
   // Hero section
   'hero.subtitle': 'Track your training, results and equipment. Built for archers – by archers.',
@@ -318,6 +319,16 @@ export const en: TranslationKeys = {
   'practice.ratingHelp': 'How would you rate the training?',
   'practice.ratingOf10': 'of 10',
   'practice.notesHelp': 'Your thoughts and observations',
+
+  // Practice card
+  'practiceCard.arrows': 'arrows',
+  'practiceCard.arrowsShot': 'arrows shot',
+  'practiceCard.noTarget': 'No target',
+  'practiceCard.round': 'Round',
+  'practiceCard.location': 'Location',
+  'practiceCard.score': 'Score',
+  'practiceCard.from': 'from',
+  'practiceCard.clickForDetails': 'Click for details',
 
   // Practice details modal
   'practiceDetails.arrowsShot': 'arrows shot',

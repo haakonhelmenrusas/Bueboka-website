@@ -17,6 +17,7 @@ export const no: TranslationKeys = {
   'nav.openProfileMenu': 'Åpne profil menu',
   'nav.toggleMobileMenu': 'Åpne/lukk mobil meny',
   'nav.goDashboard': 'Gå til dashboard',
+  'nav.menu': 'Meny',
 
   // Hero section
   'hero.subtitle': 'Hold oversikt over trening, resultater og utstyr. Laget for bueskyttere – av bueskyttere.',
@@ -318,6 +319,16 @@ export const no: TranslationKeys = {
   'practice.ratingHelp': 'Hvordan vil du vurdere treningen?',
   'practice.ratingOf10': 'av 10',
   'practice.notesHelp': 'Dine tanker og observasjoner',
+
+  // Practice card
+  'practiceCard.arrows': 'piler',
+  'practiceCard.arrowsShot': 'piler skutt',
+  'practiceCard.noTarget': 'Ingen skive',
+  'practiceCard.round': 'Runde',
+  'practiceCard.location': 'Sted',
+  'practiceCard.score': 'Score',
+  'practiceCard.from': 'fra',
+  'practiceCard.clickForDetails': 'Klikk for å se detaljer',
 
   // Practice details modal
   'practiceDetails.arrowsShot': 'piler skutt',

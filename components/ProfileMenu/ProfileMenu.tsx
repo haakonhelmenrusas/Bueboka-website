@@ -6,6 +6,7 @@ import styles from './ProfileMenu.module.css';
 import { signOut } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
+import { useTranslation } from '@/context/LanguageProvider';
 
 export interface ProfileMenuProps {
 	/** Optional override (useful in tests or special flows). */
@@ -14,6 +15,7 @@ export interface ProfileMenuProps {
 
 export const ProfileMenu: React.FC<ProfileMenuProps> = ({ onLogout }) => {
 	const router = useRouter();
+	const { t } = useTranslation();
 	const [open, setOpen] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +57,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ onLogout }) => {
 
 	return (
 		<div className={styles.wrapper} ref={menuRef}>
-			<button onClick={toggle} className={styles.menuButton} aria-label="Profile menu" aria-expanded={open}>
+			<button onClick={toggle} className={styles.menuButton} aria-label={t['nav.openProfileMenu']} aria-expanded={open}>
 				<LuMenu size={24} />
 			</button>
 
@@ -63,11 +65,11 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({ onLogout }) => {
 				<div className={styles.dropdown} role="menu">
 					<button className={styles.item} onClick={handleSettingsClick} role="menuitem">
 						<LuSettings size={18} />
-						Innstillinger
+						{t['nav.settings']}
 					</button>
 					<button className={styles.item} onClick={handleLogout} role="menuitem">
 						<LuLogOut size={18} />
-						Logg ut
+						{t['nav.logout']}
 					</button>
 				</div>
 			)}
