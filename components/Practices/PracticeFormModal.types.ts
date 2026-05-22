@@ -4,12 +4,11 @@ import { getTargetLabel } from '@/lib/Contants';
 import type { TranslationKeys } from '@/lib/i18n/types';
 
 // ─── Step definitions ─────────────────────────────────────────────────────────
-export const TOTAL_STEPS = 4;
+export const TOTAL_STEPS = 3;
 
 export const getStepLabels = (t: TranslationKeys): string[] => [
 	t['practiceStep.info'],
 	t['practiceStep.rounds'],
-	t['practiceStep.scoring'],
 	t['practiceStep.reflection'],
 ];
 

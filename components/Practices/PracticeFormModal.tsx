@@ -11,7 +11,7 @@ import { type PracticeFormInput, type RoundInput, emptyRound } from './PracticeF
 import { PracticeFormStepIndicator } from './PracticeFormStepIndicator';
 import { PracticeFormInfoStep } from './PracticeFormInfoStep';
 import { PracticeFormRoundsStep } from './PracticeFormRoundsStep';
-import { PracticeFormScoringStep } from './PracticeFormScoringStep';
+import { PracticeFormScoringModal } from './PracticeFormScoringModal';
 import { PracticeFormReflectionStep } from './PracticeFormReflectionStep';
 import { PracticeFormNavFooter } from './PracticeFormNavFooter';
 
@@ -85,6 +85,9 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 	const [error, setError] = useState<string | null>(null);
 	const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 	const [confirmDiscardOpen, setConfirmDiscardOpen] = useState(false);
+	const [scoringRoundIndex, setScoringRoundIndex] = useState<number | null>(null);
+	const [endPages, setEndPages] = useState<Record<number, number>>({});
+	const [editingIndices, setEditingIndices] = useState<Record<number, number | null>>({});
 
 	const { t } = useTranslation();
 	const isEditMode = mode === 'edit';
@@ -342,12 +345,10 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 								addRound={addRound}
 								removeRound={removeRound}
 								updateRound={updateRound}
+								onOpenScoring={setScoringRoundIndex}
 							/>
 						)}
 						{step === 2 && (
-							<PracticeFormScoringStep rounds={rounds} environment={environment} addArrowScore={addArrowScore} updateArrowScore={updateArrowScore} />
-						)}
-						{step === 3 && (
 							<PracticeFormReflectionStep rating={rating} setRating={setRating} notes={notes} setNotes={setNotes} error={error} />
 						)}
 					</div>
@@ -355,15 +356,36 @@ export const PracticeFormModal: React.FC<PracticeFormModalProps> = ({
 					<PracticeFormNavFooter
 						step={step}
 						onPrev={() => setStep((s) => Math.max(s - 1, 0))}
-						onNext={() => setStep((s) => Math.min(s + 1, 3))}
-					isEditMode={isEditMode}
-					submitting={submitting}
-					canSave={isFormValid}
-					onClose={handleCloseRequest}
-					onSubmit={handleSubmit}
+						onNext={() => setStep((s) => Math.min(s + 1, 2))}
+						isEditMode={isEditMode}
+						submitting={submitting}
+						canSave={isFormValid}
+						onClose={handleCloseRequest}
+						onSubmit={handleSubmit}
 					/>
 				</div>
 			</Modal>
+
+			{scoringRoundIndex !== null && (
+				<PracticeFormScoringModal
+					open
+					round={rounds[scoringRoundIndex]}
+					roundIndex={scoringRoundIndex}
+					environment={environment}
+					endPage={endPages[scoringRoundIndex] ?? 0}
+					editingIndex={editingIndices[scoringRoundIndex] ?? null}
+					onClose={() => setScoringRoundIndex(null)}
+					onSetEndPage={(page) => {
+						setEditingIndices((prev) => ({ ...prev, [scoringRoundIndex]: null }));
+						setEndPages((prev) => ({ ...prev, [scoringRoundIndex]: page }));
+					}}
+					onSetEditingIndex={(idx) => {
+						setEditingIndices((prev) => ({ ...prev, [scoringRoundIndex]: idx }));
+					}}
+					onAddArrowScore={(score) => addArrowScore(scoringRoundIndex, score)}
+					onUpdateArrowScore={(arrowIndex, score) => updateArrowScore(scoringRoundIndex, arrowIndex, score)}
+				/>
+			)}
 
 			<ConfirmModal
 				open={confirmDeleteOpen}
