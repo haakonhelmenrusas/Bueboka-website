@@ -162,7 +162,19 @@ export function usePracticeFormState({
 
 	// ─── Rounds ──────────────────────────────────────────────────────────────
 	const addRound = () => {
-		if (rounds.length < 20) setRounds((prev) => [...prev, emptyRound(practiceCategory)]);
+		if (rounds.length < 20) {
+			setRounds((prev) => {
+				const last = prev[prev.length - 1];
+				const newRound = emptyRound(practiceCategory);
+				if (last) {
+					newRound.distanceMeters = last.distanceMeters;
+					newRound.distanceFrom = last.distanceFrom;
+					newRound.distanceTo = last.distanceTo;
+					newRound.targetType = last.targetType;
+				}
+				return [...prev, newRound];
+			});
+		}
 	};
 
 	const removeRound = (index: number) => {
