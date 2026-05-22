@@ -433,6 +433,7 @@ export interface TranslationKeys {
   // Sight marks section
   'sightMarks.title': string;
   'sightMarks.new': string;
+  'sightMarks.editBow': string;
   'sightMarks.closeError': string;
   'sightMarks.noBow': string;
   'sightMarks.fetchError': string;

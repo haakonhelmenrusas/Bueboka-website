@@ -433,6 +433,7 @@ export const en: TranslationKeys = {
   // Sight marks section
   'sightMarks.title': 'Sight-in',
   'sightMarks.new': 'New sight-in',
+  'sightMarks.editBow': 'Edit bow',
   'sightMarks.closeError': 'Close error',
   'sightMarks.noBow': 'You must register a bow in your profile before you can calculate sight marks.',
   'sightMarks.fetchError': 'Could not fetch bow specification',

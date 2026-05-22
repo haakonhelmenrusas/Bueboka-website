@@ -433,6 +433,7 @@ export const no: TranslationKeys = {
   // Sight marks section
   'sightMarks.title': 'Innskyting',
   'sightMarks.new': 'Ny innskyting',
+  'sightMarks.editBow': 'Rediger bue',
   'sightMarks.closeError': 'Lukk feilmelding',
   'sightMarks.noBow': 'Du må registrere en bue i profilen din før du kan beregne siktemerker.',
   'sightMarks.fetchError': 'Kunne ikke hente buespesifikasjon',

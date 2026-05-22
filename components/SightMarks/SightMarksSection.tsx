@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { LuPlus, LuX } from 'react-icons/lu';
+import { GiBowArrow } from 'react-icons/gi';
 import { Button } from '@/components';
 import styles from './SightMarksSection.module.css';
 import { SightMarksTable } from './SightMarksTable';
 import { SightMarkFormModal } from '@/components';
+import { BowModal } from '@/components/BowModal/BowModal';
+import type { BowType } from '@/components/ProfileEditModal/BowForm';
 import { useSightMarks } from './useSightMarks';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import { AimDistanceMark, SightMark } from '@/types/SightMarks';
@@ -26,6 +29,9 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [editingSightMark, setEditingSightMark] = useState<SightMark | null>(null);
 	const [createError, setCreateError] = useState<string | null>(null);
+	const [bowModalOpen, setBowModalOpen] = useState(false);
+
+	const activeBow = bows.find((b) => b.isFavorite) ?? bows[0] ?? null;
 
 	useEffect(() => {
 		fetchSightMarks();
@@ -204,14 +210,24 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 		<section className={styles.section}>
 			<div className={styles.header}>
 				<h2 className={styles.title}>{t['sightMarks.title']}</h2>
-				<Button
-					label={t['sightMarks.new']}
-					onClick={() => {
-						setEditingSightMark(null);
-						setIsModalOpen(true);
-					}}
-					icon={<LuPlus size={18} />}
-				/>
+				<div className={styles.headerActions}>
+					{activeBow && (
+						<Button
+							label={`${t['sightMarks.editBow']} (${activeBow.name})`}
+							onClick={() => setBowModalOpen(true)}
+							buttonType="outline"
+							icon={<GiBowArrow size={18} />}
+						/>
+					)}
+					<Button
+						label={t['sightMarks.new']}
+						onClick={() => {
+							setEditingSightMark(null);
+							setIsModalOpen(true);
+						}}
+						icon={<LuPlus size={18} />}
+					/>
+				</div>
 			</div>
 			<div className={styles.container}>
 				{error && (
@@ -261,6 +277,17 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 						: undefined
 				}
 			/>
+			{activeBow && (
+				<BowModal
+					open={bowModalOpen}
+					onClose={() => setBowModalOpen(false)}
+					editingBow={{ ...activeBow, type: activeBow.type as BowType }}
+					onSaved={() => {
+						refreshEquipment();
+						onChanged?.();
+					}}
+				/>
+			)}
 		</section>
 	);
 }
