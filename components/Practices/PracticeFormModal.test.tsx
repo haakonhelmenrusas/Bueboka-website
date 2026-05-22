@@ -66,12 +66,10 @@ describe('PracticeFormModal', () => {
 			expect(screen.getByText('Rediger trening')).toBeInTheDocument();
 		});
 
-		it('renders all four step indicator labels', () => {
+		it('renders all three step indicator labels', () => {
 			render(<PracticeFormModal {...defaultProps} />);
-			// "Info" appears in both the step indicator and the nav footer current-step label
 			expect(screen.getAllByText('Info').length).toBeGreaterThanOrEqual(1);
 			expect(screen.getByText('Runder')).toBeInTheDocument();
-			expect(screen.getByText('Poeng')).toBeInTheDocument();
 			expect(screen.getByText('Refleksjon')).toBeInTheDocument();
 		});
 	});
@@ -96,13 +94,6 @@ describe('PracticeFormModal', () => {
 			expect(screen.getByText('Runde 1')).toBeInTheDocument();
 		});
 
-		it('navigates forward to Poeng step', async () => {
-			const user = userEvent.setup();
-			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 2);
-			expect(screen.getByText(/ingen runder med definert antall piler/i)).toBeInTheDocument();
-		});
-
 		it('navigates backward from Runder to Info step', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
@@ -114,7 +105,7 @@ describe('PracticeFormModal', () => {
 		it('shows Lagre trening button on the last (Refleksjon) step', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			expect(screen.getByRole('button', { name: /lagre trening/i })).toBeInTheDocument();
 		});
 
@@ -167,19 +158,16 @@ describe('PracticeFormModal', () => {
 			const windChip = screen.getByRole('button', { name: /vind/i });
 			await user.click(windChip);
 			await user.click(windChip);
-			// Just verify the chip is still present and no errors occurred
 			expect(windChip).toBeInTheDocument();
 		});
 
 		it('pre-selects the favorite bow in create mode', () => {
 			render(<PracticeFormModal {...defaultProps} bows={sampleBows} />);
-			// bow-2 (Win&Win Inno Max) is isFavorite=true
 			expect(screen.getByRole('button', { name: /bue/i })).toHaveTextContent('Win&Win Inno Max');
 		});
 
 		it('pre-selects the favorite arrows in create mode', () => {
 			render(<PracticeFormModal {...defaultProps} arrows={sampleArrows} />);
-			// arr-1 (Easton X10) is isFavorite=true
 			expect(screen.getByRole('button', { name: /^piler$/i })).toHaveTextContent('Easton X10');
 		});
 
@@ -289,11 +277,9 @@ describe('PracticeFormModal', () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
 			await goToStep(user, 1);
-			// Add two extra rounds
 			await user.click(screen.getByRole('button', { name: /legg til runde/i }));
 			await user.click(screen.getByRole('button', { name: /legg til runde/i }));
 			expect(screen.getByText('Runde 3')).toBeInTheDocument();
-			// Go back and change category
 			await user.click(screen.getByRole('button', { name: /forrige steg/i }));
 			await user.click(screen.getByRole('button', { name: /kategori/i }));
 			await user.click(screen.getByRole('option', { name: 'Jakt/3D' }));
@@ -301,19 +287,8 @@ describe('PracticeFormModal', () => {
 			expect(screen.getByText('Runde 1')).toBeInTheDocument();
 			expect(screen.queryByText('Runde 2')).not.toBeInTheDocument();
 		});
-	});
 
-	// ─── Scoring step ───────────────────────────────────────────────────────────
-
-	describe('Scoring step', () => {
-		it('shows empty state when no rounds have arrows configured', async () => {
-			const user = userEvent.setup();
-			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 2);
-			expect(screen.getByText(/ingen runder med definert antall piler/i)).toBeInTheDocument();
-		});
-
-		it('shows arrow scoring UI when a round has arrows set (edit mode)', async () => {
+		it('shows "Registrer score" button when arrows are configured', async () => {
 			const user = userEvent.setup();
 			render(
 				<PracticeFormModal
@@ -329,7 +304,53 @@ describe('PracticeFormModal', () => {
 					}}
 				/>
 			);
-			await goToStep(user, 2);
+			await goToStep(user, 1);
+			expect(screen.getByRole('button', { name: /registrer score/i })).toBeInTheDocument();
+		});
+
+		it('shows scoring progress on round card when arrows are partially scored', async () => {
+			const user = userEvent.setup();
+			render(
+				<PracticeFormModal
+					{...defaultProps}
+					mode="edit"
+					practice={{
+						id: 'p1',
+						date: '2025-01-08T00:00:00.000Z',
+						arrowsShot: 6,
+						environment: Environment.INDOOR,
+						weather: [],
+						ends: [{ id: 'e1', arrows: 6, distanceMeters: 18, scores: [9, 8, 7] }],
+					}}
+				/>
+			);
+			await goToStep(user, 1);
+			expect(screen.getByText(/3\/6 piler registrert/i)).toBeInTheDocument();
+			expect(screen.getByRole('button', { name: /fortsett scoring/i })).toBeInTheDocument();
+		});
+	});
+
+	// ─── Scoring modal ──────────────────────────────────────────────────────────
+
+	describe('Scoring modal', () => {
+		it('opens scoring modal when "Registrer score" is clicked', async () => {
+			const user = userEvent.setup();
+			render(
+				<PracticeFormModal
+					{...defaultProps}
+					mode="edit"
+					practice={{
+						id: 'p1',
+						date: '2025-01-08T00:00:00.000Z',
+						arrowsShot: 6,
+						environment: Environment.INDOOR,
+						weather: [],
+						ends: [{ id: 'e1', arrows: 6, distanceMeters: 18, scores: [] }],
+					}}
+				/>
+			);
+			await goToStep(user, 1);
+			await user.click(screen.getByRole('button', { name: /registrer score/i }));
 			expect(screen.getByText(/0 av 6 piler registrert/i)).toBeInTheDocument();
 		});
 
@@ -349,7 +370,8 @@ describe('PracticeFormModal', () => {
 					}}
 				/>
 			);
-			await goToStep(user, 2);
+			await goToStep(user, 1);
+			await user.click(screen.getByRole('button', { name: /registrer score/i }));
 			expect(screen.queryByRole('button', { name: 'X' })).not.toBeInTheDocument();
 		});
 
@@ -369,7 +391,8 @@ describe('PracticeFormModal', () => {
 					}}
 				/>
 			);
-			await goToStep(user, 2);
+			await goToStep(user, 1);
+			await user.click(screen.getByRole('button', { name: /registrer score/i }));
 			expect(screen.getByRole('button', { name: 'X' })).toBeInTheDocument();
 		});
 
@@ -389,12 +412,14 @@ describe('PracticeFormModal', () => {
 					}}
 				/>
 			);
-			await goToStep(user, 2);
+			await goToStep(user, 1);
+			await user.click(screen.getByRole('button', { name: /registrer score/i }));
 			await user.click(screen.getByRole('button', { name: '9' }));
 			await user.click(screen.getByRole('button', { name: '9' }));
 			await user.click(screen.getByRole('button', { name: '9' }));
-			expect(screen.getByText(/alle piler registrert/i)).toBeInTheDocument();
-			expect(screen.getByText(/score: 27/i)).toBeInTheDocument();
+			const completeBanners = screen.getAllByText(/alle piler registrert/i);
+			expect(completeBanners.length).toBeGreaterThanOrEqual(1);
+			expect(screen.getAllByText(/score: 27/i).length).toBeGreaterThanOrEqual(1);
 		});
 
 		it('tracks progress as arrows are scored (outdoor with X)', async () => {
@@ -413,7 +438,8 @@ describe('PracticeFormModal', () => {
 					}}
 				/>
 			);
-			await goToStep(user, 2);
+			await goToStep(user, 1);
+			await user.click(screen.getByRole('button', { name: /registrer score/i }));
 			expect(screen.getByText(/0 av 6 piler registrert/i)).toBeInTheDocument();
 			await user.click(screen.getByRole('button', { name: 'X' }));
 			await user.click(screen.getByRole('button', { name: '10' }));
@@ -421,7 +447,7 @@ describe('PracticeFormModal', () => {
 			expect(screen.getByText(/3 av 6 piler registrert/i)).toBeInTheDocument();
 		});
 
-		it('shows manual score notice when round has total score but no per-arrow scores', async () => {
+		it('hides score button when round has manual total score but no per-arrow scores', async () => {
 			const user = userEvent.setup();
 			render(
 				<PracticeFormModal
@@ -437,57 +463,9 @@ describe('PracticeFormModal', () => {
 					}}
 				/>
 			);
-			await goToStep(user, 2);
-			expect(screen.getByText(/totalscore: 320 poeng/i)).toBeInTheDocument();
-		});
-
-		it('allows editing an already-scored arrow chip', async () => {
-			const user = userEvent.setup();
-			render(
-				<PracticeFormModal
-					{...defaultProps}
-					mode="edit"
-					practice={{
-						id: 'p1',
-						date: '2025-01-08T00:00:00.000Z',
-						arrowsShot: 3,
-						environment: Environment.INDOOR,
-						weather: [],
-						ends: [{ id: 'e1', arrows: 3, distanceMeters: 18, scores: [9, 8, 7] }],
-					}}
-				/>
-			);
-			await goToStep(user, 2);
-			// Click first scored chip to enter edit mode
-			await user.click(screen.getByRole('button', { name: /endre pil 1: 9 poeng/i }));
-			expect(screen.getByText(/velg ny verdi for pil 1/i)).toBeInTheDocument();
-			// Update to 10
-			await user.click(screen.getByRole('button', { name: '10' }));
-			expect(screen.queryByText(/velg ny verdi/i)).not.toBeInTheDocument();
-		});
-
-		it('shows scoring for multiple rounds side by side (edit mode)', async () => {
-			const user = userEvent.setup();
-			render(
-				<PracticeFormModal
-					{...defaultProps}
-					mode="edit"
-					practice={{
-						id: 'p1',
-						date: '2025-01-08T00:00:00.000Z',
-						arrowsShot: 72,
-						environment: Environment.INDOOR,
-						weather: [],
-						ends: [
-							{ id: 'e1', arrows: 36, distanceMeters: 18, scores: [] },
-							{ id: 'e2', arrows: 36, distanceMeters: 25, scores: [] },
-						],
-					}}
-				/>
-			);
-			await goToStep(user, 2);
-			// Both scoring cards show "0 av 36 piler registrert"
-			expect(screen.getAllByText(/0 av 36 piler registrert/i)).toHaveLength(2);
+			await goToStep(user, 1);
+			expect(screen.queryByRole('button', { name: /registrer score/i })).not.toBeInTheDocument();
+			expect(screen.queryByRole('button', { name: /fortsett scoring/i })).not.toBeInTheDocument();
 		});
 	});
 
@@ -497,7 +475,7 @@ describe('PracticeFormModal', () => {
 		it('shows rating buttons 1–10', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			for (let i = 1; i <= 10; i++) {
 				expect(screen.getByRole('button', { name: `Vurdering ${i} av 10` })).toBeInTheDocument();
 			}
@@ -506,7 +484,7 @@ describe('PracticeFormModal', () => {
 		it('clicking a rating button marks it as pressed (aria-pressed=true)', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			const btn = screen.getByRole('button', { name: 'Vurdering 7 av 10' });
 			await user.click(btn);
 			expect(btn).toHaveAttribute('aria-pressed', 'true');
@@ -515,7 +493,7 @@ describe('PracticeFormModal', () => {
 		it('clicking a different rating deselects the previous one', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			const btn7 = screen.getByRole('button', { name: 'Vurdering 7 av 10' });
 			const btn9 = screen.getByRole('button', { name: 'Vurdering 9 av 10' });
 			await user.click(btn7);
@@ -527,7 +505,7 @@ describe('PracticeFormModal', () => {
 		it('clicking the same rating twice deselects it', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			const btn = screen.getByRole('button', { name: 'Vurdering 5 av 10' });
 			await user.click(btn);
 			await user.click(btn);
@@ -537,14 +515,14 @@ describe('PracticeFormModal', () => {
 		it('shows the notes textarea', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			expect(screen.getByLabelText('Notater')).toBeInTheDocument();
 		});
 
 		it('can type notes in the textarea', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			const textarea = screen.getByLabelText('Notater');
 			await user.type(textarea, 'Bra dag på banen!');
 			expect(textarea).toHaveValue('Bra dag på banen!');
@@ -559,7 +537,7 @@ describe('PracticeFormModal', () => {
 			const onClose = jest.fn();
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} onSave={onSave} onClose={onClose} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			await user.click(screen.getByRole('button', { name: /lagre trening/i }));
 			await waitFor(() => expect(onSave).toHaveBeenCalledTimes(1));
 			await waitFor(() => expect(onClose).toHaveBeenCalled());
@@ -573,7 +551,7 @@ describe('PracticeFormModal', () => {
 			await user.click(screen.getByRole('option', { name: 'Ute' }));
 			await user.click(screen.getByRole('button', { name: /sol/i }));
 			await user.click(screen.getByRole('button', { name: /vind/i }));
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			await user.click(screen.getByRole('button', { name: /lagre trening/i }));
 			await waitFor(() =>
 				expect(onSave).toHaveBeenCalledWith(
@@ -589,7 +567,7 @@ describe('PracticeFormModal', () => {
 			const onSave = jest.fn().mockResolvedValue(undefined);
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} onSave={onSave} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			await user.click(screen.getByRole('button', { name: 'Vurdering 8 av 10' }));
 			await user.type(screen.getByLabelText('Notater'), 'Veldig bra sesjon!');
 			await user.click(screen.getByRole('button', { name: /lagre trening/i }));
@@ -600,7 +578,7 @@ describe('PracticeFormModal', () => {
 			const onSave = jest.fn().mockResolvedValue(undefined);
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} onSave={onSave} bows={sampleBows} arrows={sampleArrows} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			await user.click(screen.getByRole('button', { name: /lagre trening/i }));
 			await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ bowId: 'bow-2', arrowsId: 'arr-1' })));
 		});
@@ -611,7 +589,7 @@ describe('PracticeFormModal', () => {
 			render(<PracticeFormModal {...defaultProps} onSave={onSave} />);
 			await user.click(screen.getByRole('button', { name: /kategori/i }));
 			await user.click(screen.getByRole('option', { name: 'Jakt/3D' }));
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			await user.click(screen.getByRole('button', { name: /lagre trening/i }));
 			await waitFor(() => expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ practiceCategory: 'JAKT_3D' })));
 		});
@@ -620,7 +598,7 @@ describe('PracticeFormModal', () => {
 			const onSave = jest.fn().mockRejectedValue(new Error('Nettverksfeil'));
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} onSave={onSave} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			await user.click(screen.getByRole('button', { name: /lagre trening/i }));
 			await waitFor(() => expect(screen.getByText('Nettverksfeil')).toBeInTheDocument());
 		});
@@ -634,7 +612,7 @@ describe('PracticeFormModal', () => {
 					practice={{ id: 'p1', date: '2025-01-08T00:00:00.000Z', arrowsShot: 36, environment: Environment.INDOOR, weather: [] }}
 				/>
 			);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			expect(screen.getByRole('button', { name: /lagre endringer/i })).toBeInTheDocument();
 		});
 
@@ -658,11 +636,7 @@ describe('PracticeFormModal', () => {
 			}
 			expect(screen.getByText('Runde 5')).toBeInTheDocument();
 
-			// Step 2 – Poeng (no arrows defined → empty state)
-			await goToStep(user, 1);
-			expect(screen.getByText(/ingen runder med definert antall piler/i)).toBeInTheDocument();
-
-			// Step 3 – Refleksjon
+			// Step 2 – Refleksjon
 			await goToStep(user, 1);
 			await user.click(screen.getByRole('button', { name: 'Vurdering 9 av 10' }));
 			await user.type(screen.getByLabelText('Notater'), 'Fem runder utendørs, sol og litt regn!');
@@ -727,24 +701,24 @@ describe('PracticeFormModal', () => {
 			expect(screen.queryByText('Runde 3')).not.toBeInTheDocument();
 		});
 
-		it('shows correct filled arrow count on scoring step (6 of 36)', async () => {
+		it('shows scoring progress on round cards for partially scored rounds', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} mode="edit" practice={editPractice} bows={sampleBows} arrows={sampleArrows} />);
-			await goToStep(user, 2);
-			expect(screen.getAllByText(/6 av 36 piler registrert/i)).toHaveLength(2);
+			await goToStep(user, 1);
+			expect(screen.getAllByText(/6\/36 piler registrert/i)).toHaveLength(2);
 		});
 
 		it('pre-fills rating 9 on the reflection step', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} mode="edit" practice={editPractice} bows={sampleBows} arrows={sampleArrows} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			expect(screen.getByRole('button', { name: 'Vurdering 9 av 10' })).toHaveAttribute('aria-pressed', 'true');
 		});
 
 		it('pre-fills notes on the reflection step', async () => {
 			const user = userEvent.setup();
 			render(<PracticeFormModal {...defaultProps} mode="edit" practice={editPractice} bows={sampleBows} arrows={sampleArrows} />);
-			await goToStep(user, 3);
+			await goToStep(user, 2);
 			expect(screen.getByLabelText('Notater')).toHaveValue('God trening');
 		});
 
@@ -752,10 +726,9 @@ describe('PracticeFormModal', () => {
 			const { rerender } = render(
 				<PracticeFormModal {...defaultProps} mode="edit" practice={editPractice} bows={sampleBows} arrows={sampleArrows} />
 			);
-			// Re-open in create mode (simulate close + re-open)
 			rerender(<PracticeFormModal {...defaultProps} open={false} mode="create" />);
 			rerender(<PracticeFormModal {...defaultProps} open={true} mode="create" />);
-			expect(screen.getByDisplayValue('')).toBeInTheDocument(); // empty location field
+			expect(screen.getByDisplayValue('')).toBeInTheDocument();
 		});
 	});
 
@@ -848,7 +821,6 @@ describe('PracticeFormModal', () => {
 			await user.click(screen.getByText(/slett trening/i));
 			const deleteDialog = screen.getByRole('dialog', { name: /slett trening/i });
 			await user.click(within(deleteDialog).getByRole('button', { name: /^slett$/i }));
-			// Wait for confirm dialog to close, then navigate to the reflection step to see the error
 			await waitFor(() => expect(screen.queryByRole('dialog', { name: /slett trening/i })).not.toBeInTheDocument());
 			await user.click(screen.getByRole('button', { name: /gå til refleksjon/i }));
 			expect(screen.getByText(/kunne ikke slette trening/i)).toBeInTheDocument();
@@ -862,7 +834,6 @@ describe('PracticeFormModal', () => {
 			window.localStorage.setItem('bueboka_last_distance', '18');
 			window.localStorage.setItem('bueboka_last_target', '40cm');
 			render(<PracticeFormModal {...defaultProps} />);
-			// Modal loads without error when localStorage values are present
 			expect(screen.getByRole('dialog', { name: /ny trening/i })).toBeInTheDocument();
 		});
 
@@ -884,8 +855,7 @@ describe('PracticeFormModal', () => {
 					}}
 				/>
 			);
-			await goToStep(user, 3);
-			// In edit mode the button reads "Lagre endringer"
+			await goToStep(user, 2);
 			await user.click(screen.getByRole('button', { name: /lagre endringer/i }));
 			await waitFor(() => expect(onSave).toHaveBeenCalled());
 			expect(window.localStorage.getItem('bueboka_last_distance')).toBe('18');
