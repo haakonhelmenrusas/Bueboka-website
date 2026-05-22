@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { LuPlus, LuX } from 'react-icons/lu';
+import { useEffect, useRef, useState } from 'react';
+import { LuChevronDown, LuPlus, LuX } from 'react-icons/lu';
 import { GiBowArrow } from 'react-icons/gi';
 import { Button } from '@/components';
 import styles from './SightMarksSection.module.css';
@@ -11,6 +11,7 @@ import { BowModal } from '@/components/BowModal/BowModal';
 import type { BowType } from '@/components/ProfileEditModal/BowForm';
 import { useSightMarks } from './useSightMarks';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
+import type { Bow } from '@/lib/types';
 import { AimDistanceMark, SightMark } from '@/types/SightMarks';
 import { Ballistics } from '@/lib/Contants';
 import { useTranslation } from '@/context/LanguageProvider';
@@ -29,9 +30,20 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [editingSightMark, setEditingSightMark] = useState<SightMark | null>(null);
 	const [createError, setCreateError] = useState<string | null>(null);
-	const [bowModalOpen, setBowModalOpen] = useState(false);
+	const [editingBow, setEditingBow] = useState<Bow | null>(null);
+	const [bowDropdownOpen, setBowDropdownOpen] = useState(false);
+	const bowDropdownRef = useRef<HTMLDivElement>(null);
 
-	const activeBow = bows.find((b) => b.isFavorite) ?? bows[0] ?? null;
+	useEffect(() => {
+		if (!bowDropdownOpen) return;
+		function handleClick(e: MouseEvent) {
+			if (bowDropdownRef.current && !bowDropdownRef.current.contains(e.target as Node)) {
+				setBowDropdownOpen(false);
+			}
+		}
+		document.addEventListener('mousedown', handleClick);
+		return () => document.removeEventListener('mousedown', handleClick);
+	}, [bowDropdownOpen]);
 
 	useEffect(() => {
 		fetchSightMarks();
@@ -211,13 +223,37 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 			<div className={styles.header}>
 				<h2 className={styles.title}>{t['sightMarks.title']}</h2>
 				<div className={styles.headerActions}>
-					{activeBow && (
-						<Button
-							label={`${t['sightMarks.editBow']} (${activeBow.name})`}
-							onClick={() => setBowModalOpen(true)}
-							buttonType="outline"
-							icon={<GiBowArrow size={18} />}
-						/>
+					{bows.length > 0 && (
+						<div className={styles.bowDropdownWrapper} ref={bowDropdownRef}>
+							<button
+								className={styles.bowDropdownButton}
+								onClick={() => setBowDropdownOpen((v) => !v)}
+								aria-haspopup="true"
+								aria-expanded={bowDropdownOpen}
+							>
+								<GiBowArrow size={18} />
+								<span>{t['sightMarks.editBow']}</span>
+								<LuChevronDown size={16} className={bowDropdownOpen ? styles.chevronOpen : ''} />
+							</button>
+							{bowDropdownOpen && (
+								<div className={styles.bowDropdown} role="menu">
+									{bows.map((bow) => (
+										<button
+											key={bow.id}
+											className={styles.bowDropdownItem}
+											role="menuitem"
+											onClick={() => {
+												setEditingBow(bow);
+												setBowDropdownOpen(false);
+											}}
+										>
+											{bow.name}
+											{bow.isFavorite && <span className={styles.bowFavBadge}>&#9733;</span>}
+										</button>
+									))}
+								</div>
+							)}
+						</div>
 					)}
 					<Button
 						label={t['sightMarks.new']}
@@ -277,11 +313,11 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 						: undefined
 				}
 			/>
-			{activeBow && (
+			{editingBow && (
 				<BowModal
-					open={bowModalOpen}
-					onClose={() => setBowModalOpen(false)}
-					editingBow={{ ...activeBow, type: activeBow.type as BowType }}
+					open={!!editingBow}
+					onClose={() => setEditingBow(null)}
+					editingBow={{ ...editingBow, type: editingBow.type as BowType }}
 					onSaved={() => {
 						refreshEquipment();
 						onChanged?.();
