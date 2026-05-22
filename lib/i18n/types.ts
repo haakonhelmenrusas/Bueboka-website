@@ -116,6 +116,25 @@ export interface TranslationKeys {
   // Round summary fallback (when no distance/target chosen yet)
   'round.noDetails': string;
 
+  // Scoring modal
+  'scoring.scoreNow': string;
+  'scoring.editScores': string;
+  'scoring.continueScoring': string;
+  'scoring.done': string;
+  'scoring.arrowScoring': string;
+  'scoring.totalScoreLabel': string;
+  'scoring.points': string;
+  'scoring.manualScoreHint': string;
+  'scoring.previousEnd': string;
+  'scoring.nextEnd': string;
+  'scoring.endLabel': string;
+  'scoring.of': string;
+  'scoring.arrowsRecorded': string;
+  'scoring.sum': string;
+  'scoring.editingArrowPrefix': string;
+  'scoring.allRegistered': string;
+  'scoring.scoreSuffix': string;
+
   // Target type labels (used in the rounds step Target select and round summary)
   'target.size40cm': string;
   'target.size40Triple': string;

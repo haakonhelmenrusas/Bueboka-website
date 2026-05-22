@@ -116,6 +116,25 @@ export const en: TranslationKeys = {
   // Round summary fallback
   'round.noDetails': 'No details',
 
+  // Scoring modal
+  'scoring.scoreNow': 'Score now',
+  'scoring.editScores': 'Edit scores',
+  'scoring.continueScoring': 'Continue scoring',
+  'scoring.done': 'Done',
+  'scoring.arrowScoring': 'Arrow scoring',
+  'scoring.totalScoreLabel': 'Total score:',
+  'scoring.points': 'points',
+  'scoring.manualScoreHint': 'You have registered a total score for this round. To score individual arrows instead, remove the total score in the "Rounds" step.',
+  'scoring.previousEnd': 'Previous end',
+  'scoring.nextEnd': 'Next end',
+  'scoring.endLabel': 'End',
+  'scoring.of': 'of',
+  'scoring.arrowsRecorded': 'arrows recorded',
+  'scoring.sum': 'Sum:',
+  'scoring.editingArrowPrefix': 'Choose a new value for arrow',
+  'scoring.allRegistered': '✓ All arrows recorded',
+  'scoring.scoreSuffix': '– score:',
+
   // Target types
   'target.size40cm': '40 cm',
   'target.size40Triple': '40 cm Triple/Vegas',

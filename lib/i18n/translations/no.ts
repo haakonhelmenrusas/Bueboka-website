@@ -116,6 +116,25 @@ export const no: TranslationKeys = {
   // Round summary fallback
   'round.noDetails': 'Ingen detaljer',
 
+  // Scoring modal
+  'scoring.scoreNow': 'Registrer score',
+  'scoring.editScores': 'Rediger score',
+  'scoring.continueScoring': 'Fortsett scoring',
+  'scoring.done': 'Ferdig',
+  'scoring.arrowScoring': 'Pilpoeng',
+  'scoring.totalScoreLabel': 'Totalscore:',
+  'scoring.points': 'poeng',
+  'scoring.manualScoreHint': 'Du har registrert en totalscore for denne runden. Vil du score enkeltpiler i stedet, fjern totalscoren under «Runder»-steget.',
+  'scoring.previousEnd': 'Forrige serie',
+  'scoring.nextEnd': 'Neste serie',
+  'scoring.endLabel': 'Serie',
+  'scoring.of': 'av',
+  'scoring.arrowsRecorded': 'piler registrert',
+  'scoring.sum': 'Sum:',
+  'scoring.editingArrowPrefix': 'Velg ny verdi for pil',
+  'scoring.allRegistered': '✓ Alle piler registrert',
+  'scoring.scoreSuffix': '– score:',
+
   // Target types
   'target.size40cm': '40 cm',
   'target.size40Triple': '40cm Trippel/Vegas',
