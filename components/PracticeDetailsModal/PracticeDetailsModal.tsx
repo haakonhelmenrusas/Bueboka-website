@@ -91,12 +91,12 @@ export const PracticeDetailsModal: React.FC<PracticeDetailsModalProps> = ({ open
 						<StatCard
 							icon={PRACTICE_CATEGORY_ICONS[practice.practiceCategory]}
 							label={t['practiceDetails.category']}
-							value={getPracticeCategoryLabel(practice.practiceCategory)}
+							value={getPracticeCategoryLabel(practice.practiceCategory, t)}
 						/>
 					)}
 					{practice.location && <StatCard icon={<LuMapPin className="w-5 h-5" />} label={t['practiceDetails.location']} value={practice.location} />}
 					{practice.weather?.length > 0 && (
-						<StatCard icon={<LuCloud className="w-5 h-5" />} label={t['practiceDetails.weather']} value={formatWeatherConditions(practice.weather)} />
+						<StatCard icon={<LuCloud className="w-5 h-5" />} label={t['practiceDetails.weather']} value={formatWeatherConditions(practice.weather, t)} />
 					)}
 					{practice.bow && (
 						<StatCard

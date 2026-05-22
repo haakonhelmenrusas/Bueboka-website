@@ -35,9 +35,9 @@ export const SessionShareCard = React.forwardRef<HTMLDivElement, SessionShareCar
 		day: 'numeric',
 	});
 
-	const categoryLabel = data.category ? getPracticeCategoryLabel(data.category) : null;
+	const categoryLabel = data.category ? getPracticeCategoryLabel(data.category, t) : null;
 	const bowTypeLabel = data.bowType ? getBowTypeLabel(data.bowType) : null;
-	const envLabel = data.environment ? getEnvironmentLabel(data.environment) : null;
+	const envLabel = data.environment ? getEnvironmentLabel(data.environment, t) : null;
 	const typeLabel = data.practiceType === 'KONKURRANSE' ? t['badge.competition'] : t['badge.training'];
 
 	const unscoredArrows = data.arrowsWithoutScore ?? 0;

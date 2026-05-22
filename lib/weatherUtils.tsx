@@ -1,17 +1,18 @@
 import { LuCircleHelp, LuCloud, LuSparkles, LuSun, LuZap } from 'react-icons/lu';
 import { WeatherCondition } from './prismaEnums';
+import type { TranslationKeys } from '@/lib/i18n/types';
 
-export const weatherLabels: Record<WeatherCondition, string> = {
-	[WeatherCondition.SUN]: 'Sol',
-	[WeatherCondition.CLOUDED]: 'Overskyet',
-	[WeatherCondition.CLEAR]: 'Klarvær',
-	[WeatherCondition.RAIN]: 'Regn',
-	[WeatherCondition.WIND]: 'Vind',
-	[WeatherCondition.SNOW]: 'Snø',
-	[WeatherCondition.FOG]: 'Tåke',
-	[WeatherCondition.THUNDER]: 'Torden',
-	[WeatherCondition.CHANGING_CONDITIONS]: 'Skiftende',
-	[WeatherCondition.OTHER]: 'Annet',
+const weatherTranslationKeys: Record<WeatherCondition, keyof TranslationKeys> = {
+	[WeatherCondition.SUN]: 'weather.sun',
+	[WeatherCondition.CLOUDED]: 'weather.clouded',
+	[WeatherCondition.CLEAR]: 'weather.clear',
+	[WeatherCondition.RAIN]: 'weather.rain',
+	[WeatherCondition.WIND]: 'weather.wind',
+	[WeatherCondition.SNOW]: 'weather.snow',
+	[WeatherCondition.FOG]: 'weather.fog',
+	[WeatherCondition.THUNDER]: 'weather.thunder',
+	[WeatherCondition.CHANGING_CONDITIONS]: 'weather.changing',
+	[WeatherCondition.OTHER]: 'weather.other',
 };
 
 export const weatherIcons: Record<WeatherCondition, React.ComponentType<{ size?: number }>> = {
@@ -27,23 +28,15 @@ export const weatherIcons: Record<WeatherCondition, React.ComponentType<{ size?:
 	[WeatherCondition.OTHER]: LuCircleHelp,
 };
 
-/**
- * Get weather label for a weather condition
- */
-export function getWeatherLabel(condition: WeatherCondition): string {
-	return weatherLabels[condition] ?? String(condition);
+export function getWeatherLabel(condition: WeatherCondition, t: TranslationKeys): string {
+	const key = weatherTranslationKeys[condition];
+	return key ? t[key] : String(condition);
 }
 
-/**
- * Get weather icon component for a weather condition
- */
 export function getWeatherIcon(condition: WeatherCondition): React.ComponentType<{ size?: number; className?: string }> {
 	return weatherIcons[condition];
 }
 
-/**
- * Format multiple weather conditions as a comma-separated string
- */
-export function formatWeatherConditions(conditions: WeatherCondition[]): string {
-	return conditions.map((c) => getWeatherLabel(c)).join(', ');
+export function formatWeatherConditions(conditions: WeatherCondition[], t: TranslationKeys): string {
+	return conditions.map((c) => getWeatherLabel(c, t)).join(', ');
 }

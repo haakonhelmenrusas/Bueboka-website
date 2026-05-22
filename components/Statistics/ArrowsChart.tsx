@@ -1,7 +1,7 @@
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import styles from './ArrowsChart.module.css';
 import { PracticeCategory } from './types';
-import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
+import { getPracticeCategoryLabel } from '@/lib/labels';
 import { Select } from '@/components';
 import { useTranslation } from '@/context/LanguageProvider';
 
@@ -34,10 +34,10 @@ export function ArrowsChart({ data, series, formatDate, selectedCategory, onCate
 	// Category options for Select component
 	const categoryOptions = [
 		{ value: 'all', label: t['common.all'] },
-		{ value: 'SKIVE_INDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR },
-		{ value: 'SKIVE_OUTDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR },
-		{ value: 'JAKT_3D', label: PRACTICE_CATEGORY_LABELS.JAKT_3D },
-		{ value: 'FELT', label: PRACTICE_CATEGORY_LABELS.FELT },
+		{ value: 'SKIVE_INDOOR', label: getPracticeCategoryLabel('SKIVE_INDOOR', t) },
+		{ value: 'SKIVE_OUTDOOR', label: getPracticeCategoryLabel('SKIVE_OUTDOOR', t) },
+		{ value: 'JAKT_3D', label: getPracticeCategoryLabel('JAKT_3D', t) },
+		{ value: 'FELT', label: getPracticeCategoryLabel('FELT', t) },
 	];
 
 	// Extract all unique series names from data (including session suffixes like "18m - 40cm (Økt 1)")

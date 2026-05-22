@@ -2,6 +2,8 @@
  * Centralized translations and label mappings for the application
  */
 
+import type { TranslationKeys } from '@/lib/i18n/types';
+
 // Bow type translations
 export const BOW_TYPE_LABELS: Record<string, string> = {
 	RECURVE: 'Recurve',
@@ -20,18 +22,18 @@ export const ARROW_MATERIAL_LABELS: Record<string, string> = {
 	TREVERK: 'Treverk',
 };
 
-// Practice category translations
-export const PRACTICE_CATEGORY_LABELS: Record<string, string> = {
-	SKIVE_INDOOR: 'Skive innendørs',
-	SKIVE_OUTDOOR: 'Skive utendørs',
-	JAKT_3D: 'Jakt/3D',
-	FELT: 'Felt',
+// Practice category i18n key mapping
+const PRACTICE_CATEGORY_KEYS: Record<string, keyof TranslationKeys> = {
+	SKIVE_INDOOR: 'practiceCategory.skiveIndoor',
+	SKIVE_OUTDOOR: 'practiceCategory.skiveOutdoor',
+	JAKT_3D: 'practiceCategory.jakt3D',
+	FELT: 'practiceCategory.felt',
 };
 
-// Environment translations
-export const ENVIRONMENT_LABELS: Record<string, string> = {
-	INDOOR: 'Innendørs',
-	OUTDOOR: 'Utendørs',
+// Environment i18n key mapping
+const ENVIRONMENT_KEYS: Record<string, keyof TranslationKeys> = {
+	INDOOR: 'environment.indoor',
+	OUTDOOR: 'environment.outdoor',
 };
 
 // Select options (for dropdowns/forms)
@@ -60,12 +62,14 @@ export function getArrowMaterialLabel(material: string): string {
 	return ARROW_MATERIAL_LABELS[material] || material;
 }
 
-export function getPracticeCategoryLabel(category: string): string {
-	return PRACTICE_CATEGORY_LABELS[category] || category;
+export function getPracticeCategoryLabel(category: string, t: TranslationKeys): string {
+	const key = PRACTICE_CATEGORY_KEYS[category];
+	return key ? t[key] : category;
 }
 
-export function getEnvironmentLabel(environment: string): string {
-	return ENVIRONMENT_LABELS[environment] || environment;
+export function getEnvironmentLabel(environment: string, t: TranslationKeys): string {
+	const key = ENVIRONMENT_KEYS[environment];
+	return key ? t[key] : environment;
 }
 
 // Achievement tier translations

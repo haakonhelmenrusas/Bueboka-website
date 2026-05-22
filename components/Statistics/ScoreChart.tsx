@@ -4,7 +4,7 @@ import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, X
 import styles from './ScoreChart.module.css';
 import { useEffect, useState } from 'react';
 import { Select } from '@/components';
-import { PRACTICE_CATEGORY_LABELS } from '@/lib/labels';
+import { getPracticeCategoryLabel } from '@/lib/labels';
 import { PracticeCategory } from './types';
 import { useTranslation } from '@/context/LanguageProvider';
 
@@ -35,10 +35,10 @@ export function ScoreChart({ data, formatDate, selectedCategory, onCategoryChang
 	}, []);
 
 	const categoryOptions = [
-		{ value: 'SKIVE_INDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_INDOOR },
-		{ value: 'SKIVE_OUTDOOR', label: PRACTICE_CATEGORY_LABELS.SKIVE_OUTDOOR },
-		{ value: 'JAKT_3D', label: PRACTICE_CATEGORY_LABELS.JAKT_3D },
-		{ value: 'FELT', label: PRACTICE_CATEGORY_LABELS.FELT },
+		{ value: 'SKIVE_INDOOR', label: getPracticeCategoryLabel('SKIVE_INDOOR', t) },
+		{ value: 'SKIVE_OUTDOOR', label: getPracticeCategoryLabel('SKIVE_OUTDOOR', t) },
+		{ value: 'JAKT_3D', label: getPracticeCategoryLabel('JAKT_3D', t) },
+		{ value: 'FELT', label: getPracticeCategoryLabel('FELT', t) },
 	];
 
 	// Fixed y-axis ticks from 0 to 11
