@@ -15,10 +15,9 @@ const nextConfig = {
 		},
 	}),
 
-	// Optimize images
+	// Bypass Next.js image optimization — Netlify's /_next/image endpoint returns 404
 	images: {
-		formats: ['image/avif', 'image/webp'],
-		minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
+		unoptimized: true,
 		remotePatterns: [
 			{
 				protocol: 'https',

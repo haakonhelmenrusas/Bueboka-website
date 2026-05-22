@@ -18,7 +18,7 @@ export default function SponsingPage() {
 		},
 		{
 			name: 'Norges Bueskytterforbund',
-			logo: '/assets/norgesBueskytterforbund.png',
+			logo: '/assets/norgesbueskytterforbund.png',
 			website: 'https://www.bueskyting.no',
 			description: 'Norges Bueskytterforbund',
 		},
