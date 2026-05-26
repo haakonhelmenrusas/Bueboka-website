@@ -848,15 +848,27 @@ Sends an email to the project owner with the rating, feedback, and user identity
 
 Use this from the mobile app on launch to drive force-update flows. HTTP `s-maxage=60, stale-while-revalidate=120`.
 
----
+#### `PUT /api/app/version` — Update version metadata
 
-### Health
+**Auth:** API key via `Authorization: Bearer <APP_ADMIN_API_KEY>` header. Returns `401 Unauthorized` if the key is missing or invalid. This is an admin endpoint — not for end-user clients.
 
-#### `GET /api/health/db` — Database connectivity probe
+**Request body (all fields optional):**
 
-**Auth:** none (public).
+```json
+{
+  "minVersion": "2.0.0",
+  "currentVersion": "2.1.0",
+  "updateMessage": "string",
+  "iosMinVersion": "2.0.0",
+  "iosStoreUrl": "https://...",
+  "androidMinVersion": "2.0.0",
+  "androidStoreUrl": "https://..."
+}
+```
 
-Executes `SELECT 1`. Response includes timing and parsed `DATABASE_URL` metadata (`host`, `db`, `protocol`, `sslmode`) — useful for ops, not for the mobile app.
+Version fields must be valid semver (`X.Y.Z`). If no version record exists yet, one is created with sensible defaults merged with the supplied fields.
+
+Invalidates the `app:version` cache. **Response 200:** same shape as `GET /api/app/version`.
 
 ---
 
