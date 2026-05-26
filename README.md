@@ -1,82 +1,51 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/967e4407-40fe-4f0f-b941-0822b4a26adb/deploy-status)](https://app.netlify.com/sites/bueboka/deploys)
 
-# 🏹 Bueboka - Archery Companion App
+# Bueboka - Archery Companion App
 
-Bueboka is a comprehensive application for archers who want to keep track of their shooting sessions, equipment, and results. The app is designed to be simple and quick to use, helping archers improve their technique through detailed statistics and analysis.
+Bueboka is an application for archers who want to keep track of their shooting sessions, equipment, and results. The app is designed to be simple and quick to use, helping archers improve their technique through detailed statistics and analysis.
 
-This repository contains the web application, which serves as both a landing page and a fully functional companion web platform for Bueboka.
+This repository contains the **web application**, which serves as both a landing page and a fully functional companion web platform. It shares a database and user accounts with the [Bueboka mobile app](https://github.com/haakonhelmenrusas/Bueboka) to provide a synchronized experience across devices.
 
-## 🎯 Project Scope
+## Features
 
-### Current Status
+- **Training Log** — Log training sessions with details on distance, target type, weather conditions, and notes.
+- **Competition Tracker** — Record competition results, including placement, scores, and round details.
+- **Sight Mark Tools** — Manage bow specifications, calculate precise sight marks using an integrated ballistics engine, and generate printable sight mark charts.
+- **Equipment Manager** — Keep an inventory of bows and arrows, including detailed specifications.
+- **Statistics** — Visual insights into shooting performance with time-series breakdowns.
+- **Achievements** — Unlock badges and milestones based on activity and performance.
+- **Public Profiles** — Optionally share your profile and stats with the community.
+- **User Authentication** — Secure signup/login with email, Google OAuth, and session sync across web and mobile.
+- **Feedback System** — Integrated tool for users to report bugs or request features.
+- **Responsive Design** — Fully optimized for desktop, tablet, and mobile browsers.
 
-The website has evolved from a simple landing page into a full-featured web application that complements the mobile experience. It currently offers:
+## Technology Stack
 
-- **User Authentication**: Secure signup and login functionality.
-- **My Page**: A personalized dashboard for users.
-- **Practice & Competition Logging**: Register and manage shooting sessions directly on the web.
-- **Sight Marks Calculation**: Advanced ballistics calculator for generating sight marks based on equipment metrics.
-- **Equipment Management**: Track bows and arrows configurations.
-- **Statistics**: Visual insights into shooting performance.
-- **Sponsorship & Support**: Dedicated sections for contributors and sponsors.
-
-### Mobile App Integration
-
-The web platform is designed to work seamlessly with the Bueboka mobile app ecosystem, sharing the same database and user accounts to provide a synchronized experience across devices.
-
-## ✨ Features
-
-### Key Features
-
-- **Training Log**: Log training sessions with details on distance, target type, weather conditions, and notes.
-- **Competition Tracker**: Record competition results, including placement, scores, and round details.
-- **Sight Mark Tools**:
-  - Manage bow specifications (sight radius, peep height, etc.).
-  - Calculate precise sight marks for different distances using an integrated ballistics engine.
-  - Generate and print sight mark charts.
-- **Equipment Manager**: Keep an inventory of bows and arrows, including detailed specifications like weight, diameter, and measurements.
-- **Achievements**: Unlock badges and milestones based on activity and performance.
-- **Responsive Design**: Fully optimized for desktop, tablet, and mobile browsers.
-- **Dark Mode**: (Temporarily disabled for redesign) Support for light and dark themes.
-
-### Community & Support
-
-- **Sponsorship Program**: Information for corporate partners.
-- **Voluntary Contributions**: Easy way to support the volunteer-driven project via Vipps.
-- **Feedback System**: Integrated tool for users to report bugs or request features.
-
-## 🛠 Technology Stack
-
-- **Frontend Framework**: [Next.js 16](https://nextjs.org/) - React-based fullstack framework
-- **Language**: [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- **Framework**: [Next.js 16](https://nextjs.org/) (React 19)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: CSS Modules with modern CSS variables
 - **Database**: [Prisma](https://www.prisma.io/) ORM with PostgreSQL
 - **Authentication**: [Better Auth](https://www.better-auth.com/)
-- **State Management**: React Hooks and Context API
-- **Icons**: [React Icons](https://react-icons.github.io/react-icons/) (replacing FontAwesome)
 - **Monitoring**: [Sentry](https://sentry.io/) for error tracking
-- **Deployment**: [Netlify](https://www.netlify.com/) for continuous deployment
-- **CI/CD**: GitHub Actions for automated testing and deployment
-- **Code Quality**: ESLint and Prettier
+- **Deployment**: [Netlify](https://www.netlify.com/)
+- **CI/CD**: GitHub Actions
+- **Code Quality**: ESLint, Prettier, Husky
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed:
-
-- **Node.js** (version 18 or higher)
+- **Node.js** (version 22 or higher)
 - **npm** (comes with Node.js)
-- **Git** for version control
-- **Docker** (optional, for local database setup)
+- **Podman** or Docker (for local database setup)
 
 ### Installation
 
 1. **Clone repository**
 
    ```bash
-   git clone https://github.com/yourusername/bueboka-web.git
-   cd bueboka-web
+   git clone https://github.com/haakonhelmenrusas/Bueboka-website.git
+   cd Bueboka-website
    ```
 
 2. **Install dependencies**
@@ -92,14 +61,14 @@ Before you begin, ensure you have the following installed:
    # Edit .env with your configuration (Database URL, Auth secrets, etc.)
    ```
 
-4. **Database Setup**
+4. **Database setup**
 
-   If using Docker for local Postgres:
+   Start a local PostgreSQL instance using Podman (or Docker):
 
    ```bash
-   npm run db:up
+   podman compose up -d db
    npm run prisma:migrate
-   npm run seed:local  # Optional: Seed with test data
+   npm run seed  # Optional: seed with test data
    ```
 
 5. **Start development server**
@@ -108,107 +77,33 @@ Before you begin, ensure you have the following installed:
    npm run dev
    ```
 
-6. **Open browser**
-
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 🤝 Contributing
-
-Contributions are welcome! Please read `CONTRIBUTING.md` for details on our code of conduct and the process for submitting pull requests.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the `LICENSE` file for details.
-Navigate to `http://localhost:3000`
-
-### Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
+6. Open [http://localhost:3000](http://localhost:3000)
 
 ## API Documentation
 
-We provide interactive API docs powered by Swagger UI:
+See [docs/API.md](docs/API.md) for the full REST API reference. The API is consumed by both this web client and the [Bueboka mobile app](https://github.com/haakonhelmenrusas/Bueboka).
 
-- OpenAPI spec: `GET /api/openapi`
-- Interactive docs: visit `/api/docs` in your browser.
+## Mobile App Integration
 
-Update the OpenAPI spec in `app/api/openapi/route.ts` as you add or change endpoints. Keep the spec minimal and focused on public routes.
+The web platform shares its backend and database with the **[Bueboka mobile app](https://github.com/haakonhelmenrusas/Bueboka)** (React Native / Expo). Users have a single account that works across both platforms, with language preferences and all data kept in sync.
 
-## 🤝 Contributing
+## Sponsors and Partners
 
-We welcome contributions from everyone! Please read our [Contributing Guidelines](CONTRIBUTING.md)
-and [Code of Conduct](CODE_OF_CONDUCT.md) before getting started.
+Interested in sponsoring or partnering with Bueboka? Visit our [sponsors page](https://bueboka.no/sponsing) for more information.
 
-## 🌟 Related Projects
+## Contributing
 
-- **[Bueboka Mobile App](https://github.com/haakonhelmenrusas/Bueboka)** - Den opprinnelige React Native-appen
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before getting started.
 
-## 🎯 Community and Support
-
-- **Issues**: Rapporter bugs eller foreslå features via GitHub Issues
-- **Discussions**: Delta i diskusjoner om prosjektets retning
-- **Social Media**: Følg oss for oppdateringer (lenker kommer)
-- - **Code of Conduct**: Please read our [Code of Conduct](CODE_OF_CONDUCT.md)
-
-## 📈 Roadmap
-
-### Phase 1: Foundation (Current)
-
-- ✅ Landingsside med app-informasjon
-- ✅ Responsivt design
-- ✅ Deployment pipeline
-- ✅ User authentication
-- ✅ Sponsor/partner program
-- ✅ Basic shooting session logging
-- ✅ Statistics dashboard
-- ✅ Equipment management
-- ✅ Competition tracking
-
-### Phase 2: Engagement (Q4 2025)
-
-- 🔄 Community features
-- 🔄 Advanced analytics
-- 🔄 Mobile/web synchronization
-
-### Phase 3: Web App (Early 2026)
-
-- 🔄 Social features
-- 🔄 Gamification
--
-
-## 🤝 Sponsors and Partners
-
-Interested in sponsoring or partnering with Bueboka? We're always looking for organizations that share our passion for
-archery and technology innovation.
-
-**Contact us**: [sponsorship@bueboka.no](mailto:sponsorship@bueboka.no)
-
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 📞 Contact
+- **Code**: Open source under MIT License
+- **Brand Assets**: Copyright © 2026 Bueboka. All rights reserved.
+
+## Contact
 
 - **Project Maintainer**: [Haakon Helmen Rusås](https://github.com/haakonhelmenrusas)
-- **Email**: contact@bueboka.no
+- **Email**: kontakt@bueboka.no
 - **Website**: [bueboka.no](https://bueboka.no)
-
-## ⚖️ Copyright Notice
-
-This project is intended for educational and community purposes. While the code is open source, the Bueboka brand and
-associated assets are protected by copyright.
-
-- **Code**: Open source under MIT License
-- **Brand Assets**: Copyright © 2025 Bueboka. All rights reserved.
-- **Content**: Some content may be subject to copyright restrictions
-
-By contributing to this project, you agree to license your contributions under the same terms.
-
----
-
-**Made with ❤️ for the archery community**
