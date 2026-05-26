@@ -48,7 +48,11 @@ Errors return JSON of the form:
 { "error": "Human-readable message" }
 ```
 
-A few legacy endpoints use `{ "message": "..." }` instead — this is noted on the relevant endpoints.
+Validation errors from Zod-validated endpoints (competitions POST, practices PATCH) include field-level detail:
+
+```json
+{ "error": "Validation error", "fieldErrors": { "field": "message" } }
+```
 
 ### Caching
 
@@ -318,7 +322,7 @@ If `isFavorite: true`, all of the user's other bows have `isFavorite` set to fal
 
 **Auth:** required. Response: `{ "bowSpecification": BowSpecification }`. `404` if not found.
 
-#### `PUT /api/bow-specifications/[id]` (also accepts `PATCH`) — Update a spec
+#### `PUT /api/bow-specifications/[id]` — Update a spec
 
 **Auth:** required.
 
@@ -430,7 +434,7 @@ Invalidates `statsCache` and `practicesCache`. **Response 201:** `{ "practice": 
 
 #### `PATCH /api/practices/[id]` — Update a practice
 
-**Auth:** required. Same body shape as `POST`. Existing `End` records are deleted and recreated. Returns `409` on unique-constraint conflict, `404` if the practice is not owned by the caller. **Response 200:** the updated practice object (note: returned at the top level, not wrapped under a key).
+**Auth:** required. Same body shape as `POST`. Existing `End` records are deleted and recreated. Returns `409` on unique-constraint conflict, `404` if the practice is not owned by the caller. **Response 200:** the updated practice object at the top level (not wrapped under a key), with an added `arrowsShot` field.
 
 #### `DELETE /api/practices/[id]` — Delete a practice
 
@@ -442,19 +446,26 @@ Invalidates `statsCache` and `practicesCache`. **Response 201:** `{ "practice": 
 
 **Response 200:**
 
+Returns the full practice with `ends`, `bow`, `arrows`, and `roundType` relations, plus computed fields:
+
 ```json
 {
   "practice": {
     "id": "...",
     "date": "...",
-    "ends": [ { "id": "...", "arrows": 0, "scores": [], "arrowsWithoutScore": 0 } ],
+    "location": "string | null",
+    "environment": "INDOOR | OUTDOOR",
+    "ends": [ { "id": "...", "arrows": 0, "scores": [], "arrowsWithoutScore": 0, "distanceMeters": null, "targetSizeCm": null } ],
+    "bow": {},
+    "arrows": {},
+    "roundType": {},
     "arrowsShot": 0,
     "practiceType": "TRENING"
   }
 }
 ```
 
-HTTP cache: `max-age=10` in production.
+HTTP cache: `private, max-age=10, must-revalidate` in production.
 
 #### `GET /api/practices/cards` — Paginated activity feed (practices + competitions)
 
@@ -505,7 +516,7 @@ A competition is a session with one or more `CompetitionRound` records.
 
 #### `GET /api/competitions` — List competitions
 
-**Auth:** required. Response: `{ "competitions": Competition[] }`, ordered by `date` desc, with `bow` and `arrows` relations and an `arrowsShot` total per competition.
+**Auth:** required. Response: `{ "competitions": Competition[] }`, ordered by `date` desc. Each entry includes `rounds` (ordered by `roundNumber` asc), `bow`, `arrows` relations, and an `arrowsShot` total.
 
 #### `POST /api/competitions` — Create a competition
 
@@ -545,7 +556,7 @@ A competition is a session with one or more `CompetitionRound` records.
 
 #### `GET /api/competitions/[id]` — Get one competition
 
-**Auth:** required. Returns `403 Unauthorized` if the competition belongs to someone else. **Response 200:** `{ "competition": Competition }` (with `arrowsShot`).
+**Auth:** required. Returns `404` if not found, `403 Unauthorized` if the competition belongs to someone else. **Response 200:** `{ "competition": Competition }` with `rounds`, `bow`, `arrows`, and computed `arrowsShot`.
 
 #### `PATCH /api/competitions/[id]` — Update a competition
 
@@ -557,7 +568,7 @@ A competition is a session with one or more `CompetitionRound` records.
 
 #### `GET /api/competitions/[id]/details` — Get a competition shaped like a practice
 
-**Auth:** required. The response maps `rounds` to an `ends` array so the same UI components can render both. Same response shape as `GET /api/practices/[id]/details`, but `practiceType: "KONKURRANSE"`.
+**Auth:** required. The response maps `rounds` to an `ends` array so the same UI components can render both. Same response shape as `GET /api/practices/[id]/details`, but `practiceType: "KONKURRANSE"`. HTTP cache: `private, max-age=10, must-revalidate` in production.
 
 ---
 
@@ -665,7 +676,7 @@ Proxies to the external service at `SIGHTMARKS_CALCULATION_SERVICE_URL` (default
 
 Aggregates practices (via `End`) and competitions (via `CompetitionRound`) in two raw SQL queries. Includes both scored and unscored arrows in `totalArrows`. `avgScorePerArrow` is rounded to two decimals.
 
-Server-side 30 s cache, plus HTTP `s-maxage=180, stale-while-revalidate=300`.
+Server-side 30 s cache, plus HTTP `public, s-maxage=180, stale-while-revalidate=300`.
 
 #### `GET /api/stats/detailed` — Time-series broken down by distance/target
 
@@ -822,6 +833,11 @@ Proxies to the external service at `BALLISTICS_SERVICE_URL` (defaults to `http:/
 }
 ```
 
+**Validation:**
+
+- `rating` must be a number between 1 and 5 — otherwise `400 Invalid rating`.
+- `feedback` must be a non-empty string — otherwise `400 Feedback is required`.
+
 Sends an email to the project owner with the rating, feedback, and user identity.
 
 **Response 200:** `{ "success": true }`.
@@ -845,6 +861,8 @@ Sends an email to the project owner with the rating, feedback, and user identity
   "android": { "minVersion": "1.0.0", "storeUrl": "https://..." }
 }
 ```
+
+Returns `404 No version configuration found.` if no version record exists in the database.
 
 Use this from the mobile app on launch to drive force-update flows. HTTP `s-maxage=60, stale-while-revalidate=120`.
 
@@ -876,4 +894,5 @@ Invalidates the `app:version` cache. **Response 200:** same shape as `GET /api/a
 
 These are documented here so the mobile app can avoid relying on the current behavior; see also `// TODO` discussions in the repo.
 
-- A handful of endpoints (some sight-mark and bow-specification routes) catch errors and return `undefined` from the handler, which Next.js renders as an empty `500`. Clients should treat any non-2xx as a generic failure.
+- Several sight-mark and bow-specification routes have empty `catch` blocks that swallow errors and return `undefined`, which Next.js renders as an empty `500` with no response body. Affected routes: `GET/PUT/DELETE /api/bow-specifications/[id]`, `GET /api/bow-specifications/by-bow/[bowId]`, `GET/POST /api/sight-marks`, `GET/PUT/DELETE /api/sight-marks/[id]`, `GET/POST /api/sight-marks/[id]/results`, `GET/PUT/DELETE /api/sight-marks/results/[id]`. Clients should treat any non-2xx as a generic failure and not rely on an error body being present.
+- `POST /api/bow-specifications` does not verify that the supplied `bowId` belongs to the authenticated user. The spec is created with the caller's `userId`, so it cannot be used to read another user's data, but it can reference another user's bow.
