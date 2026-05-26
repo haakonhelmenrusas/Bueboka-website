@@ -11,6 +11,26 @@ Key scripts:
 - `npm run build` — production build
 - `npx tsc` — type check
 
+## Branching Strategy
+
+This project uses a two-tier branch model:
+
+- **`main`** — production branch. Only receives merges from `dev` via pull request.
+- **`dev`** — default working branch. All feature/fix branches are created from `dev` and merged back into `dev` via pull request.
+
+### Workflow
+
+1. Branch off `dev` for any new work (e.g., `feat/my-feature`, `fix/some-bug`)
+2. Open a pull request into `dev` for testing and review
+3. Once verified on `dev`, open a pull request from `dev` into `main` for production deployment
+
+### Rules
+
+- Never commit directly to `main` or `dev`
+- All work goes through pull requests
+- `dev` is the base branch for new feature/fix branches — not `main`
+- When creating PRs, target `dev` unless explicitly promoting to production
+
 ## Before Starting Any Task
 
 Before writing code, ask clarifying questions to understand domain and context. Tailor the questions to the task at hand — not every question applies every time. Examples of what to ask when relevant:
