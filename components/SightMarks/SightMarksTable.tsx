@@ -28,7 +28,7 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 		<div className={styles.cardGrid}>
 			{sightMarks.map((sm) => {
 				const calc = sm.ballisticsParameters as CalculatedMarks;
-				const bowName = sm.bowSpec?.bow?.name ?? t['siktemerker.unknownBow'];
+				const bowName = sm.bow?.name ?? t['siktemerker.unknownBow'];
 				const title = sm.name || bowName;
 				const showBowBadge = !!sm.name;
 
@@ -89,7 +89,10 @@ export function SightMarksTable({ sightMarks, onDeleteMark, onCardClick, isDelet
 									<span className={styles.calculatedHeader}>{t['sightMarksTable.calculated']}</span>
 									<span></span>
 								</div>
-								{sm.givenDistances.map((distance, index) => {
+								{sm.givenDistances
+								.map((distance, index) => ({ distance, index }))
+								.sort((a, b) => a.distance - b.distance)
+								.map(({ distance, index }) => {
 									const givenMark = sm.givenMarks[index];
 									const calculatedMark = Array.isArray(calc?.calculated_marks) ? calc.calculated_marks[index] : undefined;
 									return (

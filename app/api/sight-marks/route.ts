@@ -12,11 +12,7 @@ export async function GET(request: NextRequest) {
 		const sightMarks = await prisma.sightMark.findMany({
 			where: { userId: user.id },
 			include: {
-				bowSpec: {
-					include: {
-						bow: true,
-					},
-				},
+				bow: true,
 			},
 			orderBy: { createdAt: 'desc' },
 		});
@@ -31,7 +27,7 @@ export async function POST(request: NextRequest) {
 		if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
 		const body = (await request.json()) as Partial<{
-			bowSpecificationId: unknown;
+			bowId: unknown;
 			name: unknown;
 			givenMarks: unknown;
 			givenDistances: unknown;
@@ -41,8 +37,8 @@ export async function POST(request: NextRequest) {
 		const fieldErrors: Record<string, string> = {};
 		if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
 
-		if (typeof body.bowSpecificationId !== 'string' || !body.bowSpecificationId)
-			fieldErrors.bowSpecificationId = 'bowSpecificationId is required';
+		if (typeof body.bowId !== 'string' || !body.bowId)
+			fieldErrors.bowId = 'bowId is required';
 
 		const name = typeof body.name === 'string' ? body.name.trim() || null : null;
 		const givenMarks = parseNumberArray(body.givenMarks, 'givenMarks', fieldErrors);
@@ -55,15 +51,15 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: 'Validation error', fieldErrors }, { status: 400 });
 		}
 
-		const bowSpec = await prisma.bowSpecification.findFirst({
-			where: { id: body.bowSpecificationId as string, userId: user.id },
+		const bow = await prisma.bow.findFirst({
+			where: { id: body.bowId as string, userId: user.id },
 		});
-		if (!bowSpec) return NextResponse.json({ error: 'Bow specification not found' }, { status: 404 });
+		if (!bow) return NextResponse.json({ error: 'Bow not found' }, { status: 404 });
 
 		const sightMark = await prisma.sightMark.create({
 			data: {
 				userId: user.id,
-				bowSpecificationId: bowSpec.id,
+				bowId: bow.id,
 				name,
 				givenMarks,
 				givenDistances,

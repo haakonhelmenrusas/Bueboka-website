@@ -1,10 +1,11 @@
-export interface BowSpecification {
+export interface SightMark {
 	id: string;
 	userId: string;
 	bowId: string;
-	intervalSightReal?: number;
-	intervalSightMeasured?: number;
-	placement?: number;
+	name?: string | null;
+	givenMarks: number[];
+	givenDistances: number[];
+	ballisticsParameters: CalculatedMarks | Record<string, unknown>;
 	createdAt?: Date;
 	updatedAt?: Date;
 	bow?: {
@@ -12,19 +13,6 @@ export interface BowSpecification {
 		name: string;
 		type?: string;
 	};
-}
-
-export interface SightMark {
-	id: string;
-	userId: string;
-	bowSpecificationId: string;
-	name?: string | null;
-	givenMarks: number[];
-	givenDistances: number[];
-	ballisticsParameters: CalculatedMarks | Record<string, unknown>;
-	createdAt?: Date;
-	updatedAt?: Date;
-	bowSpec?: BowSpecification;
 }
 
 export interface SightMarkResult {

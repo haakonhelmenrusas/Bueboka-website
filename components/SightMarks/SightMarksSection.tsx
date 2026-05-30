@@ -11,7 +11,7 @@ import type { BowType } from '@/components/ProfileEditModal/BowForm';
 import { useSightMarks } from './useSightMarks';
 import { useEquipmentData } from '@/components/EquipmentSection/useEquipmentData';
 import type { Bow } from '@/lib/types';
-import { AimDistanceMark, SightMark } from '@/types/SightMarks';
+import type { AimDistanceMark, SightMark } from '@/types/SightMarks';
 import { Ballistics } from '@/lib/Contants';
 import { useTranslation } from '@/context/LanguageProvider';
 
@@ -99,13 +99,6 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 				throw new Error(msg);
 			}
 
-			// Ensure we have a bow specification
-			const specRes = await fetch(`/api/bow-specifications/by-bow/${activeBow.id}`);
-			if (!specRes.ok) throw new Error(t['sightMarks.fetchError']);
-			const { bowSpecification: spec } = await specRes.json();
-
-			if (!spec) throw new Error(t['sightMarks.noBowSpec']);
-
 			// Only append to an existing set when the user explicitly clicked a card to edit it.
 			// In "Nytt merke" mode (editingSightMark === null) always create a fresh record.
 			const activeSightMark = editingSightMark;
@@ -123,8 +116,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 				given_marks: givenMarks,
 				given_distances: givenDistances,
 				bow_category: activeBow.type || 'recurve',
-				interval_sight_real: activeBow.aimMeasure ?? 5,
-				interval_sight_measured: activeBow.aimMeasure ?? 5,
+				interval_sight_measured: activeBow.aimMeasure ?? Ballistics.interval_sight_measured,
 				arrow_diameter_mm: activeArrow?.diameter ?? 5,
 				arrow_mass_gram: activeArrow?.weight ?? 21.2,
 				length_eye_sight_cm: activeBow.eyeToSight ?? 0,
@@ -169,7 +161,7 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({
-						bowSpecificationId: spec.id,
+						bowId: activeBow.id,
 						name: data.name || undefined,
 						givenMarks,
 						givenDistances,
@@ -278,8 +270,8 @@ export function SightMarksSection({ onRefresh, onChanged }: SightMarksSectionPro
 				initialData={
 					editingSightMark
 						? {
-								bowId: editingSightMark.bowSpec?.bow?.id ?? '',
-								bowName: editingSightMark.bowSpec?.bow?.name ?? 'Ukjent bue',
+								bowId: editingSightMark.bow?.id ?? '',
+								bowName: editingSightMark.bow?.name ?? 'Ukjent bue',
 								name: editingSightMark.name ?? '',
 							}
 						: undefined

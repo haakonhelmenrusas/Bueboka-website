@@ -32,7 +32,6 @@ model User {
   competitions      Competition[]
   Account           Account[]
   Session           Session[]
-  bowSpecifications BowSpecification[]
   sightMarks        SightMark[]
   sightMarkResults  SightMarkResult[]
   achievements      UserAchievement[]  @relation("UserAchievements")
@@ -111,7 +110,7 @@ model Bow {
   isFavorite        Boolean            @default(false)
   createdAt         DateTime           @default(now())
   updatedAt         DateTime           @updatedAt
-  bowSpecifications BowSpecification[]
+  sightMarks        SightMark[]
 
   // Relation field
   user User @relation(fields: [userId], references: [id])
@@ -264,28 +263,10 @@ model CompetitionRound {
   @@map("competition_rounds")
 }
 
-model BowSpecification {
-  id                    String     @id @default(cuid())
-  userId                String
-  bowId                 String
-  intervalSightReal     Int?
-  intervalSightMeasured Int?
-  placement             Placement?
-  createdAt             DateTime   @default(now())
-  updatedAt             DateTime   @updatedAt
-
-  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bow        Bow         @relation(fields: [bowId], references: [id], onDelete: Cascade)
-  sightMarks SightMark[]
-
-  @@unique([userId, bowId])
-  @@map("bow_specifications")
-}
-
 model SightMark {
   id                   String   @id @default(cuid())
   userId               String
-  bowSpecificationId   String
+  bowId                String
   name                 String?
   givenMarks           Float[]
   givenDistances       Float[]
@@ -294,7 +275,7 @@ model SightMark {
   updatedAt            DateTime @updatedAt
 
   user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bowSpec      BowSpecification  @relation(fields: [bowSpecificationId], references: [id], onDelete: Cascade)
+  bow          Bow               @relation(fields: [bowId], references: [id], onDelete: Cascade)
   sightResults SightMarkResult[]
 
   @@map("sight_marks")
@@ -342,12 +323,6 @@ enum Material {
   KARBON
   ALUMINIUM
   TREVERK
-}
-
-enum Placement {
-  BAK_LINJEN
-  OVER_LINJEN
-  ANNET
 }
 
 enum Environment {
