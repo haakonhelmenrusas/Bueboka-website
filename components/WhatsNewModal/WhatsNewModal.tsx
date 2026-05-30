@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './WhatsNewModal.module.css';
 import { LuChevronRight } from 'react-icons/lu';
 import { Button, Modal } from '@/components';
@@ -20,14 +20,12 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 	const [currentStep, setCurrentStep] = useState(0);
 	const { t } = useTranslation();
 
-	// Reset to first step when modal opens
-	useEffect(() => {
-		if (open) {
-			setCurrentStep(0);
-		}
-	}, [open]);
-
 	if (!open) return null;
+
+	const handleClose = () => {
+		setCurrentStep(0);
+		onClose();
+	};
 
 	const steps = [
 		{
@@ -145,7 +143,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 
 	const handleNext = () => {
 		if (isLastStep) {
-			onClose();
+			handleClose();
 		} else {
 			setCurrentStep(currentStep + 1);
 		}
@@ -160,14 +158,14 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 	return (
 		<Modal
 			open={open}
-			onClose={onClose}
+			onClose={handleClose}
 			title={currentStepData.title}
 			maxWidth={800}
 			zIndex={300}
 			hideHeader
 			panelStyle={{ overflow: 'hidden', padding: 0, gap: 0, borderRadius: 'var(--radius-xl)' }}
 		>
-			<button className={styles.closeBtn} onClick={onClose} aria-label={t['whatsNew.closeLabel']}>
+			<button className={styles.closeBtn} onClick={handleClose} aria-label={t['whatsNew.closeLabel']}>
 				<HiOutlineXMark className="w-6 h-6" />
 			</button>
 
