@@ -38,7 +38,7 @@ export function SightMarkChooserModal({ open, onClose, sightMarks, currentId, on
 			<div className={styles.list}>
 				{sightMarks.map((sm) => {
 					const calc = sm.ballisticsParameters as CalculatedMarks;
-					const bowName = sm.bowSpec?.bow?.name ?? 'Ukjent bue';
+					const bowName = sm.bow?.name ?? 'Ukjent bue';
 					const title = sm.name || bowName;
 					const arrowName = calc?.arrow_name ?? null;
 					const distCount = sm.givenDistances.length;

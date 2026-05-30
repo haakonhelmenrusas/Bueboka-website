@@ -210,7 +210,7 @@ export default function SiktemerkerPage() {
 						{activeSightMark && (
 							<div className={styles.infoStrip}>
 								<span className={styles.infoItem}>
-									<strong>{t['siktemerker.bow']}</strong> {activeSightMark.name || activeSightMark.bowSpec?.bow?.name || t['siktemerker.unknownBow']}
+									<strong>{t['siktemerker.bow']}</strong> {activeSightMark.name || activeSightMark.bow?.name || t['siktemerker.unknownBow']}
 								</span>
 								{ballistics?.given_distances && (
 									<span className={styles.infoItem}>
@@ -288,8 +288,8 @@ export default function SiktemerkerPage() {
 					data={
 						{
 							marksData: calculatedMarks,
-							setName: activeSightMark.name || activeSightMark.bowSpec?.bow?.name || t['siktemerker.title'],
-							bowName: activeSightMark.bowSpec?.bow?.name || t['siktemerker.unknownBow'],
+							setName: activeSightMark.name || activeSightMark.bow?.name || t['siktemerker.title'],
+							bowName: activeSightMark.bow?.name || t['siktemerker.unknownBow'],
 							arrowName: ballistics?.arrow_name,
 							givenDistances: ballistics?.given_distances,
 							showSpeed,
