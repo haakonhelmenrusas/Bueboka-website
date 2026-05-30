@@ -948,6 +948,38 @@ export interface TranslationKeys {
   'contributors.roleDeveloperArcher': string;
   'contributors.roleUxDesigner': string;
 
+  // What's New modal
+  'whatsNew.welcomeTitle': string;
+  'whatsNew.welcomeSubtitle': string;
+  'whatsNew.heroText': string;
+  'whatsNew.featureLogTitle': string;
+  'whatsNew.featureLogText': string;
+  'whatsNew.featureStatsTitle': string;
+  'whatsNew.featureStatsText': string;
+  'whatsNew.featureProgressTitle': string;
+  'whatsNew.featureProgressText': string;
+  'whatsNew.getStartedTitle': string;
+  'whatsNew.getStartedSubtitle': string;
+  'whatsNew.step1Title': string;
+  'whatsNew.step1Text': string;
+  'whatsNew.step2Title': string;
+  'whatsNew.step2Text': string;
+  'whatsNew.step3Title': string;
+  'whatsNew.step3Text': string;
+  'whatsNew.tipsTitle': string;
+  'whatsNew.tipsSubtitle': string;
+  'whatsNew.tip1Title': string;
+  'whatsNew.tip1Text': string;
+  'whatsNew.tip2Title': string;
+  'whatsNew.tip2Text': string;
+  'whatsNew.tip3Title': string;
+  'whatsNew.tip3Text': string;
+  'whatsNew.tip4Title': string;
+  'whatsNew.tip4Text': string;
+  'whatsNew.closeLabel': string;
+  'whatsNew.goToStep': string;
+  'whatsNew.getStartedButton': string;
+
   // Sponsor / support section
   'sponsor.title': string;
   'sponsor.subtitle': string;

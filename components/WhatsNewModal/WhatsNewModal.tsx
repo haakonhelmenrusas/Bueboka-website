@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { PiChartBarLight, PiCheckSquareLight } from 'react-icons/pi';
 import { IoMdTrendingUp } from 'react-icons/io';
 import { HiOutlineXMark } from 'react-icons/hi2';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface WhatsNewModalProps {
 	open: boolean;
@@ -17,6 +18,7 @@ interface WhatsNewModalProps {
 
 export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 	const [currentStep, setCurrentStep] = useState(0);
+	const { t } = useTranslation();
 
 	// Reset to first step when modal opens
 	useEffect(() => {
@@ -29,17 +31,15 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 
 	const steps = [
 		{
-			title: 'Velkommen til Bueboka! 🏹',
-			subtitle: 'Din digitale treningsdagbok for bueskyting',
+			title: t['whatsNew.welcomeTitle'],
+			subtitle: t['whatsNew.welcomeSubtitle'],
 			content: (
 				<div className={styles.welcomeContent}>
 					<div className={styles.heroSection}>
 						<div className={styles.heroIcon}>
 							<Image src="/assets/logo.png" alt="Bueboka" width={96} height={96} className={styles.heroLogoImg} />
 						</div>
-						<p className={styles.heroText}>
-							Bueboka hjelper deg å holde oversikt over treningene dine, følge din utvikling, og forbedre skytingen din.
-						</p>
+						<p className={styles.heroText}>{t['whatsNew.heroText']}</p>
 					</div>
 					<div className={styles.featureGrid}>
 						<div className={styles.featureCard}>
@@ -47,8 +47,8 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 								<LiaFireAltSolid className="w-7 h-7" />
 							</div>
 							<div>
-								<h4>Registrer treninger</h4>
-								<p>Logg alle treningene dine med detaljer om bue, piler, distanse og score</p>
+								<h4>{t['whatsNew.featureLogTitle']}</h4>
+								<p>{t['whatsNew.featureLogText']}</p>
 							</div>
 						</div>
 						<div className={styles.featureCard}>
@@ -56,8 +56,8 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 								<PiChartBarLight className="w-7 h-7" />
 							</div>
 							<div>
-								<h4>Se statistikk</h4>
-								<p>Få innsikt i din utvikling med detaljerte grafer og trender</p>
+								<h4>{t['whatsNew.featureStatsTitle']}</h4>
+								<p>{t['whatsNew.featureStatsText']}</p>
 							</div>
 						</div>
 						<div className={styles.featureCard}>
@@ -65,8 +65,8 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 								<IoMdTrendingUp className="w-7 h-7" />
 							</div>
 							<div>
-								<h4>Følg fremgang</h4>
-								<p>Hold oversikt over din forbedring over tid</p>
+								<h4>{t['whatsNew.featureProgressTitle']}</h4>
+								<p>{t['whatsNew.featureProgressText']}</p>
 							</div>
 						</div>
 					</div>
@@ -74,72 +74,65 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 			),
 		},
 		{
-			title: 'Kom i gang på 3 enkle steg',
-			subtitle: 'Slik setter du opp Bueboka',
+			title: t['whatsNew.getStartedTitle'],
+			subtitle: t['whatsNew.getStartedSubtitle'],
 			content: (
 				<div className={styles.stepsContent}>
 					<div className={styles.stepItem}>
 						<div className={styles.stepNumber}>1</div>
 						<div className={styles.stepText}>
-							<h4>Legg til utstyret ditt</h4>
-							<p>
-								Gå til <strong>Min Side</strong> og legg til buen og pilene dine under "Utstyr"-seksjonen. Marker gjerne favoritter for
-								raskere registrering senere!
-							</p>
+							<h4>{t['whatsNew.step1Title']}</h4>
+							<p dangerouslySetInnerHTML={{ __html: t['whatsNew.step1Text'] }} />
 						</div>
 					</div>
 					<div className={styles.stepItem}>
 						<div className={styles.stepNumber}>2</div>
 						<div className={styles.stepText}>
-							<h4>Registrer din første trening</h4>
-							<p>
-								Klikk på <strong>"Ny trening"</strong> for å logge økten din. Legg inn antall piler, score, distanse og eventuelle notater.
-							</p>
+							<h4>{t['whatsNew.step2Title']}</h4>
+							<p dangerouslySetInnerHTML={{ __html: t['whatsNew.step2Text'] }} />
 						</div>
 					</div>
 					<div className={styles.stepItem}>
 						<div className={styles.stepNumber}>3</div>
 						<div className={styles.stepText}>
-							<h4>Utforsk statistikken din</h4>
-							<p>
-								Besøk <strong>Statistikk</strong>-siden for å se din utvikling over tid. Her får du oversikt over trender og forbedringer.
-							</p>
+							<h4>{t['whatsNew.step3Title']}</h4>
+							<p dangerouslySetInnerHTML={{ __html: t['whatsNew.step3Text'] }} />
 						</div>
 					</div>
 				</div>
 			),
 		},
 		{
-			title: 'Tips for best opplevelse',
-			subtitle: 'Få mest mulig ut av Bueboka',
+			title: t['whatsNew.tipsTitle'],
+			subtitle: t['whatsNew.tipsSubtitle'],
 			content: (
 				<div className={styles.tipsContent}>
 					<div className={styles.tipItem}>
 						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
-							<strong>Vurder treningene dine</strong>
-							<p>Bruk vurderingsskalaen (1-10) for å evaluere hvordan økten gikk</p>
+							<strong>{t['whatsNew.tip1Title']}</strong>
+							<p>{t['whatsNew.tip1Text']}</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
 						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
-							<strong>Skriv notater</strong>
-							<p>Legg til notater om hva som fungerte bra og hva som kan forbedres</p>
+							<strong>{t['whatsNew.tip2Title']}</strong>
+							<p>{t['whatsNew.tip2Text']}</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
 						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
-							<strong>Vær konsistent</strong>
-							<p>Logg alle treningene dine for å få best mulig oversikt over utviklingen</p>
+							<strong>{t['whatsNew.tip3Title']}</strong>
+							<p>{t['whatsNew.tip3Text']}</p>
 						</div>
 					</div>
 					<div className={styles.tipItem}>
 						<PiCheckSquareLight className="w-5 h-5" />
 						<div>
-							<strong>Eksporter dataene dine</strong>
-							<p>Du kan laste ned statistikken din som CSV for videre analyse</p>
+							<strong>{t['whatsNew.tip4Title']}</strong>
+							<p>{t['whatsNew.tip4Text']}</p>
 						</div>
 					</div>
 				</div>
@@ -174,7 +167,7 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 			hideHeader
 			panelStyle={{ overflow: 'hidden', padding: 0, gap: 0, borderRadius: 'var(--radius-xl)' }}
 		>
-			<button className={styles.closeBtn} onClick={onClose} aria-label="Lukk">
+			<button className={styles.closeBtn} onClick={onClose} aria-label={t['whatsNew.closeLabel']}>
 				<HiOutlineXMark className="w-6 h-6" />
 			</button>
 
@@ -195,14 +188,14 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 								key={index}
 								className={`${styles.dot} ${index === currentStep ? styles.dotActive : ''} ${index < currentStep ? styles.dotCompleted : ''}`}
 								onClick={() => setCurrentStep(index)}
-								aria-label={`Gå til steg ${index + 1}`}
+								aria-label={`${t['whatsNew.goToStep']} ${index + 1}`}
 							/>
 						))}
 					</div>
 					<div className={styles.actions}>
-						{currentStep > 0 && <Button label="Forrige" onClick={handlePrevious} buttonType="outline" width={120} />}
+						{currentStep > 0 && <Button label={t['common.previous']} onClick={handlePrevious} buttonType="outline" width={120} />}
 						<Button
-							label={isLastStep ? 'Kom i gang!' : 'Neste'}
+							label={isLastStep ? t['whatsNew.getStartedButton'] : t['common.next']}
 							onClick={handleNext}
 							icon={<LuChevronRight className="w-4 h-4" />}
 							iconPosition="right"
