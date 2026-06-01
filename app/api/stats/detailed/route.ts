@@ -37,7 +37,8 @@ export async function GET(request: Request) {
 		if (cached) {
 			return NextResponse.json(cached, {
 				headers: {
-					'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=300',
+					'Cache-Control': 'private, max-age=10, must-revalidate',
+					Vary: 'Cookie',
 				},
 			});
 		}
@@ -216,7 +217,8 @@ export async function GET(request: Request) {
 
 		return NextResponse.json(result, {
 			headers: {
-				'Cache-Control': 'public, s-maxage=180, stale-while-revalidate=300',
+				'Cache-Control': 'private, max-age=10, must-revalidate',
+				Vary: 'Cookie',
 			},
 		});
 	} catch (error) {
