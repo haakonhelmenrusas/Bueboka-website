@@ -17,7 +17,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		if (!sightMark) return NextResponse.json({ error: 'Sight mark not found' }, { status: 404 });
 
 		const results = await prisma.sightMarkResult.findMany({
-			where: { sightMarkId },
+			where: { sightMarkId, userId: user.id },
 			orderBy: { createdAt: 'desc' },
 		});
 
