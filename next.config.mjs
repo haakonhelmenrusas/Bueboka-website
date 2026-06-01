@@ -7,14 +7,6 @@ const nextConfig = {
 	// Enable source maps for production (improves debugging and Lighthouse Best Practices score)
 	productionBrowserSourceMaps: true,
 
-	// Development optimizations
-	...(process.env.NODE_ENV === 'development' && {
-		experimental: {
-			// Disable caching in development for fast refresh
-			isrMemoryCacheSize: 0,
-		},
-	}),
-
 	// Bypass Next.js image optimization — Netlify's /_next/image endpoint returns 404
 	images: {
 		unoptimized: true,
