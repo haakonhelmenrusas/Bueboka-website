@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useSession } from '@/lib/auth-client';
+import { useSession } from '@/context/SessionProvider';
 import type { Locale } from '@/lib/i18n/types';
 
 const STORAGE_KEY = 'bueboka_language';
