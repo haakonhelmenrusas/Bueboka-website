@@ -118,7 +118,7 @@ export async function GET(request: Request) {
 					const key = `${distanceLabel} - ${targetLabel}`;
 
 					// Include both arrows with score and arrowsWithoutScore
-					const scoredArrows = typeof end.arrows === 'number' ? end.arrows : (end.scores?.length ?? 0);
+					const scoredArrows = end.arrows || end.scores?.length || 0;
 					const arrows = scoredArrows + (typeof end.arrowsWithoutScore === 'number' ? end.arrowsWithoutScore : 0);
 					const score = typeof end.roundScore === 'number' ? end.roundScore : 0;
 

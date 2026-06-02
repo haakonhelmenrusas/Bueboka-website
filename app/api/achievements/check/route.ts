@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 			...practice,
 			practiceType: 'TRENING',
 			ends: practice.ends.map((end) => ({
-				arrows: end.arrows ?? end.scores.length ?? 0,
+				arrows: end.arrows || end.scores?.length || 0,
 				arrowsWithoutScore: end.arrowsWithoutScore || 0,
 				scores: end.scores,
 				roundScore: end.roundScore,
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
 			practiceType: 'KONKURRANSE',
 			practiceCategory: comp.practiceCategory,
 			ends: comp.rounds.map((round) => ({
-				arrows: round.arrows ?? round.scores.length ?? 0,
+				arrows: round.arrows || round.scores?.length || 0,
 				arrowsWithoutScore: round.arrowsWithoutScore || 0,
 				scores: round.scores,
 				roundScore: round.roundScore,
