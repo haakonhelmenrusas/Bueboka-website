@@ -23,6 +23,7 @@ export async function POST(request: Request) {
 					ends: {
 						select: {
 							arrows: true,
+							arrowsWithoutScore: true,
 							scores: true,
 							roundScore: true,
 						},
@@ -41,6 +42,7 @@ export async function POST(request: Request) {
 					rounds: {
 						select: {
 							arrows: true,
+							arrowsWithoutScore: true,
 							scores: true,
 							roundScore: true,
 						},
@@ -61,6 +63,7 @@ export async function POST(request: Request) {
 			practiceType: 'TRENING',
 			ends: practice.ends.map((end) => ({
 				arrows: end.arrows || 0,
+				arrowsWithoutScore: end.arrowsWithoutScore || 0,
 				scores: end.scores,
 				roundScore: end.roundScore,
 			})),
@@ -73,6 +76,7 @@ export async function POST(request: Request) {
 			practiceCategory: comp.practiceCategory,
 			ends: comp.rounds.map((round) => ({
 				arrows: round.arrows || 0,
+				arrowsWithoutScore: round.arrowsWithoutScore || 0,
 				scores: round.scores,
 				roundScore: round.roundScore,
 			})),

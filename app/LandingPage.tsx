@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from '@/lib/auth-client';
+import { useSession } from '@/context/SessionProvider';
 import {
 	Bueboka2Announcement,
 	CallToAction,

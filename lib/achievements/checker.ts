@@ -19,6 +19,7 @@ interface PracticeData {
 	} | null;
 	ends?: Array<{
 		arrows: number;
+		arrowsWithoutScore?: number;
 		scores?: number[];
 		roundScore?: number | null;
 	}>;
@@ -61,7 +62,10 @@ export function calculateUserStats(practices: PracticeData[]): UserStats {
 		let practiceArrows = 0;
 
 		if (practice.ends && Array.isArray(practice.ends)) {
-			practiceArrows = practice.ends.reduce((sum: number, end: any) => sum + (end.arrows || 0), 0);
+			practiceArrows = practice.ends.reduce(
+				(sum: number, end: any) => sum + (end.arrows || 0) + (end.arrowsWithoutScore || 0),
+				0
+			);
 			stats.totalArrows += practiceArrows;
 		}
 
@@ -196,7 +200,9 @@ export function checkRequirement(
 		case 'ARROWS_IN_SESSION':
 			// Check if any single practice has >= value arrows
 			const maxArrowsInSession = Math.max(
-				...practices.map((p) => p.ends?.reduce((sum: number, end: any) => sum + (end.arrows || 0), 0) || 0),
+				...practices.map(
+					(p) => p.ends?.reduce((sum: number, end: any) => sum + (end.arrows || 0) + (end.arrowsWithoutScore || 0), 0) || 0
+				),
 				0
 			);
 			current = maxArrowsInSession;
