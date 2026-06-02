@@ -99,7 +99,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 			return {
 				practiceId: practiceId,
-				arrows: round.numberArrows || 0,
+				arrows: round.numberArrows || null,
 				arrowsWithoutScore: round.arrowsWithoutScore || null,
 				scores: round.scores || [],
 				arrowCoordinates: round.arrowCoordinates || Prisma.JsonNull,
