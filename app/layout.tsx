@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { ReactNode } from 'react';
 import { FeedbackProvider } from '@/context/FeedbackProvider';
 import { LanguageProvider } from '@/context/LanguageProvider';
+import { SessionProvider } from '@/context/SessionProvider';
 import { ClarityInit } from '@/lib/ClarityInit';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -41,9 +42,11 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
 		<html lang="no-nb" suppressHydrationWarning>
 			<body className={inter.className}>
 				<ClarityInit />
-				<LanguageProvider>
-					<FeedbackProvider>{children}</FeedbackProvider>
-				</LanguageProvider>
+				<SessionProvider>
+					<LanguageProvider>
+						<FeedbackProvider>{children}</FeedbackProvider>
+					</LanguageProvider>
+				</SessionProvider>
 			</body>
 		</html>
 	);

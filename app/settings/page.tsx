@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Accordion, Button, Checkbox, ConfirmModal, EmailVerificationBanner, Footer, Header, ProfileEditModal } from '@/components';
-import { signOut, useSession } from '@/lib/auth-client';
+import { signOut } from '@/lib/auth-client';
+import { useSession } from '@/context/SessionProvider';
 import { LuArrowLeft, LuGlobe, LuKey, LuLock, LuPencil, LuShield, LuTarget } from 'react-icons/lu';
 import styles from './page.module.css';
 import { useTranslation } from '@/context/LanguageProvider';
