@@ -22,6 +22,7 @@ export async function GET(request: Request) {
 					ends: {
 						select: {
 							arrows: true,
+							arrowsWithoutScore: true,
 							scores: true,
 							roundScore: true,
 						},
@@ -40,6 +41,7 @@ export async function GET(request: Request) {
 					rounds: {
 						select: {
 							arrows: true,
+							arrowsWithoutScore: true,
 							scores: true,
 							roundScore: true,
 						},
@@ -60,6 +62,7 @@ export async function GET(request: Request) {
 			practiceType: 'TRENING',
 			ends: practice.ends.map((end) => ({
 				arrows: end.arrows || 0,
+				arrowsWithoutScore: end.arrowsWithoutScore || 0,
 				scores: end.scores,
 				roundScore: end.roundScore,
 			})),
@@ -72,6 +75,7 @@ export async function GET(request: Request) {
 			practiceCategory: comp.practiceCategory,
 			ends: comp.rounds.map((round) => ({
 				arrows: round.arrows || 0,
+				arrowsWithoutScore: round.arrowsWithoutScore || 0,
 				scores: round.scores,
 				roundScore: round.roundScore,
 			})),
