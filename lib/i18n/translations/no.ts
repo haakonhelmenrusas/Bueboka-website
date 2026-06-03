@@ -25,6 +25,8 @@ export const no: TranslationKeys = {
   'hero.registerUser': 'Opprett bruker',
   'hero.alreadyHaveAccount': 'Har du allerede konto?',
   'hero.login': 'Logg inn',
+  'hero.screenshotHeroAlt': 'Bueboka-appen viser velkomstskjermen med slagordet Hvert skudd teller',
+  'hero.screenshotTrainingAlt': 'Bueboka-appen viser aktivitetsoversikt med treninger og konkurranser',
 
   // Auth pages
   'auth.goToFrontPage': 'Gå til forsiden',
@@ -910,21 +912,17 @@ export const no: TranslationKeys = {
   'statsSummary.periods': 'Statistikkperioder',
 
   // Bueboka 2.0 announcement section
-  'bueboka2.badge': 'Nyheter',
-  'bueboka2.titlePrefix': 'Velkommen til',
-  'bueboka2.subtitle': 'Den neste generasjonen av Norges mest populære app for bueskyttere er her! Helt ny plattform med kraftigere funksjoner, bedre ytelse og sømløs synkronisering på tvers av alle enheter.',
-  'bueboka2.feature1Title': 'Lynrask opplevelse',
-  'bueboka2.feature1Text': 'Helt ny teknologi gir deg raskere lasting, jevnere animasjoner og bedre ytelse på alle enheter.',
-  'bueboka2.feature2Title': 'Skybasert og synkronisert',
-  'bueboka2.feature2Text': 'All data synkroniseres automatisk. Start på mobilen, fortsett på nettbrett, fullfør på PC - dataen er alltid oppdatert.',
-  'bueboka2.feature3Title': 'Moderne grensesnitt',
-  'bueboka2.feature3Text': 'Redesignet fra bunnen av med fokus på brukervennlighet, tilgjengelighet og moderne design.',
-  'bueboka2.upgradeTitle': 'Viktig for mobilapp-brukere',
-  'bueboka2.upgradeTextPart1': 'Den nye mobilappen lanseres ',
-  'bueboka2.upgradeDate': 'før sommeren 2026',
-  'bueboka2.upgradeTextPart2': ' og erstatter den nåværende versjonen. Den nye appen er bygget på samme teknologi som nettsiden og gir deg en mye bedre opplevelse!',
-  'bueboka2.warningTitle': 'Husk å overføre dataene dine:',
-  'bueboka2.warningText': 'Hvis du har treningsdata i den gamle appen, sørg for å overføre dem før du oppdaterer til den nye versjonen. Vi sender mer informasjon om dette når den nye appen er klar.',
+  'bueboka2.badge': 'Bueboka 2.0 er her!',
+  'bueboka2.titlePrefix': 'Oppdag',
+  'bueboka2.subtitle': 'Helt ny mobilapp for bueskyttere. Loggfør treninger, følg utviklingen din og del med andre – alt på ett sted.',
+  'bueboka2.trainingTitle': 'Loggfør treninger',
+  'bueboka2.trainingAlt': 'Aktivitetsoversikt med treninger og konkurranser',
+  'bueboka2.achievementsTitle': 'Lås opp trofeer',
+  'bueboka2.achievementsAlt': 'Prestasjonssiden med trofeer og milepæler',
+  'bueboka2.statisticsTitle': 'Følg utviklingen',
+  'bueboka2.statisticsAlt': 'Detaljert statistikk med grafer og nøkkeltall',
+  'bueboka2.competitionsTitle': 'Loggfør stevner',
+  'bueboka2.competitionsAlt': 'Konkurranseregistrering med runder og poengsummer',
   'bueboka2.ctaPrimary': 'Kom i gang med Bueboka 2.0',
 
   // Social media section
