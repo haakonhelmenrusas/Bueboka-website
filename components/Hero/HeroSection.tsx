@@ -9,7 +9,8 @@ import { AppStoreBadge, HeroBackground } from '@/components';
 import { useTranslation } from '@/context/LanguageProvider';
 
 export function HeroSection() {
-	const { t } = useTranslation();
+	const { t, locale } = useTranslation();
+	const suffix = locale === 'en' ? 'en' : 'no';
 
 	return (
 		<section className={styles.section} aria-label="Hovedbanner">
@@ -41,20 +42,20 @@ export function HeroSection() {
 					<div className={styles.right}>
 						<div className={styles.phoneCard}>
 							<Image
-								src="/assets/training.jpeg"
-								alt="Bueboka app viser treningsoversikt med registrerte økter"
-								width={640}
-								height={1387}
+								src={`/assets/screenshots/01_hero_appstore_${suffix}.png`}
+								alt={t['hero.screenshotHeroAlt']}
+								width={460}
+								height={1000}
 								className={styles.phoneImg}
 								priority
 							/>
 						</div>
 						<div className={`${styles.phoneCard} ${styles.phoneOffset}`}>
 							<Image
-								src="/assets/profile.jpeg"
-								alt="Bueboka app viser brukerprofil med utstyr og statistikk"
-								width={640}
-								height={1387}
+								src={`/assets/screenshots/02_training_appstore_${suffix}.png`}
+								alt={t['hero.screenshotTrainingAlt']}
+								width={460}
+								height={1000}
 								className={styles.phoneImg}
 								priority
 							/>

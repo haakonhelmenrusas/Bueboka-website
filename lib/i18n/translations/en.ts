@@ -25,6 +25,8 @@ export const en: TranslationKeys = {
   'hero.registerUser': 'Create account',
   'hero.alreadyHaveAccount': 'Already have an account?',
   'hero.login': 'Log in',
+  'hero.screenshotHeroAlt': 'Bueboka app showing the welcome screen with the tagline Every shot counts',
+  'hero.screenshotTrainingAlt': 'Bueboka app showing the activity overview with training sessions and competitions',
 
   // Auth pages
   'auth.goToFrontPage': 'Go to front page',
@@ -910,21 +912,17 @@ export const en: TranslationKeys = {
   'statsSummary.periods': 'Statistics periods',
 
   // Bueboka 2.0 announcement section
-  'bueboka2.badge': 'News',
-  'bueboka2.titlePrefix': 'Welcome to',
-  'bueboka2.subtitle': 'The next generation of Norway\'s most popular app for archers is here! A completely new platform with more powerful features, better performance and seamless synchronisation across all devices.',
-  'bueboka2.feature1Title': 'Lightning-fast experience',
-  'bueboka2.feature1Text': 'Brand new technology gives you faster loading, smoother animations and better performance on all devices.',
-  'bueboka2.feature2Title': 'Cloud-based and synchronised',
-  'bueboka2.feature2Text': 'All data syncs automatically. Start on your phone, continue on your tablet, finish on your PC — your data is always up to date.',
-  'bueboka2.feature3Title': 'Modern interface',
-  'bueboka2.feature3Text': 'Redesigned from the ground up with a focus on usability, accessibility and modern design.',
-  'bueboka2.upgradeTitle': 'Important for mobile app users',
-  'bueboka2.upgradeTextPart1': 'The new mobile app launches ',
-  'bueboka2.upgradeDate': 'before summer 2026',
-  'bueboka2.upgradeTextPart2': ' and replaces the current version. The new app is built on the same technology as the website and gives you a much better experience!',
-  'bueboka2.warningTitle': 'Remember to transfer your data:',
-  'bueboka2.warningText': 'If you have training data in the old app, make sure to transfer it before updating to the new version. We will send more information about this when the new app is ready.',
+  'bueboka2.badge': 'Bueboka 2.0 is here!',
+  'bueboka2.titlePrefix': 'Discover',
+  'bueboka2.subtitle': 'A brand new mobile app for archers. Log training, track your progress and connect with others – all in one place.',
+  'bueboka2.trainingTitle': 'Log your training',
+  'bueboka2.trainingAlt': 'Activity overview with training sessions and competitions',
+  'bueboka2.achievementsTitle': 'Unlock achievements',
+  'bueboka2.achievementsAlt': 'Achievements page with trophies and milestones',
+  'bueboka2.statisticsTitle': 'Track your progress',
+  'bueboka2.statisticsAlt': 'Detailed statistics with charts and key metrics',
+  'bueboka2.competitionsTitle': 'Log competitions',
+  'bueboka2.competitionsAlt': 'Competition registration with rounds and scores',
   'bueboka2.ctaPrimary': 'Get started with Bueboka 2.0',
 
   // Social media section
