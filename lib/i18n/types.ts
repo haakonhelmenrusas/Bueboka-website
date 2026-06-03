@@ -25,6 +25,8 @@ export interface TranslationKeys {
   'hero.registerUser': string;
   'hero.alreadyHaveAccount': string;
   'hero.login': string;
+  'hero.screenshotHeroAlt': string;
+  'hero.screenshotTrainingAlt': string;
 
   // Auth pages
   'auth.goToFrontPage': string;
@@ -913,18 +915,14 @@ export interface TranslationKeys {
   'bueboka2.badge': string;
   'bueboka2.titlePrefix': string;
   'bueboka2.subtitle': string;
-  'bueboka2.feature1Title': string;
-  'bueboka2.feature1Text': string;
-  'bueboka2.feature2Title': string;
-  'bueboka2.feature2Text': string;
-  'bueboka2.feature3Title': string;
-  'bueboka2.feature3Text': string;
-  'bueboka2.upgradeTitle': string;
-  'bueboka2.upgradeTextPart1': string;
-  'bueboka2.upgradeDate': string;
-  'bueboka2.upgradeTextPart2': string;
-  'bueboka2.warningTitle': string;
-  'bueboka2.warningText': string;
+  'bueboka2.trainingTitle': string;
+  'bueboka2.trainingAlt': string;
+  'bueboka2.achievementsTitle': string;
+  'bueboka2.achievementsAlt': string;
+  'bueboka2.statisticsTitle': string;
+  'bueboka2.statisticsAlt': string;
+  'bueboka2.competitionsTitle': string;
+  'bueboka2.competitionsAlt': string;
   'bueboka2.ctaPrimary': string;
 
   // Social media section
