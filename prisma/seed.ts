@@ -510,23 +510,6 @@ async function main() {
 
 		console.log(`✅ Created 20 competitions\n`);
 
-		// ==================== APP VERSION ====================
-		const existingVersion = await prisma.appVersion.findFirst();
-		if (!existingVersion) {
-			await prisma.appVersion.create({
-				data: {
-					minVersion: '1.6.4',
-					currentVersion: '1.7.0',
-					updateMessage: 'En ny versjon er tilgjengelig',
-					iosMinVersion: '1.6.4',
-					iosStoreUrl: 'https://apps.apple.com/no/app/bueboka/id6448108838',
-					androidMinVersion: '1.6.4',
-					androidStoreUrl: 'https://play.google.com/store/apps/details?id=com.aaronshade.bueboka',
-				},
-			});
-			console.log('📱 App version record created.');
-		}
-
 		// ==================== SUMMARY ====================
 		const totalPracticesCount = await prisma.practice.count({ where: { userId: user.id } });
 		const totalCompetitionsCount = await prisma.competition.count({ where: { userId: user.id } });

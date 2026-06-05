@@ -360,16 +360,4 @@ enum PracticeCategory {
   FELT
 }
 
-model AppVersion {
-  id               String   @id @default(cuid())
-  minVersion       String
-  currentVersion   String
-  updateMessage    String
-  iosMinVersion    String
-  iosStoreUrl      String
-  androidMinVersion String
-  androidStoreUrl  String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
 
