@@ -4,8 +4,7 @@ const nextConfig = {
 	compress: true,
 	poweredByHeader: false,
 
-	// Enable source maps for production (improves debugging and Lighthouse Best Practices score)
-	productionBrowserSourceMaps: true,
+	productionBrowserSourceMaps: false,
 
 	// Bypass Next.js image optimization — Netlify's /_next/image endpoint returns 404
 	images: {
@@ -64,6 +63,34 @@ const nextConfig = {
 					{
 						key: 'X-Frame-Options',
 						value: 'SAMEORIGIN',
+					},
+					{
+						key: 'X-Content-Type-Options',
+						value: 'nosniff',
+					},
+					{
+						key: 'Strict-Transport-Security',
+						value: 'max-age=31536000; includeSubDomains',
+					},
+					{
+						key: 'Referrer-Policy',
+						value: 'strict-origin-when-cross-origin',
+					},
+					{
+						key: 'Permissions-Policy',
+						value: 'geolocation=(), microphone=(), camera=()',
+					},
+					{
+						key: 'Content-Security-Policy',
+						value: [
+							"default-src 'self'",
+							"script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.clarity.ms",
+							"style-src 'self' 'unsafe-inline'",
+							"img-src 'self' data: blob: https://lh3.googleusercontent.com",
+							"font-src 'self'",
+							"connect-src 'self' https://www.clarity.ms https://calculate-aim.azurewebsites.net",
+							"frame-ancestors 'none'",
+						].join('; '),
 					},
 				],
 			},

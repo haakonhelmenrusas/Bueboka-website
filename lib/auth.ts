@@ -98,9 +98,9 @@ export const auth = betterAuth({
 	},
 	rateLimit: {
 		enabled: true,
-		maxRequests: 100,
-		windowMs: 60000, // 1 minute (60000ms)
-		message: 'Too many requests from this IP, please try again after a minute',
+		maxRequests: 10,
+		windowMs: 900000, // 15 minutes
+		message: 'Too many requests from this IP, please try again later',
 	},
 });
 
