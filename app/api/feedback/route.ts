@@ -2,6 +2,14 @@ import { NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/email';
 import { getCurrentUser } from '@/lib/session';
 
+function escapeHtml(str: string): string {
+	return str
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/"/g, '&quot;');
+}
+
 export async function POST(request: Request) {
 	try {
 		const user = await getCurrentUser(request);
@@ -98,12 +106,12 @@ export async function POST(request: Request) {
 						
 						<div class="info-box">
 							<div class="info-label">Fra bruker:</div>
-							<div>${user.name || 'Ukjent navn'}</div>
+							<div>${escapeHtml(user.name || 'Ukjent navn')}</div>
 						</div>
 
 						<div class="info-box">
 							<div class="info-label">E-post:</div>
-							<div>${user.email}</div>
+							<div>${escapeHtml(user.email)}</div>
 						</div>
 
 						<div class="info-box">
@@ -112,7 +120,7 @@ export async function POST(request: Request) {
 						</div>
 
 						<div class="info-label" style="margin-top: 20px; margin-bottom: 10px;">Tilbakemelding:</div>
-						<div class="feedback-text">${feedback.trim()}</div>
+						<div class="feedback-text">${escapeHtml(feedback.trim())}</div>
 
 						<div class="footer">
 							<p>Mottatt ${new Date().toLocaleString('nb-NO', {
@@ -139,9 +147,14 @@ ${feedback.trim()}
 Mottatt: ${new Date().toLocaleString('nb-NO')}
 		`;
 
-		// Send email
+		const feedbackEmail = process.env.FEEDBACK_EMAIL;
+		if (!feedbackEmail) {
+			console.error('FEEDBACK_EMAIL environment variable is not set');
+			return NextResponse.json({ error: 'Failed to send feedback' }, { status: 500 });
+		}
+
 		await sendEmail({
-			to: 'haakon.rusas@pm.me',
+			to: feedbackEmail,
 			subject: `Tilbakemelding fra ${user.name || user.email} - ${stars}`,
 			html: emailHtml,
 			text: emailText,
