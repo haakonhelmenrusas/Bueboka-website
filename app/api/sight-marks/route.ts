@@ -18,7 +18,10 @@ export async function GET(request: NextRequest) {
 		});
 
 		return NextResponse.json({ sightMarks });
-	} catch (error) {}
+	} catch (error) {
+		console.error('Sight marks API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }
 
 export async function POST(request: NextRequest) {
@@ -68,5 +71,8 @@ export async function POST(request: NextRequest) {
 		});
 
 		return NextResponse.json({ sightMark }, { status: 201 });
-	} catch (error) {}
+	} catch (error) {
+		console.error('Sight marks API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }

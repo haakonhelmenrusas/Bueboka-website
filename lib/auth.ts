@@ -51,8 +51,8 @@ export const auth = betterAuth({
 		},
 		resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
 		// You can enable this later if you want to sign out all devices after reset.
-		revokeSessionsOnPasswordReset: false,
-		requireEmailVerification: false,
+		revokeSessionsOnPasswordReset: true,
+		requireEmailVerification: true,
 	},
 	redirect: {
 		signIn: '/min-side',

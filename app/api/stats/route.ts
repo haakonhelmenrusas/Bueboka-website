@@ -138,7 +138,10 @@ export async function GET(request: Request) {
 				Vary: 'Cookie',
 			},
 		});
-	} catch (error) {}
+	} catch (error) {
+		console.error('Stats API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }
 
 function overallNumber(v: bigint | number | null | undefined) {

@@ -65,13 +65,7 @@ export async function GET(request: Request, { params }: RouteParams) {
 		});
 	} catch (error) {
 		console.error('Error fetching competition:', error);
-		return NextResponse.json(
-			{
-				error: 'Failed to fetch competition',
-				details: error instanceof Error ? error.message : 'Unknown error',
-			},
-			{ status: 500 }
-		);
+		return NextResponse.json({ error: 'Failed to fetch competition' }, { status: 500 });
 	}
 }
 
@@ -202,13 +196,7 @@ export async function PATCH(request: Request, { params }: RouteParams) {
 		return NextResponse.json({ competition });
 	} catch (error) {
 		console.error('Error updating competition:', error);
-		return NextResponse.json(
-			{
-				error: 'Failed to update competition',
-				details: error instanceof Error ? error.message : 'Unknown error',
-			},
-			{ status: 500 }
-		);
+		return NextResponse.json({ error: 'Failed to update competition' }, { status: 500 });
 	}
 }
 
@@ -252,12 +240,6 @@ export async function DELETE(request: Request, { params }: RouteParams) {
 		return new NextResponse(null, { status: 204 });
 	} catch (error) {
 		console.error('Error deleting competition:', error);
-		return NextResponse.json(
-			{
-				error: 'Failed to delete competition',
-				details: error instanceof Error ? error.message : 'Unknown error',
-			},
-			{ status: 500 }
-		);
+		return NextResponse.json({ error: 'Failed to delete competition' }, { status: 500 });
 	}
 }

@@ -133,13 +133,8 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json({ practice }, { status: 201 });
 	} catch (error) {
-		return NextResponse.json(
-			{
-				error: 'Failed to create practice',
-				details: error instanceof Error ? error.message : 'Unknown error',
-			},
-			{ status: 500 }
-		);
+		console.error('Error creating practice:', error);
+		return NextResponse.json({ error: 'Failed to create practice' }, { status: 500 });
 	}
 }
 
