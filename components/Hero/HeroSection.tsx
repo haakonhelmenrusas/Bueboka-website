@@ -30,7 +30,7 @@ export function HeroSection() {
 							<div className={styles.heroCtaDivider}>
 								<span className={styles.heroCtaDividerText}>{t['hero.orUseWeb']}</span>
 							</div>
-							<Link tabIndex={1} href="/ny-bruker" className={styles.heroCtaButton}>
+							<Link href="/ny-bruker" className={styles.heroCtaButton}>
 								{t['hero.registerUser']}
 								<LuChevronRight size={18} aria-hidden="true" />
 							</Link>
@@ -42,20 +42,20 @@ export function HeroSection() {
 					<div className={styles.right}>
 						<div className={styles.phoneCard}>
 							<Image
-								src={`/assets/screenshots/01_hero_appstore_${suffix}.png`}
+								src={`/assets/screenshots/01_hero_appstore_${suffix}.webp`}
 								alt={t['hero.screenshotHeroAlt']}
-								width={460}
-								height={1000}
+								width={640}
+								height={1385}
 								className={styles.phoneImg}
 								priority
 							/>
 						</div>
 						<div className={`${styles.phoneCard} ${styles.phoneOffset}`}>
 							<Image
-								src={`/assets/screenshots/02_training_appstore_${suffix}.png`}
+								src={`/assets/screenshots/02_training_appstore_${suffix}.webp`}
 								alt={t['hero.screenshotTrainingAlt']}
-								width={460}
-								height={1000}
+								width={640}
+								height={1385}
 								className={styles.phoneImg}
 								priority
 							/>

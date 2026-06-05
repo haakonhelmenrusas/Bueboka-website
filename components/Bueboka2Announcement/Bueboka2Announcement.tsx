@@ -35,10 +35,10 @@ export function Bueboka2Announcement() {
 						<div key={key} className={styles.card}>
 							<div className={styles.cardImageWrapper}>
 								<Image
-									src={`/assets/screenshots/${image}_${suffix}.png`}
+									src={`/assets/screenshots/${image}_${suffix}.webp`}
 									alt={t[`bueboka2.${key}Alt` as keyof typeof t]}
-									width={460}
-									height={1000}
+									width={640}
+									height={1385}
 									className={styles.cardImage}
 								/>
 							</div>
