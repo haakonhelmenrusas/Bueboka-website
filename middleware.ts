@@ -5,6 +5,7 @@ const windowMs = 60_000;
 const maxRequests = 60;
 
 const hits = new Map<string, { count: number; resetAt: number }>();
+const MAX_ENTRIES = 10_000;
 
 function getClientIp(request: NextRequest): string {
 	return (
@@ -20,6 +21,11 @@ export function middleware(request: NextRequest) {
 	const entry = hits.get(ip);
 
 	if (!entry || entry.resetAt <= now) {
+		if (hits.size >= MAX_ENTRIES) {
+			for (const [key, val] of hits) {
+				if (val.resetAt <= now) hits.delete(key);
+			}
+		}
 		hits.set(ip, { count: 1, resetAt: now + windowMs });
 		return NextResponse.next();
 	}

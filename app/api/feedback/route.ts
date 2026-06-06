@@ -155,7 +155,7 @@ Mottatt: ${new Date().toLocaleString('nb-NO')}
 
 		await sendEmail({
 			to: feedbackEmail,
-			subject: `Tilbakemelding fra ${user.name || user.email} - ${stars}`,
+			subject: `Tilbakemelding fra ${escapeHtml(user.name || user.email)} - ${stars}`,
 			html: emailHtml,
 			text: emailText,
 		});

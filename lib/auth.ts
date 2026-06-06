@@ -50,7 +50,6 @@ export const auth = betterAuth({
 			void sendEmail({ to: user.email, ...email });
 		},
 		resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
-		// You can enable this later if you want to sign out all devices after reset.
 		revokeSessionsOnPasswordReset: true,
 		requireEmailVerification: true,
 	},
@@ -78,9 +77,6 @@ export const auth = betterAuth({
 	session: {
 		expiresIn: 60 * 60 * 24 * 7,
 		updateAge: 60 * 60 * 24,
-	},
-	account: {
-		skipStateCookieCheck: false,
 	},
 	advanced: {
 		generateId: false,
