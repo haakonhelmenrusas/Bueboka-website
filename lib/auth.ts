@@ -50,9 +50,8 @@ export const auth = betterAuth({
 			void sendEmail({ to: user.email, ...email });
 		},
 		resetPasswordTokenExpiresIn: 60 * 30, // 30 minutes
-		// You can enable this later if you want to sign out all devices after reset.
-		revokeSessionsOnPasswordReset: false,
-		requireEmailVerification: false,
+		revokeSessionsOnPasswordReset: true,
+		requireEmailVerification: true,
 	},
 	redirect: {
 		signIn: '/min-side',
@@ -79,9 +78,6 @@ export const auth = betterAuth({
 		expiresIn: 60 * 60 * 24 * 7,
 		updateAge: 60 * 60 * 24,
 	},
-	account: {
-		skipStateCookieCheck: true,
-	},
 	advanced: {
 		generateId: false,
 		useSecureCookies,
@@ -98,9 +94,9 @@ export const auth = betterAuth({
 	},
 	rateLimit: {
 		enabled: true,
-		maxRequests: 100,
-		windowMs: 60000, // 1 minute (60000ms)
-		message: 'Too many requests from this IP, please try again after a minute',
+		maxRequests: 10,
+		windowMs: 900000, // 15 minutes
+		message: 'Too many requests from this IP, please try again later',
 	},
 });
 
