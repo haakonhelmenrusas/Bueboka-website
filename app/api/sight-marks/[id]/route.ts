@@ -18,7 +18,10 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		if (!sightMark) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
 		return NextResponse.json({ sightMark });
-	} catch (error) {}
+	} catch (error) {
+		console.error('Sight mark API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -67,7 +70,10 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 		});
 
 		return NextResponse.json({ sightMark: updated });
-	} catch (error) {}
+	} catch (error) {
+		console.error('Sight mark API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }
 
 export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -85,5 +91,8 @@ export async function DELETE(_request: NextRequest, { params }: { params: Promis
 		]);
 
 		return new NextResponse(null, { status: 204 });
-	} catch (error) {}
+	} catch (error) {
+		console.error('Sight mark API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }
