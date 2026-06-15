@@ -21,7 +21,7 @@
 		"prisma:push": "prisma db push"
 	},
 	"dependencies": {
-		"@better-auth/expo": "^1.6.14",
+		"@better-auth/expo": "^1.6.18",
 		"@microsoft/clarity": "^1.0.2",
 		"@next/eslint-plugin-next": "^16.2.7",
 		"@prisma/adapter-pg": "^7.8.0",
