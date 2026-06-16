@@ -22,7 +22,10 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 		});
 
 		return NextResponse.json({ sightMarkResults: results });
-	} catch (error) {}
+	} catch (error) {
+		console.error('Sight mark results API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -83,5 +86,8 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 		});
 
 		return NextResponse.json({ sightMarkResult: result }, { status: 201 });
-	} catch (error) {}
+	} catch (error) {
+		console.error('Sight mark results API error:', error);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+	}
 }

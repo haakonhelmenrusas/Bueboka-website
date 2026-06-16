@@ -35,13 +35,26 @@ export function validateEmail(email: string | null | undefined): string | undefi
  * @param minLength - Minimum required length (default: 8)
  * @returns Error message if invalid, undefined if valid
  */
-export function validatePassword(password: string | null | undefined, minLength: number = 8): string | undefined {
+export function validatePassword(
+	password: string | null | undefined,
+	minLength: number = 8,
+	requireComplexity: boolean = false
+): string | undefined {
 	if (!password || password.trim() === '') {
 		return 'Passord mangler';
 	}
 
 	if (password.length < minLength) {
 		return `Passord må være minst ${minLength} tegn`;
+	}
+
+	if (requireComplexity) {
+		if (!/[A-Z]/.test(password)) {
+			return 'Passord må inneholde minst én stor bokstav';
+		}
+		if (!/[0-9]/.test(password)) {
+			return 'Passord må inneholde minst ett tall';
+		}
 	}
 
 	return undefined;
@@ -98,7 +111,7 @@ export function validateSignUpForm(
 	const emailError = validateEmail(email);
 	if (emailError) errors.email = emailError;
 
-	const passwordError = validatePassword(password, 8); // Signup requires 8 chars
+	const passwordError = validatePassword(password, 8, true);
 	if (passwordError) errors.password = passwordError;
 
 	return errors;

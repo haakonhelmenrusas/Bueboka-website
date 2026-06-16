@@ -163,12 +163,6 @@ export async function POST(request: Request) {
 		return NextResponse.json({ competition }, { status: 201 });
 	} catch (error) {
 		console.error('Error creating competition:', error);
-		return NextResponse.json(
-			{
-				error: 'Failed to create competition',
-				details: error instanceof Error ? error.message : 'Unknown error',
-			},
-			{ status: 500 }
-		);
+		return NextResponse.json({ error: 'Failed to create competition' }, { status: 500 });
 	}
 }

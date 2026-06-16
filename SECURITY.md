@@ -88,11 +88,13 @@ Bueboka implements the following security measures:
 - ✅ Password hashing with bcrypt
 - ✅ Session management with secure cookies
 - ✅ SQL injection protection (Prisma ORM)
-- ✅ Rate limiting on authentication endpoints
+- ✅ Rate limiting on authentication and API endpoints
 - ✅ Email verification for new accounts
-- ✅ CSRF protection
-- ✅ Secure password reset flow
-- ✅ Input validation on all API endpoints
+- ✅ OAuth state validation (CSRF protection)
+- ✅ Content Security Policy (CSP) headers
+- ✅ HSTS, X-Content-Type-Options, Referrer-Policy headers
+- ✅ Secure password reset flow with session revocation
+- ✅ Input validation on all API endpoints (Zod schemas)
 
 ## Disclosure Policy
 
@@ -115,4 +117,4 @@ If you have suggestions on how this process could be improved, please submit a p
 
 ---
 
-**Last Updated:** February 19, 2026
+**Last Updated:** June 5, 2026

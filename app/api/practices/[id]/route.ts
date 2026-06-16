@@ -158,13 +158,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 			return NextResponse.json({ error: 'A practice with this data already exists' }, { status: 409 });
 		}
 
-		return NextResponse.json(
-			{
-				error: 'Failed to update practice',
-				details: error instanceof Error ? error.message : 'Unknown error',
-			},
-			{ status: 500 }
-		);
+		console.error('Error updating practice:', error);
+		return NextResponse.json({ error: 'Failed to update practice' }, { status: 500 });
 	}
 }
 

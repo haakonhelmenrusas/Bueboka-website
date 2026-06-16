@@ -11,6 +11,19 @@ import { IoMdTrendingUp } from 'react-icons/io';
 import { HiOutlineXMark } from 'react-icons/hi2';
 import { useTranslation } from '@/context/LanguageProvider';
 
+function SafeHtml({ text }: { text: string }) {
+	const parts = text.split(/(<strong>.*?<\/strong>)/g);
+	return (
+		<>
+			{parts.map((part, i) => {
+				const match = part.match(/^<strong>(.*)<\/strong>$/);
+				if (match) return <strong key={i}>{match[1]}</strong>;
+				return <React.Fragment key={i}>{part}</React.Fragment>;
+			})}
+		</>
+	);
+}
+
 interface WhatsNewModalProps {
 	open: boolean;
 	onClose: () => void;
@@ -80,21 +93,21 @@ export function WhatsNewModal({ open, onClose }: WhatsNewModalProps) {
 						<div className={styles.stepNumber}>1</div>
 						<div className={styles.stepText}>
 							<h4>{t['whatsNew.step1Title']}</h4>
-							<p dangerouslySetInnerHTML={{ __html: t['whatsNew.step1Text'] }} />
+							<p><SafeHtml text={t['whatsNew.step1Text']} /></p>
 						</div>
 					</div>
 					<div className={styles.stepItem}>
 						<div className={styles.stepNumber}>2</div>
 						<div className={styles.stepText}>
 							<h4>{t['whatsNew.step2Title']}</h4>
-							<p dangerouslySetInnerHTML={{ __html: t['whatsNew.step2Text'] }} />
+							<p><SafeHtml text={t['whatsNew.step2Text']} /></p>
 						</div>
 					</div>
 					<div className={styles.stepItem}>
 						<div className={styles.stepNumber}>3</div>
 						<div className={styles.stepText}>
 							<h4>{t['whatsNew.step3Title']}</h4>
-							<p dangerouslySetInnerHTML={{ __html: t['whatsNew.step3Text'] }} />
+							<p><SafeHtml text={t['whatsNew.step3Text']} /></p>
 						</div>
 					</div>
 				</div>
