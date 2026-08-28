@@ -21,14 +21,14 @@
 		"prisma:push": "prisma db push"
 	},
 	"dependencies": {
-		"@better-auth/expo": "~1.7.2",
+		"@better-auth/expo": "1.6.30",
 		"@microsoft/clarity": "^1.0.2",
 		"@next/eslint-plugin-next": "^16.3.3",
 		"@prisma/adapter-pg": "^7.10.0",
 		"@prisma/client": "^7.10.0",
 		"@prisma/extension-accelerate": "^3.0.1",
 		"bcrypt": "^6.0.0",
-		"better-auth": "~1.7.2",
+		"better-auth": "1.6.30",
 		"dotenv": "^17.4.2",
 		"html-to-image": "^1.11.13",
 		"motion": "^12.40.0",
@@ -44,7 +44,8 @@
 		"zod": "^4.4.3"
 	},
 	"overrides": {
-		"deepmerge-ts": "^8.0.2"
+		"deepmerge-ts": "^8.0.2",
+		"@better-auth/core": "1.6.30"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^21.0.2",
