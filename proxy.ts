@@ -15,7 +15,7 @@ function getClientIp(request: NextRequest): string {
 	);
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
 	const ip = getClientIp(request);
 	const now = Date.now();
 	const entry = hits.get(ip);
