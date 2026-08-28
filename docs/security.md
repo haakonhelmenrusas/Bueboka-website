@@ -44,7 +44,7 @@ Better Auth's built-in rate limiter is configured at **10 requests per 15-minute
 
 ### API endpoints
 
-A Next.js middleware (`middleware.ts`) applies rate limiting to all `/api/*` routes at **60 requests per minute** per IP. The limiter uses an in-memory map with automatic cleanup when the entry count exceeds 10,000.
+A Next.js proxy (`proxy.ts`, formerly `middleware.ts`) applies rate limiting to all `/api/*` routes at **60 requests per minute** per IP. The limiter uses an in-memory map with automatic cleanup when the entry count exceeds 10,000.
 
 **Shared IP considerations:** Users behind the same NAT (office, school, public WiFi) share a rate limit. The 60/min API limit is generous enough for normal multi-user scenarios, but the 10/15min auth limit could affect users on shared networks if multiple people are signing in simultaneously.
 
