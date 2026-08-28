@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"prepare": "husky",
+		"postinstall": "prisma generate",
 		"dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev",
 		"build": "next build",
 		"start": "next start",
