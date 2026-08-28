@@ -4,6 +4,16 @@ const nextConfig = {
 	compress: true,
 	poweredByHeader: false,
 
+	experimental: {
+		// Turbopack's persistent build cache serialises the values of server-side
+		// env vars (BETTER_AUTH_SECRET, GOOGLE_CLIENT_SECRET, RESEND_API_KEY) into
+		// .next/cache/turbopack/*.sst, which trips Netlify's secret scanner and
+		// fails the deploy. The values never reach served output — only the cache —
+		// but writing secrets to a persisted artefact is not worth the rebuild
+		// speed. Re-enable only once the cache no longer embeds env values.
+		turbopackFileSystemCacheForBuild: false,
+	},
+
 	productionBrowserSourceMaps: false,
 
 	// Bypass Next.js image optimization — Netlify's /_next/image endpoint returns 404

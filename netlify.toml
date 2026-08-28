@@ -5,7 +5,6 @@
 # Performance optimizations
 [build.environment]
   # Enable faster builds
-  NPM_FLAGS = "--legacy-peer-deps"
   NODE_OPTIONS = "--max-old-space-size=4096"
 
 # Cache static assets aggressively
