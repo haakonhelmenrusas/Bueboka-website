@@ -207,6 +207,7 @@ async function main() {
 					userId: user.id,
 					accountId: user.id,
 					providerId: 'credential',
+					issuer: 'local:credential',
 					password: hashedPassword,
 				},
 			});
