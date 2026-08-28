@@ -1,10 +1,15 @@
 name: CI
 
+# Every pull request is verified, and so is every commit that lands on main.
+# push is deliberately not run for dev: dev is the head of the dev -> main
+# pull request, so listing it here ran the same commit twice, once for the
+# push and once for that pull request. Merges into dev are already covered by
+# the pull request check that gated them.
 on:
   pull_request:
     branches: [dev, main]
   push:
-    branches: [dev, main]
+    branches: [main]
 
 # Cancel superseded runs on the same ref, so a rapid series of pushes to a PR
 # only pays for the newest one.
