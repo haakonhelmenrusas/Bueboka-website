@@ -44,6 +44,7 @@ model Account {
   userId                String
   accountId             String
   providerId            String
+  issuer                String
   accessToken           String?   @db.Text
   refreshToken          String?   @db.Text
   accessTokenExpiresAt  DateTime? // made nullable so create() may omit it
@@ -58,6 +59,8 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([providerId, accountId])
+  @@unique([issuer, accountId])
+  @@index([userId])
   @@map("account")
 }
 
