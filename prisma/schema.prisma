@@ -30,6 +30,9 @@ model User {
   arrows            Arrows[]
   practices         Practice[]
   competitions      Competition[]
+  challengesSent    Challenge[]  @relation("Challenger")
+  challengesReceived Challenge[] @relation("Challenged")
+  challengesWon     Challenge[]  @relation("ChallengeWinner")
   Account           Account[]
   Session           Session[]
   sightMarks        SightMark[]
@@ -181,6 +184,7 @@ model RoundType {
   id                 String     @id @default(cuid())
   name               String
   Practice           Practice[]
+  Challenge          Challenge[]
   distanceMeters     Int?
   targetType         Json?
   numberArrows       Int?
@@ -320,6 +324,49 @@ model UserAchievement {
   @@unique([userId, achievementId])
   @@index([userId])
   @@map("user_achievements")
+}
+
+model Challenge {
+  id                   String   @id @default(cuid())
+  challengerId         String
+  challengedId        String
+  name                 String
+  description          String?
+  roundTypeId          String?
+  customRules          Json?
+  startDate            DateTime?
+  endDate              DateTime?
+  status               ChallengeStatus @default(PENDING)
+  winnerId             String?
+  challengerScore      Int?
+  challengedScore      Int?
+  challengerTotalArrows Int?
+  challengedTotalArrows Int?
+  challengerSubmittedAt DateTime?
+  challengedSubmittedAt DateTime?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  // Relation fields
+  challenger  User    @relation("Challenger", fields: [challengerId], references: [id])
+  challenged  User    @relation("Challenged", fields: [challengedId], references: [id])
+  winner      User?   @relation("ChallengeWinner", fields: [winnerId], references: [id])
+  roundType   RoundType? @relation(fields: [roundTypeId], references: [id])
+
+  @@unique([challengerId, challengedId, name, createdAt])
+  @@index([challengerId])
+  @@index([challengedId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("challenges")
+}
+
+enum ChallengeStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  COMPLETED
+  CANCELLED
 }
 
 enum Material {
