@@ -6,7 +6,7 @@
 
 .main {
   flex: 1;
-  padding: 40px 20px;
+  padding: calc(64px + 40px) 20px 40px;
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
@@ -86,4 +86,177 @@
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modalHeader {
+  padding: 20px 24px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.modalTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #053546;
+  margin: 0 0 4px 0;
+}
+
+.modalSubtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.closeButton:hover {
+  color: #053546;
+}
+
+.modalBody {
+  padding: 24px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #053546;
+  margin: 0 0 16px 0;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #053546;
+  box-shadow: 0 0 0 3px rgba(5, 53, 70, 0.1);
+}
+
+.loadingText {
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.profilesList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+
+.profileItem {
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profileItem:hover {
+  background: #f9fafb;
+  border-color: #053546;
+}
+
+.profileName {
+  font-weight: 600;
+  color: #053546;
+}
+
+.profileClub {
+  color: #666;
+  font-size: 14px;
+}
+
+.noResults {
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+}
+
+.instruction {
+  color: #666;
+  font-size: 14px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.selectedOpponent {
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.opponentInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.opponentName {
+  font-weight: 600;
+  color: #053546;
+}
+
+.opponentClub {
+  color: #666;
+  font-size: 14px;
+}
+
+.changeButton {
+  padding: 8px 16px;
+  background: #053546;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.changeButton:hover {
+  background: #227B9A;
+}
+
+.error {
+  color: #ef4444;
+  background: #fef2f2;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 16px;
 }
