@@ -18,8 +18,6 @@ interface ChallengeFormProps {
 export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: ChallengeFormProps) {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
   const [useCustomRules, setUseCustomRules] = useState(false);
   const [customRules, setCustomRules] = useState<ChallengeCustomRules>({
     distanceMeters: null,
@@ -52,9 +50,6 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
       name: name.trim(),
       description: description.trim() || undefined,
     };
-
-    if (startDate) data.startDate = startDate;
-    if (endDate) data.endDate = endDate;
 
     if (useCustomRules) {
       const rules: ChallengeCustomRules = {};
@@ -89,11 +84,6 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
-      <h2 className={styles.title}>Ny utfordring</h2>
-      <p className={styles.subtitle}>
-        Mot: {opponent.name || 'Ukjent skytter'}
-      </p>
-
       {error && <div className={styles.error}>{error}</div>}
 
       <div className={styles.field}>
@@ -122,34 +112,6 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
           rows={3}
           placeholder="Skriv en beskrivelse av utfordringen..."
         />
-      </div>
-
-      <div className={styles.dateFields}>
-        <div className={styles.field}>
-          <label htmlFor="startDate" className={styles.label}>
-            Startdato (valgfritt)
-          </label>
-          <input
-            type="date"
-            id="startDate"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className={styles.input}
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label htmlFor="endDate" className={styles.label}>
-            Sluttdato (valgfritt)
-          </label>
-          <input
-            type="date"
-            id="endDate"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className={styles.input}
-          />
-        </div>
       </div>
 
       <div className={styles.field}>

@@ -66,18 +66,6 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
           <span className={styles.metaLabel}>Opprettet:</span>
           <span>{formatDate(challenge.createdAt)}</span>
         </div>
-        {challenge.startDate && (
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Start:</span>
-            <span>{formatDate(challenge.startDate)}</span>
-          </div>
-        )}
-        {challenge.endDate && (
-          <div className={styles.metaItem}>
-            <span className={styles.metaLabel}>Slutt:</span>
-            <span>{formatDate(challenge.endDate)}</span>
-          </div>
-        )}
       </div>
 
       {challenge.description && (

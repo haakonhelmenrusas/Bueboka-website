@@ -177,10 +177,12 @@ export default function ChallengesPage() {
         <div className={styles.modalOverlay} onClick={closeModal}>
           <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
             <div className={styles.modalHeader}>
-              <h2 className={styles.modalTitle}>Ny utfordring</h2>
-              <p className={styles.modalSubtitle}>
-                Velg en motstander og opprett en utfordring
-              </p>
+              <h2 className={styles.modalTitle}>
+                Ny utfordring
+                <span className={styles.modalDescription}>
+                  Velg en motstander og opprett en utfordring
+                </span>
+              </h2>
               <button onClick={closeModal} className={styles.closeButton}>
                 &times;
               </button>

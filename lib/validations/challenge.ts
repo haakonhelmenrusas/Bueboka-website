@@ -28,8 +28,6 @@ export const createChallengeSchema = z.object({
   description: z.string().max(500, 'Beskrivelse må være mindre enn 500 tegn').optional().nullable(),
   roundTypeId: z.string().optional().nullable(),
   customRules: ChallengeCustomRulesSchema.optional().nullable(),
-  startDate: z.string().datetime().optional().nullable(),
-  endDate: z.string().datetime().optional().nullable(),
 });
 
 // Schema for updating a challenge
@@ -38,8 +36,6 @@ export const updateChallengeSchema = z.object({
   description: z.string().max(500, 'Beskrivelse må være mindre enn 500 tegn').optional().nullable(),
   roundTypeId: z.string().optional().nullable(),
   customRules: ChallengeCustomRulesSchema.optional().nullable(),
-  startDate: z.string().datetime().optional().nullable(),
-  endDate: z.string().datetime().optional().nullable(),
   status: ChallengeStatusEnum.optional(),
 });
 

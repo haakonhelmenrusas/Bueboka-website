@@ -82,8 +82,8 @@
 .modalContent {
   background: white;
   border-radius: 12px;
-  max-width: 600px;
-  width: 100%;
+  max-width: 700px;
+  width: 90%;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -92,22 +92,27 @@
 .modalHeader {
   padding: 20px 24px;
   border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  position: relative;
 }
 
 .modalTitle {
   font-size: 24px;
   font-weight: 700;
   color: #053546;
-  margin: 0 0 4px 0;
+  margin: 0;
 }
 
-.modalSubtitle {
+.modalDescription {
+  display: block;
   color: #666;
   font-size: 14px;
-  margin: 0;
+  margin-top: 4px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 24px;
 }
 
 .closeButton {
@@ -238,18 +243,19 @@
 
 .changeButton {
   padding: 8px 16px;
-  background: #053546;
-  color: white;
-  border: none;
+  background: transparent;
+  color: #053546;
+  border: 1px solid #053546;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .changeButton:hover {
-  background: #227B9A;
+  background: #053546;
+  color: white;
 }
 
 .error {

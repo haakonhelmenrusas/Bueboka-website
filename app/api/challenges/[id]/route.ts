@@ -118,14 +118,8 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
 
     const updateData = validation.data;
 
-    // Convert dates if provided
-    const payload: any = {
-      ...updateData,
-      startDate: updateData.startDate ? new Date(updateData.startDate) : undefined,
-      endDate: updateData.endDate ? new Date(updateData.endDate) : undefined,
-    };
-
-    // Remove undefined values
+    // Create payload and remove undefined values
+    const payload: any = { ...updateData };
     Object.keys(payload).forEach((key) => {
       if (payload[key] === undefined) {
         delete payload[key];

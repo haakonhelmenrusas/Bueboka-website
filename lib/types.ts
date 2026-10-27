@@ -160,8 +160,6 @@ export interface Challenge {
   description?: string | null;
   roundTypeId?: string | null;
   customRules?: ChallengeCustomRules | null;
-  startDate?: string | null;
-  endDate?: string | null;
   status: ChallengeStatus;
   winnerId?: string | null;
   challengerScore?: number | null;
@@ -224,8 +222,6 @@ export interface CreateChallengeInput {
   description?: string;
   roundTypeId?: string;
   customRules?: ChallengeCustomRules;
-  startDate?: string;
-  endDate?: string;
 }
 
 export interface SubmitChallengeResultInput {

@@ -157,7 +157,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const { challengedId, name, description, roundTypeId, customRules, startDate, endDate } = validation.data;
+    const { challengedId, name, description, roundTypeId, customRules } = validation.data;
 
     // Verify challenged user exists
     const challengedUser = await prisma.user.findUnique({
@@ -180,8 +180,6 @@ export async function POST(request: Request) {
         description: description?.trim() || null,
         roundTypeId: roundTypeId || null,
         customRules: customRules || undefined,
-        startDate: startDate ? new Date(startDate) : null,
-        endDate: endDate ? new Date(endDate) : null,
         status: 'PENDING',
       },
       include: {
