@@ -51,6 +51,13 @@ import { QuickActions } from './QuickActions/QuickActions';
 import { PublicUserCard } from './PublicProfiles/PublicUserCard';
 import { PublicProfileList } from './PublicProfiles/PublicProfileList';
 import { AktivitetBanner } from './AktivitetBanner/AktivitetBanner';
+import {
+	ChallengeCard,
+	ChallengeList,
+	ChallengeForm,
+	ChallengeDetail,
+	ChallengeStatusBadge,
+} from './Challenges';
 
 export {
 	Header,
@@ -106,6 +113,11 @@ export {
 	PublicProfileList,
 	QuickActions,
 	AktivitetBanner,
+	ChallengeCard,
+	ChallengeList,
+	ChallengeForm,
+	ChallengeDetail,
+	ChallengeStatusBadge,
 };
 
 export * from './common/StatsSummary/StatsSummary';

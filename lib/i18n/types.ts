@@ -6,6 +6,7 @@ export interface TranslationKeys {
   'nav.team': string;
   'nav.support': string;
   'nav.activity': string;
+  'nav.challenges': string;
   'nav.archers': string;
   'nav.sightMarks': string;
   'nav.feedback': string;

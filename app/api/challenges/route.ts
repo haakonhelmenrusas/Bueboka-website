@@ -23,10 +23,10 @@ export async function GET(request: Request) {
     // Parse query parameters
     const { searchParams } = new URL(request.url);
     const query = {
-      page: searchParams.get('page'),
-      pageSize: searchParams.get('pageSize'),
-      status: searchParams.get('status'),
-      userId: searchParams.get('userId'),
+      page: searchParams.get('page') ?? undefined,
+      pageSize: searchParams.get('pageSize') ?? undefined,
+      status: searchParams.get('status') ?? undefined,
+      userId: searchParams.get('userId') ?? undefined,
     };
 
     const validation = getChallengesQuerySchema.safeParse(query);
@@ -179,7 +179,7 @@ export async function POST(request: Request) {
         name: name.trim(),
         description: description?.trim() || null,
         roundTypeId: roundTypeId || null,
-        customRules: customRules || null,
+        customRules: customRules || undefined,
         startDate: startDate ? new Date(startDate) : null,
         endDate: endDate ? new Date(endDate) : null,
         status: 'PENDING',

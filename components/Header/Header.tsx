@@ -11,7 +11,7 @@ import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
 import { useTranslation } from '@/context/LanguageProvider';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher/LanguageSwitcher';
-import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX } from 'react-icons/lu';
+import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX, LuTarget } from 'react-icons/lu';
 
 function MenuIcon({ open }: { open: boolean }) {
 	return (
@@ -45,14 +45,16 @@ export function Header() {
 		pathname === '/skyttere' ||
 		pathname === '/siktemerker' ||
 		pathname === '/aktivitet' ||
-		pathname.startsWith('/profil/');
+		pathname === '/utfordringer' ||
+		pathname.startsWith('/profil/') ||
+		pathname.startsWith('/utfordringer/');
 
 	// Check if we're on an auth form page (login/signup)
 	const isAuthFormPage =
 		pathname === '/logg-inn' || pathname === '/ny-bruker' || pathname === '/glemt-passord' || pathname === '/tilbakestill-passord';
 
 	// Determine logo destination
-	const logoHref = isAuthFormPage ? '/' : session?.user ? '/min-side' : '/';
+	const logoHref = isAuthFormPage ? '/' : (isAuthPage || session?.user) ? '/min-side' : '/';
 
 	const toggleMobileMenu = () => setMobileMenuOpen((v) => !v);
 	const closeMobileMenu = () => setMobileMenuOpen(false);
@@ -138,7 +140,7 @@ export function Header() {
 								</Link>
 							</>
 						)}
-						{session?.user ? (
+						{(isAuthPage || session?.user) ? (
 							<div className={styles.profileMenuWrapper}>
 								<button
 									aria-label={t['nav.openProfileMenu']}
@@ -167,7 +169,7 @@ export function Header() {
 						)}
 					</nav>
 
-					{!session?.user && (
+					{!(isAuthPage || session?.user) && (
 						<button
 							onClick={toggleMobileMenu}
 							className={styles.mobileButton}
@@ -179,7 +181,7 @@ export function Header() {
 						</button>
 					)}
 
-					{session?.user && (
+					{(isAuthPage || session?.user) && (
 						<div className={styles.profileMenuContainer}>
 							<button
 								className={`${styles.menuButton} ${styles.mobileProfileButton}`}
@@ -203,6 +205,10 @@ export function Header() {
 									<Link href="/aktivitet" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
 										<LuActivity size={16} />
 										<span>{t['nav.activity']}</span>
+									</Link>
+									<Link href="/utfordringer" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuTarget size={16} />
+										<span>{t['nav.challenges']}</span>
 									</Link>
 									<Link href="/skyttere" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
 										<LuUsers size={16} />

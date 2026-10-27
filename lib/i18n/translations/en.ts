@@ -6,6 +6,7 @@ export const en: TranslationKeys = {
   'nav.team': 'Team',
   'nav.support': 'Support us',
   'nav.activity': 'Activity',
+  'nav.challenges': 'Challenges',
   'nav.archers': 'Archers',
   'nav.sightMarks': 'Sight marks',
   'nav.feedback': 'Feedback',

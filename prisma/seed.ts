@@ -214,6 +214,84 @@ async function main() {
 		}
 		console.log(`🔐 Credentials: test@bueboka.no / ${testPassword}\n`);
 
+		// ==================== PUBLIC ARCHERS FOR CHALLENGES ====================
+		console.log('👥 Creating public archer profiles for challenges...');
+
+		// Array of public archer profiles that can be challenged
+		const publicArchers = [
+			{ email: 'martin@bueboka.no', name: 'Martin Hansen', club: 'Oslo Bueskyttere', skytternr: 'NO1001' },
+			{ email: 'sarah@bueboka.no', name: 'Sarah Johnson', club: 'Bergen Bueskyttere', skytternr: 'NO1002' },
+			{ email: 'lars@bueboka.no', name: 'Lars Petersen', club: 'Trondheim Bueskyttere', skytternr: 'NO1003' },
+			{ email: 'ingrid@bueboka.no', name: 'Ingrid Olsen', club: 'Oslo Bueskyttere', skytternr: 'NO1004' },
+			{ email: 'jens@bueboka.no', name: 'Jens Kristiansen', club: 'Stavanger Bueskyttere', skytternr: 'NO1005' },
+			{ email: 'maria@bueboka.no', name: 'Maria Nielsen', club: 'Bergen Bueskyttere', skytternr: 'NO1006' },
+			{ email: 'ole@bueboka.no', name: 'Ole Andersen', club: 'Trondheim Bueskyttere', skytternr: 'NO1007' },
+			{ email: 'kari@bueboka.no', name: 'Kari Larsen', club: 'Oslo Bueskyttere', skytternr: 'NO1008' },
+		];
+
+		let archersCreated = 0;
+		const archerPasswords: Record<string, string> = {};
+
+		for (const archer of publicArchers) {
+			const existing = await prisma.user.findUnique({
+				where: { email: archer.email },
+			});
+
+			if (!existing) {
+				const user = await prisma.user.create({
+					data: {
+						email: archer.email,
+						emailVerified: true,
+						name: archer.name,
+						club: archer.club,
+						skytternr: archer.skytternr,
+						isPublic: true,
+						publicName: true,
+						publicClub: true,
+						publicSkytternr: true,
+					},
+				});
+
+				// Create password for each archer
+				const password = `${archer.name.split(' ')[0].toLowerCase()}1234`;
+				archerPasswords[archer.email] = password;
+
+				const hashedPassword = await hashPassword(password);
+
+				const existingAccount = await prisma.account.findFirst({
+					where: { userId: user.id, providerId: 'credential' },
+				});
+
+				if (existingAccount) {
+					await prisma.account.update({
+						where: { id: existingAccount.id },
+						data: { password: hashedPassword },
+					});
+				} else {
+					await prisma.account.create({
+						data: {
+							userId: user.id,
+							accountId: user.id,
+							providerId: 'credential',
+							issuer: 'local:credential',
+							password: hashedPassword,
+						},
+					});
+				}
+
+				archersCreated++;
+			}
+		}
+
+		console.log(`✅ Created ${archersCreated} public archer profiles`);
+		if (Object.keys(archerPasswords).length > 0) {
+			console.log('\n🔐 Archer credentials:');
+			for (const [email, password] of Object.entries(archerPasswords)) {
+				console.log(`   ${email} / ${password}`);
+			}
+			console.log('');
+		}
+
 		// ==================== EQUIPMENT ====================
 		console.log('🏹 Creating equipment...');
 
@@ -521,6 +599,7 @@ async function main() {
 		console.log('✅ SEED COMPLETE!');
 		console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 		console.log(`👤 User: ${user.email}`);
+		console.log(`👥 Public archers: ${publicArchers.length} (for challenges)`);
 		console.log(`🏹 Bows: 3`);
 		console.log(`🎯 Arrow sets: 2`);
 		console.log(`📋 Round types: ${roundTypes.length}`);
@@ -530,7 +609,13 @@ async function main() {
 		console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 		console.log('🔐 Login credentials:');
 		console.log('   Email: test@bueboka.no');
-		console.log('   Password: Test1234!\n');
+		console.log('   Password: Test1234!');
+		console.log('');
+		console.log('👥 Public archers available for challenges:');
+		publicArchers.forEach((archer, i) => {
+			console.log(`   ${i + 1}. ${archer.name} (${archer.club}) - ${archer.email}`);
+		});
+		console.log('');
 
 		await prisma.$disconnect();
 }

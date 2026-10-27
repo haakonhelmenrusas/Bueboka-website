@@ -138,3 +138,97 @@ export type Stats = {
 };
 
 export type StatsResponse = { stats: Stats };
+
+// Challenge types for 1v1 competitions
+export type ChallengeStatus = 'PENDING' | 'ACCEPTED' | 'DECLINED' | 'COMPLETED' | 'CANCELLED';
+
+export interface ChallengeCustomRules {
+  distanceMeters?: number | null;
+  distanceFrom?: number | null;
+  distanceTo?: number | null;
+  targetType?: string | null;
+  targetSizeCm?: number | null;
+  numberArrows?: number | null;
+  arrowsWithoutScore?: number | null;
+}
+
+export interface Challenge {
+  id: string;
+  challengerId: string;
+  challengedId: string;
+  name: string;
+  description?: string | null;
+  roundTypeId?: string | null;
+  customRules?: ChallengeCustomRules | null;
+  startDate?: string | null;
+  endDate?: string | null;
+  status: ChallengeStatus;
+  winnerId?: string | null;
+  challengerScore?: number | null;
+  challengedScore?: number | null;
+  challengerTotalArrows?: number | null;
+  challengedTotalArrows?: number | null;
+  challengerSubmittedAt?: string | null;
+  challengedSubmittedAt?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  challenger?: {
+    id: string;
+    name: string | null;
+  };
+  challenged?: {
+    id: string;
+    name: string | null;
+  };
+  winner?: {
+    id: string;
+    name: string | null;
+  };
+  roundType?: Pick<RoundType, 'name' | 'distanceMeters' | 'targetType' | 'numberArrows'>;
+}
+
+export interface ChallengeListItem {
+  id: string;
+  challengerId: string;
+  challengedId: string;
+  name: string;
+  status: ChallengeStatus;
+  challengerName?: string | null;
+  challengedName?: string | null;
+  challengerScore?: number | null;
+  challengedScore?: number | null;
+  winnerId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ChallengeListResponse {
+  challenges: ChallengeListItem[];
+  page: number;
+  pageSize: number;
+  total: number;
+}
+
+export interface ChallengeStatistics {
+  totalChallenges: number;
+  wins: number;
+  losses: number;
+  winRate: number;
+  pendingChallenges: number;
+  completedChallenges: number;
+}
+
+export interface CreateChallengeInput {
+  challengedId: string;
+  name: string;
+  description?: string;
+  roundTypeId?: string;
+  customRules?: ChallengeCustomRules;
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface SubmitChallengeResultInput {
+  score: number;
+  totalArrows?: number;
+}
