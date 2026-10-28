@@ -202,6 +202,10 @@ export default function MyPage() {
 		}
 	};
 
+	const handleCreateChallenge = () => {
+		router.push('/utfordringer');
+	};
+
 	const handleSaveCompetition = async (input: CompetitionFormInput) => {
 		const isEditMode = competitionFormMode === 'edit';
 		const url = isEditMode && selectedCompetition ? `/api/competitions/${selectedCompetition.id}` : '/api/competitions';
@@ -353,6 +357,7 @@ export default function MyPage() {
 						setCompetitionFormMode('create');
 						setCompetitionFormOpen(true);
 					}}
+					onCreateChallenge={handleCreateChallenge}
 					onCreateBow={() => {
 						setSelectedBow(null);
 						setBowModalOpen(true);
@@ -559,6 +564,7 @@ export default function MyPage() {
 					setCompetitionFormMode('create');
 					setCompetitionFormOpen(true);
 				}}
+				onCreateChallenge={handleCreateChallenge}
 				onCreateBow={() => {
 					setSelectedBow(null);
 					setBowModalOpen(true);

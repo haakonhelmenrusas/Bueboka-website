@@ -1,18 +1,19 @@
 'use client';
 
 import styles from './QuickActions.module.css';
-import { LuTarget, LuTrophy } from 'react-icons/lu';
+import { LuTarget, LuTrophy, LuSwords } from 'react-icons/lu';
 import { GiArrowhead, GiBowArrow } from 'react-icons/gi';
 import { useTranslation } from '@/context/LanguageProvider';
 
 interface QuickActionsProps {
 	onCreatePractice: () => void;
 	onCreateCompetition?: () => void;
+	onCreateChallenge?: () => void;
 	onCreateBow?: () => void;
 	onCreateArrows?: () => void;
 }
 
-export function QuickActions({ onCreatePractice, onCreateCompetition, onCreateBow, onCreateArrows }: QuickActionsProps) {
+export function QuickActions({ onCreatePractice, onCreateCompetition, onCreateChallenge, onCreateBow, onCreateArrows }: QuickActionsProps) {
 	const { t } = useTranslation();
 
 	return (
@@ -31,6 +32,15 @@ export function QuickActions({ onCreatePractice, onCreateCompetition, onCreateBo
 							<LuTrophy size={28} />
 						</span>
 						<span className={styles.label}>{t['quickAction.newCompetition']}</span>
+					</button>
+				)}
+
+				{onCreateChallenge && (
+					<button type="button" className={styles.button} onClick={onCreateChallenge}>
+						<span className={styles.icon}>
+							<LuSwords size={28} />
+						</span>
+						<span className={styles.label}>{t['quickAction.newChallenge']}</span>
 					</button>
 				)}
 

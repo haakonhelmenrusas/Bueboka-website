@@ -162,6 +162,7 @@ export interface TranslationKeys {
   // Quick actions
   'quickAction.newPractice': string;
   'quickAction.newCompetition': string;
+  'quickAction.newChallenge': string;
   'quickAction.newBow': string;
   'quickAction.newArrow': string;
 

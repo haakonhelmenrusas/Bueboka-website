@@ -162,6 +162,7 @@ export const no: TranslationKeys = {
   // Quick actions
   'quickAction.newPractice': 'Ny trening',
   'quickAction.newCompetition': 'Ny konkurranse',
+  'quickAction.newChallenge': 'Ny utfordring',
   'quickAction.newBow': 'Ny bue',
   'quickAction.newArrow': 'Ny pil',
 
