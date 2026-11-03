@@ -93,7 +93,7 @@ Interested in sponsoring or partnering with Bueboka? Visit our [sponsors page](h
 
 ## Contributing
 
-We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before getting started.
+We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md) before getting started. Working with an AI coding agent? Follow [AGENTS.md](AGENTS.md) (Mistral Vibe) / [CLAUDE.md](CLAUDE.md) (Claude Code) for the project rules.
 
 ## License
 

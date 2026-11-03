@@ -1,5 +1,7 @@
 # Claude Code Instructions
 
+Mirrors [AGENTS.md](AGENTS.md) (read automatically by Mistral Vibe) — keep the two files in sync when you change either.
+
 ## Project Overview
 
 **Bueboka** — a Next.js 16 web application. Stack: Next.js, TypeScript, Prisma (PostgreSQL), Better Auth, React 19, Jest, Husky, i18n (in progress).
@@ -33,7 +35,7 @@ This project uses a two-tier branch model:
 
 ## Before Starting Any Task
 
-Before writing code, ask clarifying questions to understand domain and context. Tailor the questions to the task at hand — not every question applies every time. Examples of what to ask when relevant:
+Work autonomously: for a clear request, read the relevant code and act directly — do not ask for confirmation before reversible, in-scope steps. Ask clarifying questions only when the answer would materially change the result or cannot be discovered from the codebase. When relevant, useful questions cover:
 
 - **Domain**: What is this feature for? Who uses it?
 - **Scope**: Which pages, components, or flows are affected?
@@ -43,7 +45,7 @@ Before writing code, ask clarifying questions to understand domain and context. 
 - **Testing**: Should I write tests? Are there existing tests for the area I'm touching?
 - **i18n**: Does this feature need translation keys? (All user-facing strings require i18n support.)
 
-Only start implementing after you have enough context. If the task is trivial (e.g., a one-line fix with clear intent), skip the questions.
+If the task is trivial (e.g., a one-line fix with clear intent), skip the questions entirely.
 
 ## Commit Discipline
 

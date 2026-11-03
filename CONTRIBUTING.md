@@ -32,8 +32,10 @@ verktøy.
    git clone https://github.com/yourusername/bueboka-web.git
    cd bueboka-web
    ```
-3. **Create a feature branch**:
+3. **Create a feature branch off `dev`** (the default working branch — `main` is production-only):
    ```bash
+   git checkout dev
+   git pull
    git checkout -b feature/your-feature-name
    ```
 4. **Install dependencies**:
@@ -52,22 +54,25 @@ verktøy.
 - **Node.js** (version 22 or higher)
 - **npm** (comes with Node.js)
 - **Git** for version control
+- **Podman** or Docker (for the local database)
 
 ### Environment Setup
 
 1. **Copy environment template**:
 
    ```bash
-   cp .env.example .env.local
+   cp .env.example .env
    ```
 
 2. **Configure environment variables**:
-   Edit `.env.local` with your local configuration
+   Edit `.env` with your local configuration
 
-3. **Database setup** (when applicable):
+3. **Database setup**:
+   Start a local PostgreSQL instance and run migrations:
    ```bash
-   npx prisma generate
-   npx prisma db push
+   podman compose up -d db   # or: npm run db:up with Docker
+   npm run prisma:generate
+   npm run prisma:migrate
    ```
 
 ### Development Workflow
@@ -88,7 +93,7 @@ verktøy.
    ```bash
    git push origin feature/your-feature-name
    ```
-6. **Create a Pull Request**
+6. **Create a Pull Request** targeting `dev` — never `main` directly (see [AGENTS.md](AGENTS.md) for the full branching model)
 
 ## Coding Standards
 

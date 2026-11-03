@@ -6,7 +6,7 @@ Summary of Bueboka's security posture, the measures in place, and best practices
 
 ## Authentication
 
-Auth is handled by [Better Auth](https://www.better-auth.com/) v1.6.14+ with the Prisma adapter.
+Auth is handled by [Better Auth](https://www.better-auth.com/) v1.7.2 with the Prisma adapter.
 
 ### Password policy
 
@@ -23,8 +23,8 @@ Email verification is **required** for new accounts. Users must verify before th
 
 | Setting | Value |
 |---|---|
-| Session lifetime | 7 days |
-| Update age | 24 hours |
+| Session lifetime | 30 days |
+| Update age | 7 days |
 | Revoke on password reset | Yes |
 | Secure cookies | Production only (HTTPS) |
 
@@ -119,7 +119,7 @@ Sensitive configuration is stored in environment variables, never hardcoded in s
 
 - **Dependabot** is configured (`.github/dependabot.yml`) to check for npm updates weekly (Monday 06:00 Oslo time)
 - Run `npm audit` regularly — the project aims for zero high/critical vulnerabilities
-- Never run `npm update` — manually bump versions in `package.json` and run `npm install` (see CLAUDE.md)
+- Never run `npm update` — manually bump versions in `package.json` and run `npm install` (see AGENTS.md; also enforced by the `deny-npm-update` hook in `.vibe/hooks.toml`)
 - Production source maps are disabled to prevent exposing source code
 
 ---
