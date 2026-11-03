@@ -68,13 +68,6 @@ export function useChallenges() {
     total: number;
   }>({ page: 1, pageSize: 20, total: 0 });
 
-  // Initialize by fetching challenges on mount if user is authenticated
-  useEffect(() => {
-    if (!sessionPending && user) {
-      fetchChallenges();
-    }
-  }, [sessionPending, user]);
-
   /**
    * Build query string from params
    */
@@ -140,6 +133,13 @@ export function useChallenges() {
     },
     [user, buildQueryString, handleApiResponse]
   );
+
+  // Initialize by fetching challenges on mount if user is authenticated
+  useEffect(() => {
+    if (!sessionPending && user) {
+      fetchChallenges();
+    }
+  }, [sessionPending, user, fetchChallenges]);
 
   /**
    * Fetch a specific challenge by ID
