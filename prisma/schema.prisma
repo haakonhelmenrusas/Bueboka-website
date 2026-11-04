@@ -22,6 +22,7 @@ model User {
   publicSkytternr      Boolean  @default(false)
   publicAchievements   Boolean  @default(false)
   locale            String?
+  pushToken         String?
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -33,6 +34,7 @@ model User {
   challengesSent    Challenge[]  @relation("Challenger")
   challengesReceived Challenge[] @relation("Challenged")
   challengesWon     Challenge[]  @relation("ChallengeWinner")
+  notifications     Notification[]
   Account           Account[]
   Session           Session[]
   sightMarks        SightMark[]
@@ -350,6 +352,7 @@ model Challenge {
   challenged  User    @relation("Challenged", fields: [challengedId], references: [id])
   winner      User?   @relation("ChallengeWinner", fields: [winnerId], references: [id])
   roundType   RoundType? @relation(fields: [roundTypeId], references: [id])
+  notifications Notification[]
 
   @@unique([challengerId, challengedId, name, createdAt])
   @@index([challengerId])
@@ -365,6 +368,33 @@ enum ChallengeStatus {
   DECLINED
   COMPLETED
   CANCELLED
+}
+
+enum NotificationType {
+  CHALLENGE_RECEIVED
+  CHALLENGE_SENT
+  CHALLENGE_ACCEPTED
+  CHALLENGE_DECLINED
+  CHALLENGE_CANCELLED
+  CHALLENGE_SUBMITTED
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  userId      String
+  type        NotificationType
+  title       String
+  message     String
+  challengeId String?
+  read        Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge Challenge? @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
+  @@map("notifications")
 }
 
 enum Material {
