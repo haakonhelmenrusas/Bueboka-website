@@ -44,10 +44,11 @@ export const submitChallengeResultSchema = z.object({
   totalArrows: z.number().int().min(0, 'Antall piler kan ikke være negativ').max(10000, 'Maksimalt 10000 piler').optional(),
 });
 
-// Schema for query parameters when listing challenges
+// Schema for query parameters when listing challenges.
+// Query params arrive as strings, so page/pageSize must be coerced.
 export const getChallengesQuerySchema = z.object({
-  page: z.number().int().min(1).optional().default(1),
-  pageSize: z.number().int().min(1).max(100).optional().default(20),
+  page: z.coerce.number().int().min(1).optional().default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).optional().default(20),
   status: ChallengeStatusEnum.optional(),
   userId: z.string().optional(),
 });
