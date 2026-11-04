@@ -16,6 +16,20 @@ describe('getChallengesQuerySchema', () => {
 		}
 	});
 
+	it('handles an explicit undefined page (app omits page when only sending pageSize)', () => {
+		const result = getChallengesQuerySchema.safeParse({
+			page: undefined,
+			pageSize: '100',
+			status: 'PENDING',
+			userId: 'cmunvnark000cqa1gcwncg2dx',
+		});
+		expect(result.success).toBe(true);
+		if (result.success) {
+			expect(result.data.page).toBe(1);
+			expect(result.data.pageSize).toBe(100);
+		}
+	});
+
 	it('applies defaults when no params are given', () => {
 		const result = getChallengesQuerySchema.safeParse({});
 		expect(result.success).toBe(true);
