@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { createNotification } from '@/lib/notifications';
 
 /**
  * PATCH /api/challenges/:id/cancel
@@ -56,8 +57,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       },
     });
 
-    // Note: In a production app, you would send a notification here
-    // to the challenged user that the challenge was cancelled
+    // Notify the challenged user that the challenge was cancelled
+    await createNotification({
+      userId: challenge.challengedId,
+      type: 'CHALLENGE_CANCELLED',
+      title: 'Utfordring kansellert',
+      message: `${challenge.challenger.name || 'Utfordreren'} kansellerte utfordringen «${challenge.name}»`,
+      challengeId: challenge.id,
+    });
 
     return NextResponse.json({ challenge });
   } catch (error) {

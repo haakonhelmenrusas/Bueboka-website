@@ -228,3 +228,27 @@ export interface SubmitChallengeResultInput {
   score: number;
   totalArrows?: number;
 }
+
+// Notification types — mirrors the mobile app's Notification interface
+export type NotificationType =
+  | 'CHALLENGE_RECEIVED'
+  | 'CHALLENGE_SENT'
+  | 'CHALLENGE_ACCEPTED'
+  | 'CHALLENGE_DECLINED'
+  | 'CHALLENGE_CANCELLED'
+  | 'CHALLENGE_SUBMITTED';
+
+export interface Notification {
+  id: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  challengeId: string | null;
+  read: boolean;
+  createdAt: string;
+}
+
+export interface NotificationListResponse {
+  notifications: Notification[];
+  unreadCount: number;
+}

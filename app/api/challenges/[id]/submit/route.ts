@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { createNotification } from '@/lib/notifications';
 import { submitChallengeResultSchema } from '@/lib/validations/challenge';
 import { formatZodErrors } from '@/lib/validations/helpers';
 
@@ -96,6 +97,15 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
       },
     });
 
+    // Notify the opponent that a result was submitted
+    await createNotification({
+      userId: isChallenger ? existingChallenge.challengedId : existingChallenge.challengerId,
+      type: 'CHALLENGE_SUBMITTED',
+      title: 'Resultat sendt inn',
+      message: `${user.name || 'Motstanderen din'} sendte inn resultat for «${existingChallenge.name}»`,
+      challengeId: existingChallenge.id,
+    });
+
     // If both users have submitted, determine the winner and mark as completed
     if (updatedChallenge.challengerSubmittedAt && updatedChallenge.challengedSubmittedAt) {
       // Determine winner
@@ -123,9 +133,6 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
           winner: { select: { id: true, name: true } },
         },
       });
-
-      // Note: In a production app, you would send notifications here
-      // to both users with the final results
 
       return NextResponse.json({ challenge: completedChallenge });
     }

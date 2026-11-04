@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { createNotification } from '@/lib/notifications';
 
 /**
  * PATCH /api/challenges/:id/accept
@@ -56,8 +57,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       },
     });
 
-    // Note: In a production app, you would send notifications here
-    // to both users that the challenge has been accepted
+    // Notify the challenger that their challenge was accepted
+    await createNotification({
+      userId: challenge.challengerId,
+      type: 'CHALLENGE_ACCEPTED',
+      title: 'Utfordring godtatt',
+      message: `${challenge.challenged.name || 'Motstanderen din'} godtok utfordringen «${challenge.name}»`,
+      challengeId: challenge.id,
+    });
 
     return NextResponse.json({ challenge });
   } catch (error) {

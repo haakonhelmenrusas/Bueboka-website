@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { createNotification } from '@/lib/notifications';
 import {
   createChallengeSchema,
   getChallengesQuerySchema,
@@ -203,8 +204,14 @@ export async function POST(request: Request) {
       },
     });
 
-    // Note: In a production app, you would send a notification here
-    // to the challenged user (email, push notification, etc.)
+    // Notify the challenged user (in-app + push if they have a device token)
+    await createNotification({
+      userId: challengedId,
+      type: 'CHALLENGE_RECEIVED',
+      title: 'Ny utfordring',
+      message: `${user.name || 'En skytter'} har utfordret deg til «${name.trim()}»`,
+      challengeId: challenge.id,
+    });
 
     return NextResponse.json({ challenge }, { status: 201 });
   } catch (error) {

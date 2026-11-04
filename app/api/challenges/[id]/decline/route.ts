@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { createNotification } from '@/lib/notifications';
 
 /**
  * PATCH /api/challenges/:id/decline
@@ -56,8 +57,14 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       },
     });
 
-    // Note: In a production app, you would send a notification here
-    // to the challenger that the challenge was declined
+    // Notify the challenger that their challenge was declined
+    await createNotification({
+      userId: challenge.challengerId,
+      type: 'CHALLENGE_DECLINED',
+      title: 'Utfordring avslått',
+      message: `${challenge.challenged.name || 'Motstanderen din'} avslo utfordringen «${challenge.name}»`,
+      challengeId: challenge.id,
+    });
 
     return NextResponse.json({ challenge });
   } catch (error) {
