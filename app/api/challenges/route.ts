@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import {
   createChallengeSchema,
-  updateChallengeSchema,
   getChallengesQuerySchema,
-  submitChallengeResultSchema,
 } from '@/lib/validations/challenge';
 import { formatZodErrors } from '@/lib/validations/helpers';
 
@@ -44,7 +43,7 @@ export async function GET(request: Request) {
     const skip = (page - 1) * pageSize;
 
     // Build where clause
-    const where: any = {
+    const where: Prisma.ChallengeWhereInput = {
       OR: [
         { challengerId: user.id },
         { challengedId: user.id },

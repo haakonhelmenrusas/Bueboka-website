@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header, Footer, ChallengeList, ChallengeForm } from '@/components';
 import { useChallenges, type FetchChallengesParams } from '@/lib/hooks';
-import type { PublicProfile } from '@/lib/types';
+import type { PublicProfile, ChallengeStatus, CreateChallengeInput } from '@/lib/types';
 import styles from './page.module.css';
 
 export default function ChallengesPage() {
@@ -20,8 +20,6 @@ export default function ChallengesPage() {
     acceptChallenge,
     declineChallenge,
     cancelChallenge,
-    deleteChallenge,
-    resetError,
     createChallenge,
   } = useChallenges();
 
@@ -32,14 +30,13 @@ export default function ChallengesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
-  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchChallenges({ status: filterStatus as any || undefined });
+    fetchChallenges({ status: filterStatus ? (filterStatus as ChallengeStatus) : undefined });
   }, [filterStatus, fetchChallenges]);
 
   const handlePageChange = (params: FetchChallengesParams) => {
-    fetchChallenges({ ...params, status: filterStatus as any || undefined });
+    fetchChallenges({ ...params, status: filterStatus ? (filterStatus as ChallengeStatus) : undefined });
   };
 
   const handleChallengeAction = async (challengeId: string, action: 'accept' | 'decline' | 'cancel' | 'submit' | 'view') => {
@@ -108,7 +105,7 @@ export default function ChallengesPage() {
     setProfiles([]);
   };
 
-  const handleSubmitChallenge = async (data: any) => {
+  const handleSubmitChallenge = async (data: Omit<CreateChallengeInput, 'challengedId'>) => {
     try {
       setModalError(null);
       if (!selectedOpponent) {
@@ -116,7 +113,7 @@ export default function ChallengesPage() {
       }
       await createChallenge({ ...data, challengedId: selectedOpponent.id });
       closeModal();
-      fetchChallenges({ status: filterStatus as any || undefined });
+      fetchChallenges({ status: filterStatus ? (filterStatus as ChallengeStatus) : undefined });
     } catch (err) {
       console.error('Error creating challenge:', err);
       setModalError(err instanceof Error ? err.message : 'Kunne ikke lage utfordring');

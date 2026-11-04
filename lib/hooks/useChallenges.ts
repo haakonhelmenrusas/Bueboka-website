@@ -13,6 +13,13 @@ import type {
 } from '@/lib/types';
 
 /**
+ * Minimal shape the permission helpers need — satisfied by both Challenge
+ * and ChallengeListItem, so list views don't need `as any` casts.
+ */
+type ChallengePermissionInput = Pick<Challenge, 'challengerId' | 'challengedId' | 'status'> &
+  Partial<Pick<Challenge, 'challengerSubmittedAt' | 'challengedSubmittedAt'>>;
+
+/**
  * Parameters for fetching challenges
  */
 export interface FetchChallengesParams {
@@ -86,7 +93,7 @@ export function useChallenges() {
    */
   const handleApiResponse = useCallback(async (response: Response) => {
     if (!response.ok) {
-      let errorData: any = null;
+      let errorData: { error?: string; message?: string } | null = null;
       try {
         errorData = await response.json();
       } catch {
@@ -395,7 +402,7 @@ export function useChallenges() {
    * Check if the current user is the owner (challenger) of a challenge
    */
   const isChallengeOwner = useCallback(
-    (challenge: Challenge) => {
+    (challenge: ChallengePermissionInput) => {
       return challenge.challengerId === user?.id;
     },
     [user?.id]
@@ -405,7 +412,7 @@ export function useChallenges() {
    * Check if the current user can accept a challenge (is challenged and status is PENDING)
    */
   const canAcceptChallenge = useCallback(
-    (challenge: Challenge) => {
+    (challenge: ChallengePermissionInput) => {
       return challenge.challengedId === user?.id && challenge.status === 'PENDING';
     },
     [user?.id]
@@ -415,7 +422,7 @@ export function useChallenges() {
    * Check if the current user can cancel a challenge (is challenger and status is PENDING)
    */
   const canCancelChallenge = useCallback(
-    (challenge: Challenge) => {
+    (challenge: ChallengePermissionInput) => {
       return challenge.challengerId === user?.id && challenge.status === 'PENDING';
     },
     [user?.id]
@@ -465,7 +472,7 @@ export function useChallenges() {
    * Check if a challenge can be submitted to (ACCEPTED and user hasn't submitted yet)
    */
   const canSubmitResult = useCallback(
-    (challenge: Challenge) => {
+    (challenge: ChallengePermissionInput) => {
       if (challenge.status !== 'ACCEPTED') {
         return false;
       }
@@ -487,7 +494,7 @@ export function useChallenges() {
    * Check if user has already submitted result for a challenge
    */
   const hasSubmittedResult = useCallback(
-    (challenge: Challenge) => {
+    (challenge: ChallengePermissionInput) => {
       if (challenge.challengerId === user?.id) {
         return !!challenge.challengerSubmittedAt;
       }

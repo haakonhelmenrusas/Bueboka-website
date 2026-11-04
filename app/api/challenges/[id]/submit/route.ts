@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { submitChallengeResultSchema } from '@/lib/validations/challenge';
@@ -79,14 +80,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     const totalArrowsField = isChallenger ? 'challengerTotalArrows' : 'challengedTotalArrows';
     const submittedAtField = isChallenger ? 'challengerSubmittedAt' : 'challengedSubmittedAt';
 
-    const updateData: any = {
+    const updateData = {
       [updateField]: score,
       [submittedAtField]: new Date(),
-    };
-
-    if (totalArrows !== undefined) {
-      updateData[totalArrowsField] = totalArrows;
-    }
+      ...(totalArrows !== undefined ? { [totalArrowsField]: totalArrows } : {}),
+    } as Prisma.ChallengeUpdateInput;
 
     // Check if both users have submitted
     const updatedChallenge = await prisma.challenge.update({

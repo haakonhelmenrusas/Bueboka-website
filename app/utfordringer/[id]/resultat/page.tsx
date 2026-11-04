@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header, Footer, ChallengeStatusBadge } from '@/components';
 import { useChallenges } from '@/lib/hooks';
@@ -9,22 +9,13 @@ import styles from './page.module.css';
 
 export default function SubmitChallengeResultPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const { currentChallenge, loading, error, fetchChallengeById, submitChallengeResult, resetError } = useChallenges();
+  const { error, fetchChallengeById, submitChallengeResult, resetError } = useChallenges();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [score, setScore] = useState('');
   const [totalArrows, setTotalArrows] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Resolve params and fetch challenge
-  useEffect(() => {
-    const load = async () => {
-      const resolvedParams = await params;
-      fetchChallenge(resolvedParams.id);
-    };
-    load();
-  }, [params]);
-
-  const fetchChallenge = async (id: string) => {
+  const fetchChallenge = useCallback(async (id: string) => {
     try {
       setIsSubmitting(false);
       resetError();
@@ -33,7 +24,16 @@ export default function SubmitChallengeResultPage({ params }: { params: Promise<
     } catch (err) {
       console.error('Error fetching challenge:', err);
     }
-  };
+  }, [fetchChallengeById, resetError]);
+
+  // Resolve params and fetch challenge
+  useEffect(() => {
+    const load = async () => {
+      const resolvedParams = await params;
+      fetchChallenge(resolvedParams.id);
+    };
+    load();
+  }, [params, fetchChallenge]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

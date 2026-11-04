@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { PracticeCategoryEnum, EnvironmentEnum } from './practice';
 
 // Challenge status enum
 const ChallengeStatusEnum = z.enum([

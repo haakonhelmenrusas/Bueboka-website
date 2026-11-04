@@ -13,19 +13,17 @@ interface ChallengeCardProps {
 
 export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
   const {
-    canAcceptChallenge,
     canCancelChallenge,
     canSubmitResult,
     hasSubmittedResult,
     isChallengeOwner,
     getOpponentName,
-    getChallengeStatusText,
   } = useChallenges();
 
   const showAcceptDecline = challenge.status === 'PENDING';
-  const showCancel = canCancelChallenge(challenge as any);
-  const showSubmit = canSubmitResult(challenge as any);
-  const isOwner = isChallengeOwner(challenge as any);
+  const showCancel = canCancelChallenge(challenge);
+  const showSubmit = canSubmitResult(challenge);
+  const isOwner = isChallengeOwner(challenge);
   const opponentName = getOpponentName(challenge);
 
   const handleAccept = () => {
@@ -102,7 +100,7 @@ export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
         </div>
       )}
 
-      {showSubmit && !hasSubmittedResult(challenge as any) && (
+      {showSubmit && !hasSubmittedResult(challenge) && (
         <div className={styles.actions}>
           <button onClick={handleSubmit} className={styles.buttonSubmit}>
             Send inn resultat
@@ -110,7 +108,7 @@ export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
         </div>
       )}
 
-      {hasSubmittedResult(challenge as any) && challenge.status === 'ACCEPTED' && (
+      {hasSubmittedResult(challenge) && challenge.status === 'ACCEPTED' && (
         <div className={styles.submitted}>
           Resultat sendt inn ✓
         </div>

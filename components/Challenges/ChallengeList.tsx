@@ -3,7 +3,7 @@
 import type { ChallengeListItem } from '@/lib/types';
 import { ChallengeCard } from './ChallengeCard';
 import styles from './ChallengeList.module.css';
-import { useChallenges, type FetchChallengesParams } from '@/lib/hooks';
+import type { FetchChallengesParams } from '@/lib/hooks';
 
 interface ChallengeListProps {
   challenges: ChallengeListItem[];

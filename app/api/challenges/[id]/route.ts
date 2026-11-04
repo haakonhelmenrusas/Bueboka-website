@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
 import { updateChallengeSchema } from '@/lib/validations/challenge';
@@ -119,12 +120,17 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const updateData = validation.data;
 
     // Create payload and remove undefined values
-    const payload: any = { ...updateData };
-    Object.keys(payload).forEach((key) => {
+    // (zod allows null for customRules; Prisma needs the JsonNull sentinel for that)
+    const { customRules, ...rest } = updateData;
+    const payload: Prisma.ChallengeUpdateInput = {
+      ...rest,
+      customRules: customRules === null ? Prisma.JsonNull : customRules,
+    };
+    for (const key of Object.keys(payload) as Array<keyof Prisma.ChallengeUpdateInput>) {
       if (payload[key] === undefined) {
         delete payload[key];
       }
-    });
+    }
 
     const challenge = await prisma.challenge.update({
       where: { id },

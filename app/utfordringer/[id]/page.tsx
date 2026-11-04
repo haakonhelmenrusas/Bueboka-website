@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header, Footer, ChallengeDetail } from '@/components';
 import { useChallenges } from '@/lib/hooks';
@@ -9,20 +9,11 @@ import styles from './page.module.css';
 
 export default function ChallengeDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const { currentChallenge, loading, error, fetchChallengeById, acceptChallenge, declineChallenge, cancelChallenge, deleteChallenge, resetError } = useChallenges();
+  const { loading, error, fetchChallengeById, acceptChallenge, declineChallenge, cancelChallenge, deleteChallenge, resetError } = useChallenges();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Resolve params
-  useEffect(() => {
-    const load = async () => {
-      const resolvedParams = await params;
-      fetchChallenge(resolvedParams.id);
-    };
-    load();
-  }, [params]);
-
-  const fetchChallenge = async (id: string) => {
+  const fetchChallenge = useCallback(async (id: string) => {
     try {
       setIsLoading(true);
       resetError();
@@ -33,7 +24,16 @@ export default function ChallengeDetailPage({ params }: { params: Promise<{ id: 
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [fetchChallengeById, resetError]);
+
+  // Resolve params
+  useEffect(() => {
+    const load = async () => {
+      const resolvedParams = await params;
+      fetchChallenge(resolvedParams.id);
+    };
+    load();
+  }, [params, fetchChallenge]);
 
   const handleAction = async (action: 'accept' | 'decline' | 'cancel' | 'submit' | 'delete') => {
     if (!challenge) return;
