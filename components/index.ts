@@ -55,6 +55,7 @@ import {
 	ChallengeCard,
 	ChallengeList,
 	ChallengeForm,
+	ChallengeFormModal,
 	ChallengeDetail,
 	ChallengeStatusBadge,
 } from './Challenges';
@@ -116,6 +117,7 @@ export {
 	ChallengeCard,
 	ChallengeList,
 	ChallengeForm,
+	ChallengeFormModal,
 	ChallengeDetail,
 	ChallengeStatusBadge,
 };

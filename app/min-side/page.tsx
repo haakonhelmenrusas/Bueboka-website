@@ -8,6 +8,7 @@ import {
 	ArrowsModal,
 	BowModal,
 	Button,
+	ChallengeFormModal,
 	CompetitionFormModal,
 	EquipmentSection,
 	Footer,
@@ -42,6 +43,7 @@ export default function MyPage() {
 	const [practiceFormMode, setPracticeFormMode] = useState<'create' | 'edit'>('create');
 	const [competitionFormOpen, setCompetitionFormOpen] = useState(false);
 	const [competitionFormMode, setCompetitionFormMode] = useState<'create' | 'edit'>('create');
+	const [challengeFormOpen, setChallengeFormOpen] = useState(false);
 	const [selectedCompetition, setSelectedCompetition] = useState<any>(null);
 	const [bowModalOpen, setBowModalOpen] = useState(false);
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
@@ -203,7 +205,7 @@ export default function MyPage() {
 	};
 
 	const handleCreateChallenge = () => {
-		router.push('/utfordringer');
+		setChallengeFormOpen(true);
 	};
 
 	const handleSaveCompetition = async (input: CompetitionFormInput) => {
@@ -543,6 +545,11 @@ export default function MyPage() {
 				}
 				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
+			/>
+			<ChallengeFormModal
+				open={challengeFormOpen}
+				onClose={() => setChallengeFormOpen(false)}
+				onCreated={() => router.push('/utfordringer')}
 			/>
 			<WhatsNewModal open={whatsNewOpen} onClose={handleWhatsNewClose} />
 			{achievementModalOpen && unlockedAchievements.length > 0 && (
