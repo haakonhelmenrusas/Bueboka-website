@@ -4,6 +4,7 @@ import type { ChallengeListItem } from '@/lib/types';
 import { ChallengeCard } from './ChallengeCard';
 import styles from './ChallengeList.module.css';
 import type { FetchChallengesParams } from '@/lib/hooks';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ChallengeListProps {
   challenges: ChallengeListItem[];
@@ -26,13 +27,14 @@ export function ChallengeList({
   onChallengeAction,
   onPageChange,
 }: ChallengeListProps) {
+  const { t } = useTranslation();
   const totalPages = Math.ceil(pagination.total / pagination.pageSize);
 
   if (loading && challenges.length === 0) {
     return (
       <div className={styles.loading}>
         <div className={styles.spinner} />
-        <p>Laster utfordringer...</p>
+        <p>{t['challenges.loadingList']}</p>
       </div>
     );
   }
@@ -40,9 +42,9 @@ export function ChallengeList({
   if (error) {
     return (
       <div className={styles.error}>
-        <p>Feil: {error.message}</p>
+        <p>{t['challenges.errorLabel']} {error.message}</p>
         <button onClick={() => onPageChange({})} className={styles.retryButton}>
-          Prøv igjen
+          {t['challenges.retry']}
         </button>
       </div>
     );
@@ -51,8 +53,8 @@ export function ChallengeList({
   if (challenges.length === 0) {
     return (
       <div className={styles.empty}>
-        <p>Ingen utfordringer funnet</p>
-        <p>Opprett en ny utfordring for å konkurrere mot andre skyttere</p>
+        <p>{t['challenges.emptyTitle']}</p>
+        <p>{t['challenges.emptyText']}</p>
       </div>
     );
   }
@@ -76,17 +78,17 @@ export function ChallengeList({
             disabled={pagination.page === 1 || loading}
             className={styles.pageButton}
           >
-            Forrige
+            {t['common.previous']}
           </button>
           <span className={styles.pageInfo}>
-            Side {pagination.page} av {totalPages}
+            {t['common.page']} {pagination.page} {t['common.of']} {totalPages}
           </span>
           <button
             onClick={() => onPageChange({ page: Math.min(totalPages, pagination.page + 1) })}
             disabled={pagination.page === totalPages || loading}
             className={styles.pageButton}
           >
-            Neste
+            {t['common.next']}
           </button>
         </div>
       )}

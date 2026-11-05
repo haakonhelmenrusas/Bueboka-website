@@ -3,4 +3,4 @@ export { ChallengeList } from './ChallengeList';
 export { ChallengeForm } from './ChallengeForm';
 export { ChallengeFormModal } from './ChallengeFormModal';
 export { ChallengeDetail } from './ChallengeDetail';
-export { ChallengeStatusBadge, statusColors, statusTexts } from './ChallengeStatusBadge';
+export { ChallengeStatusBadge, statusColors } from './ChallengeStatusBadge';

@@ -4,6 +4,7 @@ import type { Challenge } from '@/lib/types';
 import { ChallengeStatusBadge } from './ChallengeStatusBadge';
 import styles from './ChallengeDetail.module.css';
 import { useChallenges } from '@/lib/hooks';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ChallengeDetailProps {
   challenge: Challenge;
@@ -11,6 +12,7 @@ interface ChallengeDetailProps {
 }
 
 export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
+  const { t } = useTranslation();
   const {
     canAcceptChallenge,
     canCancelChallenge,
@@ -35,7 +37,7 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
   const isCompleted = isChallengeCompleted(challenge);
 
   const formatDate = (dateString: string | null | undefined) => {
-    if (!dateString) return 'Ikke satt';
+    if (!dateString) return t['challenges.detail.notSet'];
     return new Date(dateString).toLocaleDateString('no-NO', {
       year: 'numeric',
       month: 'long',
@@ -44,7 +46,7 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
   };
 
   const formatScore = (score: number | null | undefined) => {
-    if (score === null || score === undefined) return 'Ikke sendt';
+    if (score === null || score === undefined) return t['challenges.detail.notSubmitted'];
     return score;
   };
 
@@ -63,57 +65,57 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
 
       <div className={styles.meta}>
         <div className={styles.metaItem}>
-          <span className={styles.metaLabel}>Opprettet:</span>
+          <span className={styles.metaLabel}>{t['challenges.detail.created']}</span>
           <span>{formatDate(challenge.createdAt)}</span>
         </div>
       </div>
 
       {challenge.description && (
         <div className={styles.description}>
-          <h2 className={styles.sectionTitle}>Beskrivelse</h2>
+          <h2 className={styles.sectionTitle}>{t['challenges.detail.description']}</h2>
           <p>{challenge.description}</p>
         </div>
       )}
 
       {challenge.customRules && (
         <div className={styles.rules}>
-          <h2 className={styles.sectionTitle}>Egendefinerte regler</h2>
+          <h2 className={styles.sectionTitle}>{t['challenges.detail.customRules']}</h2>
           <div className={styles.rulesGrid}>
             {challenge.customRules.distanceMeters && (
               <div className={styles.ruleItem}>
-                <span className={styles.ruleLabel}>Avstand:</span>
-                <span>{challenge.customRules.distanceMeters} meter</span>
+                <span className={styles.ruleLabel}>{t['challenges.detail.distance']}</span>
+                <span>{challenge.customRules.distanceMeters} {t['challenges.detail.meter']}</span>
               </div>
             )}
             {challenge.customRules.distanceFrom && challenge.customRules.distanceTo && (
               <div className={styles.ruleItem}>
-                <span className={styles.ruleLabel}>Avstand:</span>
+                <span className={styles.ruleLabel}>{t['challenges.detail.distance']}</span>
                 <span>
-                  {challenge.customRules.distanceFrom} - {challenge.customRules.distanceTo} meter
+                  {challenge.customRules.distanceFrom} - {challenge.customRules.distanceTo} {t['challenges.detail.meter']}
                 </span>
               </div>
             )}
             {challenge.customRules.targetSizeCm && (
               <div className={styles.ruleItem}>
-                <span className={styles.ruleLabel}>Målskive størrelse:</span>
-                <span>{challenge.customRules.targetSizeCm} cm</span>
+                <span className={styles.ruleLabel}>{t['challenges.detail.targetSize']}</span>
+                <span>{challenge.customRules.targetSizeCm} {t['challenges.detail.cm']}</span>
               </div>
             )}
             {challenge.customRules.numberArrows && (
               <div className={styles.ruleItem}>
-                <span className={styles.ruleLabel}>Antall piler:</span>
+                <span className={styles.ruleLabel}>{t['challenges.detail.arrows']}</span>
                 <span>{challenge.customRules.numberArrows}</span>
               </div>
             )}
             {challenge.customRules.arrowsWithoutScore && (
               <div className={styles.ruleItem}>
-                <span className={styles.ruleLabel}>Piler uten poeng:</span>
+                <span className={styles.ruleLabel}>{t['challenges.detail.arrowsWithoutScore']}</span>
                 <span>{challenge.customRules.arrowsWithoutScore}</span>
               </div>
             )}
             {challenge.customRules.targetType && (
               <div className={styles.ruleItem}>
-                <span className={styles.ruleLabel}>Målskive type:</span>
+                <span className={styles.ruleLabel}>{t['challenges.detail.targetType']}</span>
                 <span>{challenge.customRules.targetType}</span>
               </div>
             )}
@@ -122,27 +124,27 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
       )}
 
       <div className={styles.participants}>
-        <h2 className={styles.sectionTitle}>Deltakere</h2>
+        <h2 className={styles.sectionTitle}>{t['challenges.detail.participants']}</h2>
         <div className={styles.participantsList}>
           <div className={styles.participant}>
             <span className={styles.participantName}>
-              {isOwner ? 'Deg' : opponentName}
+              {isOwner ? t['challenges.you'] : opponentName}
             </span>
             <span className={styles.participantScore}>
-              {formatScore(userScore)} {userTotalArrows ? `(${userTotalArrows} piler)` : ''}
+              {formatScore(userScore)} {userTotalArrows ? `(${userTotalArrows} ${t['challenges.detail.arrowsCount']})` : ''}
             </span>
             {hasSubmittedResult(challenge) && (
-              <span className={styles.submittedBadge}>✓ Sendt</span>
+              <span className={styles.submittedBadge}>{t['challenges.detail.submitted']}</span>
             )}
           </div>
           <div className={styles.participant}>
             <span className={styles.participantName}>{opponentName}</span>
             <span className={styles.participantScore}>
-              {formatScore(opponentScore)} {opponentTotalArrows ? `(${opponentTotalArrows} piler)` : ''}
+              {formatScore(opponentScore)} {opponentTotalArrows ? `(${opponentTotalArrows} ${t['challenges.detail.arrowsCount']})` : ''}
             </span>
             {!isCompleted && !isOwner && (
               <span className={styles.participantStatus}>
-                {hasSubmittedResult(challenge) ? '✓ Sendt' : 'Venter'}
+                {hasSubmittedResult(challenge) ? t['challenges.detail.submitted'] : t['challenges.detail.waiting']}
               </span>
             )}
           </div>
@@ -151,9 +153,9 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
 
       {isCompleted && challenge.winnerId && (
         <div className={styles.result}>
-          <h2 className={styles.sectionTitle}>Resultat</h2>
+          <h2 className={styles.sectionTitle}>{t['challenges.detail.result']}</h2>
           <div className={styles.winner}>
-            Vinner: {challenge.winnerId === (isOwner ? challenge.challengerId : challenge.challengedId) ? 'Deg' : opponentName}
+            {t['challenges.winner']}: {challenge.winnerId === (isOwner ? challenge.challengerId : challenge.challengedId) ? t['challenges.you'] : opponentName}
           </div>
           <div className={styles.scores}>
             <span className={styles.score}>
@@ -167,29 +169,29 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
         {showAcceptDecline && (
           <>
             <button onClick={handleDecline} className={styles.buttonDecline}>
-              Avslå utfordring
+              {t['challenges.declineChallenge']}
             </button>
             <button onClick={handleAccept} className={styles.buttonAccept}>
-              Godta utfordring
+              {t['challenges.acceptChallenge']}
             </button>
           </>
         )}
 
         {showCancel && (
           <button onClick={handleCancel} className={styles.buttonCancel}>
-            Kanseller utfordring
+            {t['challenges.cancelChallenge']}
           </button>
         )}
 
         {showSubmit && (
           <button onClick={handleSubmit} className={styles.buttonSubmit}>
-            Send inn resultat
+            {t['challenges.submitResult']}
           </button>
         )}
 
         {challenge.status === 'PENDING' && isOwner && (
           <button onClick={handleDelete} className={styles.buttonDelete}>
-            Slett utfordring
+            {t['challenges.deleteChallenge']}
           </button>
         )}
       </div>

@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Header, Footer, ChallengeStatusBadge } from '@/components';
 import { useChallenges } from '@/lib/hooks';
 import type { Challenge } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './page.module.css';
 
 export default function SubmitChallengeResultPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const { error, fetchChallengeById, submitChallengeResult, resetError } = useChallenges();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
@@ -65,7 +67,7 @@ export default function SubmitChallengeResultPage({ params }: { params: Promise<
         <main id="main-content" className={styles.main}>
           <div className={styles.loading}>
             <div className={styles.spinner} />
-            <p>Laster utfordring...</p>
+            <p>{t['challenges.loading']}</p>
           </div>
         </main>
         <Footer />
@@ -79,9 +81,9 @@ export default function SubmitChallengeResultPage({ params }: { params: Promise<
       <main id="main-content" className={styles.main}>
         <div className={styles.header}>
           <button onClick={() => router.push(`/utfordringer/${challenge.id}`)} className={styles.backButton}>
-            ← Tilbake
+            ← {t['common.back']}
           </button>
-          <h1 className={styles.title}>Send inn resultat</h1>
+          <h1 className={styles.title}>{t['challenges.result.title']}</h1>
           <ChallengeStatusBadge status={challenge.status} />
         </div>
 
@@ -89,7 +91,7 @@ export default function SubmitChallengeResultPage({ params }: { params: Promise<
           <div className={styles.card}>
             <h2 className={styles.cardTitle}>{challenge.name}</h2>
             <p className={styles.cardDescription}>
-              Mot: {challenge.challenger?.name || challenge.challenged?.name || 'Ukjent'}
+              {t['challenges.opponent']}: {challenge.challenger?.name || challenge.challenged?.name || t['challenges.unknown']}
             </p>
 
             <form onSubmit={handleSubmit} className={styles.form}>
@@ -97,7 +99,7 @@ export default function SubmitChallengeResultPage({ params }: { params: Promise<
 
               <div className={styles.field}>
                 <label htmlFor="score" className={styles.label}>
-                  Totalt poeng *
+                  {t['challenges.result.scoreLabel']}
                 </label>
                 <input
                   type="number"
@@ -112,7 +114,7 @@ export default function SubmitChallengeResultPage({ params }: { params: Promise<
 
               <div className={styles.field}>
                 <label htmlFor="totalArrows" className={styles.label}>
-                  Antall piler (valgfritt)
+                  {t['challenges.result.arrowsLabel']}
                 </label>
                 <input
                   type="number"
@@ -131,14 +133,14 @@ export default function SubmitChallengeResultPage({ params }: { params: Promise<
                   className={styles.cancelButton}
                   disabled={isSubmitting}
                 >
-                  Avbryt
+                  {t['common.cancel']}
                 </button>
                 <button
                   type="submit"
                   className={styles.submitButton}
                   disabled={isSubmitting || !score}
                 >
-                  {isSubmitting ? 'Sender...' : 'Send inn resultat'}
+                  {isSubmitting ? t['common.sending'] : t['challenges.submitResult']}
                 </button>
               </div>
             </form>

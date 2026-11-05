@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import type { CreateChallengeInput, ChallengeCustomRules } from '@/lib/types';
 import type { PublicProfile } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './ChallengeForm.module.css';
 
 // Type for numeric fields in ChallengeCustomRules
@@ -16,6 +17,7 @@ interface ChallengeFormProps {
 }
 
 export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: ChallengeFormProps) {
+  const { t } = useTranslation();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [useCustomRules, setUseCustomRules] = useState(false);
@@ -33,15 +35,15 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
   useEffect(() => {
     // Set a default name
-    setName(`Utfordring mot ${opponent.name || 'skytter'}`);
-  }, [opponent.name]);
+    setName(`${t['challenges.form.defaultName']} ${opponent.name || t['challenges.unknown'].toLowerCase()}`);
+  }, [opponent.name, t]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
     if (!name.trim()) {
-      setError('Navn er påkrevd');
+      setError(t['challenges.form.nameRequired']);
       return;
     }
 
@@ -70,7 +72,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
     try {
       await onSubmit(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Kunne ikke lage utfordring');
+      setError(err instanceof Error ? err.message : t['challenges.form.createError']);
     }
   };
 
@@ -88,7 +90,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
       <div className={styles.field}>
         <label htmlFor="name" className={styles.label}>
-          Navn på utfordring *
+          {t['challenges.form.nameLabel']}
         </label>
         <input
           type="text"
@@ -102,7 +104,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
       <div className={styles.field}>
         <label htmlFor="description" className={styles.label}>
-          Beskrivelse (valgfritt)
+          {t['challenges.form.descriptionLabel']}
         </label>
         <textarea
           id="description"
@@ -110,7 +112,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
           onChange={(e) => setDescription(e.target.value)}
           className={styles.textarea}
           rows={3}
-          placeholder="Skriv en beskrivelse av utfordringen..."
+          placeholder={t['challenges.form.descriptionPlaceholder']}
         />
       </div>
 
@@ -122,18 +124,18 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
             onChange={(e) => setUseCustomRules(e.target.checked)}
             className={styles.checkbox}
           />
-          Bruk egendefinerte regler
+          {t['challenges.form.useCustomRules']}
         </label>
       </div>
 
       {useCustomRules && (
         <div className={styles.customRules}>
-          <h3 className={styles.sectionTitle}>Egendefinerte regler</h3>
+          <h3 className={styles.sectionTitle}>{t['challenges.form.customRulesTitle']}</h3>
 
           <div className={styles.rulesGrid}>
             <div className={styles.field}>
               <label htmlFor="distanceMeters" className={styles.label}>
-                Avstand (meter)
+                {t['challenges.form.distance']}
               </label>
               <input
                 type="number"
@@ -147,7 +149,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
             <div className={styles.field}>
               <label htmlFor="distanceFrom" className={styles.label}>
-                Avstand fra (meter)
+                {t['challenges.form.distanceFrom']}
               </label>
               <input
                 type="number"
@@ -161,7 +163,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
             <div className={styles.field}>
               <label htmlFor="distanceTo" className={styles.label}>
-                Avstand til (meter)
+                {t['challenges.form.distanceTo']}
               </label>
               <input
                 type="number"
@@ -175,7 +177,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
             <div className={styles.field}>
               <label htmlFor="targetSizeCm" className={styles.label}>
-                Målskive størrelse (cm)
+                {t['challenges.form.targetSize']}
               </label>
               <input
                 type="number"
@@ -189,7 +191,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
             <div className={styles.field}>
               <label htmlFor="numberArrows" className={styles.label}>
-                Antall piler
+                {t['challenges.form.numberOfArrows']}
               </label>
               <input
                 type="number"
@@ -203,7 +205,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
             <div className={styles.field}>
               <label htmlFor="arrowsWithoutScore" className={styles.label}>
-                Piler uten poeng
+                {t['challenges.form.arrowsWithoutScore']}
               </label>
               <input
                 type="number"
@@ -217,7 +219,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
             <div className={styles.field}>
               <label htmlFor="targetType" className={styles.label}>
-                Målskive type
+                {t['challenges.form.targetType']}
               </label>
               <input
                 type="text"
@@ -225,7 +227,7 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
                 value={customRules.targetType ?? ''}
                 onChange={(e) => setCustomRules((prev) => ({ ...prev, targetType: e.target.value || null }))}
                 className={styles.input}
-                placeholder="f.eks. FITA, 3D"
+                placeholder={t['challenges.form.targetTypePlaceholder']}
               />
             </div>
           </div>
@@ -234,10 +236,10 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
 
       <div className={styles.actions}>
         <button type="button" onClick={onCancel} className={styles.cancelButton} disabled={loading}>
-          Avbryt
+          {t['common.cancel']}
         </button>
         <button type="submit" className={styles.submitButton} disabled={loading}>
-          {loading ? 'Lagrer...' : 'Opprett utfordring'}
+          {loading ? t['common.saving'] : t['challenges.form.create']}
         </button>
       </div>
     </form>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { CreateChallengeInput, PublicProfile } from '@/lib/types';
 import { ChallengeForm } from './ChallengeForm';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './ChallengeFormModal.module.css';
 
 interface ChallengeFormModalProps {
@@ -17,6 +18,7 @@ interface ChallengeFormModalProps {
  * Used by the utfordringer page and the min-side quick actions.
  */
 export function ChallengeFormModal({ open, onClose, onCreated }: ChallengeFormModalProps) {
+  const { t } = useTranslation();
   const [selectedOpponent, setSelectedOpponent] = useState<PublicProfile | null>(null);
   const [profiles, setProfiles] = useState<PublicProfile[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
@@ -82,14 +84,14 @@ export function ChallengeFormModal({ open, onClose, onCreated }: ChallengeFormMo
         } catch {
           // ignore — fall back to the generic message below
         }
-        throw new Error(details?.error || 'Kunne ikke lage utfordring');
+        throw new Error(details?.error || t['challenges.form.createError']);
       }
 
       const { challenge } = await res.json();
       onClose();
       onCreated?.(challenge.id);
     } catch (err) {
-      setModalError(err instanceof Error ? err.message : 'Kunne ikke lage utfordring');
+      setModalError(err instanceof Error ? err.message : t['challenges.form.createError']);
     } finally {
       setIsSubmitting(false);
     }
@@ -102,12 +104,12 @@ export function ChallengeFormModal({ open, onClose, onCreated }: ChallengeFormMo
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         <div className={styles.modalHeader}>
           <h2 className={styles.modalTitle}>
-            Ny utfordring
+            {t['challenges.modal.title']}
             <span className={styles.modalDescription}>
-              Velg en motstander og opprett en utfordring
+              {t['challenges.modal.description']}
             </span>
           </h2>
-          <button onClick={onClose} className={styles.closeButton} aria-label="Lukk">
+          <button onClick={onClose} className={styles.closeButton} aria-label={t['common.close']}>
             &times;
           </button>
         </div>
@@ -115,16 +117,16 @@ export function ChallengeFormModal({ open, onClose, onCreated }: ChallengeFormMo
         <div className={styles.modalBody}>
           {!selectedOpponent ? (
             <div className={styles.selectOpponent}>
-              <h3 className={styles.sectionTitle}>Finn motstander</h3>
+              <h3 className={styles.sectionTitle}>{t['challenges.modal.findOpponent']}</h3>
               <input
                 type="text"
-                placeholder="Søk etter skytter..."
+                placeholder={t['challenges.modal.searchPlaceholder']}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className={styles.searchInput}
               />
 
-              {isLoadingProfiles && <p className={styles.loadingText}>Søker...</p>}
+              {isLoadingProfiles && <p className={styles.loadingText}>{t['challenges.modal.searching']}</p>}
 
               {profiles.length > 0 && (
                 <div className={styles.profilesList}>
@@ -138,7 +140,7 @@ export function ChallengeFormModal({ open, onClose, onCreated }: ChallengeFormMo
                         setProfiles([]);
                       }}
                     >
-                      <span className={styles.profileName}>{profile.name || 'Ukjent'}</span>
+                      <span className={styles.profileName}>{profile.name || t['challenges.unknown']}</span>
                       {profile.club && (
                         <span className={styles.profileClub}>{profile.club}</span>
                       )}
@@ -148,19 +150,19 @@ export function ChallengeFormModal({ open, onClose, onCreated }: ChallengeFormMo
               )}
 
               {profiles.length === 0 && searchQuery && !isLoadingProfiles && (
-                <p className={styles.noResults}>Ingen skyttere funnet</p>
+                <p className={styles.noResults}>{t['challenges.modal.noResults']}</p>
               )}
 
               <p className={styles.instruction}>
-                <strong>Eller:</strong> Be en venn om å opprette en profil og del lenken til profilen sin.
+                <strong>{t['challenges.modal.instructionPrefix']}</strong> {t['challenges.modal.instruction']}
               </p>
             </div>
           ) : (
             <div className={styles.formContainer}>
               <div className={styles.selectedOpponent}>
-                <h3 className={styles.sectionTitle}>Valgt motstander</h3>
+                <h3 className={styles.sectionTitle}>{t['challenges.modal.selectedOpponent']}</h3>
                 <div className={styles.opponentInfo}>
-                  <span className={styles.opponentName}>{selectedOpponent.name || 'Ukjent'}</span>
+                  <span className={styles.opponentName}>{selectedOpponent.name || t['challenges.unknown']}</span>
                   {selectedOpponent.club && (
                     <span className={styles.opponentClub}>{selectedOpponent.club}</span>
                   )}
@@ -169,7 +171,7 @@ export function ChallengeFormModal({ open, onClose, onCreated }: ChallengeFormMo
                   onClick={() => setSelectedOpponent(null)}
                   className={styles.changeButton}
                 >
-                  Endre motstander
+                  {t['challenges.modal.changeOpponent']}
                 </button>
               </div>
 

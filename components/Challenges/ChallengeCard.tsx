@@ -5,6 +5,7 @@ import type { ChallengeListItem } from '@/lib/types';
 import { ChallengeStatusBadge } from './ChallengeStatusBadge';
 import styles from './ChallengeCard.module.css';
 import { useChallenges } from '@/lib/hooks';
+import { useTranslation } from '@/context/LanguageProvider';
 
 interface ChallengeCardProps {
   challenge: ChallengeListItem;
@@ -12,6 +13,7 @@ interface ChallengeCardProps {
 }
 
 export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
+  const { t } = useTranslation();
   const {
     canCancelChallenge,
     canSubmitResult,
@@ -57,7 +59,7 @@ export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
 
       <div className={styles.details}>
         <span className={styles.opponent}>
-          Mot: {opponentName}
+          {t['challenges.opponent']}: {opponentName}
         </span>
         <span className={styles.date}>
           {new Date(challenge.createdAt).toLocaleDateString('no-NO')}
@@ -68,10 +70,10 @@ export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
         <div className={styles.result}>
           {challenge.winnerId ? (
             <span>
-              Vinner: {challenge.winnerId === (challenge.challengerId || challenge.challengedId) ? 'Deg' : opponentName}
+              {t['challenges.winner']}: {challenge.winnerId === (challenge.challengerId || challenge.challengedId) ? t['challenges.you'] : opponentName}
             </span>
           ) : (
-            <span>Uavgjort</span>
+            <span>{t['challenges.draw']}</span>
           )}
           {challenge.challengerScore !== null && challenge.challengedScore !== null && (
             <span className={styles.scores}>
@@ -84,10 +86,10 @@ export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
       {showAcceptDecline && !isOwner && (
         <div className={styles.actions}>
           <button onClick={handleDecline} className={styles.buttonDecline}>
-            Avslå
+            {t['challenges.decline']}
           </button>
           <button onClick={handleAccept} className={styles.buttonAccept}>
-            Godta
+            {t['challenges.accept']}
           </button>
         </div>
       )}
@@ -95,7 +97,7 @@ export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
       {showCancel && (
         <div className={styles.actions}>
           <button onClick={handleCancel} className={styles.buttonCancel}>
-            Kanseller
+            {t['challenges.cancel']}
           </button>
         </div>
       )}
@@ -103,14 +105,14 @@ export function ChallengeCard({ challenge, onAction }: ChallengeCardProps) {
       {showSubmit && !hasSubmittedResult(challenge) && (
         <div className={styles.actions}>
           <button onClick={handleSubmit} className={styles.buttonSubmit}>
-            Send inn resultat
+            {t['challenges.submitResult']}
           </button>
         </div>
       )}
 
       {hasSubmittedResult(challenge) && challenge.status === 'ACCEPTED' && (
         <div className={styles.submitted}>
-          Resultat sendt inn ✓
+          {t['challenges.resultSubmitted']}
         </div>
       )}
     </div>

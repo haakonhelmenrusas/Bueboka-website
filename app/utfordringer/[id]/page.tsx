@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Header, Footer, ChallengeDetail } from '@/components';
 import { useChallenges } from '@/lib/hooks';
 import type { Challenge } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './page.module.css';
 
 export default function ChallengeDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const { loading, error, fetchChallengeById, acceptChallenge, declineChallenge, cancelChallenge, deleteChallenge, resetError } = useChallenges();
   const [challenge, setChallenge] = useState<Challenge | null>(null);
@@ -72,7 +74,7 @@ export default function ChallengeDetailPage({ params }: { params: Promise<{ id: 
         <main id="main-content" className={styles.main}>
           <div className={styles.loading}>
             <div className={styles.spinner} />
-            <p>Laster utfordring...</p>
+            <p>{t['challenges.loading']}</p>
           </div>
         </main>
         <Footer />
@@ -86,10 +88,10 @@ export default function ChallengeDetailPage({ params }: { params: Promise<{ id: 
         <Header />
         <main id="main-content" className={styles.main}>
           <div className={styles.error}>
-            <h2>Feil</h2>
+            <h2>{t['challenges.errorTitle']}</h2>
             <p>{error.message}</p>
             <button onClick={() => router.push('/utfordringer')} className={styles.backButton}>
-              Tilbake til utfordringer
+              {t['challenges.backToList']}
             </button>
           </div>
         </main>
@@ -104,10 +106,10 @@ export default function ChallengeDetailPage({ params }: { params: Promise<{ id: 
         <Header />
         <main id="main-content" className={styles.main}>
           <div className={styles.notFound}>
-            <h2>Utfordring ikke funnet</h2>
-            <p>Beklager, vi kunne ikke finne denne utfordringen.</p>
+            <h2>{t['challenges.notFoundTitle']}</h2>
+            <p>{t['challenges.notFoundText']}</p>
             <button onClick={() => router.push('/utfordringer')} className={styles.backButton}>
-              Tilbake til utfordringer
+              {t['challenges.backToList']}
             </button>
           </div>
         </main>
@@ -122,7 +124,7 @@ export default function ChallengeDetailPage({ params }: { params: Promise<{ id: 
       <main id="main-content" className={styles.main}>
         <div className={styles.header}>
           <button onClick={() => router.push('/utfordringer')} className={styles.backButton}>
-            ← Tilbake
+            ← {t['common.back']}
           </button>
         </div>
 

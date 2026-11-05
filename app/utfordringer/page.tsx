@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Header, Footer, ChallengeList, ChallengeFormModal } from '@/components';
 import { useChallenges, type FetchChallengesParams } from '@/lib/hooks';
 import type { ChallengeStatus } from '@/lib/types';
+import { useTranslation } from '@/context/LanguageProvider';
 import styles from './page.module.css';
 
 export default function ChallengesPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const {
     challenges,
@@ -64,9 +66,9 @@ export default function ChallengesPage() {
       <Header />
       <main id="main-content" className={styles.main}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Utfordringer</h1>
+          <h1 className={styles.title}>{t['challenges.title']}</h1>
           <p className={styles.subtitle}>
-            Konkurrer mot andre skyttere i 1v1 utfordringer
+            {t['challenges.subtitle']}
           </p>
 
           <div className={styles.filterBar}>
@@ -75,10 +77,10 @@ export default function ChallengesPage() {
               onChange={(e) => setFilterStatus(e.target.value)}
               className={styles.filterSelect}
             >
-              <option value="">Alle statuser</option>
-              <option value="PENDING">Venter på svar</option>
-              <option value="ACCEPTED">Akseptert</option>
-              <option value="COMPLETED">Fullført</option>
+              <option value="">{t['challenges.filterAll']}</option>
+              <option value="PENDING">{t['challenges.status.PENDING']}</option>
+              <option value="ACCEPTED">{t['challenges.status.ACCEPTED']}</option>
+              <option value="COMPLETED">{t['challenges.status.COMPLETED']}</option>
             </select>
 
             {!sessionPending && user && (
@@ -86,7 +88,7 @@ export default function ChallengesPage() {
                 onClick={() => setShowModal(true)}
                 className={styles.createButton}
               >
-                + Ny utfordring
+                {t['challenges.createButton']}
               </button>
             )}
           </div>
