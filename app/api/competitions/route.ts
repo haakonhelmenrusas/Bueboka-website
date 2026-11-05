@@ -137,7 +137,7 @@ export async function POST(request: Request) {
 
 						return {
 							roundNumber: round.roundNumber,
-							arrows: round.numberArrows || null,
+							arrows: (round.scores?.length ?? 0) > 0 ? round.scores.length : round.numberArrows || null, // scores are authoritative for scored-arrow count
 							arrowsWithoutScore: round.arrowsWithoutScore || null,
 							scores: round.scores || [],
 							roundScore: round.roundScore || 0,
