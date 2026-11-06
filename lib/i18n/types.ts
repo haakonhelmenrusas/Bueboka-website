@@ -1036,7 +1036,6 @@ export interface TranslationKeys {
   'challenges.form.distanceTo': string;
   'challenges.form.targetSize': string;
   'challenges.form.numberOfArrows': string;
-  'challenges.form.arrowsWithoutScore': string;
   'challenges.form.targetType': string;
   'challenges.form.targetTypePlaceholder': string;
   'challenges.form.create': string;
@@ -1062,7 +1061,6 @@ export interface TranslationKeys {
   'challenges.detail.targetSize': string;
   'challenges.detail.cm': string;
   'challenges.detail.arrows': string;
-  'challenges.detail.arrowsWithoutScore': string;
   'challenges.detail.targetType': string;
   'challenges.detail.participants': string;
   'challenges.detail.arrowsCount': string;

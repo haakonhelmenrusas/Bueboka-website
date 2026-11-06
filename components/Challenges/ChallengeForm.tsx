@@ -28,7 +28,6 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
     targetType: null,
     targetSizeCm: null,
     numberArrows: null,
-    arrowsWithoutScore: null,
   });
 
   const [error, setError] = useState<string | null>(null);
@@ -61,7 +60,6 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
       if (customRules.targetType) rules.targetType = customRules.targetType;
       if (customRules.targetSizeCm !== null) rules.targetSizeCm = customRules.targetSizeCm;
       if (customRules.numberArrows !== null) rules.numberArrows = customRules.numberArrows;
-      if (customRules.arrowsWithoutScore !== null) rules.arrowsWithoutScore = customRules.arrowsWithoutScore;
 
       // Only add custom rules if at least one field is set
       if (Object.keys(rules).length > 0) {
@@ -198,20 +196,6 @@ export function ChallengeForm({ opponent, onSubmit, onCancel, loading }: Challen
                 id="numberArrows"
                 value={customRules.numberArrows ?? ''}
                 onChange={(e) => handleNumberChange('numberArrows', e.target.value)}
-                className={styles.input}
-                min="0"
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label htmlFor="arrowsWithoutScore" className={styles.label}>
-                {t['challenges.form.arrowsWithoutScore']}
-              </label>
-              <input
-                type="number"
-                id="arrowsWithoutScore"
-                value={customRules.arrowsWithoutScore ?? ''}
-                onChange={(e) => handleNumberChange('arrowsWithoutScore', e.target.value)}
                 className={styles.input}
                 min="0"
               />

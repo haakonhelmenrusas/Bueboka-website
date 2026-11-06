@@ -17,7 +17,6 @@ export const ChallengeCustomRulesSchema = z.object({
   targetType: z.string().max(50, 'Måltype må være mindre enn 50 tegn').optional().nullable(),
   targetSizeCm: z.number().int().min(0).max(500, 'Skive må være mindre enn 500 cm').optional().nullable(),
   numberArrows: z.number().int().min(1).max(10000, 'Maksimalt 10000 piler').optional().nullable(),
-  arrowsWithoutScore: z.number().int().min(0).max(500, 'Maksimalt 500 piler uten scoring').optional().nullable(),
 });
 
 // Schema for creating a challenge

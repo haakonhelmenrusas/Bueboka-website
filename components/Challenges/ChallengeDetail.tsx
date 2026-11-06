@@ -107,12 +107,6 @@ export function ChallengeDetail({ challenge, onAction }: ChallengeDetailProps) {
                 <span>{challenge.customRules.numberArrows}</span>
               </div>
             )}
-            {challenge.customRules.arrowsWithoutScore && (
-              <div className={styles.ruleItem}>
-                <span className={styles.ruleLabel}>{t['challenges.detail.arrowsWithoutScore']}</span>
-                <span>{challenge.customRules.arrowsWithoutScore}</span>
-              </div>
-            )}
             {challenge.customRules.targetType && (
               <div className={styles.ruleItem}>
                 <span className={styles.ruleLabel}>{t['challenges.detail.targetType']}</span>
