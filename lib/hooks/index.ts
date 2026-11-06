@@ -3,3 +3,4 @@ export { useEscapeKey } from './useEscapeKey';
 export { useFocusTrap } from './useFocusTrap';
 export { useModalBehavior } from './useModalBehavior';
 export { useLanguage } from './useLanguage';
+export { useChallenges, type FetchChallengesParams } from './useChallenges';

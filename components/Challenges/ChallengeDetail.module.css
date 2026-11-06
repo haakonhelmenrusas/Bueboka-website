@@ -1,0 +1,240 @@
+.container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #053546;
+  margin: 0;
+  flex: 1;
+  margin-right: 12px;
+}
+
+.meta {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #666;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.metaLabel {
+  font-weight: 600;
+  color: #053546;
+  margin-bottom: 4px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #053546;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.description {
+  margin-bottom: 24px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.rules {
+  margin-bottom: 24px;
+}
+
+.rulesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.ruleItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.ruleLabel {
+  font-weight: 500;
+  color: #666;
+}
+
+.participants {
+  margin-bottom: 24px;
+}
+
+.participantsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.participant {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+}
+
+.participantName {
+  font-weight: 600;
+  color: #053546;
+  flex: 1;
+}
+
+.participantScore {
+  color: #666;
+}
+
+.submittedBadge {
+  color: #2ECC71;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.participantStatus {
+  color: #95A5A6;
+  font-size: 12px;
+}
+
+.result {
+  text-align: center;
+  padding: 20px;
+  background: #f0f8ff;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.winner {
+  font-size: 20px;
+  font-weight: 600;
+  color: #053546;
+  margin-bottom: 8px;
+}
+
+.scores {
+  font-size: 18px;
+}
+
+.score {
+  font-weight: 600;
+  color: #053546;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.buttonAccept {
+  padding: 10px 24px;
+  background: #2ECC71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonAccept:hover {
+  background: #27AE60;
+}
+
+.buttonDecline {
+  padding: 10px 24px;
+  background: #E74C3C;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonDecline:hover {
+  background: #C0392B;
+}
+
+.buttonCancel {
+  padding: 10px 24px;
+  background: #95A5A6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonCancel:hover {
+  background: #7F8C8D;
+}
+
+.buttonSubmit {
+  padding: 10px 24px;
+  background: #3498DB;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonSubmit:hover {
+  background: #2980B9;
+}
+
+.buttonDelete {
+  padding: 10px 24px;
+  background: #E74C3C;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonDelete:hover {
+  background: #C0392B;
+}
+
+@media (max-width: 600px) {
+  .rulesGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .actions {
+    flex-direction: column;
+  }
+}

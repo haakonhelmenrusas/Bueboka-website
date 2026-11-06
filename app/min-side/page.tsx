@@ -8,6 +8,7 @@ import {
 	ArrowsModal,
 	BowModal,
 	Button,
+	ChallengeFormModal,
 	CompetitionFormModal,
 	EquipmentSection,
 	Footer,
@@ -42,6 +43,7 @@ export default function MyPage() {
 	const [practiceFormMode, setPracticeFormMode] = useState<'create' | 'edit'>('create');
 	const [competitionFormOpen, setCompetitionFormOpen] = useState(false);
 	const [competitionFormMode, setCompetitionFormMode] = useState<'create' | 'edit'>('create');
+	const [challengeFormOpen, setChallengeFormOpen] = useState(false);
 	const [selectedCompetition, setSelectedCompetition] = useState<any>(null);
 	const [bowModalOpen, setBowModalOpen] = useState(false);
 	const [arrowsModalOpen, setArrowsModalOpen] = useState(false);
@@ -202,6 +204,10 @@ export default function MyPage() {
 		}
 	};
 
+	const handleCreateChallenge = () => {
+		setChallengeFormOpen(true);
+	};
+
 	const handleSaveCompetition = async (input: CompetitionFormInput) => {
 		const isEditMode = competitionFormMode === 'edit';
 		const url = isEditMode && selectedCompetition ? `/api/competitions/${selectedCompetition.id}` : '/api/competitions';
@@ -353,6 +359,7 @@ export default function MyPage() {
 						setCompetitionFormMode('create');
 						setCompetitionFormOpen(true);
 					}}
+					onCreateChallenge={handleCreateChallenge}
 					onCreateBow={() => {
 						setSelectedBow(null);
 						setBowModalOpen(true);
@@ -539,6 +546,11 @@ export default function MyPage() {
 				bows={bows.map((b) => ({ id: b.id, name: b.name, type: b.type, isFavorite: (b as any).isFavorite }))}
 				arrows={arrows.map((a) => ({ id: a.id, name: a.name, material: a.material, isFavorite: (a as any).isFavorite }))}
 			/>
+			<ChallengeFormModal
+				open={challengeFormOpen}
+				onClose={() => setChallengeFormOpen(false)}
+				onCreated={() => router.push('/utfordringer')}
+			/>
 			<WhatsNewModal open={whatsNewOpen} onClose={handleWhatsNewClose} />
 			{achievementModalOpen && unlockedAchievements.length > 0 && (
 				<AchievementUnlockModal
@@ -559,6 +571,7 @@ export default function MyPage() {
 					setCompetitionFormMode('create');
 					setCompetitionFormOpen(true);
 				}}
+				onCreateChallenge={handleCreateChallenge}
 				onCreateBow={() => {
 					setSelectedBow(null);
 					setBowModalOpen(true);

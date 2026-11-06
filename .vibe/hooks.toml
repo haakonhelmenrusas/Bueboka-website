@@ -1,0 +1,15 @@
+# Project-local Vibe hooks. Loaded only when this folder is trusted
+# (see ~/.vibe/trusted_folders.toml). Hook docs:
+# https://docs.mistral.ai/vibe/code/overview
+
+# AGENTS.md forbids `npm update` / `npm upgrade`: versions are bumped manually
+# in package.json, then `npm install` updates the lockfile. Deny the command
+# outright instead of relying on the model remembering the rule.
+[[hooks]]
+name = "deny-npm-update"
+type = "pre_tool"
+match = "re:bash|process_start"
+strict = true
+command = "sh .vibe/hooks/deny-npm-update.sh"
+timeout = 10.0
+description = "Deny npm update/upgrade — bump package.json manually (AGENTS.md)"

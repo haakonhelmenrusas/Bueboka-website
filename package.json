@@ -18,20 +18,21 @@
 		"db:up": "docker compose up -d db",
 		"db:down": "docker compose down",
 		"db:reset": "docker compose down -v && docker compose up -d db",
-		"prisma:push": "prisma db push"
+		"prisma:push": "prisma db push",
+		"postinstall": "prisma generate"
 	},
 	"dependencies": {
-		"@better-auth/expo": "^1.7.14",
+		"@better-auth/expo": "1.7.18",
 		"@microsoft/clarity": "^1.0.2",
 		"@prisma/adapter-pg": "^7.10.1",
 		"@prisma/client": "^7.10.1",
 		"@prisma/extension-accelerate": "^3.0.1",
 		"bcrypt": "^6.0.0",
-		"better-auth": "^1.7.14",
+		"better-auth": "1.7.18",
 		"dotenv": "^18.0.9",
 		"html-to-image": "^1.11.13",
 		"motion": "^14.6.0",
-		"next": "^16.4.3",
+		"next": "16.4.5",
 		"pg": "^8.23.1",
 		"react": "^19.3.1",
 		"react-dom": "^19.3.1",
@@ -43,12 +44,12 @@
 	},
 	"overrides": {
 		"deepmerge-ts": "^8.0.2",
-		"@better-auth/core": "1.7.14"
+		"@better-auth/core": "1.7.18"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^21.2.4",
 		"@commitlint/config-conventional": "^21.2.4",
-		"@next/eslint-plugin-next": "^16.4.3",
+		"@next/eslint-plugin-next": "^16.4.5",
 		"@testing-library/dom": "^10.4.2",
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.2",
@@ -60,7 +61,7 @@
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",
 		"eslint": "^10.13.0",
-		"eslint-config-next": "^16.4.3",
+		"eslint-config-next": "^16.4.5",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-prettier": "^5.5.7",
 		"eslint-plugin-react-hooks": "^7.1.1",
@@ -70,6 +71,7 @@
 		"prettier": "^3.9.10",
 		"prisma": "^7.10.1",
 		"tsx": "^4.23.15",
-		"typescript": "^6.0.3"
+		"typescript": "^6.0.3",
+		"typescript-eslint": "^8.60.1"
 	}
 }

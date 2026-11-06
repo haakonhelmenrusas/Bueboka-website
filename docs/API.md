@@ -888,6 +888,61 @@ Version fields must be valid semver (`X.Y.Z`). If no version record exists yet, 
 
 Invalidates the `app:version` cache. **Response 200:** same shape as `GET /api/app/version`.
 
+### Notifications
+
+In-app notifications, consumed by the mobile app's `varsler` screen and badge. Challenge actions create them server-side: `POST /api/challenges` notifies the challenged user (`CHALLENGE_RECEIVED`), `accept`/`decline` notify the challenger (`CHALLENGE_ACCEPTED`/`CHALLENGE_DECLINED`), `cancel` notifies the challenged user (`CHALLENGE_CANCELLED`), and `submit` notifies the opponent (`CHALLENGE_SUBMITTED`). If the recipient has a registered Expo push token, a push notification is also sent via the Expo Push API (best-effort; delivery failure never fails the API request).
+
+Notification shape:
+
+```json
+{
+  "id": "string",
+  "type": "CHALLENGE_RECEIVED | CHALLENGE_SENT | CHALLENGE_ACCEPTED | CHALLENGE_DECLINED | CHALLENGE_CANCELLED | CHALLENGE_SUBMITTED",
+  "title": "string (Norwegian)",
+  "message": "string (Norwegian)",
+  "challengeId": "string | null",
+  "read": false,
+  "createdAt": "ISO date"
+}
+```
+
+#### `GET /api/notifications` — List notifications
+
+**Auth:** required. Query params: `?unreadOnly=true` to return only unread.
+
+**Response 200:**
+
+```json
+{
+  "notifications": ["Notification"],
+  "unreadCount": 3
+}
+```
+
+Newest first, capped at 100. `unreadCount` is always the total unread count for the user (for badge rendering), regardless of `unreadOnly`.
+
+#### `PATCH /api/notifications/read-all` — Mark all as read
+
+**Auth:** required. No body. **Response 200:** `{ "success": true, "updated": 3 }`
+
+#### `PATCH /api/notifications/:id` — Mark one as read/unread
+
+**Auth:** required. Body: `{ "read": true }`. Returns `404` if the notification does not exist or belongs to another user (never `403`, to avoid revealing existence).
+
+**Response 200:** `{ "notification": { "...": "Notification" } }`
+
+#### `DELETE /api/notifications/:id` — Delete a notification
+
+**Auth:** required, same ownership rule as PATCH (`404` otherwise). **Response 204** with empty body.
+
+#### `POST /api/notifications/push-token` — Register Expo push token
+
+**Auth:** required. Body: `{ "token": "ExponentPushToken[...]" }` (or `ExpoPushToken[...]`). Stored on the user record; used for push delivery. Call after login and whenever the token rotates. **Response 200:** `{ "success": true }`
+
+#### `DELETE /api/notifications/push-token` — Unregister push token
+
+**Auth:** required. Clears the stored token (e.g. on logout). **Response 200:** `{ "success": true }`
+
 ---
 
 ## Known issues
