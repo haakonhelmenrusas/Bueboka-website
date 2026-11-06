@@ -1,0 +1,135 @@
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #053546;
+  text-decoration: none;
+  flex: 1;
+  margin-right: 12px;
+}
+
+.title:hover {
+  color: #29B6F6;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #666;
+}
+
+.opponent {
+  font-weight: 500;
+}
+
+.result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.scores {
+  font-weight: 600;
+  color: #053546;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.buttonAccept {
+  padding: 8px 20px;
+  background: #2ECC71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonAccept:hover {
+  background: #27AE60;
+}
+
+.buttonDecline {
+  padding: 8px 20px;
+  background: #E74C3C;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonDecline:hover {
+  background: #C0392B;
+}
+
+.buttonCancel {
+  padding: 8px 20px;
+  background: #95A5A6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonCancel:hover {
+  background: #7F8C8D;
+}
+
+.buttonSubmit {
+  padding: 8px 20px;
+  background: #3498DB;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.buttonSubmit:hover {
+  background: #2980B9;
+}
+
+.submitted {
+  padding: 12px;
+  text-align: center;
+  color: #2ECC71;
+  font-size: 14px;
+  font-weight: 500;
+}

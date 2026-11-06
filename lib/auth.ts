@@ -75,8 +75,8 @@ export const auth = betterAuth({
 		verificationTokenExpiresIn: 60 * 60 * 24, // 24 hours
 	},
 	session: {
-		expiresIn: 60 * 60 * 24 * 7,
-		updateAge: 60 * 60 * 24,
+		expiresIn: 60 * 60 * 24 * 30,
+		updateAge: 60 * 60 * 24 * 7,
 	},
 	advanced: {
 		generateId: false,

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useRef, useState } from 'react';
-import { LuPlus, LuTarget, LuTrophy, LuX } from 'react-icons/lu';
+import { LuPlus, LuTarget, LuTrophy, LuX, LuSwords } from 'react-icons/lu';
 import { GiBowArrow, GiArrowhead } from 'react-icons/gi';
 import styles from './MobileActionButton.module.css';
 import { useClickOutside, useEscapeKey } from '@/lib/hooks';
@@ -10,6 +10,7 @@ import { useTranslation } from '@/context/LanguageProvider';
 export interface MobileActionButtonProps {
 	onCreatePractice: () => void;
 	onCreateCompetition: () => void;
+	onCreateChallenge: () => void;
 	onCreateBow: () => void;
 	onCreateArrows: () => void;
 }
@@ -23,6 +24,7 @@ interface ActionItem {
 export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 	onCreatePractice,
 	onCreateCompetition,
+	onCreateChallenge,
 	onCreateBow,
 	onCreateArrows,
 }) => {
@@ -50,6 +52,14 @@ export const MobileActionButton: React.FC<MobileActionButtonProps> = ({
 			icon: <LuTrophy size={18} />,
 			onClick: () => {
 				onCreateCompetition();
+				close();
+			},
+		},
+		{
+			label: t['quickAction.newChallenge'],
+			icon: <LuSwords size={18} />,
+			onClick: () => {
+				onCreateChallenge();
 				close();
 			},
 		},
