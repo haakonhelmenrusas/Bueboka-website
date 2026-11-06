@@ -6,7 +6,7 @@ Summary of Bueboka's security posture, the measures in place, and best practices
 
 ## Authentication
 
-Auth is handled by [Better Auth](https://www.better-auth.com/) v1.7.2 with the Prisma adapter.
+Auth is handled by [Better Auth](https://www.better-auth.com/) v1.7.18 with the Prisma adapter.
 
 ### Password policy
 
