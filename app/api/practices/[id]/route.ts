@@ -99,7 +99,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
 			return {
 				practiceId: practiceId,
-				arrows: (round.scores?.length ?? 0) > 0 ? round.scores.length : round.numberArrows || null, // scores are authoritative for scored-arrow count
+				arrows: Array.isArray(round.scores) && round.scores.length > 0 ? round.scores.length : round.numberArrows || null, // scores are authoritative for scored-arrow count
 				arrowsWithoutScore: round.arrowsWithoutScore || null,
 				scores: round.scores || [],
 				arrowCoordinates: round.arrowCoordinates || Prisma.JsonNull,

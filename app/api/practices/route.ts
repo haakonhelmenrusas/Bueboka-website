@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
 					const roundAny = round as any;
 
 					return {
-						arrows: (round.scores?.length ?? 0) > 0 ? round.scores.length : round.numberArrows || null, // scores are authoritative for scored-arrow count
+						arrows: Array.isArray(round.scores) && round.scores.length > 0 ? round.scores.length : round.numberArrows || null, // scores are authoritative for scored-arrow count
 						arrowsWithoutScore: round.arrowsWithoutScore || null,
 						scores: round.scores || [],
 						arrowCoordinates: round.arrowCoordinates || Prisma.JsonNull,
