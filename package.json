@@ -24,6 +24,7 @@
 	"dependencies": {
 		"@better-auth/expo": "1.7.18",
 		"@microsoft/clarity": "^1.0.2",
+		"@netlify/blobs": "^11.1.7",
 		"@prisma/adapter-pg": "^7.10.1",
 		"@prisma/client": "^7.10.1",
 		"@prisma/extension-accelerate": "^3.0.1",
