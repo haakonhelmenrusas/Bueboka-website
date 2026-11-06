@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { deleteAvatar } from '@/lib/avatarStorage';
 
 export async function DELETE(request: Request) {
 	try {
@@ -42,6 +43,9 @@ export async function DELETE(request: Request) {
 			// Finally delete user
 			await tx.user.delete({ where: { id: user.id } });
 		});
+
+		// Remove the stored avatar file (best effort)
+		await deleteAvatar(user.id);
 
 		return new NextResponse(null, { status: 204 });
 	} catch (error) {

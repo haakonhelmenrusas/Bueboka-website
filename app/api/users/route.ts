@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { userProfileCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { deleteAvatar, isAvatarDataUri, saveAvatar } from '@/lib/avatarStorage';
 
 export async function GET(request: NextRequest) {
 	try {
@@ -88,12 +89,32 @@ export async function PATCH(request: NextRequest) {
 			}
 		}
 
+		// Store uploaded avatars as files (Netlify Blob) and keep only the URL
+		// on the user row — a data URI would bloat every session response.
+		let imageToStore: string | null | undefined = image;
+		if (image === null) {
+			await deleteAvatar(user.id);
+		} else if (isAvatarDataUri(image)) {
+			try {
+				imageToStore = await saveAvatar(user.id, image);
+			} catch {
+				return NextResponse.json({ error: 'Invalid image data' }, { status: 400 });
+			}
+		} else if (image === undefined && isAvatarDataUri(user.image)) {
+			// Migrate legacy data-URI avatars to file storage on the next update
+			try {
+				imageToStore = await saveAvatar(user.id, user.image);
+			} catch {
+				imageToStore = undefined; // keep the old value if migration fails
+			}
+		}
+
 		const updatedUser = await prisma.user.update({
 			where: { id: user.id },
 			data: {
 				...(club !== undefined && { club: normalizedClub }),
 				...(name !== undefined && { name }),
-				...(image !== undefined && { image }),
+				...(imageToStore !== undefined && { image: imageToStore }),
 				...(skytternr !== undefined && { skytternr }),
 				...(isPublic !== undefined && { isPublic }),
 				...(publicName !== undefined && { publicName }),
