@@ -14,13 +14,14 @@ export interface AccordionItem {
 interface AccordionProps {
 	items: AccordionItem[];
 	defaultOpenId?: string;
+	className?: string;
 }
 
-export function Accordion({ items, defaultOpenId }: AccordionProps) {
+export function Accordion({ items, defaultOpenId, className }: AccordionProps) {
 	const [openId, setOpenId] = useState<string | null>(defaultOpenId ?? null);
 
 	return (
-		<div className={styles.accordion}>
+		<div className={`${styles.accordion}${className ? ` ${className}` : ''}`}>
 			{items.map((item) => {
 				const isOpen = openId === item.id;
 				return (
