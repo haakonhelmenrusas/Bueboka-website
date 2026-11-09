@@ -43,3 +43,7 @@
 .accordionLg [role='region'] p {
 	margin: 0;
 }
+
+.preline {
+	white-space: pre-line;
+}

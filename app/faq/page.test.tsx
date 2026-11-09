@@ -49,4 +49,28 @@ describe('FAQ page', () => {
 		fireEvent.click(screen.getByText(/registrerer jeg en økt med scoring/));
 		expect(screen.getByText(/Piler m\/score/)).toBeTruthy();
 	});
+
+	it('includes the sight mark guide with steps and a screenshot', () => {
+		render(<FaqPage />);
+
+		fireEvent.click(screen.getByText(/siktemerke i appen/));
+		expect(screen.getByText(/Ny innskyting/)).toBeTruthy();
+		expect(screen.getByText(/Beregn siktemerker/)).toBeTruthy();
+
+		const img = screen.getByAltText(/siktemerker-fanen/);
+		expect(img.getAttribute('src')).toBe('/assets/faq/faq-siktemerker.jpg');
+	});
+
+	it('shows an app screenshot inside the equipment and practice answers', () => {
+		render(<FaqPage />);
+
+		fireEvent.click(screen.getByText('Hvordan legger jeg til en bue?'));
+		expect(screen.getByAltText(/hjemmeskjermen/).getAttribute('src')).toBe('/assets/faq/faq-home.jpg');
+
+		fireEvent.click(screen.getByText(/bare teller piler/));
+		expect(screen.getByAltText(/Skyt og klikk/).getAttribute('src')).toBe('/assets/faq/faq-skyt-og-klikk.jpg');
+
+		fireEvent.click(screen.getByText(/registrerer jeg en økt med scoring/));
+		expect(screen.getByAltText(/aktivitetsoversikt/).getAttribute('src')).toBe('/assets/faq/faq-aktivitet.jpg');
+	});
 });

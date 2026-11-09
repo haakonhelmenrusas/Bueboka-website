@@ -5,6 +5,7 @@ import { Accordion, type AccordionItem } from '@/components/common/Accordion/Acc
 import { useTranslation } from '@/context/LanguageProvider';
 import {
 	LuArrowRight,
+	LuCalculator,
 	LuCircleHelp,
 	LuListChecks,
 	LuMousePointerClick,
@@ -27,24 +28,35 @@ export default function FaqPage() {
 			title: t['faq.q2.title'],
 			icon: <LuTarget size={22} />,
 			content: <p>{t['faq.a2.body']}</p>,
+			image: { src: '/assets/faq/faq-home.jpg', alt: t['faq.img.home'] },
 		},
 		{
 			id: 'add-arrows',
 			title: t['faq.q3.title'],
 			icon: <LuArrowRight size={22} />,
 			content: <p>{t['faq.a3.body']}</p>,
+			image: { src: '/assets/faq/faq-home.jpg', alt: t['faq.img.home'] },
 		},
 		{
 			id: 'practice-no-scoring',
 			title: t['faq.q4.title'],
 			icon: <LuMousePointerClick size={22} />,
 			content: <p>{t['faq.a4.body']}</p>,
+			image: { src: '/assets/faq/faq-skyt-og-klikk.jpg', alt: t['faq.img.quick'] },
 		},
 		{
 			id: 'practice-scoring',
 			title: t['faq.q5.title'],
 			icon: <LuListChecks size={22} />,
 			content: <p>{t['faq.a5.body']}</p>,
+			image: { src: '/assets/faq/faq-aktivitet.jpg', alt: t['faq.img.activity'] },
+		},
+		{
+			id: 'add-sight-mark',
+			title: t['faq.q6.title'],
+			icon: <LuCalculator size={22} />,
+			content: <p className={styles.preline}>{t['faq.a6.body']}</p>,
+			image: { src: '/assets/faq/faq-siktemerker.jpg', alt: t['faq.img.sightmarks'] },
 		},
 	];
 

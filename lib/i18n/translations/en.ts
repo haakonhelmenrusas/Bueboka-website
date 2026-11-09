@@ -1085,4 +1085,10 @@ export const en: TranslationKeys = {
   'faq.a4.body': 'Click "New practice" and add a round with distance and target. In the "Arrows w/o score" field, enter how many arrows you shot without recording scores — typically warm-up or dry practice. Save the session. In the app you do the same with "Shoot and click" inside the round, and the count is added to "Arrows w/o score" automatically.',
   'faq.q5.title': 'How do I log a session with scoring?',
   'faq.a5.body': 'Click "New practice" and add a round with distance and target. Fill in "Arrows w/score" and optionally "Arrows / end", then enter the score for each arrow in the end — or the total in "Score". When you save, the session appears in your activity and statistics.',
+  'faq.q6.title': 'How do I add a sight mark in the app?',
+  'faq.a6.body': 'Open the "Sight marks" tab at the bottom of the app.\n1. Choose "Calibration" and press "New calibration".\n2. Give the calibration a name (optional, e.g. "Outdoor 2025"), choose the distance and enter your mark at that distance.\n3. Save, and repeat for more distances — the more distances you have, the better the calculation.\n4. Go to the "Sight marks" tab and press "Calculate sight marks". The app then computes marks for distances between "From distance" and "To distance", based on the ballistics of your bow and arrow set.',
+  'faq.img.home': 'The Bueboka app: home screen with equipment and quick actions',
+  'faq.img.quick': 'The Bueboka app: "Shoot and click" to count arrows without scoring',
+  'faq.img.activity': 'The Bueboka app: activity overview with saved sessions and scores',
+  'faq.img.sightmarks': 'The Bueboka app: the sight marks tab',
 };

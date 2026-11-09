@@ -1085,4 +1085,10 @@ export const no: TranslationKeys = {
   'faq.a4.body': 'Klikk «Ny trening» og legg til en runde med avstand og skive. I feltet «Piler u/score» skriver du hvor mange piler du har skutt uten å føre poeng — typisk oppvarming eller tørrtrening. Lagre økten. I appen gjør du det samme med «Skyt og klikk» inne i runden, og antallet havner automatisk i «Piler u/score».',
   'faq.q5.title': 'Hvordan registrerer jeg en økt med scoring?',
   'faq.a5.body': 'Klikk «Ny trening» og legg til en runde med avstand og skive. Fyll inn «Piler m/score» og eventuelt «Piler / serie», og før deretter poeng for hver pil i serien — eller totalsummen i «Score». Når du lagrer, havner økten i aktiviteten og statistikken din.',
+  'faq.q6.title': 'Hvordan legger jeg til et siktemerke i appen?',
+  'faq.a6.body': 'Åpne fanen «Siktemerker» nederst i appen.\n1. Velg «Innskyting» og trykk «Ny innskyting».\n2. Gi innskytingen et navn (valgfritt, f.eks. «Utendørs 2025»), velg avstand og skriv inn merket ditt på den avstanden.\n3. Lagre, og gjenta for flere avstander — jo flere avstander du har, jo bedre blir beregningen.\n4. Gå til fanen «Siktemerker» og trykk «Beregn siktemerker». Appen beregner da merker for avstander mellom «Fra avstand» og «Til avstand», basert på ballistikken for buen og pilsettet ditt.',
+  'faq.img.home': 'Bueboka-appen: hjemmeskjermen med utstyr og hurtigvalg',
+  'faq.img.quick': 'Bueboka-appen: «Skyt og klikk» for å telle piler uten scoring',
+  'faq.img.activity': 'Bueboka-appen: aktivitetsoversikt med lagrede økter og score',
+  'faq.img.sightmarks': 'Bueboka-appen: siktemerker-fanen',
 };

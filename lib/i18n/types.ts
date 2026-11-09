@@ -1085,4 +1085,10 @@ export interface TranslationKeys {
   'faq.a4.body': string;
   'faq.q5.title': string;
   'faq.a5.body': string;
+  'faq.q6.title': string;
+  'faq.a6.body': string;
+  'faq.img.home': string;
+  'faq.img.quick': string;
+  'faq.img.activity': string;
+  'faq.img.sightmarks': string;
 }
