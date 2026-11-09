@@ -19,6 +19,7 @@ export interface TranslationKeys {
   'nav.toggleMobileMenu': string;
   'nav.goDashboard': string;
   'nav.menu': string;
+  'nav.faq': string;
 
   // Hero section
   'hero.subtitle': string;
@@ -1070,4 +1071,24 @@ export interface TranslationKeys {
   'challenges.result.title': string;
   'challenges.result.scoreLabel': string;
   'challenges.result.arrowsLabel': string;
+
+  // FAQ page
+  'faq.title': string;
+  'faq.subtitle': string;
+  'faq.q1.title': string;
+  'faq.a1.body': string;
+  'faq.q2.title': string;
+  'faq.a2.body': string;
+  'faq.q3.title': string;
+  'faq.a3.body': string;
+  'faq.q4.title': string;
+  'faq.a4.body': string;
+  'faq.q5.title': string;
+  'faq.a5.body': string;
+  'faq.q6.title': string;
+  'faq.a6.body': string;
+  'faq.img.home': string;
+  'faq.img.quick': string;
+  'faq.img.activity': string;
+  'faq.img.sightmarks': string;
 }

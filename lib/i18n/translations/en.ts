@@ -19,6 +19,7 @@ export const en: TranslationKeys = {
   'nav.toggleMobileMenu': 'Toggle mobile menu',
   'nav.goDashboard': 'Go to dashboard',
   'nav.menu': 'Menu',
+  'nav.faq': 'FAQ',
 
   // Hero section
   'hero.subtitle': 'Track your training, results and equipment. Built for archers – by archers.',
@@ -1070,4 +1071,24 @@ export const en: TranslationKeys = {
   'challenges.result.title': 'Submit result',
   'challenges.result.scoreLabel': 'Total score *',
   'challenges.result.arrowsLabel': 'Number of arrows (optional)',
+
+  // FAQ page
+  'faq.title': 'Frequently asked questions',
+  'faq.subtitle': 'Here you will find answers to the questions we get most often — what Bueboka is, and how to get started with equipment and sessions.',
+  'faq.q1.title': 'What is Bueboka?',
+  'faq.a1.body': 'Bueboka is a free service for archery. You can log practice sessions and competitions, keep track of your bows and arrow sets, follow your statistics, save sight marks, and challenge other archers to a duel. Bueboka is available as an app for iOS and Android, and at bueboka.no.',
+  'faq.q2.title': 'How do I add a bow?',
+  'faq.a2.body': 'Log in and go to "My page". Under "Equipment" click "Add bow". Choose the bow type (e.g. recurve or compound), give the bow a name, and optionally fill in advanced measurements such as draw weight, bow length, limbs and riser. Mark "Favorite bow" if it should be suggested first when logging a session.',
+  'faq.q3.title': 'How do I add an arrow set?',
+  'faq.a3.body': 'In the same place: under "Equipment" on "My page" click "Add arrows". Give the arrow set a name and fill in material, length, spine and point weight if you like. You can also mark it as a favorite.',
+  'faq.q4.title': 'How do I log a session where I only count arrows (no scoring)?',
+  'faq.a4.body': 'Click "New practice" and add a round with distance and target. In the "Arrows w/o score" field, enter how many arrows you shot without recording scores — typically warm-up or dry practice. Save the session. In the app you do the same with "Shoot and click" inside the round, and the count is added to "Arrows w/o score" automatically.',
+  'faq.q5.title': 'How do I log a session with scoring?',
+  'faq.a5.body': 'Click "New practice" and add a round with distance and target. Fill in "Arrows w/score" and optionally "Arrows / end", then enter the score for each arrow in the end — or the total in "Score". When you save, the session appears in your activity and statistics.',
+  'faq.q6.title': 'How do I add a sight mark in the app?',
+  'faq.a6.body': 'Open the "Sight marks" tab at the bottom of the app.\n1. Choose "Calibration" and press "New calibration".\n2. Give the calibration a name (optional, e.g. "Outdoor 2025"), choose the distance and enter your mark at that distance.\n3. Save, and repeat for more distances — the more distances you have, the better the calculation.\n4. Go to the "Sight marks" tab and press "Calculate sight marks". The app then computes marks for distances between "From distance" and "To distance", based on the ballistics of your bow and arrow set.',
+  'faq.img.home': 'The Bueboka app: home screen with equipment and quick actions',
+  'faq.img.quick': 'The Bueboka app: "Shoot and click" to count arrows without scoring',
+  'faq.img.activity': 'The Bueboka app: activity overview with saved sessions and scores',
+  'faq.img.sightmarks': 'The Bueboka app: the sight marks tab',
 };

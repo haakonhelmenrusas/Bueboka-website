@@ -11,7 +11,7 @@ import { useClickOutside, useEscapeKey, useFocusTrap } from '@/lib/hooks';
 import { useFeedback } from '@/context/FeedbackProvider';
 import { useTranslation } from '@/context/LanguageProvider';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher/LanguageSwitcher';
-import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX, LuTarget } from 'react-icons/lu';
+import { LuActivity, LuLogOut, LuMenu, LuMessageSquare, LuSettings, LuCalculator, LuUser, LuUsers, LuX, LuTarget, LuCircleHelp } from 'react-icons/lu';
 
 function MenuIcon({ open }: { open: boolean }) {
 	return (
@@ -127,6 +127,9 @@ export function Header() {
 					</Link>
 
 					<nav className={styles.desktopNav} aria-label="Primary">
+						<Link href="/faq" className={styles.navLink}>
+							{t['nav.faq']}
+						</Link>
 						{!isAuthPage && (
 							<>
 								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.navLink}>
@@ -218,6 +221,10 @@ export function Header() {
 										<LuCalculator size={16} />
 										<span>{t['nav.sightMarks']}</span>
 									</Link>
+									<Link href="/faq" onClick={closeProfileMenu} className={styles.profileMenuLink} role="menuitem">
+										<LuCircleHelp size={16} />
+										<span>{t['nav.faq']}</span>
+									</Link>
 									<button className={styles.profileMenuItem} onClick={handleFeedbackClick} role="menuitem">
 										<LuMessageSquare size={16} />
 										<span>{t['nav.feedback']}</span>
@@ -242,6 +249,9 @@ export function Header() {
 				{/* Mobile Navigation (unauthenticated only) */}
 				<nav id="mobile-menu" className={`${styles.mobileNav} ${mobileMenuOpen ? styles.mobileNavOpen : ''}`}>
 					<div className={styles.mobileLinks}>
+						<Link href="/faq" onClick={closeMobileMenu} className={styles.mobileLink}>
+							{t['nav.faq']}
+						</Link>
 						{!isAuthPage && (
 							<>
 								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.mobileLink}>

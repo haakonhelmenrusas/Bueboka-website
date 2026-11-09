@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import styles from './Accordion.module.css';
 import { LuChevronDown } from 'react-icons/lu';
 
@@ -9,18 +10,20 @@ export interface AccordionItem {
 	title: string;
 	content: React.ReactNode;
 	icon?: React.ReactNode;
+	image?: { src: string; alt: string };
 }
 
 interface AccordionProps {
 	items: AccordionItem[];
 	defaultOpenId?: string;
+	className?: string;
 }
 
-export function Accordion({ items, defaultOpenId }: AccordionProps) {
+export function Accordion({ items, defaultOpenId, className }: AccordionProps) {
 	const [openId, setOpenId] = useState<string | null>(defaultOpenId ?? null);
 
 	return (
-		<div className={styles.accordion}>
+		<div className={`${styles.accordion}${className ? ` ${className}` : ''}`}>
 			{items.map((item) => {
 				const isOpen = openId === item.id;
 				return (
@@ -44,7 +47,14 @@ export function Accordion({ items, defaultOpenId }: AccordionProps) {
 							aria-labelledby={`accordion-${item.id}-header`}
 							className={`${styles.panel} ${isOpen ? styles.panelOpen : ''}`}
 						>
-							{isOpen ? item.content : null}
+							{isOpen ? (
+								<>
+									{item.content}
+									{item.image && (
+										<Image src={item.image.src} alt={item.image.alt} width={368} height={800} className={styles.panelImage} />
+									)}
+								</>
+							) : null}
 						</div>
 					</div>
 				);
