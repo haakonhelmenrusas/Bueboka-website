@@ -127,9 +127,6 @@ export function Header() {
 					</Link>
 
 					<nav className={styles.desktopNav} aria-label="Primary">
-						<Link href="/faq" className={styles.navLink}>
-							{t['nav.faq']}
-						</Link>
 						{!isAuthPage && (
 							<>
 								<Link href="#community" onClick={(e) => handleHashLinkClick(e, '#community')} className={styles.navLink}>
