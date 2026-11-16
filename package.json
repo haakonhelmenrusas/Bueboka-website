@@ -22,7 +22,7 @@
 		"postinstall": "prisma generate"
 	},
 	"dependencies": {
-		"@better-auth/expo": "1.7.18",
+		"@better-auth/expo": "1.7.22",
 		"@microsoft/clarity": "^1.0.2",
 		"@netlify/blobs": "^11.1.7",
 		"@prisma/adapter-pg": "^7.10.1",
