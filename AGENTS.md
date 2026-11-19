@@ -48,6 +48,14 @@ This project uses a two-tier branch model:
 - `dev` is the base branch for new feature/fix branches — not `main`
 - When creating PRs, target `dev` unless explicitly promoting to production
 
+### Protected Branches
+
+**Never delete `main` or `dev` branches** — local or remote. These are the two
+permanent branches of the project. When merging a PR from `dev` into `main`,
+always merge **without** deleting the source branch (`gh pr merge <n> --merge`,
+never `--delete-branch` on PRs targeting `main`). Feature branches may be deleted
+after they are merged into `dev`.
+
 ## Commit Discipline
 
 Keep commits **small and focused** — one logical change per commit. This makes the git history readable and each change independently reviewable or revertable.
