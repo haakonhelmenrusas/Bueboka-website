@@ -33,6 +33,14 @@ This project uses a two-tier branch model:
 - `dev` is the base branch for new feature/fix branches — not `main`
 - When creating PRs, target `dev` unless explicitly promoting to production
 
+### Protected Branches
+
+**Never delete `main` or `dev` branches** — local or remote. These are the two
+permanent branches of the project. When merging a PR from `dev` into `main`,
+always merge **without** deleting the source branch (`gh pr merge <n> --merge`,
+never `--delete-branch` on PRs targeting `main`). Feature branches may be deleted
+after they are merged into `dev`.
+
 ## Before Starting Any Task
 
 Work autonomously: for a clear request, read the relevant code and act directly — do not ask for confirmation before reversible, in-scope steps. Ask clarifying questions only when the answer would materially change the result or cannot be discovered from the codebase. When relevant, useful questions cover:
