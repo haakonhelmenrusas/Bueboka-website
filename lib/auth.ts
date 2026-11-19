@@ -81,6 +81,15 @@ export const auth = betterAuth({
 	advanced: {
 		generateId: false,
 		useSecureCookies,
+		ipAddress: {
+			// On Netlify the edge sets x-nf-client-connection-ip to the single
+			// client IP (client-supplied values are replaced). The default
+			// x-forwarded-for carries multiple hops there and is then rejected,
+			// which made the rate limiter fall back to one shared per-path
+			// bucket for ALL users. List the Netlify header first so the
+			// client IP resolves and buckets are per-IP.
+			ipAddressHeaders: ['x-nf-client-connection-ip', 'x-forwarded-for'],
+		},
 		crossSubDomainCookies: {
 			enabled: false,
 		},
@@ -97,6 +106,13 @@ export const auth = betterAuth({
 		maxRequests: 10,
 		windowMs: 900000, // 15 minutes
 		message: 'Too many requests from this IP, please try again later',
+		customRules: {
+			// get-session is a read-only, auth-checked endpoint that every API
+			// route invokes internally via getCurrentUser. Rate limiting it
+			// (10x/15min per bucket) made app launches that fan out several API
+			// calls fail with 429/401 under the shared fallback bucket.
+			'/get-session': false,
+		},
 	},
 });
 
