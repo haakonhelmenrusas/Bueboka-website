@@ -7,6 +7,11 @@
   # Enable faster builds
   NODE_OPTIONS = "--max-old-space-size=4096"
 
+# More memory = more CPU for the Next.js server handler, which shortens its
+# serverless cold start (module init + Prisma WASM). Was 1024MB (default).
+[functions."___netlify-server-handler"]
+  memory = 2048
+
 # Cache static assets aggressively
 [[headers]]
   for = "/assets/*"
