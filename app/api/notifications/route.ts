@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { edgeCacheHeaders } from '@/lib/apiCache';
 
 /**
  * GET /api/notifications
@@ -37,7 +38,7 @@ export async function GET(request: Request) {
       prisma.notification.count({ where: { userId: user.id, read: false } }),
     ]);
 
-    return NextResponse.json({ notifications, unreadCount });
+    return NextResponse.json({ notifications, unreadCount }, { headers: edgeCacheHeaders() });
   } catch (error) {
     console.error('Error fetching notifications:', error);
     return NextResponse.json({ error: 'Failed to fetch notifications' }, { status: 500 });
