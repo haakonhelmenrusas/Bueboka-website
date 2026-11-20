@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { statsCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { edgeCacheHeaders } from '@/lib/apiCache';
 
 function startOfDay(d: Date) {
 	const x = new Date(d);
@@ -19,10 +20,7 @@ export async function GET(request: Request) {
 		const cached = statsCache.get(cacheKey);
 		if (cached) {
 			return NextResponse.json(cached, {
-				headers: {
-					'Cache-Control': 'no-store',
-					Vary: 'Cookie',
-				},
+				headers: edgeCacheHeaders(),
 			});
 		}
 
@@ -133,10 +131,7 @@ export async function GET(request: Request) {
 		statsCache.set(cacheKey, result);
 
 		return NextResponse.json(result, {
-			headers: {
-				'Cache-Control': 'no-store',
-				Vary: 'Cookie',
-			},
+			headers: edgeCacheHeaders(),
 		});
 	} catch (error) {
 		console.error('Stats API error:', error);

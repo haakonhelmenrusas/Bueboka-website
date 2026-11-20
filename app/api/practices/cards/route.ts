@@ -3,6 +3,7 @@ import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { edgeCacheHeaders } from '@/lib/apiCache';
 
 export async function GET(request: Request) {
 	try {
@@ -27,10 +28,7 @@ export async function GET(request: Request) {
 			const cached = practicesCache.get(cacheKey);
 			if (cached) {
 				return NextResponse.json(cached, {
-					headers: {
-						'Cache-Control': 'private, max-age=10, must-revalidate',
-						Vary: 'Cookie',
-					},
+					headers: edgeCacheHeaders(),
 				});
 			}
 		}
@@ -213,11 +211,7 @@ export async function GET(request: Request) {
 		}
 
 		return NextResponse.json(responseData, {
-			headers: {
-				'Cache-Control':
-					process.env.NODE_ENV === 'development' ? 'no-store, no-cache, must-revalidate' : 'private, max-age=10, must-revalidate',
-				Vary: 'Cookie',
-			},
+			headers: edgeCacheHeaders(),
 		});
 	} catch (error) {
 		return NextResponse.json({ error: 'Failed to fetch practice cards' }, { status: 500 });

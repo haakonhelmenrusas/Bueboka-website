@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { edgeCacheHeaders } from '@/lib/apiCache';
 import { createNotification } from '@/lib/notifications';
 import {
   createChallengeSchema,
@@ -119,12 +120,15 @@ export async function GET(request: Request) {
       updatedAt: challenge.updatedAt,
     }));
 
-    return NextResponse.json({
-      challenges: challengeListItems,
-      page,
-      pageSize,
-      total,
-    });
+    return NextResponse.json(
+      {
+        challenges: challengeListItems,
+        page,
+        pageSize,
+        total,
+      },
+      { headers: edgeCacheHeaders() }
+    );
   } catch (error) {
     console.error('Error fetching challenges:', error);
     return NextResponse.json({ error: 'Failed to fetch challenges' }, { status: 500 });

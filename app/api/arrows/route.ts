@@ -4,6 +4,7 @@ import { createArrowsSchema } from '@/lib/validations/arrows';
 import { validateRequest } from '@/lib/validations/helpers';
 import { getCurrentUser } from '@/lib/session';
 import { equipmentCache } from '@/lib/cache';
+import { edgeCacheHeaders } from '@/lib/apiCache';
 
 export async function POST(request: NextRequest) {
 	try {
@@ -83,7 +84,7 @@ export async function GET(request: NextRequest) {
 			where: { userId: user.id },
 		});
 
-		return NextResponse.json({ arrows });
+		return NextResponse.json({ arrows }, { headers: edgeCacheHeaders() });
 	} catch (error) {
 		console.error('Error fetching arrows:', error);
 		return NextResponse.json({ error: 'Failed to fetch arrows' }, { status: 500 });

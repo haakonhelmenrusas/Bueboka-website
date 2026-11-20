@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { userProfileCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { edgeCacheHeaders } from '@/lib/apiCache';
 
 export async function GET(request: Request) {
 	try {
@@ -11,7 +12,7 @@ export async function GET(request: Request) {
 		const cacheKey = `profile:${user.id}`;
 		const cached = userProfileCache.get(cacheKey);
 		if (cached) {
-			return NextResponse.json({ profile: cached });
+			return NextResponse.json({ profile: cached }, { headers: edgeCacheHeaders() });
 		}
 
 		const profile = await prisma.user.findUnique({
@@ -35,7 +36,7 @@ export async function GET(request: Request) {
 
 		userProfileCache.set(cacheKey, profile);
 
-		return NextResponse.json({ profile });
+		return NextResponse.json({ profile }, { headers: edgeCacheHeaders() });
 	} catch (error) {
 		return NextResponse.json({ error: 'Failed to fetch profile' }, { status: 500 });
 	}
