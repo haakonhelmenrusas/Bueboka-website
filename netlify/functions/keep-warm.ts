@@ -12,7 +12,10 @@
  */
 
 const TARGET = process.env.URL ?? 'https://bueboka.no';
-const PARALLEL_PINGS = 3;
+// The app fans out ~8 parallel API calls on launch, so warm several instances
+// per tick: a single burst at 09:16:57 cold-started 6 requests even though a
+// tick had run 52s earlier with only 3 pings.
+const PARALLEL_PINGS = 6;
 
 export default async function keepWarm(): Promise<Response> {
 	const results = await Promise.allSettled(
