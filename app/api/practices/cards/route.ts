@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
 import { edgeCacheHeaders } from '@/lib/apiCache';
+import { scoredArrowCount, sumArrowCounts } from '@/lib/arrows';
 
 export async function GET(request: Request) {
 	try {
@@ -48,7 +49,7 @@ export async function GET(request: Request) {
 			practiceCategory: true,
 			roundType: { select: { name: true } },
 			ends: {
-				select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, distanceFrom: true, distanceTo: true, targetSizeCm: true },
+				select: { arrows: true, arrowsWithoutScore: true, scores: true, distanceMeters: true, distanceFrom: true, distanceTo: true, targetSizeCm: true },
 			},
 		} satisfies Prisma.PracticeSelect;
 
@@ -61,7 +62,7 @@ export async function GET(request: Request) {
 			totalScore: true,
 			placement: true,
 			practiceCategory: true,
-			rounds: { select: { arrows: true, arrowsWithoutScore: true, distanceMeters: true, targetSizeCm: true } },
+			rounds: { select: { arrows: true, arrowsWithoutScore: true, scores: true, distanceMeters: true, targetSizeCm: true } },
 		} satisfies Prisma.CompetitionSelect;
 
 		type PracticeRow = Prisma.PracticeGetPayload<{ select: typeof practiceSelect }>;
@@ -104,8 +105,8 @@ export async function GET(request: Request) {
 
 		// Transform practices to card format
 		const practiceCards = practices.map((p) => {
-			const arrowsShot = p.ends.reduce((sum, e) => sum + (e.arrows ?? 0) + (e.arrowsWithoutScore ?? 0), 0);
-			const arrowsWithScore = p.ends.reduce((sum, e) => sum + (e.arrows ?? 0), 0);
+			const arrowsShot = sumArrowCounts(p.ends);
+			const arrowsWithScore = p.ends.reduce((sum, e) => sum + scoredArrowCount(e), 0);
 
 			// For range categories (FELT, JAKT_3D), build label from distanceFrom/distanceTo
 			const isRangeCategory = p.practiceCategory === 'FELT' || p.practiceCategory === 'JAKT_3D';
@@ -166,8 +167,8 @@ export async function GET(request: Request) {
 
 		// Transform competitions to card format
 		const competitionCards = competitions.map((c) => {
-			const arrowsShot = c.rounds.reduce((sum, r) => sum + (r.arrows ?? 0) + (r.arrowsWithoutScore ?? 0), 0);
-			const arrowsWithScore = c.rounds.reduce((sum, r) => sum + (r.arrows ?? 0), 0);
+			const arrowsShot = sumArrowCounts(c.rounds);
+			const arrowsWithScore = c.rounds.reduce((sum, r) => sum + scoredArrowCount(r), 0);
 			const combinations = [
 				...new Set(c.rounds.filter((r) => r.distanceMeters && r.targetSizeCm).map((r) => `${r.distanceMeters}m - ${r.targetSizeCm}cm`)),
 			];

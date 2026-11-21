@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { statsCache, practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { sumArrowCounts } from '@/lib/arrows';
 import { createCompetitionSchema } from '@/lib/validations/competition';
 import { formatZodErrors } from '@/lib/validations/helpers';
 
@@ -42,7 +43,7 @@ export async function GET(request: Request) {
 
 		// Calculate total arrows for each competition
 		const competitionsWithStats = competitions.map((competition) => {
-			const totalArrows = competition.rounds.reduce((sum, round) => sum + (round.arrows || 0) + (round.arrowsWithoutScore || 0), 0);
+			const totalArrows = sumArrowCounts(competition.rounds);
 			return {
 				...competition,
 				arrowsShot: totalArrows,
