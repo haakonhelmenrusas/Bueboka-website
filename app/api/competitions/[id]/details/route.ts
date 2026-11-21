@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/session';
+import { scoredArrowCount, sumArrowCounts } from '@/lib/arrows';
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
 	try {
@@ -22,17 +23,17 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 		if (!competition) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
 		// Calculate total arrows shot from rounds (including both arrows and arrowsWithoutScore)
-		const totalArrows = competition.rounds?.reduce((sum, round) => sum + (round.arrows || 0) + (round.arrowsWithoutScore || 0), 0) || 0;
+		const totalArrows = competition.rounds ? sumArrowCounts(competition.rounds) : 0;
 
 		// Map rounds to ends format for PracticeDetailsModal compatibility
 		const mappedEnds =
 			competition.rounds?.map((round) => ({
 				id: round.id,
-				arrows: round.arrows ?? 0,
+				arrows: scoredArrowCount(round),
 				arrowsWithoutScore: round.arrowsWithoutScore ?? null,
 				distanceMeters: round.distanceMeters ?? null,
 				targetSizeCm: round.targetSizeCm ?? null,
-				scores: [],
+				scores: round.scores ?? [],
 				roundScore: round.roundScore ?? null,
 			})) ?? [];
 
