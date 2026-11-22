@@ -4,6 +4,7 @@ import { Prisma } from '@/prisma/prisma/generated/prisma-client/client';
 import type { Environment, PracticeCategory, WeatherCondition } from '@/lib/prismaEnums';
 import { statsCache, practicesCache } from '@/lib/cache';
 import { getCurrentUser } from '@/lib/session';
+import { sumArrowCounts } from '@/lib/arrows';
 
 interface RouteParams {
 	params: Promise<{ id: string }>;
@@ -55,7 +56,7 @@ export async function GET(request: Request, { params }: RouteParams) {
 		}
 
 		// Calculate total arrows (including both scored and unscored arrows)
-		const arrowsShot = competition.rounds.reduce((sum, round) => sum + (round.arrows || 0) + (round.arrowsWithoutScore || 0), 0);
+		const arrowsShot = sumArrowCounts(competition.rounds);
 
 		return NextResponse.json({
 			competition: {
